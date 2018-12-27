@@ -9,7 +9,8 @@ class App extends React.Component {
         return (
             <div className="ui container" style={{ marginTop: "10px" }}>
                 App
-                <button className="ui red basic button">Button</button>
+                <br />
+                <button className="ui green basic button">Button</button>
             </div>
         );
     }
