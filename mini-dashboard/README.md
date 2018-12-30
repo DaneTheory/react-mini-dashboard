@@ -1,7 +1,13 @@
+### Tasks Completed
 
-Stock creat-react-app README.md below this line
-------------------------------------------------------------
+1. Installed Semantic UI via CDN (link is specific to version)
+1.
 
+### Tasks To Do
+
+1. Create a node.js API proxy with embedded credentials
+
+## Stock creat-react-app README.md below this line
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

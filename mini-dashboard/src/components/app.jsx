@@ -1,4 +1,5 @@
 import React from "react";
+import Widget from "./Widget";
 
 class App extends React.Component {
     state = {
@@ -11,6 +12,7 @@ class App extends React.Component {
                 App
                 <br />
                 <button className="ui green basic button">Button</button>
+                <Widget />
             </div>
         );
     }
