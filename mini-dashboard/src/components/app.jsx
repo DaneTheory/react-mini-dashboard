@@ -7,12 +7,17 @@ class App extends React.Component {
     };
 
     render() {
+        // let imageBody = "Big image body, here's some more text";
+        let imageBody = ["Jane", "Bob", "Freddy"];
         return (
             <div className="ui container" style={{ marginTop: "10px" }}>
                 App
                 <br />
                 <button className="ui green basic button">Button</button>
-                <Widget />
+                <Widget
+                    widgetName="inbound widget name"
+                    widgetBody={imageBody}
+                />
             </div>
         );
     }

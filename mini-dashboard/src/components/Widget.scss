@@ -1,0 +1,52 @@
+// Global variables
+
+$color-cardbackground: #41ca1762;
+$color-cardfont: #023a0b;
+
+// Set base properties of all components
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html {
+    /* Setting the size of one rem */
+    font-size: 16px;
+}
+
+body {
+    // font-family: "Lato", "Courier New";
+    // font-family: "Charm", "Courier New";
+    font-family: "Stint Ultra Condensed", "Courier New";
+}
+
+.dataCard {
+    background-color: $color-cardbackground;
+    color: $color-cardfont;
+    display: inline-block;
+    padding: 0.4rem;
+    margin: 0.5rem;
+    border-radius: 0.2rem;
+    width: 14rem;
+    height: 10rem;
+
+    .cardHeader {
+        display: block;
+        background-color: darken($color-cardbackground, 0.4);
+        margin-bottom: 0.4rem;
+        font-size: 0.6rem;
+        font-family: "Teko", "Courier New";
+    }
+
+    .cardBody {
+        display: block;
+        border: 1px;
+        border-style: solid;
+        border-color: #00000015;
+        // keep the list bullets inside the div
+        list-style-position: inside;
+        font-size: 0.7rem;
+        font-family: "Stint Ultra Condensed", "Courier New";
+    }
+}
