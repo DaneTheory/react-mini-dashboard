@@ -14,9 +14,7 @@ class WidgetNames extends React.Component {
         const response = await unsplash.get("https://api.unsplash.com/search/photos", {
             params: { query: "Cars" }
         });
-
         this.setState({ images: response.data.results });
-        console.log("state images", this.state.images);
     };
 
     renderCardBody() {
@@ -35,7 +33,6 @@ class WidgetNames extends React.Component {
                 <table>
                     <tbody>{listOfNames}</tbody>
                 </table>
-                <h1>Hi</h1>
             </div>
         );
     }

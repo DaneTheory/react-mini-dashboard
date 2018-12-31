@@ -14,14 +14,10 @@ class WidgetImageNames extends React.Component {
         const response = await unsplash.get("https://api.unsplash.com/search/photos", {
             params: { query: "Cars" }
         });
-
         this.setState({ images: response.data.results });
-        console.log("state images", this.state.images);
     };
 
     renderCardBody() {
-        let imageBody = [{ name: "Jane", age: "40" }, { name: "Bob", age: "41" }, { name: "Freddy", age: "42" }];
-
         var listOfNames = this.state.images.map(function(imageObject, index) {
             return (
                 <tr key={index}>
@@ -35,7 +31,6 @@ class WidgetImageNames extends React.Component {
                 <table>
                     <tbody>{listOfNames}</tbody>
                 </table>
-                <h1>Hi</h1>
             </div>
         );
     }

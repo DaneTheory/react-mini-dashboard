@@ -35,7 +35,6 @@ class App extends React.Component {
                 <table>
                     <tbody>{listOfNames}</tbody>
                 </table>
-                <h1>Hi</h1>
             </div>
         );
     }
