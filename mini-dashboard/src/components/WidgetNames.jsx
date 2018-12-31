@@ -1,16 +1,16 @@
 import React from "react";
 import DashboardCard from "./DashboardCard";
-import WidgetNames from "./WidgetNames";
 import unsplash from "../api/unsplash";
-import WidgetImageNames from "./WidgetImageNames";
 
-class App extends React.Component {
-    state = {
-        // we expect this to be an array, so set to empty array because that will prevent .map() null issues later
-        images: []
-    };
+// Create a widget class ----
+class WidgetNames extends React.Component {
+    constructor(props) {
+        super(props);
 
-    onSearchSubmit = async term => {
+        this.state = { widgetName: "firstwidget", images: [] };
+    }
+
+    componentDidMount = async () => {
         const response = await unsplash.get("https://api.unsplash.com/search/photos", {
             params: { query: "Cars" }
         });
@@ -19,7 +19,7 @@ class App extends React.Component {
         console.log("state images", this.state.images);
     };
 
-    renderCardBodyTable() {
+    renderCardBody() {
         let imageBody = [{ name: "Jane", age: "40" }, { name: "Bob", age: "41" }, { name: "Freddy", age: "42" }];
 
         var listOfNames = imageBody.map(function(personObj, index) {
@@ -41,19 +41,8 @@ class App extends React.Component {
     }
 
     render() {
-        return (
-            <div className="ui container" style={{ marginTop: "10px" }}>
-                <DashboardCard widgetName="Widget Numero Uno">{this.renderCardBodyTable()}</DashboardCard>
-                <WidgetNames />
-                <WidgetImageNames />
-                <br />
-                <br />
-                <button className="ui green basic button" onClick={this.onSearchSubmit}>
-                    Button
-                </button>
-            </div>
-        );
+        return <DashboardCard widgetName="WidgetNames">{this.renderCardBody()}</DashboardCard>;
     }
 }
 
-export default App;
+export default WidgetNames;
