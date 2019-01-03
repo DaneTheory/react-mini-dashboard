@@ -19,6 +19,7 @@ body {
     // font-family: "Lato", "Courier New";
     // font-family: "Charm", "Courier New";
     font-family: "Stint Ultra Condensed", "Courier New";
+    background-color: rgba($color: #464242, $alpha: 1);
 }
 
 .dataCard {
@@ -46,6 +47,7 @@ body {
         // list-style-position: inside;
         font-size: 0.7rem;
         font-family: "Stint Ultra Condensed", "Courier New";
+        color: rgba($color: #a8ec96, $alpha: 1);
 
         table tr td {
             border: 1px;

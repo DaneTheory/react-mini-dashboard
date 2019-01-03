@@ -3,6 +3,7 @@ import DashboardCard from "./DashboardCard";
 import WidgetNames from "./WidgetNames";
 import unsplash from "../api/unsplash";
 import WidgetImageNames from "./WidgetImageNames";
+import WidgetServiceNowINCP1P2Count from "./WidgetServiceNowINCP1P2Count";
 
 class App extends React.Component {
     state = {
@@ -45,6 +46,7 @@ class App extends React.Component {
                 <DashboardCard widgetName="Widget Numero Uno">{this.renderCardBodyTable()}</DashboardCard>
                 <WidgetNames />
                 <WidgetImageNames />
+                <WidgetServiceNowINCP1P2Count />
                 <br />
                 <br />
                 <button className="ui green basic button" onClick={this.onSearchSubmit}>
