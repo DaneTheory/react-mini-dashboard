@@ -2,7 +2,7 @@ import React from "react";
 import DashboardCard from "./DashboardCard";
 import apiProxy from "../api/apiProxy";
 
-// Create a widget class ----
+// Create a class component
 class WidgetServiceNowP1P2Count extends React.Component {
     constructor(props) {
         super(props);
@@ -14,7 +14,6 @@ class WidgetServiceNowP1P2Count extends React.Component {
         const response = await apiProxy.get("/sn/jnjsandbox.service-now.com/api/now/stats/incident", {
             params: { sysparm_query: "stateIN100,2^priorityIN1,2", sysparm_count: "true" }
         });
-        console.log(response);
         this.setState({ count: response.data.result.stats.count });
     };
 

@@ -2,6 +2,8 @@
 
 $color-cardbackground: #41ca1762;
 $color-cardfont: #023a0b;
+$color-title: #bbb3b3;
+$color-pageBackground: #464242;
 
 // Set base properties of all components
 * {
@@ -23,53 +25,65 @@ body {
     // font-family: "Lato", "Courier New";
     // font-family: "Charm", "Courier New";
     font-family: "Stint Ultra Condensed", "Courier New";
-    background-color: rgba($color: #464242, $alpha: 1);
+    background-color: rgba($color: $color-pageBackground, $alpha: 1);
     top: 0px;
 }
 
-.container {
+.title_container {
+    padding: 1rem 1rem 1rem 2rem;
+
+    .title {
+        font-family: "Lato", "Courier New";
+        font-size: 6rem;
+        color: $color-title;
+    }
+}
+
+.dataCard_container {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(6, 1fr);
     height: 70rem;
-    // grid-gap: 0.5rem;
-    // margin: 2rem;
-}
+    grid-gap: 1rem;
+    margin: 0 1.5rem 0 1.5rem;
 
-.dataCard {
-    background-color: $color-cardbackground;
-    color: $color-cardfont;
-    border-radius: 0.2rem;
-    padding: 0.5rem;
+    .dataCard {
+        background-color: $color-cardbackground;
+        color: $color-cardfont;
+        border-radius: 0.2rem;
+        padding: 0.5rem;
 
-    // Center the content in the dataCard
-    display: flex;
-    justify-content: center;
-    align-items: center;
+        // Center the content in the dataCard
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-    .cardBody {
-        border: 1px solid #00000015;
-        // keep the list bullets inside the div
-        // list-style-position: inside;
-        font-size: 0.7rem;
-        font-family: "Stint Ultra Condensed", "Courier New";
-        color: rgba($color: #eee, $alpha: 1);
+        .cardBody {
+            // Used for occasional troubleshooting
+            // border: 1px solid #00000015;
 
-        table tr td {
-            border: 1px solid rgba(0, 0, 0, 0.096);
-            padding: 0.1rem 0.1rem;
-            // line-height: 0.6rem;
-        }
-        .single-num-title {
-            font-size: 2vw;
-            // line-height: 2rem;
-            text-align: center;
-        }
-        .single-num-value {
-            font-size: 4vw;
-            // line-height: 4rem;
-            text-align: center;
-            // line-height: normal;
+            // keep the list bullets inside the div
+            // list-style-position: inside;
+            font-size: 0.7rem;
+            font-family: "Stint Ultra Condensed", "Courier New";
+            color: rgba($color: #eee, $alpha: 1);
+
+            table tr td {
+                border: 1px solid rgba(0, 0, 0, 0.096);
+                padding: 0.1rem 0.1rem;
+                // line-height: 0.6rem;
+            }
+            .single-num-title {
+                font-size: 2vw;
+                // line-height: 2rem;
+                text-align: center;
+            }
+            .single-num-value {
+                font-size: 4vw;
+                // line-height: 4rem;
+                text-align: center;
+                // line-height: normal;
+            }
         }
     }
 }

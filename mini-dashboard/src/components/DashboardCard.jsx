@@ -18,10 +18,13 @@ class DashboardCard extends React.Component {
     }
 
     render() {
-        let styles = {
-            backgroundColor: this.props.color,
-            gridArea: this.props.position
-        };
+        let styles = {};
+        if (this.props.position) {
+            styles.gridArea = this.props.position;
+        }
+        if (this.props.color) {
+            styles.backgroundColor = this.props.color;
+        }
 
         return (
             <div className={"dataCard item item--" + this.props.id} id={this.props.id} style={styles}>

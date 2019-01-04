@@ -1,11 +1,13 @@
 ### Tasks Completed
 
 1. Installed Semantic UI via CDN (link is specific to version)
-1.
+1. Create a node.js API proxy with embedded credentials
+1. Create a better UI for positioning the card
 
 ### Tasks To Do
 
-1. Create a node.js API proxy with embedded credentials
+1. Cache the API requests
+1. API for BoldChat
 
 ## Stock creat-react-app README.md below this line
 
