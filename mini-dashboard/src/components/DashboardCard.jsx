@@ -18,9 +18,13 @@ class DashboardCard extends React.Component {
     }
 
     render() {
+        let styles = {
+            backgroundColor: this.props.color,
+            gridArea: this.props.position
+        };
+
         return (
-            <div className="dataCard">
-                <div className="cardHeader">{this.renderCardHeader()}</div>
+            <div className={"dataCard item item--" + this.props.id} id={this.props.id} style={styles}>
                 <div className="cardBody">{this.renderCardBodyTable()}</div>
             </div>
         );

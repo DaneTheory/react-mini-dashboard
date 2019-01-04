@@ -42,11 +42,15 @@ class App extends React.Component {
 
     render() {
         return (
-            <div className="ui container" style={{ marginTop: "10px" }}>
-                <DashboardCard widgetName="Widget Numero Uno">{this.renderCardBodyTable()}</DashboardCard>
-                <WidgetNames />
-                <WidgetImageNames />
-                <WidgetServiceNowINCP1P2Count />
+            <div>
+                <div className="container">
+                    <WidgetServiceNowINCP1P2Count color="darkred" position="1 / 1 / span 4 / span 2" id="1" />
+                    <WidgetServiceNowINCP1P2Count color="orangered" position="1 / 3 / span 1 / span 2" id="2" />
+                    <WidgetServiceNowINCP1P2Count color="goldenrod" position="1 / 5 / span 3 / span 2" id="3" />
+                    <WidgetServiceNowINCP1P2Count color="yellowgreen" position="2 / 3 / span 1 / span 1" id="4" />
+                    <WidgetServiceNowINCP1P2Count color="darkolivegreen" position="2 / 4 / span 1 / span 1" id="5" />
+                    <WidgetServiceNowINCP1P2Count color="blueviolet" position="3 / 3 / span 1 / span 1" id="6" />
+                </div>
                 <br />
                 <br />
                 <button className="ui green basic button" onClick={this.onSearchSubmit}>

@@ -20,7 +20,7 @@ class WidgetServiceNowP1P2Count extends React.Component {
 
     renderCardBody() {
         return (
-            <div>
+            <div className="item">
                 <div className="single-num-title">P1/P2 Incidents</div>
                 <div className="single-num-value">{this.state.count}</div>
             </div>
@@ -28,7 +28,16 @@ class WidgetServiceNowP1P2Count extends React.Component {
     }
 
     render() {
-        return <DashboardCard widgetName="WidgetImageNames">{this.renderCardBody()}</DashboardCard>;
+        return (
+            <DashboardCard
+                id={this.props.id}
+                position={this.props.position}
+                color={this.props.color}
+                widgetName="WidgetImageNames"
+            >
+                {this.renderCardBody()}
+            </DashboardCard>
+        );
     }
 }
 
