@@ -91,16 +91,90 @@ class WidgetSNClicksByOS extends React.Component {
   // ########################################################################################
   // ########################################################################################
 
+  analyzeBrowserResults(transTable) {
+    // Print out all user_agent strings for trouble-shooting
+    console.log("All user_agent strings:");
+    transTable.forEach(row => {
+      console.log(`${row.count}: ${row.user_agent}`);
+    });
+
+    let browserDict = {};
+    let OSDict = {};
+
+    transTable.forEach(element => {
+      let user_agent = element["user_agent"];
+
+      let browserName, osName;
+      [browserName, osName] = this.determineOSAndBrowser(user_agent);
+
+      // Now that we've found the real OS name (e.g. Win7), increment the count
+      if (osName in OSDict) {
+        OSDict[osName] += parseInt(element["count"]);
+      } else {
+        OSDict[osName] = parseInt(element["count"]);
+      }
+
+      // Now that we've found the real browser name (e.g. Chrome), increment the count
+      if (browserName in browserDict) {
+        browserDict[browserName] += parseInt(element["count"]);
+      } else {
+        browserDict[browserName] = parseInt(element["count"]);
+      }
+    });
+
+    // Create array of dictionaries
+    let OSArray = Object.keys(OSDict).map(key => {
+      let newDict = {};
+      newDict["name"] = key;
+      newDict["count"] = OSDict[key];
+      newDict["pct"] = "100";
+      return newDict;
+    });
+
+    // Create array of dictionaries
+    let BrowserArray = Object.keys(browserDict).map(key => {
+      let newDict = {};
+      newDict["name"] = key;
+      newDict["count"] = browserDict[key];
+      newDict["pct"] = "99";
+      return newDict;
+    });
+
+    let total = 0;
+    // sum up total
+    OSArray.forEach(element => {
+      total = total + parseInt(element["count"]);
+    });
+    // calculate pct for each, based on total
+    OSArray.forEach(element => {
+      element["pct"] = (element["count"] / total) * 100;
+    });
+
+    total = 0;
+    // sum up total
+    BrowserArray.forEach(element => {
+      total = total + parseInt(element["count"]);
+    });
+    // calculate pct for each, based on total
+    BrowserArray.forEach(element => {
+      element["pct"] = (element["count"] / total) * 100;
+    });
+
+    return [OSArray, BrowserArray];
+  }
+
   determineOSAndBrowser(user_agent) {
     // Default names if we can't figure out the browser and OS
     let browserName = "BrwsUnkn";
     let osName = "OSUnkn";
 
     // New Data (Jan 2019)
-    // Chrome 71 on Windows 10
+    // Chrome 71.0.3578.98 on Windows 10
     // Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98
     // Edge on Windows 10
     // Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.11
+    // Firefox 64.0 on Windows 10
+    // Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:64.0) Gecko/20100101 Firefox/64.0
 
     // My Original Data
     // Safari:
@@ -180,78 +254,7 @@ class WidgetSNClicksByOS extends React.Component {
     }
     return [browserName, osName];
   }
-
-  analyzeBrowserResults(transTable) {
-    // Print out all user_agent strings for trouble-shooting
-    console.log("All user_agent strings:");
-    transTable.forEach(row => {
-      console.log(`${row.count}: ${row.user_agent}`);
-    });
-
-    let browserDict = {};
-    let OSDict = {};
-
-    transTable.forEach(element => {
-      let user_agent = element["user_agent"];
-
-      let browserName, osName;
-      [browserName, osName] = this.determineOSAndBrowser(user_agent);
-
-      // Now that we've found the real OS name (e.g. Win7), increment the count
-      if (osName in OSDict) {
-        OSDict[osName] += parseInt(element["count"]);
-      } else {
-        OSDict[osName] = parseInt(element["count"]);
-      }
-
-      // Now that we've found the real browser name (e.g. Chrome), increment the count
-      if (browserName in browserDict) {
-        browserDict[browserName] += parseInt(element["count"]);
-      } else {
-        browserDict[browserName] = parseInt(element["count"]);
-      }
-    });
-
-    // Create array of dictionaries
-    let OSArray = Object.keys(OSDict).map(key => {
-      let newDict = {};
-      newDict["name"] = key;
-      newDict["count"] = OSDict[key];
-      newDict["pct"] = "100";
-      return newDict;
-    });
-
-    // Create array of dictionaries
-    let BrowserArray = Object.keys(browserDict).map(key => {
-      let newDict = {};
-      newDict["name"] = key;
-      newDict["count"] = browserDict[key];
-      newDict["pct"] = "99";
-      return newDict;
-    });
-
-    let total = 0;
-    // sum up total
-    OSArray.forEach(element => {
-      total = total + parseInt(element["count"]);
-    });
-    // calculate pct for each, based on total
-    OSArray.forEach(element => {
-      element["pct"] = (element["count"] / total) * 100;
-    });
-
-    total = 0;
-    // sum up total
-    BrowserArray.forEach(element => {
-      total = total + parseInt(element["count"]);
-    });
-    // calculate pct for each, based on total
-    BrowserArray.forEach(element => {
-      element["pct"] = (element["count"] / total) * 100;
-    });
-
-    return [OSArray, BrowserArray];
-  }
+  // end of class
 }
 
 // Force the caller to include the proper attributes
