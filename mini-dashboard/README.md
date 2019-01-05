@@ -8,6 +8,10 @@
 
 1. Cache the API requests
 1. API for BoldChat
+1. Periodically update data
+1. Use OAuth to call ServiceNow (in API Proxy)
+1. Create a chart
+1. Create auto-scrolling widget for boldchat
 
 ## Stock creat-react-app README.md below this line
 

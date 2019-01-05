@@ -1,9 +1,11 @@
 import React from "react";
-import DashboardCard from "./DashboardCard";
-import WidgetNames from "./WidgetNames";
+import CardGrid from "./cardGrid";
 import unsplash from "../api/unsplash";
-import WidgetImageNames from "./WidgetImageNames";
-import WidgetServiceNowINCP1P2Count from "./WidgetServiceNowINCP1P2Count";
+import WidgetSNServiceNowINCP1P2Count from "./WidgetSNINCP1P2Count";
+import WidgetSNUniqueLoginsToday from "./WidgetSNUniqueLoginsToday";
+import WidgetSNCurrentUsers from "./WidgetSNCurrentUsers";
+import WidgetSNNewIncidentToday from "./WidgetsSNNewIncidentsToday";
+import WidgetSNClicksByOS from "./WidgetsSNClicksByOS";
 
 class App extends React.Component {
     state = {
@@ -41,24 +43,57 @@ class App extends React.Component {
     }
 
     render() {
+        let instance = "jnjsandbox.service-now.com";
         return (
             <div>
                 <div className="title_container">
                     <div className="title">Iris Dashboard</div>
                 </div>
-                <div
-                    className="dataCard_container"
-                    style={{ gridTemplateColumns: "repeat(6,1fr)", gridTemplateRows: "repeat(6,1fr)" }}
-                >
-                    <WidgetServiceNowINCP1P2Count color="darkred" position="1 / 1 / span 4 / span 2" id="1" />
-                    <WidgetServiceNowINCP1P2Count color="orangered" position="1 / 3 / span 1 / span 2" id="2" />
-                    <WidgetServiceNowINCP1P2Count color="goldenrod" position="1 / 5 / span 3 / span 2" id="3" />
-                    <WidgetServiceNowINCP1P2Count color="yellowgreen" position="2 / 3 / span 1 / span 1" id="4" />
-                    <WidgetServiceNowINCP1P2Count color="darkolivegreen" position="2 / 4 / span 1 / span 1" id="5" />
-                    <WidgetServiceNowINCP1P2Count position="3 / 3 / span 1 / span 1" id="6" />
-                    <WidgetServiceNowINCP1P2Count color="blueviolet" id="6" />
-                    <WidgetServiceNowINCP1P2Count />
-                </div>
+
+                <CardGrid rows="6" columns="6">
+                    <WidgetSNServiceNowINCP1P2Count
+                        color="#3a5174"
+                        position="1 / 1 / span 4 / span 2"
+                        id="1"
+                        instance={instance}
+                    />
+                    <WidgetSNServiceNowINCP1P2Count
+                        color="#3a5174"
+                        position="1 / 3 / span 1 / span 2"
+                        id="2"
+                        instance={instance}
+                    />
+                    <WidgetSNServiceNowINCP1P2Count
+                        color="#3a5174"
+                        position="1 / 5 / span 3 / span 2"
+                        id="3"
+                        instance={instance}
+                    />
+                    <WidgetSNServiceNowINCP1P2Count
+                        color="#3a5174"
+                        position="2 / 3 / span 1 / span 1"
+                        id="4"
+                        instance={instance}
+                    />
+                    <WidgetSNServiceNowINCP1P2Count
+                        color="#3a5174"
+                        position="2 / 4 / span 1 / span 1"
+                        id="5"
+                        instance={instance}
+                    />
+                    <WidgetSNServiceNowINCP1P2Count
+                        color="#3a5174"
+                        position="3 / 3 / span 1 / span 1"
+                        id="6"
+                        instance={instance}
+                    />
+                    <WidgetSNServiceNowINCP1P2Count color="#3a5174" id="6" instance={instance} />
+                    <WidgetSNServiceNowINCP1P2Count color="#3a5174" instance={instance} />
+                    <WidgetSNUniqueLoginsToday color="slategrey" instance={instance} />
+                    <WidgetSNCurrentUsers color="darkgreen" instance={instance} />
+                    <WidgetSNNewIncidentToday color="orangered" position="span 1/span 2" instance={instance} />
+                    <WidgetSNClicksByOS color="maroon" position="span 1/span 2" instance={instance} />
+                </CardGrid>
             </div>
         );
     }
