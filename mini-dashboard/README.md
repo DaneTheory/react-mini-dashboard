@@ -13,6 +13,12 @@
 1. Create a chart
 1. Create auto-scrolling widget for boldchat
 
+### What I'm learning
+
+1. Even though my initial design in React is less DRY than AngularJS, feels a lot easier to understand
+1. Replaced Python API with a simple proxy using NodeJS Express. Moved all logic from backend to frontend
+   1. That means backend is a simple proxy which only adds authentication on the way through
+
 ## Stock creat-react-app README.md below this line
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
