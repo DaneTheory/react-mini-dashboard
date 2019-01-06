@@ -12,12 +12,14 @@
 1. Use OAuth to call ServiceNow (in API Proxy)
 1. Create a chart
 1. Create auto-scrolling widget for boldchat
+1. Test in Edge, Safari, and Firefox
 
 ### What I'm learning
 
 1. Even though my initial design in React is less DRY than AngularJS, feels a lot easier to understand
 1. Replaced Python API with a simple proxy using NodeJS Express. Moved all logic from backend to frontend
    1. That means backend is a simple proxy which only adds authentication on the way through
+1. For View, AngularJS wasnt great at looping through an Object. Since React is just javascript, it can do it
 
 ## Stock creat-react-app README.md below this line
 

@@ -50,7 +50,7 @@ class App extends React.Component {
           <div className="title">Iris Dashboard</div>
         </div>
 
-        <CardGrid rows="6" columns="6">
+        <CardGrid rows="7" columns="6">
           <WidgetSNINCP1P2Count color="#3a5174" position="1 / 1 / span 4 / span 2" id="1" instance={instance} />
           <WidgetSNINCP1P2Count color="#3a5174" position="1 / 3 / span 1 / span 2" id="2" instance={instance} />
           <WidgetSNINCP1P2Count color="#3a5174" position="1 / 5 / span 3 / span 2" id="3" instance={instance} />
@@ -62,7 +62,7 @@ class App extends React.Component {
           <WidgetSNUniqueLoginsToday color="slategrey" instance={instance} />
           <WidgetSNCurrentUsers color="darkgreen" instance={instance} />
           <WidgetSNNewIncidentToday color="orangered" position="span 1/span 2" instance={instance} />
-          <WidgetSNClicksByOS color="maroon" position="span 1/span 2" instance={instance} />
+          <WidgetSNClicksByOS color="maroon" position="span 3/span 2" instance={instance} />
         </CardGrid>
       </div>
     );
