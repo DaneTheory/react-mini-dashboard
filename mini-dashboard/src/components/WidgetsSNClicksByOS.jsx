@@ -12,10 +12,11 @@ class WidgetSNClicksByOS extends React.Component {
   }
 
   componentDidMount = async () => {
+    // Load the data from the API (notice we're using the await keyword from the async framework)
     let groupby_field = "user_agent";
     const response = await apiProxy.get(`/sn/${this.state.instance}/api/now/stats/syslog_transaction`, {
       params: {
-        // Units: years, months, days, hours, minutes
+        // Units for xAgoStart: years, months, days, hours, minutes
         sysparm_query: "client_transaction=true^sys_created_on>=javascript:gs.daysAgoStart(7)",
         sysparm_count: "true",
         sysparm_display_value: "true",

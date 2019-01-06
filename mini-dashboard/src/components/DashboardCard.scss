@@ -7,83 +7,83 @@ $color-pageBackground: #464242;
 
 // Set base properties of all components
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    // Tell child elements to compute their own line-height (rather than inheriting raw number from parent)
-    line-height: normal;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  // Tell child elements to compute their own line-height (rather than inheriting raw number from parent)
+  line-height: normal;
 }
 
 html {
-    /* Setting the size of one rem, means that 1 rem will equal 10px */
-    font-size: 10px;
-    height: 100%;
+  /* Setting the size of one rem, means that 1 rem will equal 10px */
+  font-size: 10px;
+  height: 100%;
 }
 
 body {
-    // font-family: "Lato", "Courier New";
-    // font-family: "Charm", "Courier New";
-    font-family: "Stint Ultra Condensed", "Courier New";
-    background-color: rgba($color: $color-pageBackground, $alpha: 1);
-    top: 0px;
+  // font-family: "Lato", "Courier New";
+  // font-family: "Charm", "Courier New";
+  font-family: "Stint Ultra Condensed", "Courier New";
+  background-color: rgba($color: $color-pageBackground, $alpha: 1);
+  top: 0px;
 }
 
 .title_container {
-    padding: 1rem 1rem 1rem 2rem;
+  padding: 1rem 1rem 1rem 2rem;
 
-    .title {
-        font-family: "Lato", "Courier New";
-        font-size: 6rem;
-        color: $color-title;
-    }
+  .title {
+    font-family: "Lato", "Courier New";
+    font-size: 6rem;
+    color: $color-title;
+  }
 }
 
 .dataCard_container {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(6, 1fr);
-    height: 70rem;
-    grid-gap: 1rem;
-    margin: 0 1.5rem 0 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  height: 60vw;
+  grid-gap: 1rem;
+  margin: 0 1.5rem 0 1.5rem;
 
-    .dataCard {
-        background-color: $color-cardbackground;
-        color: $color-cardfont;
-        border-radius: 0.2rem;
-        padding: 0.5rem;
+  .dataCard {
+    background-color: $color-cardbackground;
+    color: $color-cardfont;
+    border-radius: 0.2rem;
+    padding: 0.5rem;
 
-        // Center the content in the dataCard (combined with margin:auto in cardBody)
-        display: flex;
-        overflow: auto;
+    // Center the content in the dataCard (combined with margin:auto in cardBody)
+    display: flex;
+    overflow: auto;
 
-        .cardBody {
-            // Used for occasional troubleshooting
-            // border: 1px solid #00000015;
+    .cardBody {
+      // Used for occasional troubleshooting
+      // border: 1px solid #00000015;
 
-            // keep the list bullets inside the div
-            // list-style-position: inside;
-            font-size: 1.4vw;
-            font-family: "Stint Ultra Condensed", "Courier New";
-            color: rgba($color: #eee, $alpha: 1);
-            // Align content
-            margin: auto;
+      // keep the list bullets inside the div
+      // list-style-position: inside;
+      font-size: 1.4vw;
+      font-family: "Stint Ultra Condensed", "Courier New";
+      color: rgba($color: #eee, $alpha: 1);
+      // Align content
+      margin: auto;
 
-            table tr td {
-                border: 1px solid rgba(0, 0, 0, 0.096);
-                padding: 0.1rem 0.1rem;
-                // line-height: 0.6rem;
-            }
-            .single-num-title {
-                font-size: 2vw;
-                // line-height: 2rem;
-                text-align: center;
-            }
-            .single-num-value {
-                font-size: 4vw;
-                // line-height: 4rem;
-                text-align: center;
-                // line-height: normal;
-            }
-        }
+      table tr td {
+        border: 1px solid rgba(0, 0, 0, 0.096);
+        padding: 0.1rem 0.1rem;
+        // line-height: 0.6rem;
+      }
+      .single-num-title {
+        font-size: 2vw;
+        // line-height: 2rem;
+        text-align: center;
+      }
+      .single-num-value {
+        font-size: 4vw;
+        // line-height: 4rem;
+        text-align: center;
+        // line-height: normal;
+      }
     }
+  }
 }
