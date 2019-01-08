@@ -1,7 +1,6 @@
-export function determineOSAndBrowserExternal(user_agent) {
+export function determineBrowserFromUserAuth(user_agent) {
   // Default names if we can't figure out the browser and OS
   let browserName = "BrwsUnkn";
-  let osName = "OSUnkn";
 
   // New Data (Jan 2019)
   // Chrome 71.0.3578.98 on Windows 10
@@ -56,7 +55,7 @@ export function determineOSAndBrowserExternal(user_agent) {
     browserName = "Chrome";
   }
 
-  // Try to get Chrome versoin
+  // Try to get Chrome version
   let chromeVersion = user_agent.match(" Chrome/[0-9][0-9][.0-9]*");
   let chromeMajorVersion;
   if (chromeVersion) {
@@ -75,17 +74,5 @@ export function determineOSAndBrowserExternal(user_agent) {
     }
   }
 
-  // Look for well-known OS's in user_agent string
-  if (user_agent.includes("Windows NT 6.1")) {
-    osName = "Win7";
-  } else if (user_agent.includes("Windows NT 6.3")) {
-    osName = "Win8";
-  } else if (user_agent.includes("Windows NT 10.0")) {
-    osName = "Win10";
-  } else if (user_agent.includes("Mac OS")) {
-    osName = "MacOS";
-  } else if (user_agent.includes("Android")) {
-    osName = "Android";
-  }
-  return [browserName, osName];
+  return browserName;
 }
