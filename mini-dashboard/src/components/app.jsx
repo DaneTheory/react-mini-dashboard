@@ -8,6 +8,8 @@ import WidgetSNNewIncidentToday from "./WidgetsSNNewIncidentsToday";
 import WidgetSNClicksByOS from "./WidgetSNClicksByOS";
 import WidgetSNClicksByBrowser from "./WidgetSNClicksByBrowser";
 import WidgetBoldChatActiveCount from "./WidgetBoldChatActiveCount";
+import WidgetBoldChatInactiveCount from "./WidgetBoldChatInactiveCount";
+import WidgetLeankitCount from "./WidgetLeankitCount";
 
 class App extends React.Component {
     state = {
@@ -57,7 +59,7 @@ class App extends React.Component {
 
                 <CardGrid rows="7" columns="6">
                     <WidgetSNINCP1P2Count color="#3a5174" position="1 / 3 / span 1 / span 2" id="2" instance={sn_instance} />
-                    <WidgetSNINCP1P2Count color="#3a5174" position="1 / 5 / span 3 / span 2" id="3" instance={sn_instance} />
+                    <WidgetSNINCP1P2Count color="#3a5174" position="1 / 5 / span 1 / span 1" id="3" instance={sn_instance} />
                     <WidgetSNINCP1P2Count color="#3a5174" position="2 / 3 / span 1 / span 1" id="4" instance={sn_instance} />
                     <WidgetSNINCP1P2Count color="#3a5174" position="2 / 4 / span 1 / span 1" id="5" instance={sn_instance} />
                     <WidgetSNINCP1P2Count color="#3a5174" position="3 / 3 / span 1 / span 1" id="6" instance={sn_instance} />
@@ -66,9 +68,11 @@ class App extends React.Component {
                     <WidgetSNUniqueLoginsToday color="slategrey" instance={sn_instance} />
                     <WidgetSNCurrentUsers color="darkgreen" instance={sn_instance} />
                     <WidgetSNNewIncidentToday color="orangered" position="span 1/span 1" instance={sn_instance} />
-                    <WidgetSNClicksByOS color="darkolivegreen" position="span 3/span 2" instance={sn_instance} />
-                    <WidgetSNClicksByBrowser color="darkolivegreen" position="span 3/span 2" instance={sn_instance} />
+                    <WidgetSNClicksByOS color="darkolivegreen" position="span 3/span 1" instance={sn_instance} />
+                    <WidgetSNClicksByBrowser color="darkolivegreen" position="span 3/span 1" instance={sn_instance} />
+                    <WidgetLeankitCount color="mediumpurple" position="span 1/span 1" instance="jnj.leankit.com" />
                     <WidgetBoldChatActiveCount color="IndianRed" position="span 1/span 1" instance={boldchat_instance} />
+                    <WidgetBoldChatInactiveCount color="IndianRed" position="span 1/span 1" instance={boldchat_instance} />
                 </CardGrid>
             </div>
         );

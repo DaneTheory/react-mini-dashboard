@@ -4,41 +4,36 @@ import apiProxy from "../api/apiProxy";
 import PropTypes from "prop-types";
 
 // Create a class component
-class WidgetBoldChatActiveCount extends React.Component {
+class WidgetLeankitCount extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { widgetName: "firstwidget", count: [], instance: props.instance, boldchatCount: null };
+        this.state = { widgetName: "firstwidget", instance: props.instance, count: null };
     }
 
     componentDidMount = () => {
         // Load the data from the API (notice we're using the await keyword from the async framework)
-        // ?FromDate=2019-01-08T08:00:01.000Z
         apiProxy
-            .get(`/boldchat/${this.state.instance}/data/rest/json/v1/getActiveChats`, {
+            .get(`/leankit/${this.state.instance}/board/372745411`, {
                 params: {}
             })
             .then(response => {
                 // Save into our component state
-                this.setState({ boldchatCount: response.data.Data.length });
+                console.log(response.data.cards.length);
+                this.setState({ count: response.data.cards.length });
             });
     };
 
     renderCardHeader() {
-        return <div className="single-num-title">BoldChats Active</div>;
+        return <div className="single-num-title">Leankit Count</div>;
     }
 
     renderCardBody() {
-        return <div className="single-num-value">{this.state.boldchatCount}</div>;
+        return <div className="single-num-value">{this.state.count}</div>;
     }
 
     render() {
         return (
-            <DashboardCard
-                id={this.props.id}
-                position={this.props.position}
-                color={this.props.color}
-                widgetName="WidgetBoldChatActiveCount"
-            >
+            <DashboardCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetLeankitCount">
                 {this.renderCardHeader()}
                 {this.renderCardBody()}
             </DashboardCard>
@@ -53,8 +48,8 @@ class WidgetBoldChatActiveCount extends React.Component {
 }
 
 // Force the caller to include the proper attributes
-WidgetBoldChatActiveCount.propTypes = {
+WidgetLeankitCount.propTypes = {
     instance: PropTypes.string.isRequired
 };
 
-export default WidgetBoldChatActiveCount;
+export default WidgetLeankitCount;
