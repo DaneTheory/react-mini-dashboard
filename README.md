@@ -3,13 +3,13 @@
 1. Installed Semantic UI via CDN (link is specific to version)
 1. Create a node.js API proxy with embedded credentials
 1. Create a better UI for positioning the card
+1. Moved the backend API for BoldChat from Python/Flask to Node/Express
+1. Use OAuth to call ServiceNow (in API Proxy)
 
 ### Tasks To Do
 
 1. Cache the API requests
-1. API for BoldChat
 1. Periodically update data
-1. Use OAuth to call ServiceNow (in API Proxy)
 1. Create a chart
 1. Create auto-scrolling widget for boldchat
 1. Test in Edge, Safari, and Firefox
@@ -18,7 +18,7 @@
 
 1. Even though my initial design in React is less DRY than AngularJS, feels a lot easier to understand
 1. Replaced Python API with a simple proxy using NodeJS Express. Moved all logic from backend to frontend
-   1. That means backend is a simple proxy which only adds authentication on the way through
+    1. That means backend is a simple proxy which only adds authentication on the way through
 1. For View, AngularJS wasnt great at looping through an Object. Since React is just javascript, it can do it
 
 ## Stock creat-react-app README.md below this line
