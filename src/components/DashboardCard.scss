@@ -32,8 +32,8 @@ body {
 
 .page_container {
     display: grid;
-    grid-template-columns: 150px 1fr;
-    grid-template-rows: 60px 1fr;
+    grid-template-columns: 20vw 1fr;
+    grid-template-rows: 6vw 1fr;
     width: 100%;
     grid-gap: 0;
 }
@@ -52,6 +52,7 @@ body {
 .leftNav_container {
     grid-area: 2 / 1 / span 1 / span 2;
     padding: 10px;
+    font-size: 2.5vw;
 }
 
 .centerPanel_container {
