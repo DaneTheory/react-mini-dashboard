@@ -34,7 +34,9 @@ class App extends React.Component {
         return (
             <div>
                 <div className="title_container">
-                    <div className="title">Iris Dashboard ({process.env.NODE_ENV})</div>
+                    <div className="title">
+                        Iris Dashboard ({process.env.NODE_ENV}) v{process.env.REACT_APP_VERSION}
+                    </div>
                 </div>
 
                 <CardGrid rows="7" columns="6">
