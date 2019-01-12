@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Link } from "react-router-dom";
 // My own imports
 import Demo1CardGrid from "../cardgrids/Demo1CardGrid";
 import AllCardGrid from "../cardgrids/AllCardGrid";
+import Dev1CardGrid from "../cardgrids/Demo1CardGrid";
 
 // let sn_instance = "jnjprodworker.service-now.com";
 // let boldchat_instance = "api.boldchat.com";
@@ -40,6 +41,7 @@ class App extends React.Component {
                                     <Link to="/">Home</Link>
                                     <Link to="/everything-dashboard">Everything Dashboard</Link>
                                     <Link to="/demo1-dashboard">Demo1 Dashboard</Link>
+                                    <Link to="/dev1-dashboard">Dev1 Dashboard</Link>
                                 </div>
                             </div>
                         </div>
@@ -60,6 +62,17 @@ class App extends React.Component {
                                 exact
                                 render={() => (
                                     <Demo1CardGrid
+                                        sn_instance={this.state.sn_instance}
+                                        boldchat_instance={this.state.boldchat_instance}
+                                        changeParentPageTitle={this.changePageTitle.bind(this)}
+                                    />
+                                )}
+                            />
+                            <Route
+                                path="/dev1-dashboard"
+                                exact
+                                render={() => (
+                                    <Dev1CardGrid
                                         sn_instance={this.state.sn_instance}
                                         boldchat_instance={this.state.boldchat_instance}
                                         changeParentPageTitle={this.changePageTitle.bind(this)}
