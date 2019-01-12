@@ -7,15 +7,17 @@ import CardGrid from "./cardGrid";
 import unsplash from "../api/unsplash";
 
 // My own imports, namely Widgets
-import WidgetSNINCP1P2Count from "./WidgetSNINCP1P2Count";
-import WidgetSNUniqueLoginsToday from "./WidgetSNUniqueLoginsToday";
-import WidgetSNCurrentUsers from "./WidgetSNCurrentUsers";
-import WidgetSNNewIncidentToday from "./WidgetsSNNewIncidentsToday";
-import WidgetSNClicksByOS from "./WidgetSNClicksByOS";
-import WidgetSNClicksByBrowser from "./WidgetSNClicksByBrowser";
-import WidgetBoldChatActiveCount from "./WidgetBoldChatActiveCount";
-import WidgetBoldChatInactiveCount from "./WidgetBoldChatInactiveCount";
-import WidgetLeankitCount from "./WidgetLeankitCount";
+import WidgetSNINCP1P2Count from "../widgets/WidgetSNINCP1P2Count";
+import WidgetSNUniqueLoginsToday from "../widgets/WidgetSNUniqueLoginsToday";
+import WidgetSNCurrentUsers from "../widgets/WidgetSNCurrentUsers";
+import WidgetSNNewIncidentToday from "../widgets/WidgetsSNNewIncidentsToday";
+import WidgetSNClicksByOS from "../widgets/WidgetSNClicksByOS";
+import WidgetSNClicksByBrowser from "../widgets/WidgetSNClicksByBrowser";
+import WidgetBoldChatActiveCount from "../widgets/WidgetBoldChatActiveCount";
+import WidgetBoldChatInactiveCount from "../widgets/WidgetBoldChatInactiveCount";
+import WidgetLeankitCount from "../widgets/WidgetLeankitCount";
+
+import demo1CardGrid from "../cardgrids/demo1CardGrid";
 
 let sn_instance = "jnjprodworker.service-now.com";
 let boldchat_instance = "api.boldchat.com";

@@ -1,9 +1,9 @@
 import React from "react";
-import DashboardCard from "./DashboardCard";
+import DashboardCard from "../components/DashboardCard";
 import unsplash from "../api/unsplash";
 
 // Create a widget class ----
-class WidgetImageNames extends React.Component {
+class WidgetNames extends React.Component {
     constructor(props) {
         super(props);
 
@@ -18,11 +18,13 @@ class WidgetImageNames extends React.Component {
     };
 
     renderCardBody() {
-        var listOfNames = this.state.images.map(function(imageObject, index) {
+        let imageBody = [{ name: "Jane", age: "40" }, { name: "Bob", age: "41" }, { name: "Freddy", age: "42" }];
+
+        var listOfNames = imageBody.map(function(personObj, index) {
             return (
                 <tr key={index}>
-                    <td>{imageObject["id"]}</td>
-                    <td>{imageObject["description"]}</td>
+                    <td>{personObj["name"]}</td>
+                    <td>{personObj["age"]}</td>
                 </tr>
             );
         });
@@ -36,8 +38,8 @@ class WidgetImageNames extends React.Component {
     }
 
     render() {
-        return <DashboardCard widgetName="WidgetImageNames">{this.renderCardBody()}</DashboardCard>;
+        return <DashboardCard widgetName="WidgetNames">{this.renderCardBody()}</DashboardCard>;
     }
 }
 
-export default WidgetImageNames;
+export default WidgetNames;

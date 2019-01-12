@@ -1,5 +1,5 @@
 import React from "react";
-import DashboardCard from "./DashboardCard";
+import DashboardCard from "../components/DashboardCard";
 import apiProxy from "../api/apiProxy";
 import PropTypes from "prop-types";
 // import moment from "moment";

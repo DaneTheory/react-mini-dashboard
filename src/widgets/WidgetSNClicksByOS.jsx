@@ -1,14 +1,14 @@
 import React from "react";
-import DashboardCard from "./DashboardCard";
+import DashboardCard from "../components/DashboardCard";
 import apiProxy from "../api/apiProxy";
 import PropTypes from "prop-types";
-import { determineBrowserFromUserAuth } from "../utilities/determineBrowserFromUserAuth";
+import { determineOSFromUserAuth } from "../utilities/determineOSFromUserAuth";
 
 // Create a class component
-class WidgetSNClicksByBrowser extends React.Component {
+class WidgetSNClicksByOS extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { widgetName: "firstwidget", count: [], instance: props.instance, browserInfo: {} };
+        this.state = { widgetName: "firstwidget", count: [], instance: props.instance, OSInfo: {} };
     }
 
     componentDidMount = () => {
@@ -34,23 +34,23 @@ class WidgetSNClicksByBrowser extends React.Component {
                     };
                 });
 
-                // Create an Object of counts for browser types
-                let browserInfo = this.createBrowserCounts(user_agent_strings);
+                // Create a dictionary of counts for both browswer and OS
+                let OSInfo = this.createOSCounts(user_agent_strings);
 
                 // Save into our component state
-                this.setState({ browserInfo: browserInfo });
+                this.setState({ OSInfo: OSInfo });
             });
     };
 
     renderTable() {
-        if (this.state.OSDict === {}) {
+        if (this.state.OSInfo === {}) {
             return <div className="single-num-value">No Clicks Today :(</div>;
         } else {
             return (
                 <div style={{ fontSize: "1.6vw" }}>
                     <table>
                         <tbody>
-                            {Object.values(this.state.browserInfo)
+                            {Object.values(this.state.OSInfo)
                                 .sort((a, b) => {
                                     return b.pct - a.pct;
                                 })
@@ -69,7 +69,7 @@ class WidgetSNClicksByBrowser extends React.Component {
     }
 
     renderCardHeader() {
-        return <div className="single-num-title">Clicks By Browser (Today)</div>;
+        return <div className="single-num-title">Clicks By OS (Today)</div>;
     }
 
     renderCardBody() {
@@ -78,7 +78,7 @@ class WidgetSNClicksByBrowser extends React.Component {
 
     render() {
         return (
-            <DashboardCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetSNClicksByBrowser">
+            <DashboardCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetSNClicksByOS">
                 {this.renderCardHeader()}
                 {this.renderCardBody()}
             </DashboardCard>
@@ -89,46 +89,46 @@ class WidgetSNClicksByBrowser extends React.Component {
     // ########################################################################################
     // ########################################################################################
 
-    createBrowserCounts(user_agent_table) {
+    createOSCounts(user_agent_table) {
         // Print out all user_agent strings for trouble-shooting
         console.log("All user_agent strings:");
         user_agent_table.forEach(row => {
             // console.log(`${row.count}: ${row.user_agent}`);
         });
 
-        let browserCountObj = {};
+        let OSCountObj = {};
 
         user_agent_table.forEach(element => {
             // this function is an external module which we import, see top of file
-            let browserName = determineBrowserFromUserAuth(element["user_agent"]);
+            let osName = determineOSFromUserAuth(element["user_agent"]);
 
-            // Accumulate a count of each browser
-            browserCountObj[browserName] = (browserName in browserCountObj ? browserCountObj[browserName] : 0) + parseInt(element["count"]);
+            // Accumulate a count of each OS
+            OSCountObj[osName] = (osName in OSCountObj ? OSCountObj[osName] : 0) + parseInt(element["count"]);
         });
 
-        // Get total of all browser counts
-        let browserTotal = Object.values(browserCountObj).reduce((total, num) => {
+        // Get total of all OS counts
+        let OSTotal = Object.values(OSCountObj).reduce((total, num) => {
             return total + num;
         });
 
-        // Construct Browser object with percentages
-        for (const key of Object.keys(browserCountObj)) {
-            browserCountObj[key] = {
-                count: browserCountObj[key],
-                pct: (browserCountObj[key] / browserTotal) * 100,
+        // Construct OS object with percentages
+        for (const key of Object.keys(OSCountObj)) {
+            OSCountObj[key] = {
+                count: OSCountObj[key],
+                pct: (OSCountObj[key] / OSTotal) * 100,
                 name: key
             };
         }
 
-        return browserCountObj;
+        return OSCountObj;
     }
 
     // end of class
 }
 
 // Force the caller to include the proper attributes
-WidgetSNClicksByBrowser.propTypes = {
+WidgetSNClicksByOS.propTypes = {
     instance: PropTypes.string.isRequired
 };
 
-export default WidgetSNClicksByBrowser;
+export default WidgetSNClicksByOS;
