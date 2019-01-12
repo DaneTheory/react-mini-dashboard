@@ -26,26 +26,6 @@ class App extends React.Component {
         console.log("state images", this.state.images);
     };
 
-    renderCardBodyTable() {
-        let imageBody = [{ name: "Jane", age: "40" }, { name: "Bob", age: "41" }, { name: "Freddy", age: "42" }];
-
-        var listOfNames = imageBody.map(function(personObj, index) {
-            return (
-                <tr key={index}>
-                    <td>{personObj["name"]}</td>
-                    <td>{personObj["age"]}</td>
-                </tr>
-            );
-        });
-        return (
-            <div>
-                <table>
-                    <tbody>{listOfNames}</tbody>
-                </table>
-            </div>
-        );
-    }
-
     render() {
         // let instance = "jnjsandbox.service-now.com";
         let sn_instance = "jnjprodworker.service-now.com";
@@ -54,7 +34,7 @@ class App extends React.Component {
         return (
             <div>
                 <div className="title_container">
-                    <div className="title">Iris Dashboard</div>
+                    <div className="title">Iris Dashboard ({process.env.NODE_ENV})</div>
                 </div>
 
                 <CardGrid rows="7" columns="6">
