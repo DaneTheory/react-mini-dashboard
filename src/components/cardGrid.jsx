@@ -9,7 +9,7 @@ const CardGrid = function(props) {
     };
     return (
         <div className="dataCard_container" style={style}>
-            {props.children};
+            {props.children}
         </div>
     );
 };

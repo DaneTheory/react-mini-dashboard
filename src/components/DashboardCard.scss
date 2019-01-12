@@ -1,6 +1,7 @@
 // Global variables
 
 $color-cardbackground: #41ca1762;
+$color-default: #bbb3b3;
 $color-cardfont: #023a0b;
 $color-title: #bbb3b3;
 $color-pageBackground: #464242;
@@ -26,16 +27,35 @@ body {
     font-family: "Stint Ultra Condensed", "Courier New";
     background-color: rgba($color: $color-pageBackground, $alpha: 1);
     top: 0px;
+    color: $color-default;
+}
+
+.page_container {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    grid-template-rows: 60px 1fr;
+    width: 100%;
+    grid-gap: 0;
 }
 
 .title_container {
+    grid-area: 1 / 1 / span 1 / span 2;
     padding: 1rem 1rem 1rem 2rem;
 
     .title {
         font-family: "Lato", "Courier New";
-        font-size: 4vw;
+        font-size: 3vw;
         color: $color-title;
     }
+}
+
+.leftNav_container {
+    grid-area: 2 / 1 / span 1 / span 2;
+    padding: 10px;
+}
+
+.centerPanel_container {
+    grid-area: 2 / 2 / span 1 / span 1;
 }
 
 .dataCard_container {

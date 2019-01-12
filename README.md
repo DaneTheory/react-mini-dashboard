@@ -5,10 +5,11 @@
 1. Create a better UI for positioning the card
 1. Moved the backend API for BoldChat from Python/Flask to Node/Express
 1. Use OAuth to call ServiceNow (in API Proxy)
+1. Deployed both react-app and express api to RHEL server (both are served with Express)
+1. Cacheed the API requests (using express-cache-on-demand)
 
 ### Tasks To Do
 
-1. Cache the API requests
 1. Periodically update data
 1. Create a chart
 1. Create auto-scrolling widget for boldchat

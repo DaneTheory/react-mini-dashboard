@@ -1,7 +1,7 @@
 import React from "react";
 import "./DashboardCard.scss";
 
-// Create a widget class ----
+// Create a widget class --------
 class DashboardCard extends React.Component {
     constructor(props) {
         super(props);
