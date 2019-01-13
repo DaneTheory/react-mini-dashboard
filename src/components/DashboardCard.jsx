@@ -9,26 +9,26 @@ class DashboardCard extends React.Component {
         this.state = { widgetName: "firstwidget" };
     }
 
-    renderCardHeader() {
-        return <span>{this.props.widgetName}</span>;
-    }
-
-    renderCardBodyTable() {
-        return <div>{this.props.children}</div>;
-    }
-
     render() {
         let styles = {};
+        let cardBody_styles = {};
+        // If the caller passed in styles, use them
         if (this.props.position) {
             styles.gridArea = this.props.position;
         }
         if (this.props.color) {
             styles.backgroundColor = this.props.color;
         }
+        if (this.props.chart) {
+            // Override the display property if this contains a chart
+            cardBody_styles.display = "flex";
+        }
 
         return (
-            <div className={"dataCard item item--" + this.props.id} id={this.props.id} style={styles}>
-                <div className="cardBody">{this.renderCardBodyTable()}</div>
+            <div className={"dataCard item"} id={this.props.id} style={styles}>
+                <div className="cardBody" style={cardBody_styles}>
+                    {this.props.children}
+                </div>
             </div>
         );
     }

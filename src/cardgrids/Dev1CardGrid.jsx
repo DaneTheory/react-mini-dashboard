@@ -1,5 +1,6 @@
 import React from "react";
-import WidgetSNINCP1P2Count from "../widgets/WidgetSNINCP1P2Count";
+import WidgetSNBarChart from "../widgets/WidgetSNBarChart";
+
 import CardGrid from "../components/cardGrid";
 
 class Dev1CardGrid extends React.Component {
@@ -14,7 +15,7 @@ class Dev1CardGrid extends React.Component {
         return (
             <div>
                 <CardGrid rows="7" columns="6">
-                    <WidgetSNINCP1P2Count color="#3a5174" position="1 / 3 / span 1 / span 2" id="2" instance={this.props.sn_instance} />
+                    <WidgetSNBarChart color="#ddd" position="span 5 / span 5" instance={this.props.sn_instance} />
                 </CardGrid>
             </div>
         );

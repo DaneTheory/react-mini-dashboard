@@ -10,6 +10,7 @@ import WidgetSNClicksByBrowser from "../widgets/WidgetSNClicksByBrowser";
 import WidgetBoldChatActiveCount from "../widgets/WidgetBoldChatActiveCount";
 import WidgetBoldChatInactiveCount from "../widgets/WidgetBoldChatInactiveCount";
 import WidgetLeankitCount from "../widgets/WidgetLeankitCount";
+import WidgetSNBarChart from "../widgets/WidgetSNBarChart";
 
 import CardGrid from "../components/cardGrid";
 
@@ -32,6 +33,7 @@ class AllCardGrid extends React.Component {
                     <WidgetLeankitCount color="mediumpurple" position="span 1/span 1" instance="jnj.leankit.com" />
                     <WidgetBoldChatActiveCount color="IndianRed" position="span 1/span 1" instance={this.props.boldchat_instance} />
                     <WidgetBoldChatInactiveCount color="IndianRed" position="span 1/span 1" instance={this.props.boldchat_instance} />
+                    <WidgetSNBarChart color="#ddd" position="span 3 / span 4" instance={this.props.sn_instance} />
                 </CardGrid>
             </div>
         );
