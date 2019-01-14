@@ -9,6 +9,7 @@
 1. Cacheed the API requests (using express-cache-on-demand)
 1. Create a chart with dummy data
 1. Use mixin's within Sass
+1. In ChartJS, chart is honoring grid cell size, so it shrinks and expands itself, unsure about !important override
 
 ### Tasks To Do
 
