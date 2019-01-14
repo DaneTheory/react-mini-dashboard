@@ -1,5 +1,5 @@
 import React from "react";
-import DashboardCard from "../components/DashboardCard";
+import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
 import PropTypes from "prop-types";
 import { determineBrowserFromUserAuth } from "../utilities/determineBrowserFromUserAuth";
@@ -78,10 +78,10 @@ class WidgetSNClicksByBrowser extends React.Component {
 
     render() {
         return (
-            <DashboardCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetSNClicksByBrowser">
+            <DashboardDataCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetSNClicksByBrowser">
                 {this.renderCardHeader()}
                 {this.renderCardBody()}
-            </DashboardCard>
+            </DashboardDataCard>
         );
     }
 

@@ -1,5 +1,5 @@
 import React from "react";
-import DashboardCard from "../components/DashboardCard";
+import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
 import PropTypes from "prop-types";
 import { determineOSFromUserAuth } from "../utilities/determineOSFromUserAuth";
@@ -78,10 +78,10 @@ class WidgetSNClicksByOS extends React.Component {
 
     render() {
         return (
-            <DashboardCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetSNClicksByOS">
+            <DashboardDataCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetSNClicksByOS">
                 {this.renderCardHeader()}
                 {this.renderCardBody()}
-            </DashboardCard>
+            </DashboardDataCard>
         );
     }
 

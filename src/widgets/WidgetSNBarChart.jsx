@@ -1,5 +1,5 @@
 import React from "react";
-import DashboardCard from "../components/DashboardCard";
+import DashboardChartCard from "../components/DashboardChartCard";
 import apiProxy from "../api/apiProxy";
 import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
@@ -48,15 +48,14 @@ class WidgetUniqueLoginsToday extends React.Component {
 
     render() {
         return (
-            <DashboardCard
+            <DashboardChartCard
                 id={this.props.id}
                 position={this.props.position}
                 color={this.props.color}
-                chart={true}
                 widgetName="WidgetUniqueLoginsToday"
             >
                 {this.renderCardBody()}
-            </DashboardCard>
+            </DashboardChartCard>
         );
     }
 }

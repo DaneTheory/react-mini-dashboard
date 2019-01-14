@@ -1,5 +1,5 @@
 import React from "react";
-import DashboardCard from "../components/DashboardCard";
+import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
 import PropTypes from "prop-types";
 
@@ -34,9 +34,9 @@ class WidgetSNCurrentUsers extends React.Component {
 
     render() {
         return (
-            <DashboardCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetSNCurrentUsers">
+            <DashboardDataCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetSNCurrentUsers">
                 {this.renderCardBody()}
-            </DashboardCard>
+            </DashboardDataCard>
         );
     }
 }

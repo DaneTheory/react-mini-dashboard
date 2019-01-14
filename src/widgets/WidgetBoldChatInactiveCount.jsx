@@ -1,5 +1,5 @@
 import React from "react";
-import DashboardCard from "../components/DashboardCard";
+import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
 import PropTypes from "prop-types";
 // import moment from "moment";
@@ -71,7 +71,7 @@ class WidgetBoldChatInactiveCount extends React.Component {
 
     render() {
         return (
-            <DashboardCard
+            <DashboardDataCard
                 id={this.props.id}
                 position={this.props.position}
                 color={this.props.color}
@@ -79,7 +79,7 @@ class WidgetBoldChatInactiveCount extends React.Component {
             >
                 {this.renderCardHeader()}
                 {this.renderCardBody()}
-            </DashboardCard>
+            </DashboardDataCard>
         );
     }
 

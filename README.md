@@ -7,11 +7,14 @@
 1. Use OAuth to call ServiceNow (in API Proxy)
 1. Deployed both react-app and express api to RHEL server (both are served with Express)
 1. Cacheed the API requests (using express-cache-on-demand)
+1. Create a chart with dummy data
+1. Use mixin's within Sass
 
 ### Tasks To Do
 
 1. Periodically update data
-1. Create a chart
+1. Create a chart with real data
+1. Recreate all the important charts
 1. Create auto-scrolling widget for boldchat
 1. Test in Edge, Safari, and Firefox
 

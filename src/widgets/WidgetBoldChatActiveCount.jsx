@@ -1,5 +1,5 @@
 import React from "react";
-import DashboardCard from "../components/DashboardCard";
+import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
 import PropTypes from "prop-types";
 
@@ -33,7 +33,7 @@ class WidgetBoldChatActiveCount extends React.Component {
 
     render() {
         return (
-            <DashboardCard
+            <DashboardDataCard
                 id={this.props.id}
                 position={this.props.position}
                 color={this.props.color}
@@ -41,7 +41,7 @@ class WidgetBoldChatActiveCount extends React.Component {
             >
                 {this.renderCardHeader()}
                 {this.renderCardBody()}
-            </DashboardCard>
+            </DashboardDataCard>
         );
     }
 

@@ -24,7 +24,7 @@ class AllCardGrid extends React.Component {
         return (
             <div>
                 <CardGrid rows="7" columns="6">
-                    <WidgetSNINCP1P2Count color="#3a5174" position="span 1 / span 2" instance={this.props.sn_instance} />
+                    <WidgetSNINCP1P2Count position="span 1 / span 2" instance={this.props.sn_instance} />
                     <WidgetSNUniqueLoginsToday color="slategrey" instance={this.props.sn_instance} />
                     <WidgetSNCurrentUsers color="darkgreen" instance={this.props.sn_instance} />
                     <WidgetSNNewIncidentToday color="orangered" position="span 1/span 1" instance={this.props.sn_instance} />
