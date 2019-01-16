@@ -75,7 +75,7 @@ body {
     grid-gap: 1rem;
     margin: 0 1.5rem 0 1.5rem;
 
-    @mixin all_dashboard_cards {
+    .dataCard {
         background-color: $color-cardbackground;
         color: $color-cardfont;
         border-radius: 0.2rem;
@@ -101,10 +101,8 @@ body {
             min-height: 100%;
             min-width: 100%;
 
-            // For widgets with data, I want display=inline, for widgets with chart.js, I want display=flex (so I can force div's to occupy 100% of their parent's width/height)
+            // For widgets with text, I want display=inline
             display: inline;
-            // display: flex;
-            // flex-direction: column;
 
             table tr td {
                 border: 1px solid rgba(0, 0, 0, 0.356);
@@ -125,25 +123,25 @@ body {
         }
     }
 
-    // This is the grid item (for text)
-    .dataCard {
-        @include all_dashboard_cards;
-        background-color: red;
-    }
-
     // This is the grid item (for charts)
     .chartCard {
         background-color: $color-cardbackground;
         border-radius: 0.2rem;
-        padding: 0.5rem;
         width: 100%;
         height: 100%;
+        // Don't add padding here, add it to the canvas
 
         canvas {
-            // Without !important, grid's inline element width/height seems to override us, and then shrinking the screen doesn't shrink the chart
+            // Spacing around the canvas/chart
+            padding: 1.5rem;
+
+            // There are way to make the chart.js responsive
+            // PreReq: The chart.js needs to have option:responive on it.  Probably also maintainAspectRatio:false, then there are two solutions
+            // 1) The div containing this canvas needs to be a *direct* child of the grid item.  You stick an extra <div> in there, it all falls apart (though solution #2 would still work)
+            // 2) The canvas needs to have width/height as 100% !important.  This forces it's known size upwards to the divs
+            // NOTE: I prefer avoiding !important, so opting for solution #1, but leaving these two lines here just in case of emergency.
             // width: 100% !important;
             // height: 100% !important;
-            padding: 1.5vw;
         }
     }
 }

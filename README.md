@@ -10,6 +10,8 @@
 1. Create a chart with dummy data
 1. Use mixin's within Sass
 1. In ChartJS, chart is honoring grid cell size, so it shrinks and expands itself, unsure about !important override
+1. Solved !important override. That indeed is one solution, the other is that the div for the canvas need to be a direct child of the grid element/div. Otherwise, the intermediary div won't stretch to be 100% of height
+1. Tested in Chrome, Safari, Firefox, and Edge. They all work. IE11 doesnt
 
 ### Tasks To Do
 
