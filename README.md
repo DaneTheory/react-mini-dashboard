@@ -17,6 +17,7 @@
 
 1. Periodically update data
 1. Create a chart with real data
+1. Get rid of PropTypes because that doesn't exist in Built website
 1. Recreate all the important charts
 1. Create auto-scrolling widget for boldchat
 1. Test in Edge, Safari, and Firefox

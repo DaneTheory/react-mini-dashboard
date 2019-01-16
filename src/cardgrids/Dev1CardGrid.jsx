@@ -14,8 +14,8 @@ class Dev1CardGrid extends React.Component {
     render() {
         return (
             <div>
-                <CardGrid rows="7" columns="6">
-                    <WidgetSNBarChart color="#ddd" position="span 5 / span 5" instance={this.props.sn_instance} />
+                <CardGrid rows="10" columns="12">
+                    <WidgetSNBarChart color="#ddd" position="span 3 / span 4" instance={this.props.sn_instance} />
                 </CardGrid>
             </div>
         );
