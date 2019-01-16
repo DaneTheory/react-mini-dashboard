@@ -104,6 +104,17 @@ body {
             // For widgets with text, I want display=inline
             display: inline;
 
+            table.scrollableTable tbody {
+                color: gray;
+                display: block;
+                overflow: auto;
+                height: 100%;
+            }
+            table.scrollableTable thead {
+                color: lightslategrey;
+                display: block;
+            }
+
             table tr td {
                 border: 1px solid rgba(0, 0, 0, 0.356);
                 padding: 0.1rem 0.1rem;
@@ -119,6 +130,28 @@ body {
                 // line-height: 4rem;
                 text-align: center;
                 // line-height: normal;ß
+            }
+        }
+
+        // Scrolling Table Widget
+        .fullCardContainer {
+            min-width: 100%;
+        }
+        .headerTable {
+            min-width: 100%;
+        }
+        .bodyTableContainerDiv {
+            display: block;
+            overflow-x: auto;
+            overflow-y: auto;
+            // height gets set by javascript since we need to calculate in real-time
+            table.scrollableTable {
+                color: blue;
+                min-width: 100%;
+            }
+            table tbody {
+                color: gray;
+                border-collapse: collapse;
             }
         }
     }

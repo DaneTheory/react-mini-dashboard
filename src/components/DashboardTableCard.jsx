@@ -2,7 +2,7 @@ import React from "react";
 import "./DashboardCard.scss";
 
 // Create a widget class ---------
-class DashboardDataCard extends React.Component {
+class DashboardTableCard extends React.Component {
     constructor(props) {
         super(props);
 
@@ -22,12 +22,10 @@ class DashboardDataCard extends React.Component {
 
         return (
             <div className={"dataCard item"} id={this.props.id} style={styles}>
-                <div className="cardBody" style={cardBody_styles}>
-                    {this.props.children}
-                </div>
+                {this.props.children}
             </div>
         );
     }
 }
 
-export default DashboardDataCard;
+export default DashboardTableCard;
