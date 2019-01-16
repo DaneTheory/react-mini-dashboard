@@ -120,28 +120,30 @@ body {
                 font-size: 3.8vw;
                 // line-height: 4rem;
                 text-align: center;
-                // line-height: normal;
+                // line-height: normal;ß
             }
         }
     }
 
+    // This is the grid item (for text)
     .dataCard {
         @include all_dashboard_cards;
         background-color: red;
     }
 
+    // This is the grid item (for charts)
     .chartCard {
-        @include all_dashboard_cards;
+        background-color: $color-cardbackground;
+        border-radius: 0.2rem;
+        padding: 0.5rem;
+        width: 100%;
+        height: 100%;
 
-        // Override one property from the mixin
-        .cardBody {
-            canvas {
-                // Without !important, grid's inline element width/height seems to override us, and then shrinking the screen doesn't shrink the chart
-                width: 100% !important;
-                height: 100% !important;
-                padding: 1.5vw;
-            }
-            display: flex;
+        canvas {
+            // Without !important, grid's inline element width/height seems to override us, and then shrinking the screen doesn't shrink the chart
+            // width: 100% !important;
+            // height: 100% !important;
+            padding: 1.5vw;
         }
     }
 }

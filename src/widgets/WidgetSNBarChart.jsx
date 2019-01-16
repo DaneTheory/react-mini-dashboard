@@ -39,11 +39,7 @@ class WidgetUniqueLoginsToday extends React.Component {
             ]
         };
 
-        return (
-            // <div className="canvas-container">
-            <Bar className="chart-itself" data={data} options={{ responive: true, maintainAspectRatio: false }} />
-            // </div>
-        );
+        return <Bar className="chart-itself" data={data} options={{ responive: true, maintainAspectRatio: false }} />;
     }
 
     render() {

@@ -11,7 +11,6 @@ class DashboardChartCard extends React.Component {
 
     render() {
         let styles = {};
-        let cardBody_styles = {};
         // If the caller passed in styles, use them
         if (this.props.position) {
             styles.gridArea = this.props.position;
@@ -22,9 +21,7 @@ class DashboardChartCard extends React.Component {
 
         return (
             <div className={"chartCard item"} id={this.props.id} style={styles}>
-                <div className="cardBody" style={cardBody_styles}>
-                    {this.props.children}
-                </div>
+                {this.props.children}
             </div>
         );
     }
