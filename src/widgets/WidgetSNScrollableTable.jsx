@@ -58,10 +58,14 @@ class WidgetSNScrollableTable extends React.Component {
         scrollableTable.initScroll("#" + this.state.scrollableDivIDSelector, 15);
 
         // Listen for Window resize, and when that happens, re-compute the size of the scrollable div
-        window.addEventListener("resize", function() {
-            console.log("Window resized");
-            scrollableTable.setTableSizeViaJquery("#" + this.state.scrollableDivIDSelector);
-        });
+        // Need to create an IIFE so that closure remembers value of the name of our div
+        (function(divSelector) {
+            window.addEventListener("resize", function() {
+                console.log("Window resized");
+                console.log(divSelector);
+                scrollableTable.setTableSizeViaJquery("#" + divSelector);
+            });
+        })(this.state.scrollableDivIDSelector);
     };
 
     renderTable() {
