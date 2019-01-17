@@ -15,7 +15,7 @@ export function setTableSizeViaJquery(scrollingTableID) {
     let headerTable = gridItem.find(".headerTable");
     let bodyTableContainerDiv = gridItem.find(".bodyTableContainerDiv");
     let desiredTbodyHeight = gridItem.height() - headerTable.height() - 5;
-    console.log("Desired height: ", desiredTbodyHeight);
+    // console.log("New desired height for widget: ", desiredTbodyHeight);
     bodyTableContainerDiv.height(desiredTbodyHeight);
 }
 //  ----------------------------------------------------------------------------

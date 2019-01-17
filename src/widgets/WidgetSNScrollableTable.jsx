@@ -61,8 +61,7 @@ class WidgetSNScrollableTable extends React.Component {
         // Need to create an IIFE so that closure remembers value of the name of our div
         (function(divSelector) {
             window.addEventListener("resize", function() {
-                console.log("Window resized");
-                console.log(divSelector);
+                // console.log("Window resized");
                 scrollableTable.setTableSizeViaJquery("#" + divSelector);
             });
         })(this.state.scrollableDivIDSelector);
