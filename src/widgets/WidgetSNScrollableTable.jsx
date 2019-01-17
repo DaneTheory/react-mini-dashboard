@@ -1,6 +1,8 @@
 import React from "react";
 import $ from "jquery";
 import DashboardTableCard from "../components/DashboardTableCard";
+
+import * as scrollableTable from "../utilities/autoScrollTableUtilities";
 // import apiProxy from "../api/apiProxy";
 
 // Create a class component
@@ -34,78 +36,31 @@ class WidgetSNScrollableTable extends React.Component {
             { name: "Bam-Bam4", text: "Text 06" },
             { name: "The Dinosaur4", text: "Text 07" }
         ];
-        this.state = { widgetName: "firstwidget", count: [], instance: props.instance, textTable: textTable };
+        this.state = {
+            widgetName: "firstwidget",
+            count: [],
+            instance: props.instance,
+            textTable: textTable,
+            scrollableDivIDSelector: "chadTextTable01"
+        };
     }
 
     componentDidMount = () => {
         // Load the data from the API (notice we're using the await keyword from the async framework)
 
-        function setScrollableTableSize(scrollingTableID) {
-            let gridItem = $(scrollingTableID)
-                .parent()
-                .parent()
-                .parent();
-            let headerTable = gridItem.find(".headerTable");
-            let bodyTableContainerDiv = gridItem.find(".bodyTableContainerDiv");
-            let desiredTbodyHeight = gridItem.height() - headerTable.height() - 5;
-            console.log("Desired height: ", desiredTbodyHeight);
-            bodyTableContainerDiv.height(desiredTbodyHeight);
-        }
-
         // Set height initially
-        setScrollableTableSize("#chadTextTable01");
+        scrollableTable.setTableSizeViaJquery("#" + this.state.scrollableDivIDSelector);
 
-        // Set scroll bar to top
-        $("#chadTextTable01")
-            .parent()
-            .scrollTop(0);
+        // Set scroll bar to top (React seems to remember the scroll position, so we need to set it to the top)
+        scrollableTable.scrollToTop("#" + this.state.scrollableDivIDSelector);
 
-        // Start scroll animation
-        // arg1: object os properties to animate
-        // arg2: duration (millseconds ?)
-        // arg3: easing function (e.g. linear, swing)
-        // arg4: callback when complete
-        // 473 (#chadTextTable01) - 186 (.bodyTableContainerDiv) = 287
+        // Start the window scroll
+        scrollableTable.initScroll("#" + this.state.scrollableDivIDSelector, 15);
 
-        // Calculate how many pixel are outside the view, and can be scrolled
-        console.log($("#chadTextTable01").height());
-        console.log(
-            $("#chadTextTable01")
-                .parent()
-                .height()
-        );
-
-        let scrollDistancePixles =
-            $("#chadTextTable01").height() -
-            $("#chadTextTable01")
-                .parent()
-                .height();
-        console.log(scrollDistancePixles);
-
-        $("#chadTextTable01")
-            .parent()
-            .animate(
-                {
-                    scrollTop: scrollDistancePixles
-                },
-                10000,
-                "linear",
-                function() {
-                    console.log("Down Scroll Done");
-
-                    $("#chadTextTable01")
-                        .parent()
-                        .stop()
-                        .animate({ scrollTop: 0 }, 10000, "linear", function() {
-                            console.log("Back at the top");
-                        });
-                }
-            );
-
-        // Listen for Window resizes
+        // Listen for Window resize, and when that happens, re-compute the size of the scrollable div
         window.addEventListener("resize", function() {
             console.log("Window resized");
-            setScrollableTableSize("#chadTextTable01");
+            scrollableTable.setTableSizeViaJquery("#" + this.state.scrollableDivIDSelector);
         });
     };
 
@@ -124,7 +79,7 @@ class WidgetSNScrollableTable extends React.Component {
 
                 {/* Table that contains "Body" */}
                 <div className="bodyTableContainerDiv">
-                    <table id="chadTextTable01" className="scrollableTable">
+                    <table id={this.state.scrollableDivIDSelector} className="scrollableTable">
                         <tbody>
                             {Object.values(this.state.textTable)
                                 .sort((a, b) => {

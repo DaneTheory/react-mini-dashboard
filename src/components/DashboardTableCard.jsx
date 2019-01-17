@@ -11,7 +11,6 @@ class DashboardTableCard extends React.Component {
 
     render() {
         let styles = {};
-        let cardBody_styles = {};
         // If the caller passed in styles, use them
         if (this.props.position) {
             styles.gridArea = this.props.position;
