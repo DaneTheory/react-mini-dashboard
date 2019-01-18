@@ -15,10 +15,11 @@ class WidgetLeankitCardList extends React.Component {
         // Load the data from the API (notice we're using the await keyword from the async framework)
         let groupby_field = "user_agent";
         apiProxy
-            .get(`/leankit-api/${this.state.instance}/io/card?board=412731036&limit=600&lane_class_types=active`, {
+            .get(`/leankit-api/${this.state.instance}/io/card?board=412731036&limit=6&lane_class_types=active`, {
                 params: {}
             })
             .then(response => {
+                console.log(response.data.cards);
                 // Save into our component state
                 this.setState({ leankit_cards: response.data.cards });
             });
@@ -36,7 +37,9 @@ class WidgetLeankitCardList extends React.Component {
                                 <tr key={card["id"]}>
                                     <td>{index}</td>
                                     <td>{card["title"]}</td>
-                                    <td>{card["updatedOn"]}%</td>
+                                    {/* <td>{card["updatedOn"]}%</td> */}
+                                    <td>{card.lane.title}</td>
+                                    <td>{card.lane.id}</td>
                                     {/* <td>{card["count"]}</td> */}
                                 </tr>
                             ))}
