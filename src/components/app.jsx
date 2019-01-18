@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Link } from "react-router-dom";
 import Demo1CardGrid from "../cardgrids/Demo1CardGrid";
 import AllCardGrid from "../cardgrids/AllCardGrid";
 import Dev1CardGrid from "../cardgrids/Dev1CardGrid";
+import LeankitDiscoveryCardGrid from "../cardgrids/LeankitDiscoveryCardGrid";
 
 // let sn_instance = "jnjprodworker.service-now.com";
 // let boldchat_instance = "api.boldchat.com";
@@ -16,6 +17,7 @@ class App extends React.Component {
     state = {
         pageTitle: "Original Title",
         sn_instance: "jnjprodworker.service-now.com",
+        leankit_instance: "jnj.leankit.com",
         // sn_instance: "jnjsandbox.service-now.com",
         boldchat_instance: "api.boldchat.com"
     };
@@ -44,6 +46,7 @@ class App extends React.Component {
                                     <Link to="/everything-dashboard">Everything Dashboard</Link>
                                     <Link to="/demo1-dashboard">Demo1 Dashboard</Link>
                                     <Link to="/dev1-dashboard">Dev1 Dashboard</Link>
+                                    <Link to="/leankit-discovery-dashboard">Leankit Discovery Dashboard</Link>
                                 </div>
                             </div>
                         </div>
@@ -77,6 +80,17 @@ class App extends React.Component {
                                     <Dev1CardGrid
                                         sn_instance={this.state.sn_instance}
                                         boldchat_instance={this.state.boldchat_instance}
+                                        changeParentPageTitle={this.changePageTitle.bind(this)}
+                                    />
+                                )}
+                            />
+                            <Route
+                                path="/leankit-discovery-dashboard"
+                                exact
+                                render={() => (
+                                    <LeankitDiscoveryCardGrid
+                                        sn_instance={this.state.sn_instance}
+                                        leankit_instance={this.state.leankit_instance}
                                         changeParentPageTitle={this.changePageTitle.bind(this)}
                                     />
                                 )}
