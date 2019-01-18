@@ -15,7 +15,9 @@
 
 ### Tasks To Do
 
+1. In API, api.boldchat.com is hard-coded, yikes !
 1. Understand inheritance vs specificity. Inherited property (color) is getting overridden by \* universal selector
+1. Convert Leankit API from Leankit NodeJS agent to actual API calls via network ?
 1. Periodically update data
 1. Create a chart with real data
 1. Get rid of PropTypes because that doesn't exist in Built website

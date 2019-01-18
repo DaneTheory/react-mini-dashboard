@@ -13,7 +13,7 @@ class WidgetLeankitCount extends React.Component {
     componentDidMount = () => {
         // Load the data from the API (notice we're using the await keyword from the async framework)
         apiProxy
-            .get(`/leankit/${this.state.instance}/board/372745411`, {
+            .get(`/leankit-npm/${this.state.instance}/board/372745411`, {
                 params: {}
             })
             .then(response => {
