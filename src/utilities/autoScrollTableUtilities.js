@@ -24,8 +24,12 @@ export function scrollToTop(uniqueCssSelector) {
         .scrollTop(0);
 }
 //  ----------------------------------------------------------------------------
+// It's very difficult (impossible ?) to set the height of the div that defines the view into our scrolling
+// So, committing a little sin here by reaching into the DOM, measuring a few surrounding elments, and then
+// explicitly setting the height of the scrollable div
+// This gets called once when the React component mounts, and again whenever the browser window resizes
 export function setTableSizeViaJquery(scrollingTableID) {
-    // Find the gridItem for ourselves (see the expected structure described above)
+    // Find the CSS3 grid Item for ourselves (see the expected structure described above)
     let gridItem = $(scrollingTableID)
         .parent()
         .parent()

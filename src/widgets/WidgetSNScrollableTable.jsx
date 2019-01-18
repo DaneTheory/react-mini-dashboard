@@ -1,6 +1,6 @@
 import React from "react";
 import DashboardTableCard from "../components/DashboardTableCard";
-
+// Import utility functions for constructing/scrolling our scrollable table
 import * as scrollableTable from "../utilities/autoScrollTableUtilities";
 // import apiProxy from "../api/apiProxy";
 
@@ -54,7 +54,7 @@ class WidgetSNScrollableTable extends React.Component {
         scrollableTable.scrollToTop("#" + this.state.scrollableDivIDSelector);
 
         // Start the window scroll
-        scrollableTable.initScroll("#" + this.state.scrollableDivIDSelector, 7);
+        scrollableTable.initScroll("#" + this.state.scrollableDivIDSelector, 25);
 
         // Listen for Window resize, and when that happens, re-compute the size of the scrollable div
         // Need to create an IIFE so that closure remembers value of the name of our div
