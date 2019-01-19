@@ -12,7 +12,7 @@ class WidgetLeankitCardList extends React.Component {
     }
 
     componentDidMount = async () => {
-        let leankit_cards = await this.getLeankitCards();
+        let leankit_cards = await this.getLeankitCards("412731036");
         this.setState({ leankit_cards: leankit_cards });
     };
 
@@ -26,20 +26,23 @@ class WidgetLeankitCardList extends React.Component {
                 <div style={{ fontSize: "1.8vw" }}>
                     <table>
                         <tbody>
-                            {this.state.leankit_cards.map((card, index) => (
-                                <tr key={card["id"]}>
-                                    <td>{index}</td>
-                                    <td>{card["title"]}</td>
-                                    {/* <td>{card["updatedOn"]}%</td> */}
-                                    <td>{(card.u_lanes[0] && card.u_lanes[0].name) || "No parent"}</td>
-                                    <td>{(card.u_lanes[1] && card.u_lanes[1].name) || "No parent"}</td>
-                                    <td className={classNames({ tdRed: true })}>
-                                        {(card.u_lanes[2] && card.u_lanes[2].name) || "No parent"}
-                                    </td>
-                                    {/* <td>{("u_lanes" in card && card.u_lanes[0].name) || "No parent"}</td> */}
-                                    {/* <td>{card["count"]}</td> */}
-                                </tr>
-                            ))}
+                            {this.state.leankit_cards.map(function(card, index) {
+                                let lane0 = (card.u_lanes[0] && card.u_lanes[0].name) || "No parent";
+                                let lane1 = (card.u_lanes[1] && card.u_lanes[1].name) || "No parent";
+                                let lane2 = (card.u_lanes[2] && card.u_lanes[2].name) || "No parent";
+                                return (
+                                    <tr key={card["id"]}>
+                                        <td>{index}</td>
+                                        <td>{card["title"]}</td>
+                                        {/* <td>{card["updatedOn"]}%</td> */}
+                                        <td className={classNames({ tdRed: lane0 === "No parent" })}>{lane0}</td>
+                                        <td className={classNames({ tdRed: lane1 === "No parent" })}>{lane1}</td>
+                                        <td className={classNames({ tdRed: lane2 === "No parent" })}>{lane2}</td>
+                                        {/* <td>{("u_lanes" in card && card.u_lanes[0].name) || "No parent"}</td> */}
+                                        {/* <td>{card["count"]}</td> */}
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                 </div>
@@ -71,14 +74,14 @@ class WidgetLeankitCardList extends React.Component {
 
     // ########################################################################################
 
-    getLeankitCards = async function() {
+    getLeankitCards = async function(boardId) {
         let startTime = new Date();
 
         // Load the data from the API (notice we're using the await keyword from the async framework)
         let response_cards_promise = apiProxy.get(
-            `/leankit-api/${this.state.instance}/io/card?board=412731036&limit=60&lane_class_types=active`
+            `/leankit-api/${this.state.instance}/io/card?board=${boardId}&limit=600&lane_class_types=active`
         );
-        let response_lanes_promise = apiProxy.get(`/leankit-api/${this.state.instance}/io/board/412731036`);
+        let response_lanes_promise = apiProxy.get(`/leankit-api/${this.state.instance}/io/board/${boardId}`);
         // Wait for both promises to finish
         let [response_cards, response_lanes] = [await response_cards_promise, await response_lanes_promise];
 
