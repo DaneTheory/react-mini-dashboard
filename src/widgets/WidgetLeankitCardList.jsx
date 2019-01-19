@@ -8,21 +8,51 @@ import { determineOSFromUserAuth } from "../utilities/determineOSFromUserAuth";
 class WidgetLeankitCardList extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { widgetName: "firstwidget", count: [], instance: props.instance, leankit_cards: [] };
+        this.state = { widgetName: "firstwidget", count: [], instance: props.instance, leankit_cards: [], leankit_lanes: [] };
     }
 
-    componentDidMount = () => {
+    componentDidMount = async () => {
+        let startTime = new Date();
+
         // Load the data from the API (notice we're using the await keyword from the async framework)
-        let groupby_field = "user_agent";
-        apiProxy
-            .get(`/leankit-api/${this.state.instance}/io/card?board=412731036&limit=6&lane_class_types=active`, {
-                params: {}
-            })
-            .then(response => {
-                console.log(response.data.cards);
-                // Save into our component state
-                this.setState({ leankit_cards: response.data.cards });
-            });
+        let response_cards = await apiProxy.get(
+            `/leankit-api/${this.state.instance}/io/card?board=412731036&limit=60&lane_class_types=active`
+        );
+
+        // Setup dummy entries for custom fields
+        response_cards.data.cards.map(card => {
+            card.u_lanes = [{}, {}, {}];
+        });
+
+        let response_lanes = await apiProxy.get(`/leankit-api/${this.state.instance}/io/board/412731036`);
+        console.log(response_cards.data.cards);
+        console.log(response_lanes.data.lanes);
+
+        // Save into our component state
+        this.setState({ leankit_cards: response_cards.data.cards });
+        this.setState({ leankit_lanes: response_lanes.data.lanes });
+
+        // Create an object of all lanes, indexed by lane Id
+        let lanesById = {};
+        response_lanes.data.lanes.map(lane => {
+            lanesById[lane.id] = lane;
+        });
+
+        // Card info
+        response_cards.data.cards.map(card => {
+            // Push the card's own lane
+            card.u_lanes[0] = lanesById[card.lane.id];
+            // Push the first parent
+            card.u_lanes[1] = lanesById[lanesById[card.u_lanes[0].id].parentLaneId];
+            // push the second parent
+            card.u_lanes[2] = lanesById[card.u_lanes[1].parentLaneId];
+        });
+        console.log(response_cards.data.cards);
+
+        let endTime = new Date();
+        console.log("Time: ", Math.round(endTime - startTime));
+
+        this.setState({ leankit_cards: response_cards.data.cards });
     };
 
     renderTable() {
@@ -30,7 +60,7 @@ class WidgetLeankitCardList extends React.Component {
             return <div className="single-num-value">No Clicks Today :(</div>;
         } else {
             return (
-                <div style={{ fontSize: "2.0vw" }}>
+                <div style={{ fontSize: "1.8vw" }}>
                     <table>
                         <tbody>
                             {this.state.leankit_cards.map((card, index) => (
@@ -38,8 +68,10 @@ class WidgetLeankitCardList extends React.Component {
                                     <td>{index}</td>
                                     <td>{card["title"]}</td>
                                     {/* <td>{card["updatedOn"]}%</td> */}
-                                    <td>{card.lane.title}</td>
-                                    <td>{card.lane.id}</td>
+                                    <td>{(card.u_lanes[0] && card.u_lanes[0].name) || "No parent"}</td>
+                                    <td>{(card.u_lanes[1] && card.u_lanes[1].name) || "No parent"}</td>
+                                    <td>{(card.u_lanes[2] && card.u_lanes[2].name) || "No parent"}</td>
+                                    {/* <td>{("u_lanes" in card && card.u_lanes[0].name) || "No parent"}</td> */}
                                     {/* <td>{card["count"]}</td> */}
                                 </tr>
                             ))}
