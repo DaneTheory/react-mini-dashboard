@@ -38,8 +38,6 @@ class WidgetLeankitCardList extends React.Component {
                                         <td className={classNames({ tdRed: lane0 === "No parent" })}>{lane0}</td>
                                         <td className={classNames({ tdRed: lane1 === "No parent" })}>{lane1}</td>
                                         <td className={classNames({ tdRed: lane2 === "No parent" })}>{lane2}</td>
-                                        {/* <td>{("u_lanes" in card && card.u_lanes[0].name) || "No parent"}</td> */}
-                                        {/* <td>{card["count"]}</td> */}
                                     </tr>
                                 );
                             })}
