@@ -115,6 +115,10 @@ body {
                 display: block;
             }
 
+            table tr td.tdRed {
+                color: blue;
+            }
+
             table tr td {
                 border: 1px solid rgba(0, 0, 0, 0.356);
                 padding: 0.1rem 0.1rem;
