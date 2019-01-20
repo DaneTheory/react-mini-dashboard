@@ -40,6 +40,16 @@ class WidgetLeankitCardList extends React.Component {
             return (
                 <div style={{ fontSize: "1.8vw" }}>
                     <table>
+                        <thead>
+                            <tr>
+                                <th width="3%" />
+                                <th width="13%">Owner</th>
+                                <th width="7%">Age</th>
+                                <th width="35%">Description</th>
+                                <th width="7%">Comment Age</th>
+                                <th width="36%">Most Recent Comment</th>
+                            </tr>
+                        </thead>
                         <tbody>
                             {this.state.leankit_cards
                                 .sort((a, b) => {
@@ -53,6 +63,8 @@ class WidgetLeankitCardList extends React.Component {
                                     let commentMostRecentText = "Waiting for Comment";
                                     let commentMostRecentAuthor = "Waiting for Comment";
                                     let commentMostRecent = { ageInDays: "Waiting for Comment" };
+                                    let inLane = { days: card.daysInLane };
+                                    inLane.className = inLane.days > 14 ? "redFont" : inLane.days > 11 ? "orangeFont" : "greenFont";
 
                                     if (card.comments && card.comments.length > 0 && card.comments[0].text) {
                                         commentMostRecentText = card.comments[0].text;
@@ -78,11 +90,15 @@ class WidgetLeankitCardList extends React.Component {
                                     // Now return a JSX statement for rendering
                                     return (
                                         <tr key={card["id"]}>
-                                            <td>{index + 1}</td>
+                                            <td align="center">{index + 1}</td>
                                             <td>{cardOwner}</td>
-                                            <td>{card.daysInLane} days</td>
+                                            <td align="center" className={classNames(inLane.className)}>
+                                                {inLane.days} days
+                                            </td>
                                             <td>{card["title"]}</td>
-                                            <td className={classNames(commentMostRecent.className)}>{commentMostRecent.ageInDays} days</td>
+                                            <td align="center" className={classNames(commentMostRecent.className)}>
+                                                {commentMostRecent.ageInDays} days
+                                            </td>
                                             <td>
                                                 <b>(({commentMostRecentAuthor}))</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {commentMostRecentText}
                                             </td>

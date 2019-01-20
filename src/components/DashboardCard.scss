@@ -1,10 +1,10 @@
 // Global variables
 
-$color-cardbackground: #41ca1762;
+$color-pageBackground: #333b50;
+$color-cardbackground: #2b2d3e;
 $color-default: #bbb3b3;
 $color-cardfont: #023a0b;
 $color-title: #bbb3b3;
-$color-pageBackground: #464242;
 
 // Set base properties of all components
 * {
@@ -31,7 +31,7 @@ body {
 
 .page_container {
     display: grid;
-    grid-template-columns: 20vw 1fr;
+    grid-template-columns: 12vw 1fr;
     grid-template-rows: 6vw 1fr;
     width: 100%;
     grid-gap: 0;
@@ -51,7 +51,7 @@ body {
 .leftNav_container {
     grid-area: 2 / 1 / span 1 / span 2;
     padding: 10px;
-    font-size: 2.5vw;
+    font-size: 1.3vw;
 
     .navTitle {
         display: block;
@@ -93,7 +93,7 @@ body {
             // keep the list bullets inside the div
             // list-style-position: inside;
             font-size: 1.4vw;
-            font-family: "Stint Ultra Condensed", "Courier New";
+            font-family: "Nunito", "Courier New";
             color: rgba($color: #eee, $alpha: 1);
             // Align content
             margin: auto;
@@ -124,22 +124,31 @@ body {
                 color: green;
             }
 
-            table tr td.tdRed {
-                color: blue;
-            }
-
-            table tr td {
-                border: 1px solid rgba(0, 0, 0, 0.356);
-                padding: 0.1rem 0.1rem;
-                // line-height: 0.6rem;
+            table {
+                border-collapse: collapse;
+                tr {
+                    td {
+                        border: 1px solid rgba(0, 0, 0, 0.356);
+                        padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+                        font-size: 0.7vw;
+                        // line-height: 0.6rem;
+                        &.tdRed {
+                            color: red;
+                        }
+                    }
+                    th {
+                        font-size: 0.8vw;
+                        font-weight: 800;
+                    }
+                }
             }
             .single-num-title {
-                font-size: 1.8vw;
+                font-size: 1.1vw;
                 // line-height: 2rem;
                 text-align: center;
             }
             .single-num-value {
-                font-size: 3.8vw;
+                font-size: 3.3vw;
                 // line-height: 4rem;
                 text-align: center;
                 // line-height: normal;ß

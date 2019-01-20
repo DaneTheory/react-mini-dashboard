@@ -27,7 +27,7 @@ class WidgetLeankitDiscoveryTotalCardCount extends React.Component {
             let card_count = demand_cards.length;
 
             // Return JSX containing the count
-            let fontColor = card_count > 40 ? "redFont" : card_count > 30 ? "orangeFont" : "greenFont";
+            let fontColor = card_count > 54 ? "redFont" : card_count > 50 ? "orangeFont" : "greenFont";
             return <div className={classNames("single-num-value", fontColor)}>{card_count}</div>;
         }
     }

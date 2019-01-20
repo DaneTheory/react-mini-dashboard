@@ -35,7 +35,7 @@ class LeankitDiscoveryCardGrid extends React.Component {
                         boardId="412731036"
                     />
                     <WidgetLeankitDiscoverySolutioningCardList
-                        position="3 / 1 / span 10 / span 10"
+                        position="3 / 1 / span 10 / span 8"
                         instance={this.props.leankit_instance}
                         boardId="412731036"
                     />

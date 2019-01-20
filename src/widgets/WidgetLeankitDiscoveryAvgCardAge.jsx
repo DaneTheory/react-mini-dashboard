@@ -39,7 +39,7 @@ class WidgetLeankitDiscoveryAvgCardAge extends React.Component {
             let avgCardAge = total / demand_cards.length;
 
             // Return JSX containing the count
-            let fontColor = avgCardAge > 40 ? "redFont" : avgCardAge > 30 ? "orangeFont" : "greenFont";
+            let fontColor = avgCardAge > 90 ? "redFont" : avgCardAge > 80 ? "orangeFont" : "greenFont";
             return <div className={classNames("single-num-value", fontColor)}>{avgCardAge.toFixed(2)}</div>;
         }
     }
