@@ -3,8 +3,10 @@
 $color-pageBackground: #333b50;
 $color-cardbackground: #2b2d3e;
 $color-default: #bbb3b3;
-$color-cardfont: #023a0b;
+$color-cardfont: #eeeeee;
 $color-title: #bbb3b3;
+$color-widget-links: #4183c4;
+$color-leftNav-links: #4183c4;
 
 // Set base properties of all components
 * {
@@ -29,6 +31,7 @@ body {
     color: $color-default;
 }
 
+// The entire page.   Creates the grid to contain the title (at top), navigation (on left), and the container for the widgets
 .page_container {
     display: grid;
     grid-template-columns: 12vw 1fr;
@@ -37,6 +40,7 @@ body {
     grid-gap: 0;
 }
 
+// The title container at the top of the page.  Needs to span two columns
 .title_container {
     grid-area: 1 / 1 / span 1 / span 2;
     padding: 1rem 1rem 1rem 2rem;
@@ -48,6 +52,7 @@ body {
     }
 }
 
+// Container on the left for all the navigation
 .leftNav_container {
     grid-area: 2 / 1 / span 1 / span 2;
     padding: 10px;
@@ -57,13 +62,32 @@ body {
         display: block;
         padding-bottom: 2vw;
     }
-    .navPageNavigation a {
-        display: block;
+    .navPageNavigation {
+        a {
+            padding: 5px 0 0 0;
+            color: $color-leftNav-links;
+            display: block;
+            transition: all 0.2s ease-in-out;
+            &:hover {
+                font-size: 1.5vw;
+                color: lighten($color-leftNav-links, 10%);
+            }
+        }
     }
 }
 
+// Contains all the widgets
 .centerPanel_container {
     grid-area: 2 / 2 / span 1 / span 1;
+}
+
+// Remove the normal styling from hyperlinks in this particular widget
+.dataCard#WidgetLeankitDiscoverySolutioningCardList td a {
+    color: $color-cardfont;
+    text-decoration: none;
+    &:hover {
+        color: $color-widget-links;
+    }
 }
 
 .dataCard_container {
@@ -82,7 +106,7 @@ body {
         width: 100%;
         height: 100%;
 
-        // Center the content in the dataCard (combined with margin:auto in cardBody)
+        // Center the content in the dataCard (combined with margin:auto in .cardBody)
         display: flex;
         overflow: auto;
 
@@ -90,30 +114,21 @@ body {
             // Used for occasional troubleshooting
             // border: 1px solid #00000015;
 
-            // keep the list bullets inside the div
-            // list-style-position: inside;
             font-size: 1.4vw;
             font-family: "Nunito", "Courier New";
-            color: rgba($color: #eee, $alpha: 1);
-            // Align content
+
+            // Align content - works in tandem with the display:flex in .dataCard
+            // NOTE: Centering content left/right is easy without flex.  Centering up/down is tricky.  display:flex (parent) and margin:auto (child) make that easy
             margin: auto;
+
             min-height: 100%;
             min-width: 100%;
 
             // For widgets with text, I want display=inline
-            display: inline;
+            // display: inline;
+            // On 2019-01-20, did some experimenting, and removed this.  Testing seems fine.  Without it, seems to default to display:block
 
-            table.scrollableTable tbody {
-                color: gray;
-                display: block;
-                overflow: auto;
-                height: 100%;
-            }
-            table.scrollableTable thead {
-                color: lightslategrey;
-                display: block;
-            }
-
+            // Typically used for large single numbers, outside of tables
             .redFont {
                 color: red;
             }
@@ -131,7 +146,20 @@ body {
                         border: 1px solid rgba(0, 0, 0, 0.356);
                         padding: 0.2rem 0.5rem 0.2rem 0.5rem;
                         font-size: 0.7vw;
-                        // line-height: 0.6rem;
+
+                        &.redFont {
+                            color: red;
+                            font-weight: 900;
+                        }
+                        &.orangeFont {
+                            color: orange;
+                            font-weight: 900;
+                        }
+                        &.greenFont {
+                            color: green;
+                            font-weight: 900;
+                        }
+
                         &.tdRed {
                             color: red;
                         }
@@ -153,27 +181,51 @@ body {
                 text-align: center;
                 // line-height: normal;ß
             }
+
+            // NOTE: As of 2019-01-20, pretty sure this never gets used
+            // // This is inside .cardBody
+            // table.scrollableTable tbody {
+            //     color: gray;
+            //     display: block;
+            //     overflow: auto;
+            //     height: 100%;
+            // }
+            // table.scrollableTable thead {
+            //     color: lightslategrey;
+            //     display: block;
+            // }
         }
 
         // Scrolling Table Widget
+        // This actually uses two tables, one table for the header row, and one for all the data
         .fullCardContainer {
+            // By default, div shrink to fit the data inside it.  This forces the div it expand to the full width of it's parent
             min-width: 100%;
-        }
-        .headerTable {
-            min-width: 100%;
-        }
-        .bodyTableContainerDiv {
-            display: block;
-            overflow-x: auto;
-            overflow-y: auto;
-            // height gets set by javascript since we need to calculate in real-time
-            table.scrollableTable {
-                color: blue;
+
+            .headerTable {
                 min-width: 100%;
             }
-            table tbody {
-                color: gray;
-                border-collapse: collapse;
+            .bodyTableContainerDiv {
+                // Needs to be display:block.  div defaults to display:block, but let's just be sure
+                display: block;
+                // overflow only works on block elements
+                overflow-x: auto;
+                overflow-y: auto;
+                // NOTE: height of .bodyTableContainerDiv gets set by javascript since we need to calculate in real-time
+
+                table.scrollableTable {
+                    // the idea is that this table is larger than it's parent div, and as you scroll the parent div, this table goes up and down
+
+                    // Forces table to occupy entire width of parent element, otherwise it shrinks to fit data
+                    min-width: 100%;
+                    tbody {
+                        color: pink;
+                        border-collapse: collapse;
+                        tr td {
+                            border: 1px solid white;
+                        }
+                    }
+                }
             }
         }
     }

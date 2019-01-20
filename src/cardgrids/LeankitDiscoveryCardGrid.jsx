@@ -4,6 +4,7 @@ import WidgetLeankitDiscoveryTotalCardCount from "../widgets/WidgetLeankitDiscov
 import WidgetLeankitDiscoveryDefectCardCount from "../widgets/WidgetLeankitDiscoveryDefectCardCount";
 import WidgetLeankitDiscoveryAvgCardAge from "../widgets/WidgetLeankitDiscoveryAvgCardAge";
 import WidgetLeankitDiscoverySolutioningCardList from "../widgets/WidgetLeankitDiscoverySolutioningCardList";
+import WidgetLeankitDiscoveryOwnerList from "../widgets/WidgetLeankitDiscoveryOwnerList";
 
 import CardGrid from "../components/cardGrid";
 
@@ -34,8 +35,13 @@ class LeankitDiscoveryCardGrid extends React.Component {
                         instance={this.props.leankit_instance}
                         boardId="412731036"
                     />
+                    <WidgetLeankitDiscoveryOwnerList
+                        position="1 / 7 / span 4 / span 2"
+                        instance={this.props.leankit_instance}
+                        boardId="412731036"
+                    />
                     <WidgetLeankitDiscoverySolutioningCardList
-                        position="3 / 1 / span 10 / span 8"
+                        position="3 / 1 / span 10 / span 6"
                         instance={this.props.leankit_instance}
                         boardId="412731036"
                     />

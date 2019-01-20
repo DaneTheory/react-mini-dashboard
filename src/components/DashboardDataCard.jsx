@@ -21,7 +21,7 @@ class DashboardDataCard extends React.Component {
         }
 
         return (
-            <div className={"dataCard item"} id={this.props.id} style={styles}>
+            <div className={"dataCard item"} id={this.props.widgetName} style={styles}>
                 <div className="cardBody" style={cardBody_styles}>
                     {this.props.children}
                 </div>

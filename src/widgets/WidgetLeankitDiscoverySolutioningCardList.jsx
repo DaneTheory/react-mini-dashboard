@@ -8,7 +8,7 @@ var moment = require("moment");
 var classNames = require("classnames");
 
 // Create a class component
-class WidgetLeankitCardList extends React.Component {
+class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
     constructor(props) {
         super(props);
         this.state = { instance: props.instance, leankit_cards: [], boardId: props.boardId };
@@ -23,13 +23,20 @@ class WidgetLeankitCardList extends React.Component {
             return card.u_lanes[1].name === "Solutioning" && card.u_lanes[2].name === "Non-Project WUs";
         });
 
+        // Save these cards to our state, which triggers react to render an update to the screen
         this.setState({ leankit_cards: filteredCards });
-        // this.setState({ leankit_cards: leankit_cards });
+
+        // Enrich each card by adding URL field (BoardID is hard-coded)
+        for (var i = 0; i < filteredCards.length; i++) {
+            var card = filteredCards[i];
+            // card.url = sprintf("%s/%s/%s", "https://jnj.leankit.com/Boards/View", boardID, card["Id"]);
+            card.url = `https://jnj.leankit.com/card/${card.id}`;
+        }
 
         // User comments are not part of original call, so add them now
         let leankit_cards_with_comments = await getCommentsforLeankitCards(filteredCards, "jnj.leankit.com");
-        // let leankit_cards_with_comments = await getCommentsforLeankitCards(leankit_cards, "jnj.leankit.com");
 
+        // Save these cards to our state, which triggers react to render an update to the screen
         this.setState({ leankit_cards: leankit_cards_with_comments });
     };
 
@@ -38,13 +45,13 @@ class WidgetLeankitCardList extends React.Component {
             return <div className="single-num-value">Waiting for data...</div>;
         } else {
             return (
-                <div style={{ fontSize: "1.8vw" }}>
+                <div>
                     <table>
                         <thead>
                             <tr>
                                 <th width="3%" />
                                 <th width="13%">Owner</th>
-                                <th width="7%">Age</th>
+                                <th width="7%">Days in Lane</th>
                                 <th width="35%">Description</th>
                                 <th width="7%">Comment Age</th>
                                 <th width="36%">Most Recent Comment</th>
@@ -95,7 +102,9 @@ class WidgetLeankitCardList extends React.Component {
                                             <td align="center" className={classNames(inLane.className)}>
                                                 {inLane.days} days
                                             </td>
-                                            <td>{card["title"]}</td>
+                                            <td>
+                                                <a href={card.url}>{card["title"]}</a>
+                                            </td>
                                             <td align="center" className={classNames(commentMostRecent.className)}>
                                                 {commentMostRecent.ageInDays} days
                                             </td>
@@ -103,9 +112,6 @@ class WidgetLeankitCardList extends React.Component {
                                                 <b>(({commentMostRecentAuthor}))</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {commentMostRecentText}
                                             </td>
                                         </tr>
-
-                                        // var ageDays = startDate.diff(endDate, "days");
-                                        // var cardAgeDays = Math.abs(ageDays);
                                     );
                                 })}
                         </tbody>
@@ -125,7 +131,7 @@ class WidgetLeankitCardList extends React.Component {
                 id={this.props.id}
                 position={this.props.position}
                 color={this.props.color}
-                widgetName="WidgetLeankitCardList"
+                widgetName="WidgetLeankitDiscoverySolutioningCardList"
             >
                 <div className="single-num-title">Solutioning Cards (Non-Project)</div>
                 {this.renderCardBody()}
@@ -136,4 +142,4 @@ class WidgetLeankitCardList extends React.Component {
     // end of class
 }
 
-export default WidgetLeankitCardList;
+export default WidgetLeankitDiscoverySolutioningCardList;
