@@ -18,7 +18,6 @@ $color-pageBackground: #464242;
 html {
     /* Setting the size of one rem, means that 1 rem will equal 10px */
     font-size: 10px;
-    height: 100%;
 }
 
 body {
@@ -113,6 +112,16 @@ body {
             table.scrollableTable thead {
                 color: lightslategrey;
                 display: block;
+            }
+
+            .redFont {
+                color: red;
+            }
+            .orangeFont {
+                color: orange;
+            }
+            .greenFont {
+                color: green;
             }
 
             table tr td.tdRed {

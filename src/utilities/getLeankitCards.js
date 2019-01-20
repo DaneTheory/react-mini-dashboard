@@ -1,5 +1,7 @@
 import apiProxy from "../api/apiProxy";
 
+var moment = require("moment");
+
 export async function getLeankitCards(leankitAPIHost, boardId, lane_class_types) {
     // Load the data from the API (notice we're using the await keyword from the async framework)
 
@@ -42,8 +44,10 @@ export async function getLeankitCards(leankitAPIHost, boardId, lane_class_types)
     }
 
     // OK, by this point, we've got all the cards which match our query
+    // Now we need to do some magic.  You see, each card only knows about his immediate parent lane
+    // I want each card to know about *all* their parent lanes
 
-    // Setup dummy entries for custom fields
+    // Setup dummy entries for custom fields (u_lanes)
     leankitCards = leankitCards.map(card => {
         card.u_lanes = [{}, {}, {}];
         return card;
@@ -55,14 +59,30 @@ export async function getLeankitCards(leankitAPIHost, boardId, lane_class_types)
         lanesById[lane.id] = lane;
     });
 
-    // Insert lane info into each card (u_ because its a custom field)
+    // Insert lane info into each card (u_lanes because its a custom field)
     leankitCards.forEach(card => {
-        // Push the card's own lane
-        card.u_lanes[0] = lanesById[card.lane.id];
-        // Push the first parent
-        card.u_lanes[1] = lanesById[lanesById[card.u_lanes[0].id].parentLaneId];
-        // push the second parent
-        card.u_lanes[2] = lanesById[card.u_lanes[1].parentLaneId];
+        // // Push the card's own lane
+        // card.u_lanes[0] = lanesById[card.lane.id];
+        // // Push the first parent
+        // card.u_lanes[1] = lanesById[lanesById[card.u_lanes[0].id].parentLaneId];
+        // // push the second parent
+        // card.u_lanes[2] = lanesById[card.u_lanes[1].parentLaneId];
+
+        let parentLane = lanesById[card.lane.id];
+        let u_lanes = [];
+        while (parentLane !== undefined) {
+            // Add the name of the parent lane to the *front* of the array, so top-most lane will end up first
+            u_lanes.unshift(parentLane);
+            // Set parent lane (go up on level) for the next loop
+            parentLane = lanesById[parentLane.parentLaneId];
+        }
+        // Attach lane structure to cards
+        card.u_lanes = u_lanes;
+    });
+
+    // Compute daysInLane for each card
+    leankitCards.forEach(card => {
+        card.daysInLane = moment().diff(moment(card.movedOn), "days");
     });
 
     return leankitCards;

@@ -24,16 +24,16 @@ class AllCardGrid extends React.Component {
         return (
             <div>
                 <CardGrid rows="7" columns="6">
-                    <WidgetSNINCP1P2Count position="span 1 / span 2" instance={this.props.sn_instance} />
-                    <WidgetSNUniqueLoginsToday color="slategrey" instance={this.props.sn_instance} />
-                    <WidgetSNCurrentUsers color="darkgreen" instance={this.props.sn_instance} />
-                    <WidgetSNNewIncidentToday color="orangered" position="span 1/span 1" instance={this.props.sn_instance} />
-                    <WidgetSNClicksByOS color="darkolivegreen" position="span 3/span 1" instance={this.props.sn_instance} />
-                    <WidgetSNClicksByBrowser color="darkolivegreen" position="span 3/span 1" instance={this.props.sn_instance} />
-                    <WidgetLeankitCount color="mediumpurple" position="span 1/span 1" instance="jnj.leankit.com" />
-                    <WidgetBoldChatActiveCount color="IndianRed" position="span 1/span 1" instance={this.props.boldchat_instance} />
-                    <WidgetBoldChatInactiveCount color="IndianRed" position="span 1/span 1" instance={this.props.boldchat_instance} />
-                    <WidgetSNBarChart color="#ddd" position="span 3 / span 4" instance={this.props.sn_instance} />
+                    <WidgetSNINCP1P2Count position="span 2 / span 2" instance={this.props.sn_instance} />
+                    <WidgetSNUniqueLoginsToday position="span 2 / span 1" color="slategrey" instance={this.props.sn_instance} />
+                    <WidgetSNCurrentUsers position="span 2/span 1" color="darkgreen" instance={this.props.sn_instance} />
+                    <WidgetSNNewIncidentToday position="span 2/span 2" color="orangered" instance={this.props.sn_instance} />
+                    <WidgetSNClicksByOS position="span 5/span 1" color="darkolivegreen" instance={this.props.sn_instance} />
+                    <WidgetSNClicksByBrowser position="span 5/span 1" color="darkolivegreen" instance={this.props.sn_instance} />
+                    <WidgetLeankitCount position="span 2/span 1" color="mediumpurple" instance="jnj.leankit.com" />
+                    <WidgetBoldChatActiveCount position="span 2/span 1" color="IndianRed" instance={this.props.boldchat_instance} />
+                    <WidgetBoldChatInactiveCount position="span 2/span 1" color="IndianRed" instance={this.props.boldchat_instance} />
+                    <WidgetSNBarChart position="span 5 / span 4" color="#ddd" instance={this.props.sn_instance} />
                 </CardGrid>
             </div>
         );

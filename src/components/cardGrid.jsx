@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 const CardGrid = function(props) {
     let style = {
         gridTemplateColumns: `repeat(${props.columns},1fr)`,
-        gridTemplateRows: `repeat(${props.rows},1fr)`
+        gridTemplateRows: `repeat(${props.rows},4vw)`
     };
     return (
         <div className="dataCard_container" style={style}>
