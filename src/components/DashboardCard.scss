@@ -7,6 +7,8 @@ $color-cardfont: #eeeeee;
 $color-title: #bbb3b3;
 $color-widget-links: #4183c4;
 $color-leftNav-links: #4183c4;
+$scrollbarTrackBackgroundColor: #242524;
+$scrollbarThumbBackgroundColor: #696464;
 
 // Set base properties of all components
 * {
@@ -97,6 +99,27 @@ body {
     height: 60vw;
     grid-gap: 1rem;
     margin: 0 1.5rem 0 1.5rem;
+
+    // The width of the overall scrollbar (Chrome/Safari)
+    .dataCard::-webkit-scrollbar {
+        width: 0.5em;
+    }
+
+    // the track (or background) of the elevator bar (Chrome/Safari)
+    .dataCard::-webkit-scrollbar-track {
+        background-color: $scrollbarTrackBackgroundColor;
+        border-radius: 7px;
+    }
+
+    // the elevator bar (Chrome/Safari)
+    .dataCard::-webkit-scrollbar-thumb {
+        background-color: $scrollbarThumbBackgroundColor;
+        border-radius: 7px;
+    }
+
+    .dataCard {
+        scrollbar-color: $scrollbarThumbBackgroundColor $scrollbarTrackBackgroundColor;
+    }
 
     .dataCard {
         background-color: $color-cardbackground;
