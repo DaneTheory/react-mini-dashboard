@@ -140,7 +140,11 @@ body {
             }
 
             table {
+                // remove the double border between cells, make it a single border
                 border-collapse: collapse;
+                // Center the table left/right in it's containing div
+                margin: 0 auto;
+
                 tr {
                     td {
                         border: 1px solid rgba(0, 0, 0, 0.356);
@@ -181,19 +185,6 @@ body {
                 text-align: center;
                 // line-height: normal;ß
             }
-
-            // NOTE: As of 2019-01-20, pretty sure this never gets used
-            // // This is inside .cardBody
-            // table.scrollableTable tbody {
-            //     color: gray;
-            //     display: block;
-            //     overflow: auto;
-            //     height: 100%;
-            // }
-            // table.scrollableTable thead {
-            //     color: lightslategrey;
-            //     display: block;
-            // }
         }
 
         // Scrolling Table Widget
@@ -203,12 +194,13 @@ body {
             min-width: 100%;
 
             .headerTable {
+                // By default, div shrink to fit the data inside it.  This forces the div it expand to the full width of it's parent
                 min-width: 100%;
             }
             .bodyTableContainerDiv {
                 // Needs to be display:block.  div defaults to display:block, but let's just be sure
                 display: block;
-                // overflow only works on block elements
+                // overflow only works on block elements.  Auto means no scrollbar, until content exceeds space, then add scrollbar
                 overflow-x: auto;
                 overflow-y: auto;
                 // NOTE: height of .bodyTableContainerDiv gets set by javascript since we need to calculate in real-time
@@ -219,11 +211,8 @@ body {
                     // Forces table to occupy entire width of parent element, otherwise it shrinks to fit data
                     min-width: 100%;
                     tbody {
-                        color: pink;
+                        // Simply collapses the visual double-border between cells into a single border
                         border-collapse: collapse;
-                        tr td {
-                            border: 1px solid white;
-                        }
                     }
                 }
             }

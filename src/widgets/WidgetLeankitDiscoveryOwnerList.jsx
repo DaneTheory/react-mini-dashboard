@@ -44,38 +44,36 @@ class WidgetLeankitDiscoveryOwnerList extends React.Component {
             return <div className="single-num-value">Waiting for data...</div>;
         } else {
             return (
-                <div style={{ fontSize: "1.8vw" }}>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th width="65%">Owner</th>
-                                <th width="35%"># of cards</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.state.ownerArray
-                                .sort((a, b) => {
-                                    return b.count - a.count;
-                                })
-                                .map(function(card, index) {
-                                    // Set some variables to be used in JSX below
-                                    let owner = { text: card.name };
-                                    let cardCount = { text: card.count };
-                                    cardCount.className = cardCount.text > 4 ? "redFont" : cardCount.text > 1 ? "orangeFont" : "greenFont";
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="65%">Owner</th>
+                            <th width="35%"># of cards</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.ownerArray
+                            .sort((a, b) => {
+                                return b.count - a.count;
+                            })
+                            .map(function(card, index) {
+                                // Set some variables to be used in JSX below
+                                let owner = { text: card.name };
+                                let cardCount = { text: card.count };
+                                cardCount.className = cardCount.text > 4 ? "redFont" : cardCount.text > 1 ? "orangeFont" : "greenFont";
 
-                                    // Now return a JSX statement for rendering
-                                    return (
-                                        <tr key={card["name"]}>
-                                            <td align="center">{owner.text}</td>
-                                            <td align="center" className={classNames(cardCount.className)}>
-                                                {cardCount.text}
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
-                        </tbody>
-                    </table>
-                </div>
+                                // Now return a JSX statement for rendering
+                                return (
+                                    <tr key={card["name"]}>
+                                        <td align="center">{owner.text}</td>
+                                        <td align="center" className={classNames(cardCount.className)}>
+                                            {cardCount.text}
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                    </tbody>
+                </table>
             );
         }
     }
