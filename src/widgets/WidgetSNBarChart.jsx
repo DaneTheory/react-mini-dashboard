@@ -7,7 +7,7 @@ import { Bar } from "react-chartjs-2";
 // -----------------------------------
 
 // Create a class component
-class WidgetUniqueLoginsToday extends React.Component {
+class WidgetSNBarChart extends React.Component {
     constructor(props) {
         super(props);
         this.state = { widgetName: "firstwidget", count: [], instance: props.instance };
@@ -32,8 +32,8 @@ class WidgetUniqueLoginsToday extends React.Component {
             datasets: [
                 {
                     label: "My First dataset",
-                    backgroundColor: "rgb(255, 99, 132)",
-                    borderColor: "rgb(255, 99, 132)",
+                    backgroundColor: "slategrey",
+                    borderColor: "slategrey",
                     data: [0, 10, 5, 2, 20, 30, 45]
                 }
             ]
@@ -44,12 +44,7 @@ class WidgetUniqueLoginsToday extends React.Component {
 
     render() {
         return (
-            <DashboardChartCard
-                id={this.props.id}
-                position={this.props.position}
-                color={this.props.color}
-                widgetName="WidgetUniqueLoginsToday"
-            >
+            <DashboardChartCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetSNBarChart">
                 {this.renderCardBody()}
             </DashboardChartCard>
         );
@@ -57,8 +52,8 @@ class WidgetUniqueLoginsToday extends React.Component {
 }
 
 // Force the caller to include the proper attributes
-WidgetUniqueLoginsToday.propTypes = {
+WidgetSNBarChart.propTypes = {
     instance: PropTypes.string.isRequired
 };
 
-export default WidgetUniqueLoginsToday;
+export default WidgetSNBarChart;

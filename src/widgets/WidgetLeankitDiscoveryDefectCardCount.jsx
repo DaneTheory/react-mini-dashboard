@@ -19,7 +19,7 @@ class WidgetLeankitDiscoveryDefectCardCount extends React.Component {
     renderCardBody() {
         console.log("Leankit Cards:", this.state.leankit_cards);
         if (this.state.leankit_cards.length === 0) {
-            return <div className="single-num-value">Waiting for data...</div>;
+            return <div className="waiting-for-data">Waiting for data...</div>;
         } else {
             // Create list of all Demand cards, and then get a count
             let filteredCards = this.state.leankit_cards.filter(function(card) {

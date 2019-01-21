@@ -17,7 +17,7 @@ class Dev1CardGrid extends React.Component {
             <div>
                 <CardGrid rows="10" columns="12">
                     <WidgetSNBarChart color="#ddd" position="span 3 / span 4" instance={this.props.sn_instance} />
-                    <WidgetSNScrollableTable position="span 7 / span 10" />
+                    <WidgetSNScrollableTable position="span 4 / span 4" />
                 </CardGrid>
             </div>
         );

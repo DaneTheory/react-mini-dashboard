@@ -92,6 +92,16 @@ body {
     }
 }
 
+.otherDetails {
+    padding-top: 20vw;
+    .title {
+        font-size: 1.1vw;
+    }
+    .body {
+        font-size: 0.9vw;
+    }
+}
+
 .dataCard_container {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -204,6 +214,13 @@ body {
             }
             .single-num-value {
                 font-size: 3.3vw;
+                // line-height: 4rem;
+                text-align: center;
+                // line-height: normal;ß
+            }
+            .waiting-for-data {
+                padding-top: 2vw;
+                font-size: 1.5vw;
                 // line-height: 4rem;
                 text-align: center;
                 // line-height: normal;ß

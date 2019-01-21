@@ -117,7 +117,7 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
 
     renderTable() {
         if (this.state.leankit_cards.length === 0) {
-            return <div className="single-num-value">Waiting for data...</div>;
+            return <div className="waiting-for-data">Waiting for data...</div>;
         } else {
             return (
                 <div>

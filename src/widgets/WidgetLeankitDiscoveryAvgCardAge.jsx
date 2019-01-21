@@ -20,7 +20,7 @@ class WidgetLeankitDiscoveryAvgCardAge extends React.Component {
 
     renderCardBody() {
         if (this.state.leankit_cards.length === 0) {
-            return <div className="single-num-value">Waiting for data...</div>;
+            return <div className="waiting-for-data">Waiting for data...</div>;
         } else {
             // check to see if collection is undefined (which likely means var wasn't popuplated in Angular yet)
             // There's a real array now, so loop through and sum the requested column
