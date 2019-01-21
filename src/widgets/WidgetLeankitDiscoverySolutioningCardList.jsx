@@ -2,6 +2,7 @@ import React from "react";
 import DashboardDataCard from "../components/DashboardDataCard";
 import { getLeankitCards } from "../utilities/getLeankitCards";
 import { getCommentsforLeankitCards } from "../utilities/getCommentsForLeankitCards";
+import { getBacklogDurationForLeankitCards } from "../utilities/getBacklogDurationForLeankitCards";
 
 var moment = require("moment");
 
@@ -23,6 +24,11 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
             return card.u_lanes[1].name === "Solutioning" && card.u_lanes[2].name === "Non-Project WUs";
         });
 
+        // Put a dummy value in for backlogDuration, we'll figure it out later
+        filteredCards.forEach(card => {
+            card.backlogDuration = { days: "unknown" };
+        });
+
         // Save these cards to our state, which triggers react to render an update to the screen
         this.setState({ leankit_cards: filteredCards });
 
@@ -38,7 +44,76 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
 
         // Save these cards to our state, which triggers react to render an update to the screen
         this.setState({ leankit_cards: leankit_cards_with_comments });
+
+        // Get the backlog duration
+        let leankit_cards_with_backlogDuration = await getBacklogDurationForLeankitCards(filteredCards, "jnj.leankit.com");
+        console.log(leankit_cards_with_backlogDuration);
+
+        // Save these cards to our state, which triggers react to render an update to the screen
+        this.setState({ leankit_cards: leankit_cards_with_backlogDuration });
     };
+
+    renderTableBody() {
+        return (
+            <tbody>
+                {this.state.leankit_cards
+                    .sort((a, b) => {
+                        return b.daysInLane - a.daysInLane;
+                    })
+                    .map(function(card, index) {
+                        // Set some variables to be used in JSX below
+                        let cardOwner =
+                            (card.assignedUsers && card.assignedUsers.length > 0 && card.assignedUsers[0].fullName) || "No Owner";
+                        let commentMostRecentText = "Waiting for Comment";
+                        let commentMostRecentAuthor = "Waiting for Comment";
+                        let commentMostRecent = { ageInDays: "Waiting for Comment" };
+                        let inLane = { days: card.daysInLane };
+                        inLane.className = inLane.days > 14 ? "redFont" : inLane.days > 11 ? "orangeFont" : "greenFont";
+
+                        if (card.comments && card.comments.length > 0 && card.comments[0].text) {
+                            commentMostRecentText = card.comments[0].text;
+                            commentMostRecentAuthor = card.comments[0].createdBy.fullName;
+                            commentMostRecent.ageInDays = moment().diff(moment(card.comments[0].createdOn), "days");
+                            commentMostRecent.className =
+                                commentMostRecent.ageInDays > 5 ? "redFont" : commentMostRecent.ageInDays > 3 ? "orangeFont" : "greenFont";
+                        }
+
+                        // Strip the html tags
+                        let temporalDivElement = document.createElement("div");
+                        // Set the HTML content with the providen
+                        temporalDivElement.innerHTML = commentMostRecentText;
+                        // Retrieve the text property of the element (cross-browser support)
+                        let zeroHTML = temporalDivElement.textContent || temporalDivElement.innerText || "";
+                        // Truncate the ext
+                        commentMostRecentText = zeroHTML.substring(0, 200);
+
+                        let backlogComplete = card.backlogComplete || card.createdOn;
+                        let backlogDuration = moment(backlogComplete).diff(moment(card.createdOn), "days");
+
+                        // Now return a JSX statement for rendering (remember, we're inside a .map() loop)
+                        return (
+                            <tr key={card["id"]}>
+                                <td align="center">{index + 1}</td>
+                                <td>{cardOwner}</td>
+                                <td align="center" className={classNames(inLane.className)}>
+                                    {inLane.days} days
+                                </td>
+                                <td>{backlogDuration} days</td>
+                                <td>
+                                    <a href={card.url}>{card["title"]}</a>
+                                </td>
+                                <td align="center" className={classNames(commentMostRecent.className)}>
+                                    {commentMostRecent.ageInDays} days
+                                </td>
+                                <td>
+                                    <b>(({commentMostRecentAuthor}))</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {commentMostRecentText}
+                                </td>
+                            </tr>
+                        );
+                    })}
+            </tbody>
+        );
+    }
 
     renderTable() {
         if (this.state.leankit_cards.length === 0) {
@@ -52,69 +127,13 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
                                 <th width="3%" />
                                 <th width="13%">Owner</th>
                                 <th width="7%">Days in Lane</th>
+                                <th width="6%">Backlog</th>
                                 <th width="35%">Description</th>
                                 <th width="7%">Comment Age</th>
-                                <th width="36%">Most Recent Comment</th>
+                                <th width="30%">Most Recent Comment</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            {this.state.leankit_cards
-                                .sort((a, b) => {
-                                    return b.daysInLane - a.daysInLane;
-                                })
-                                .map(function(card, index) {
-                                    // Set some variables to be used in JSX below
-                                    let cardOwner =
-                                        (card.assignedUsers && card.assignedUsers.length > 0 && card.assignedUsers[0].fullName) ||
-                                        "No Owner";
-                                    let commentMostRecentText = "Waiting for Comment";
-                                    let commentMostRecentAuthor = "Waiting for Comment";
-                                    let commentMostRecent = { ageInDays: "Waiting for Comment" };
-                                    let inLane = { days: card.daysInLane };
-                                    inLane.className = inLane.days > 14 ? "redFont" : inLane.days > 11 ? "orangeFont" : "greenFont";
-
-                                    if (card.comments && card.comments.length > 0 && card.comments[0].text) {
-                                        commentMostRecentText = card.comments[0].text;
-                                        commentMostRecentAuthor = card.comments[0].createdBy.fullName;
-                                        commentMostRecent.ageInDays = moment().diff(moment(card.comments[0].createdOn), "days");
-                                        commentMostRecent.className =
-                                            commentMostRecent.ageInDays > 5
-                                                ? "redFont"
-                                                : commentMostRecent.ageInDays > 3
-                                                ? "orangeFont"
-                                                : "greenFont";
-                                    }
-
-                                    // Strip the html tags
-                                    let temporalDivElement = document.createElement("div");
-                                    // Set the HTML content with the providen
-                                    temporalDivElement.innerHTML = commentMostRecentText;
-                                    // Retrieve the text property of the element (cross-browser support)
-                                    let zeroHTML = temporalDivElement.textContent || temporalDivElement.innerText || "";
-                                    // Truncate the ext
-                                    commentMostRecentText = zeroHTML.substring(0, 200);
-
-                                    // Now return a JSX statement for rendering
-                                    return (
-                                        <tr key={card["id"]}>
-                                            <td align="center">{index + 1}</td>
-                                            <td>{cardOwner}</td>
-                                            <td align="center" className={classNames(inLane.className)}>
-                                                {inLane.days} days
-                                            </td>
-                                            <td>
-                                                <a href={card.url}>{card["title"]}</a>
-                                            </td>
-                                            <td align="center" className={classNames(commentMostRecent.className)}>
-                                                {commentMostRecent.ageInDays} days
-                                            </td>
-                                            <td>
-                                                <b>(({commentMostRecentAuthor}))</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {commentMostRecentText}
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
-                        </tbody>
+                        {this.renderTableBody()}
                     </table>
                 </div>
             );
