@@ -38,16 +38,14 @@ class App extends React.Component {
                             </div>
                         </div>
                         <div className="leftNav_container">
-                            <div>
-                                <div className="navTitle">{this.state.pageTitle}</div>
-                                <div className="navPageNavigation">
-                                    Dashboard Navigation:
-                                    <Link to="/">Home</Link>
-                                    <Link to="/everything-dashboard">Everything Dashboard</Link>
-                                    <Link to="/demo1-dashboard">Demo1 Dashboard</Link>
-                                    <Link to="/dev1-dashboard">Dev1 Dashboard</Link>
-                                    <Link to="/leankit-discovery-dashboard">Leankit Discovery Dashboard</Link>
-                                </div>
+                            <div className="navTitle">{this.state.pageTitle}</div>
+                            <div className="navPageNavigation">
+                                Dashboard Navigation:
+                                <Link to="/">Home</Link>
+                                <Link to="/everything-dashboard">Everything Dashboard</Link>
+                                <Link to="/demo1-dashboard">Demo1 Dashboard</Link>
+                                <Link to="/dev1-dashboard">Dev1 Dashboard</Link>
+                                <Link to="/leankit-discovery-dashboard">Leankit Discovery Dashboard</Link>
                             </div>
                         </div>
                         <div className="centerPanel_container">
