@@ -1,6 +1,6 @@
 // 3rd party imports
 import React from "react";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { HashRouter, Route, Link } from "react-router-dom";
 
 // My own imports
 import Demo1CardGrid from "../cardgrids/Demo1CardGrid";
@@ -30,7 +30,7 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <BrowserRouter>
+                <HashRouter>
                     <div className="page_container">
                         <div className="title_container">
                             <div className="title">
@@ -98,7 +98,7 @@ class App extends React.Component {
                             <Route path="/" exact render={() => <h1>Home is Where the Blank Title Page Lives</h1>} />
                         </div>
                     </div>
-                </BrowserRouter>
+                </HashRouter>
             </div>
         );
     }
