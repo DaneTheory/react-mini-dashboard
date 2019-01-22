@@ -54,7 +54,7 @@ class WidgetSNCurrentUsers extends React.Component {
         return (
             <div className="item">
                 <div className="single-num-title">Current Users (5 mins)</div>
-                <div className="single-num-value">{this.state.count}</div>
+                <div className="single-num-value">{parseInt(this.state.count).toLocaleString("en")}</div>
             </div>
         );
     }

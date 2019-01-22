@@ -34,11 +34,11 @@ class HomeCardGrid extends React.Component {
                     <WidgetSNUniqueLoginsToday position="span 2 / span 2" instance={this.props.sn_instance} />
                     <WidgetSNCurrentUsers position="span 2/span 2" instance={this.props.sn_instance} />
                     <WidgetSNNewIncidentToday position="span 2/span 2" instance={this.props.sn_instance} />
-                    <WidgetSNClicksByOS position="span 5/span 2" instance={this.props.sn_instance} />
-                    <WidgetSNClicksByBrowser position="span 5/span 2" instance={this.props.sn_instance} />
-                    <WidgetLeankitCount position="span 2/span 2" instance="jnj.leankit.com" />
+                    <WidgetSNClicksByOS position="span 5/span 2" instance={this.props.sn_instance} interval="300" />
+                    <WidgetSNClicksByBrowser position="span 5/span 2" instance={this.props.sn_instance} interval="300" />
+                    <WidgetLeankitCount position="span 2/span 2" instance="jnj.leankit.com" interval="300" />
                     <WidgetBoldChatActiveCount position="span 2/span 2" instance={this.props.boldchat_instance} />
-                    <WidgetBoldChatInactiveCount position="span 2/span 2" instance={this.props.boldchat_instance} />
+                    <WidgetBoldChatInactiveCount position="span 2/span 2" instance={this.props.boldchat_instance} interval="300" />
                 </CardGrid>
             </div>
         );
