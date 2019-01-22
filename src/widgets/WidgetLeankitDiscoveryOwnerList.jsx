@@ -1,6 +1,7 @@
 import React from "react";
 import DashboardDataCard from "../components/DashboardDataCard";
 import { getLeankitCards } from "../utilities/getLeankitCards";
+import ReactTimeout from "react-timeout";
 import { checkForAggressiveRefreshInterval } from "../utilities/checkForAggressiveRefreshInterval";
 
 var classNames = require("classnames");
@@ -13,7 +14,8 @@ class WidgetLeankitDiscoveryOwnerList extends React.Component {
         this.state = { instance: props.instance, leankit_cards: [], boardId: props.boardId, ownerArray: [] };
     }
 
-    componentDidMount = async () => {
+    async customUpdateFunction() {
+        // Retrieve our data (likely from an API)
         // Get all the leankit cards
         let leankit_cards = await getLeankitCards("jnj.leankit.com", this.state.boardId, "active,backlog");
 
@@ -38,7 +40,30 @@ class WidgetLeankitDiscoveryOwnerList extends React.Component {
             return { name: obj[0], count: obj[1] };
         });
         // console.log("owner array", ownerArray);
+
+        // Update our own state with the new data
         this.setState({ ownerArray: ownerArray });
+    }
+
+    async updateOurData() {
+        // Start timer
+        let startTime = new Date();
+
+        // This function contains the custom logic to update our own data
+        await this.customUpdateFunction();
+
+        // Check to see if we're trying to update ourselves too often
+        checkForAggressiveRefreshInterval(startTime, this.props.interval);
+
+        // Set a timeOut to update ourselves again in refreshInterval
+        this.props.setTimeout(() => {
+            console.log(`${this.state.widgetName}: Updating data, interval is ${this.props.interval}s`);
+            this.updateOurData();
+        }, this.props.interval * 1000);
+    }
+
+    componentDidMount = async () => {
+        this.updateOurData();
     };
 
     renderTable() {
@@ -106,4 +131,4 @@ WidgetLeankitDiscoveryOwnerList.defaultProps = {
     interval: 60
 };
 
-export default WidgetLeankitDiscoveryOwnerList;
+export default ReactTimeout(WidgetLeankitDiscoveryOwnerList);

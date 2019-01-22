@@ -3,7 +3,6 @@ import apiProxy from "../api/apiProxy";
 export async function getBacklogDurationForLeankitCards(leankitCards, leankitAPIHost) {
     // Load the data from the API (notice we're using the await keyword from the async framework)
 
-    let startDate = new Date();
     let promises = leankitCards.map(async function(card) {
         // console.log(card.id);
         let response = await apiProxy.get(`/leankit-api/${leankitAPIHost}/Api/Card/History/412731036/${card.id}`);
@@ -26,7 +25,6 @@ export async function getBacklogDurationForLeankitCards(leankitCards, leankitAPI
         card.backlogComplete = (movedFromBacklogArray.length > 0 && movedFromBacklogArray[0].EventDateTime) || undefined;
     });
 
-    let endDate = new Date();
     // console.log("Get History Duration: ", endDate - startDate);
     return leankitCards;
 }

@@ -3,6 +3,7 @@ import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
 import PropTypes from "prop-types";
 import { determineBrowserFromUserAuth } from "../utilities/determineBrowserFromUserAuth";
+import ReactTimeout from "react-timeout";
 import { checkForAggressiveRefreshInterval } from "../utilities/checkForAggressiveRefreshInterval";
 
 // Create a class component
@@ -13,35 +14,57 @@ class WidgetSNClicksByBrowser extends React.Component {
         this.state = { widgetName: "WidgetSNClicksByBrowser", count: [], instance: props.instance, browserInfo: {} };
     }
 
-    componentDidMount = () => {
+    async customUpdateFunction() {
+        // Retrieve our data (likely from an API)
         // Load the data from the API (notice we're using the await keyword from the async framework)
         let groupby_field = "user_agent";
-        apiProxy
-            .get(`/sn/${this.state.instance}/api/now/stats/syslog_transaction`, {
-                params: {
-                    // Units for xAgoStart: years, months, days, hours, minutes
-                    sysparm_query: "client_transaction=true^sys_created_on>=javascript:gs.daysAgoStart(0)",
-                    sysparm_count: "true",
-                    sysparm_display_value: "true",
-                    sysparm_group_by: groupby_field
-                }
-            })
-            .then(response => {
-                // Restructure the ServiceNow response (somewhat deep object) into an array of simple objects
-                let user_agent_strings = response.data.result.map(element => {
-                    return {
-                        // the brackets around [groupby_field] allow me to use a variable as a key name within the new object
-                        [groupby_field]: element["groupby_fields"][0]["value"] || "<blank>",
-                        count: element.stats.count
-                    };
-                });
 
-                // Create an Object of counts for browser types
-                let browserInfo = this.createBrowserCounts(user_agent_strings);
+        let response = await apiProxy.get(`/sn/${this.state.instance}/api/now/stats/syslog_transaction`, {
+            params: {
+                // Units for xAgoStart: years, months, days, hours, minutes
+                sysparm_query: "client_transaction=true^sys_created_on>=javascript:gs.daysAgoStart(0)",
+                sysparm_count: "true",
+                sysparm_display_value: "true",
+                sysparm_group_by: groupby_field
+            }
+        });
 
-                // Save into our component state
-                this.setState({ browserInfo: browserInfo });
-            });
+        // Restructure the ServiceNow response (somewhat deep object) into an array of simple objects
+        let user_agent_strings = response.data.result.map(element => {
+            return {
+                // the brackets around [groupby_field] allow me to use a variable as a key name within the new object
+                [groupby_field]: element["groupby_fields"][0]["value"] || "<blank>",
+                count: element.stats.count
+            };
+        });
+
+        // Create an Object of counts for browser types
+        let browserInfo = this.createBrowserCounts(user_agent_strings);
+
+        // Update our own state with the new data
+        // Save into our component state
+        this.setState({ browserInfo: browserInfo });
+    }
+
+    async updateOurData() {
+        // Start timer
+        let startTime = new Date();
+
+        // This function contains the custom logic to update our own data
+        await this.customUpdateFunction();
+
+        // Check to see if we're trying to update ourselves too often
+        checkForAggressiveRefreshInterval(startTime, this.props.interval);
+
+        // Set a timeOut to update ourselves again in refreshInterval
+        this.props.setTimeout(() => {
+            console.log(`${this.state.widgetName}: Updating data, interval is ${this.props.interval}s`);
+            this.updateOurData();
+        }, this.props.interval * 1000);
+    }
+
+    componentDidMount = async () => {
+        this.updateOurData();
     };
 
     renderTable() {
@@ -143,4 +166,4 @@ WidgetSNClicksByBrowser.defaultProps = {
     interval: 60
 };
 
-export default WidgetSNClicksByBrowser;
+export default ReactTimeout(WidgetSNClicksByBrowser);

@@ -3,7 +3,6 @@ import DashboardTableCard from "../components/DashboardTableCard";
 // Import utility functions for constructing/scrolling our scrollable table
 import * as scrollableTable from "../utilities/autoScrollTableUtilities";
 // import apiProxy from "../api/apiProxy";
-import { checkForAggressiveRefreshInterval } from "../utilities/checkForAggressiveRefreshInterval";
 
 // Create a class component
 class WidgetSNScrollableTable extends React.Component {

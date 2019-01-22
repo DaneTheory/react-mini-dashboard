@@ -3,6 +3,8 @@ import DashboardChartCard from "../components/DashboardChartCard";
 import apiProxy from "../api/apiProxy";
 import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
+import ReactTimeout from "react-timeout";
+
 import { checkForAggressiveRefreshInterval } from "../utilities/checkForAggressiveRefreshInterval";
 
 // -----------------------------------
@@ -15,7 +17,8 @@ class WidgetSNBarChart extends React.Component {
         this.state = { widgetName: "WidgetSNBarChart", count: [], instance: props.instance };
     }
 
-    componentDidMount = async () => {
+    async customUpdateFunction() {
+        // Retrieve our data (likely from an API)
         const response = await apiProxy.get(`/sn/${this.state.instance}/api/now/stats/sys_user_presence`, {
             params: {
                 // Units: years, months, days, hours, minutes
@@ -25,7 +28,30 @@ class WidgetSNBarChart extends React.Component {
             }
         });
         // console.log(response);
+
+        // Update our own state with the new data
         this.setState({ count: response.data.result.stats.count });
+    }
+
+    async updateOurData() {
+        // Start timer
+        let startTime = new Date();
+
+        // This function contains the custom logic to update our own data
+        await this.customUpdateFunction();
+
+        // Check to see if we're trying to update ourselves too often
+        checkForAggressiveRefreshInterval(startTime, this.props.interval);
+
+        // Set a timeOut to update ourselves again in refreshInterval
+        this.props.setTimeout(() => {
+            console.log(`${this.state.widgetName}: Updating data, interval is ${this.props.interval}s`);
+            this.updateOurData();
+        }, this.props.interval * 1000);
+    }
+
+    componentDidMount = async () => {
+        this.updateOurData();
     };
 
     renderCardBody() {
@@ -63,4 +89,4 @@ WidgetSNBarChart.defaultProps = {
     interval: 60
 };
 
-export default WidgetSNBarChart;
+export default ReactTimeout(WidgetSNBarChart);

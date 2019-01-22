@@ -3,6 +3,7 @@ import DashboardDataCard from "../components/DashboardDataCard";
 import { getLeankitCards } from "../utilities/getLeankitCards";
 import { getCommentsforLeankitCards } from "../utilities/getCommentsForLeankitCards";
 import { getBacklogDurationForLeankitCards } from "../utilities/getBacklogDurationForLeankitCards";
+import ReactTimeout from "react-timeout";
 import { checkForAggressiveRefreshInterval } from "../utilities/checkForAggressiveRefreshInterval";
 
 var moment = require("moment");
@@ -17,7 +18,8 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
         this.state = { instance: props.instance, leankit_cards: [], boardId: props.boardId };
     }
 
-    componentDidMount = async () => {
+    async customUpdateFunction() {
+        // Retrieve our data (likely from an API)
         // Get all the leankit cards
         let leankit_cards = await getLeankitCards("jnj.leankit.com", this.state.boardId, "active,backlog");
 
@@ -51,8 +53,29 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
         let leankit_cards_with_backlogDuration = await getBacklogDurationForLeankitCards(filteredCards, "jnj.leankit.com");
         // console.log(leankit_cards_with_backlogDuration);
 
-        // Save these cards to our state, which triggers react to render an update to the screen
+        // Update our own state with the new data
         this.setState({ leankit_cards: leankit_cards_with_backlogDuration });
+    }
+
+    async updateOurData() {
+        // Start timer
+        let startTime = new Date();
+
+        // This function contains the custom logic to update our own data
+        await this.customUpdateFunction();
+
+        // Check to see if we're trying to update ourselves too often
+        checkForAggressiveRefreshInterval(startTime, this.props.interval);
+
+        // Set a timeOut to update ourselves again in refreshInterval
+        this.props.setTimeout(() => {
+            console.log(`${this.state.widgetName}: Updating data, interval is ${this.props.interval}s`);
+            this.updateOurData();
+        }, this.props.interval * 1000);
+    }
+
+    componentDidMount = async () => {
+        this.updateOurData();
     };
 
     renderTableBody() {
@@ -168,4 +191,4 @@ WidgetLeankitDiscoverySolutioningCardList.defaultProps = {
     interval: 60
 };
 
-export default WidgetLeankitDiscoverySolutioningCardList;
+export default ReactTimeout(WidgetLeankitDiscoverySolutioningCardList);
