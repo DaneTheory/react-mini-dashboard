@@ -22,11 +22,11 @@ export async function getBacklogDurationForLeankitCards(leankitCards, leankitAPI
             );
         });
         // console.log("MovedFromBacklogArray", movedFromBacklogArray);
-        console.log((movedFromBacklogArray.length > 0 && movedFromBacklogArray[0].EventDateTime) || undefined);
+        // console.log((movedFromBacklogArray.length > 0 && movedFromBacklogArray[0].EventDateTime) || undefined);
         card.backlogComplete = (movedFromBacklogArray.length > 0 && movedFromBacklogArray[0].EventDateTime) || undefined;
     });
 
     let endDate = new Date();
-    console.log("Get History Duration: ", endDate - startDate);
+    // console.log("Get History Duration: ", endDate - startDate);
     return leankitCards;
 }

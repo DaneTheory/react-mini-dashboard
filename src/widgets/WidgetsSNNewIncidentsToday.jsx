@@ -2,12 +2,14 @@ import React from "react";
 import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
 import PropTypes from "prop-types";
+import { checkForAggressiveRefreshInterval } from "../utilities/checkForAggressiveRefreshInterval";
 
 // Create a class component
 class WidgetSNNewIncidentToday extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { widgetName: "firstwidget", count: [], instance: props.instance };
+
+        this.state = { widgetName: "WidgetSNNewIncidentToday", count: [], instance: props.instance };
     }
 
     componentDidMount = async () => {
@@ -36,7 +38,12 @@ class WidgetSNNewIncidentToday extends React.Component {
 
     render() {
         return (
-            <DashboardDataCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetSNNewIncidentToday">
+            <DashboardDataCard
+                id={this.props.id}
+                position={this.props.position}
+                color={this.props.color}
+                widgetName="WidgetSNNewIncidentToday"
+            >
                 {this.renderCardBody()}
             </DashboardDataCard>
         );
@@ -46,6 +53,11 @@ class WidgetSNNewIncidentToday extends React.Component {
 // Force the caller to include the proper attributes
 WidgetSNNewIncidentToday.propTypes = {
     instance: PropTypes.string.isRequired
+};
+
+// Set default props in case they aren't passed to us by the caller
+WidgetSNNewIncidentToday.defaultProps = {
+    interval: 60
 };
 
 export default WidgetSNNewIncidentToday;

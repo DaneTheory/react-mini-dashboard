@@ -1,6 +1,7 @@
 import React from "react";
 import DashboardDataCard from "../components/DashboardDataCard";
 import { getLeankitCards } from "../utilities/getLeankitCards";
+import { checkForAggressiveRefreshInterval } from "../utilities/checkForAggressiveRefreshInterval";
 
 var classNames = require("classnames");
 
@@ -8,6 +9,7 @@ var classNames = require("classnames");
 class WidgetLeankitDiscoveryOwnerList extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = { instance: props.instance, leankit_cards: [], boardId: props.boardId, ownerArray: [] };
     }
 
@@ -35,7 +37,7 @@ class WidgetLeankitDiscoveryOwnerList extends React.Component {
         let ownerArray = Object.entries(ownerFrequency).map(obj => {
             return { name: obj[0], count: obj[1] };
         });
-        console.log("owner array", ownerArray);
+        // console.log("owner array", ownerArray);
         this.setState({ ownerArray: ownerArray });
     };
 
@@ -98,5 +100,10 @@ class WidgetLeankitDiscoveryOwnerList extends React.Component {
 
     // end of class
 }
+
+// Set default props in case they aren't passed to us by the caller
+WidgetLeankitDiscoveryOwnerList.defaultProps = {
+    interval: 60
+};
 
 export default WidgetLeankitDiscoveryOwnerList;

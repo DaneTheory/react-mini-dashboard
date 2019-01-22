@@ -2,13 +2,14 @@ import React from "react";
 import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
 import PropTypes from "prop-types";
+import { checkForAggressiveRefreshInterval } from "../utilities/checkForAggressiveRefreshInterval";
 
 // Create a class component
 class WidgetSNINCP1P2Count extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { widgetName: "firstwidget", count: [], instance: props.instance };
+        this.state = { widgetName: "WidgetSNINCP1P2Count", count: [], instance: props.instance };
     }
 
     componentDidMount = async () => {
@@ -39,6 +40,11 @@ class WidgetSNINCP1P2Count extends React.Component {
 // Force the caller to include the proper attributes
 WidgetSNINCP1P2Count.propTypes = {
     instance: PropTypes.string.isRequired
+};
+
+// Set default props in case they aren't passed to us by the caller
+WidgetSNINCP1P2Count.defaultProps = {
+    interval: 60
 };
 
 export default WidgetSNINCP1P2Count;

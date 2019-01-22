@@ -3,6 +3,7 @@ import DashboardChartCard from "../components/DashboardChartCard";
 import apiProxy from "../api/apiProxy";
 import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
+import { checkForAggressiveRefreshInterval } from "../utilities/checkForAggressiveRefreshInterval";
 
 // -----------------------------------
 
@@ -10,7 +11,8 @@ import { Bar } from "react-chartjs-2";
 class WidgetSNBarChart extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { widgetName: "firstwidget", count: [], instance: props.instance };
+
+        this.state = { widgetName: "WidgetSNBarChart", count: [], instance: props.instance };
     }
 
     componentDidMount = async () => {
@@ -54,6 +56,11 @@ class WidgetSNBarChart extends React.Component {
 // Force the caller to include the proper attributes
 WidgetSNBarChart.propTypes = {
     instance: PropTypes.string.isRequired
+};
+
+// Set default props in case they aren't passed to us by the caller
+WidgetSNBarChart.defaultProps = {
+    interval: 60
 };
 
 export default WidgetSNBarChart;

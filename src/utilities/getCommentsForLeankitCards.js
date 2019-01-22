@@ -16,6 +16,6 @@ export async function getCommentsforLeankitCards(leankitCards, leankitAPIHost) {
     await Promise.all(promises);
 
     let endDate = new Date();
-    console.log("Duration: ", endDate - startDate);
+    // console.log("Duration: ", endDate - startDate);
     return leankitCards;
 }

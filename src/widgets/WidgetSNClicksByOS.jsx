@@ -3,12 +3,14 @@ import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
 import PropTypes from "prop-types";
 import { determineOSFromUserAuth } from "../utilities/determineOSFromUserAuth";
+import { checkForAggressiveRefreshInterval } from "../utilities/checkForAggressiveRefreshInterval";
 
 // Create a class component
 class WidgetSNClicksByOS extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { widgetName: "firstwidget", count: [], instance: props.instance, OSInfo: {} };
+
+        this.state = { widgetName: "WidgetSNClicksByOS", count: [], instance: props.instance, OSInfo: {} };
     }
 
     componentDidMount = () => {
@@ -129,6 +131,11 @@ class WidgetSNClicksByOS extends React.Component {
 // Force the caller to include the proper attributes
 WidgetSNClicksByOS.propTypes = {
     instance: PropTypes.string.isRequired
+};
+
+// Set default props in case they aren't passed to us by the caller
+WidgetSNClicksByOS.defaultProps = {
+    interval: 60
 };
 
 export default WidgetSNClicksByOS;

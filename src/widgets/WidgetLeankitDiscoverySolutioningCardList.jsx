@@ -3,6 +3,7 @@ import DashboardDataCard from "../components/DashboardDataCard";
 import { getLeankitCards } from "../utilities/getLeankitCards";
 import { getCommentsforLeankitCards } from "../utilities/getCommentsForLeankitCards";
 import { getBacklogDurationForLeankitCards } from "../utilities/getBacklogDurationForLeankitCards";
+import { checkForAggressiveRefreshInterval } from "../utilities/checkForAggressiveRefreshInterval";
 
 var moment = require("moment");
 
@@ -12,6 +13,7 @@ var classNames = require("classnames");
 class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = { instance: props.instance, leankit_cards: [], boardId: props.boardId };
     }
 
@@ -47,7 +49,7 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
 
         // Get the backlog duration
         let leankit_cards_with_backlogDuration = await getBacklogDurationForLeankitCards(filteredCards, "jnj.leankit.com");
-        console.log(leankit_cards_with_backlogDuration);
+        // console.log(leankit_cards_with_backlogDuration);
 
         // Save these cards to our state, which triggers react to render an update to the screen
         this.setState({ leankit_cards: leankit_cards_with_backlogDuration });
@@ -160,5 +162,10 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
 
     // end of class
 }
+
+// Set default props in case they aren't passed to us by the caller
+WidgetLeankitDiscoverySolutioningCardList.defaultProps = {
+    interval: 60
+};
 
 export default WidgetLeankitDiscoverySolutioningCardList;

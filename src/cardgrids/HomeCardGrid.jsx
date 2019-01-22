@@ -31,7 +31,7 @@ class HomeCardGrid extends React.Component {
                     <WidgetSNScrollableTable position="span 4 / span 4" />
 
                     <WidgetSNINCP1P2Count position="span 2 / span 2" instance={this.props.sn_instance} />
-                    <WidgetSNUniqueLoginsToday position="span 2 / span 2" instance={this.props.sn_instance} interval="10" />
+                    <WidgetSNUniqueLoginsToday position="span 2 / span 2" instance={this.props.sn_instance} />
                     <WidgetSNCurrentUsers position="span 2/span 2" instance={this.props.sn_instance} />
                     <WidgetSNNewIncidentToday position="span 2/span 2" instance={this.props.sn_instance} />
                     <WidgetSNClicksByOS position="span 5/span 2" instance={this.props.sn_instance} />

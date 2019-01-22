@@ -3,12 +3,14 @@ import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
 import PropTypes from "prop-types";
 import { determineBrowserFromUserAuth } from "../utilities/determineBrowserFromUserAuth";
+import { checkForAggressiveRefreshInterval } from "../utilities/checkForAggressiveRefreshInterval";
 
 // Create a class component
 class WidgetSNClicksByBrowser extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { widgetName: "firstwidget", count: [], instance: props.instance, browserInfo: {} };
+
+        this.state = { widgetName: "WidgetSNClicksByBrowser", count: [], instance: props.instance, browserInfo: {} };
     }
 
     componentDidMount = () => {
@@ -134,6 +136,11 @@ class WidgetSNClicksByBrowser extends React.Component {
 // Force the caller to include the proper attributes
 WidgetSNClicksByBrowser.propTypes = {
     instance: PropTypes.string.isRequired
+};
+
+// Set default props in case they aren't passed to us by the caller
+WidgetSNClicksByBrowser.defaultProps = {
+    interval: 60
 };
 
 export default WidgetSNClicksByBrowser;

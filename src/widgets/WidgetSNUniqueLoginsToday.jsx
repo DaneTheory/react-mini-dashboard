@@ -3,26 +3,17 @@ import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
 import PropTypes from "prop-types";
 import ReactTimeout from "react-timeout";
-import { duration } from "moment";
+import { checkForAggressiveRefreshInterval } from "../utilities/checkForAggressiveRefreshInterval";
 
 // Create a class component
 class WidgetUniqueLoginsToday extends React.Component {
     constructor(props) {
         super(props);
-        // Default refresh Interval
-        let refreshInterval = 60;
-        if (props.interval) {
-            console.log("caller set our refresh interval to: " + props.interval);
-            refreshInterval = props.interval;
-        }
-        this.state = { widgetName: "WidgetUniqueLoginsToday", count: [], instance: props.instance, refreshInterval: refreshInterval };
+        this.state = { widgetName: "WidgetUniqueLoginsToday", count: [], instance: props.instance };
     }
 
-    async updateOurData() {
-        // Start timer
-        let startTime = new Date();
-
-        // Update our data
+    async customUpdateFunction() {
+        // Retrieve our data (likely from an API)
         const response = await apiProxy.get(`/sn/${this.state.instance}/api/now/stats/sys_user_presence`, {
             params: {
                 // Units: years, months, days, hours, minutes
@@ -32,25 +23,25 @@ class WidgetUniqueLoginsToday extends React.Component {
             }
         });
 
-        // Update our own state with the new data (and check timing)
+        // Update our own state with the new data
         this.setState({ count: response.data.result.stats.count });
-        let finishTime = new Date();
-        let durationOfUpdateInMs = finishTime - startTime;
-        let reasonableRefreshIntervalInSecs = (durationOfUpdateInMs / 1000) * 100;
-        console.log(`reasonable refresh interval: ${reasonableRefreshIntervalInSecs}`);
-        console.log(`duration of update: ${durationOfUpdateInMs}`);
-        if (this.state.refreshInterval < reasonableRefreshIntervalInSecs) {
-            console.warn(
-                `Warning, refresh interval (${this.state.refreshInterval}s) is fast compared to length of update (${durationOfUpdateInMs /
-                    1000}s)`
-            );
-        }
+    }
+
+    async updateOurData() {
+        // Start timer
+        let startTime = new Date();
+
+        // This function contains the custom logic to update our own data
+        await this.customUpdateFunction();
+
+        // Check to see if we're trying to update ourselves too often
+        checkForAggressiveRefreshInterval(startTime, this.props.interval);
 
         // Set a timeOut to update ourselves again in refreshInterval
         this.props.setTimeout(() => {
-            console.log(`${this.state.widgetName}: Updating data, interval is ${this.state.refreshInterval}s`);
+            console.log(`${this.state.widgetName}: Updating data, interval is ${this.props.interval}s`);
             this.updateOurData();
-        }, this.state.refreshInterval * 1000);
+        }, this.props.interval * 1000);
     }
 
     componentDidMount = async () => {
@@ -83,6 +74,11 @@ class WidgetUniqueLoginsToday extends React.Component {
 // Force the caller to include the proper attributes
 WidgetUniqueLoginsToday.propTypes = {
     instance: PropTypes.string.isRequired
+};
+
+// Set default props in case they aren't passed to us by the caller
+WidgetUniqueLoginsToday.defaultProps = {
+    interval: 60
 };
 
 export default ReactTimeout(WidgetUniqueLoginsToday);

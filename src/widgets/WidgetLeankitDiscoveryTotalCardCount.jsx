@@ -1,6 +1,7 @@
 import React from "react";
 import DashboardDataCard from "../components/DashboardDataCard";
 import { getLeankitCards } from "../utilities/getLeankitCards";
+import { checkForAggressiveRefreshInterval } from "../utilities/checkForAggressiveRefreshInterval";
 
 var classNames = require("classnames");
 
@@ -8,6 +9,7 @@ var classNames = require("classnames");
 class WidgetLeankitDiscoveryTotalCardCount extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = { instance: props.instance, leankit_cards: [], boardId: props.boardId };
     }
 
@@ -48,5 +50,10 @@ class WidgetLeankitDiscoveryTotalCardCount extends React.Component {
 
     // end of class
 }
+
+// Set default props in case they aren't passed to us by the caller
+WidgetLeankitDiscoveryTotalCardCount.defaultProps = {
+    interval: 60
+};
 
 export default WidgetLeankitDiscoveryTotalCardCount;
