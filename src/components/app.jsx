@@ -103,6 +103,7 @@ class App extends React.Component {
                             render={() => (
                                 <HomeCardGrid
                                     sn_instance={this.state.sn_instance}
+                                    boldchat_instance={this.state.boldchat_instance}
                                     leankit_instance={this.state.leankit_instance}
                                     changeParentPageTitle={this.changePageTitle.bind(this)}
                                 />

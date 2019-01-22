@@ -35,11 +35,7 @@ class WidgetBoldChatInactiveCount extends React.Component {
             boldchat_response = await apiProxy.get(targetUrl, {
                 params: params
             });
-            console.log(boldchat_response);
-            console.log(boldchat_response.data.Data.length);
             accumulated_boldchats = accumulated_boldchats.concat(boldchat_response.data.Data);
-            console.log(accumulated_boldchats.length);
-            console.log(boldchat_response.data.Truncated);
             truncated = boldchat_response.data.Truncated;
 
             if (truncated) {

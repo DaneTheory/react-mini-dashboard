@@ -18,7 +18,6 @@ class WidgetLeankitCount extends React.Component {
             })
             .then(response => {
                 // Save into our component state
-                console.log(response.data.cards.length);
                 this.setState({ count: response.data.cards.length });
             });
     };

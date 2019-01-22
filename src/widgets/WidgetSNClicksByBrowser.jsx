@@ -78,7 +78,12 @@ class WidgetSNClicksByBrowser extends React.Component {
 
     render() {
         return (
-            <DashboardDataCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetSNClicksByBrowser">
+            <DashboardDataCard
+                id={this.props.id}
+                position={this.props.position}
+                color={this.props.color}
+                widgetName="WidgetSNClicksByBrowser"
+            >
                 {this.renderCardHeader()}
                 {this.renderCardBody()}
             </DashboardDataCard>
@@ -91,7 +96,7 @@ class WidgetSNClicksByBrowser extends React.Component {
 
     createBrowserCounts(user_agent_table) {
         // Print out all user_agent strings for trouble-shooting
-        console.log("All user_agent strings:");
+        // console.log("All user_agent strings:");
         user_agent_table.forEach(row => {
             // console.log(`${row.count}: ${row.user_agent}`);
         });
