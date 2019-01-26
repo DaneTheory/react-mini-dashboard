@@ -3,27 +3,26 @@ import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
 import PropTypes from "prop-types";
 import ReactTimeout from "react-timeout";
+
 import { checkForAggressiveRefreshInterval } from "../utilities/checkForAggressiveRefreshInterval";
 
 // Create a class component
-class WidgetSNCurrentUsers extends React.Component {
+class WidgetSNExperiment01 extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { widgetName: "WidgetSNCurrentUsers", count: [], instance: props.instance };
+        this.state = { widgetName: "WidgetSNExperiment01", count: [], instance: props.instance };
     }
+
+    updateTrigger = () => {
+        console.warn("Parent caused me to update!");
+    };
 
     async customUpdateFunction() {
         // Retrieve our data (likely from an API)
-        const response = await apiProxy.get(`/sn/${this.state.instance}/api/now/stats/sys_user_presence`, {
-            params: {
-                // Units: years, months, days, hours, minutes
-                sysparm_query: "sys_updated_on>=javascript:gs.minutesAgoStart(5)",
-                sysparm_count: "true",
-                sysparm_display_value: "true"
-            }
+        const response = await apiProxy.get(`/sn/${this.state.instance}/api/now/stats/incident`, {
+            params: { sysparm_query: "stateIN100,2^priorityIN1,2", sysparm_count: "true" }
         });
-        // console.log(response);
 
         // Update our own state with the new data
         this.setState({ count: response.data.result.stats.count });
@@ -53,7 +52,7 @@ class WidgetSNCurrentUsers extends React.Component {
     renderCardBody() {
         return (
             <div className="item">
-                <div className="single-num-title">Current Users (5 mins)</div>
+                <div className="single-num-title">Experiment 01 (P1/P2 In)</div>
                 <div className="single-num-value">{parseInt(this.state.count).toLocaleString("en")}</div>
             </div>
         );
@@ -61,7 +60,7 @@ class WidgetSNCurrentUsers extends React.Component {
 
     render() {
         return (
-            <DashboardDataCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetSNCurrentUsers">
+            <DashboardDataCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetImageNames">
                 {this.renderCardBody()}
             </DashboardDataCard>
         );
@@ -69,13 +68,13 @@ class WidgetSNCurrentUsers extends React.Component {
 }
 
 // Force the caller to include the proper attributes
-WidgetSNCurrentUsers.propTypes = {
+WidgetSNExperiment01.propTypes = {
     instance: PropTypes.string.isRequired
 };
 
 // Set default props in case they aren't passed to us by the caller
-WidgetSNCurrentUsers.defaultProps = {
+WidgetSNExperiment01.defaultProps = {
     interval: 60
 };
 
-export default ReactTimeout(WidgetSNCurrentUsers);
+export default ReactTimeout(WidgetSNExperiment01);

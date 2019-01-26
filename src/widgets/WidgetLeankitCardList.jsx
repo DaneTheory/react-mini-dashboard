@@ -31,7 +31,7 @@ class WidgetLeankitCardList extends React.Component {
         await this.customUpdateFunction();
 
         // Check to see if we're trying to update ourselves too often
-        checkForAggressiveRefreshInterval(startTime, this.props.interval);
+        checkForAggressiveRefreshInterval(startTime, this.props.interval, this.state.widgetName);
 
         // Set a timeOut to update ourselves again in refreshInterval
         this.props.setTimeout(() => {

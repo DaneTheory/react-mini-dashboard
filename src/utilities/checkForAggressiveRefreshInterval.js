@@ -1,6 +1,6 @@
 export function checkForAggressiveRefreshInterval(startTime, refreshInterval, widgetName) {
     // Aggressive factor
-    let aggresiveFactor = 20;
+    let aggresiveFactor = 10;
 
     let finishTime = new Date();
     let durationOfUpdateInMs = finishTime - startTime;
