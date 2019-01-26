@@ -3,6 +3,7 @@ import WidgetSNBarChart from "../widgets/WidgetSNBarChart";
 import WidgetSNScrollableTable from "../widgets/WidgetSNScrollableTable";
 import WidgetSNUniqueLoginsToday from "../widgets/WidgetSNUniqueLoginsToday";
 import WidgetSNExperiment01 from "../widgets/WidgetSNExperiment01";
+import PubSub from "pubsub-js";
 
 import CardGrid from "../components/cardGrid";
 
@@ -13,10 +14,21 @@ class Dev1CardGrid extends React.Component {
         this.child = React.createRef();
     }
 
+    widgetEventUpdateLoop(timemoutInMs) {
+        PubSub.publish("updateWidgetsEvent", "Update your data, you widgets !");
+
+        setTimeout(() => {
+            this.widgetEventUpdateLoop(timemoutInMs);
+        }, timemoutInMs);
+    }
+
     componentDidMount() {
         // Call our ref to trigger an experimental update
         // NOTE: Because we're using ReactTimeout package, we need to add "wrappedIntance"
         this.child.current.wrappedInstance.updateTrigger();
+
+        // Create a PubSub event loop
+        this.widgetEventUpdateLoop(5000);
     }
 
     render() {

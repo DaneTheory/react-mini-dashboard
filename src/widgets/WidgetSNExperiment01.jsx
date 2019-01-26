@@ -3,6 +3,7 @@ import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
 import PropTypes from "prop-types";
 import ReactTimeout from "react-timeout";
+import PubSub from "pubsub-js";
 
 import { checkForAggressiveRefreshInterval } from "../utilities/checkForAggressiveRefreshInterval";
 
@@ -12,6 +13,10 @@ class WidgetSNExperiment01 extends React.Component {
         super(props);
 
         this.state = { widgetName: "WidgetSNExperiment01", count: [], instance: props.instance };
+
+        // This is our event handler, it's called from the outside world via an event subscription, and when called, it
+        // won't know about "this", so we need to bind our current "this" to "this" within the function
+        this.updateViaPubSub = this.updateViaPubSub.bind(this);
     }
 
     updateTrigger = () => {
@@ -20,8 +25,13 @@ class WidgetSNExperiment01 extends React.Component {
 
     async customUpdateFunction() {
         // Retrieve our data (likely from an API)
-        const response = await apiProxy.get(`/sn/${this.state.instance}/api/now/stats/incident`, {
-            params: { sysparm_query: "stateIN100,2^priorityIN1,2", sysparm_count: "true" }
+        const response = await apiProxy.get(`/sn/${this.state.instance}/api/now/stats/sys_user_presence`, {
+            params: {
+                // Units: years, months, days, hours, minutes
+                sysparm_query: "sys_updated_on>=javascript:gs.daysAgoStart(0)",
+                sysparm_count: "true",
+                sysparm_display_value: "true"
+            }
         });
 
         // Update our own state with the new data
@@ -45,14 +55,22 @@ class WidgetSNExperiment01 extends React.Component {
         }, this.props.interval * 1000);
     }
 
+    updateViaPubSub(msg, data) {
+        console.warn(msg, data);
+        this.customUpdateFunction();
+    }
+
     componentDidMount = async () => {
-        this.updateOurData();
+        // Self-generate our own update loop
+        // this.updateOurData();
+        // Subscribe to update events from our parent
+        var pubsubToken = PubSub.subscribe("updateWidgetsEvent", this.updateViaPubSub);
     };
 
     renderCardBody() {
         return (
             <div className="item">
-                <div className="single-num-title">Experiment 01 (P1/P2 In)</div>
+                <div className="single-num-title">Exp 01 (Unique Logins)</div>
                 <div className="single-num-value">{parseInt(this.state.count).toLocaleString("en")}</div>
             </div>
         );
