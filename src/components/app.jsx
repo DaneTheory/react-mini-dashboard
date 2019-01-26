@@ -44,7 +44,7 @@ class App extends React.Component {
         console.log("Trying to open");
         console.log(this.sidebarRef.current.style);
         this.sidebarRef.current.style.width = "250px";
-        this.mainRef.current.style.marginLeft = "250px";
+        this.mainRef.current.style.marginLeft = "180px";
         // document.getElementById("mySidenav").style.width = "250px";
     }
 
@@ -61,20 +61,30 @@ class App extends React.Component {
             <HashRouter>
                 <div>
                     <div ref={this.sidebarRef} id="mySidenav" className="sidenav">
-                        <a href="javascript:void(0)" className="closebtn" onClick={this.closeNav}>
+                        {/* <a href="#" className="closebtn" onClick={this.closeNav}>
                             &times;
-                        </a>
-                        Available Dashboards:
-                        <Link to="/">Home</Link>
-                        <Link to="/leankit-discovery-dashboard">Leankit Discovery Dashboard</Link>
-                        <br />
-                        <Link to="/everything-dashboard">Everything Dashboard</Link>
-                        <Link to="/demo1-dashboard">Demo1 Dashboard</Link>
-                        <Link to="/dev1-dashboard">Dev1 Dashboard</Link>
-                    </div>
+                        </a> */}
+                        <span className="closebtn" onClick={this.closeNav}>
+                            &times;
+                        </span>
 
-                    {/* <!-- Use any element to open the sidenav --> */}
-                    <span onClick={this.openNav}>open</span>
+                        <div>
+                            Available Dashboards:
+                            <Link to="/">Home</Link>
+                            <Link to="/leankit-discovery-dashboard">Leankit Discovery Dashboard</Link>
+                            <br />
+                            <Link to="/everything-dashboard">Everything Dashboard</Link>
+                            <Link to="/demo1-dashboard">Demo1 Dashboard</Link>
+                            <Link to="/dev1-dashboard">Dev1 Dashboard</Link>
+                        </div>
+                        <div className="otherDetails">
+                            <div className="title">Other Details:</div>
+                            <div className="body">
+                                <div>Environment: {process.env.NODE_ENV}</div>
+                                <div>Refresh countdown: {this.state.refreshRemainingSecs / 1000}s</div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div id="main" ref={this.mainRef} className="page_container">
                         <div className="title_container">
@@ -84,20 +94,10 @@ class App extends React.Component {
                         </div>
                         <div className="leftNav_container">
                             <div className="navPageNavigation">
-                                Available Dashboards:
-                                <Link to="/">Home</Link>
-                                <Link to="/leankit-discovery-dashboard">Leankit Discovery Dashboard</Link>
-                                <br />
-                                <Link to="/everything-dashboard">Everything Dashboard</Link>
-                                <Link to="/demo1-dashboard">Demo1 Dashboard</Link>
-                                <Link to="/dev1-dashboard">Dev1 Dashboard</Link>
-                            </div>
-                            <div className="otherDetails">
-                                <div className="title">Other Details:</div>
-                                <div className="body">
-                                    <div>Environment: {process.env.NODE_ENV}</div>
-                                    <div>Refresh countdown: {this.state.refreshRemainingSecs / 1000}s</div>
-                                </div>
+                                {/* Create the hamburger menu button */}
+                                <button className="navButtonsLeft" type="button" onClick={this.openNav}>
+                                    &#9776;
+                                </button>
                             </div>
                         </div>
                         <div className="centerPanel_container">
