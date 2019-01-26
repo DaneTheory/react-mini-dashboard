@@ -12,12 +12,13 @@ class Dev1CardGrid extends React.Component {
         super(props);
         props.changeParentPageTitle("Dev1 Dashboard");
         this.child = React.createRef();
+        this.timeoutHandle = null;
     }
 
     widgetEventUpdateLoop(timemoutInMs) {
         PubSub.publish("updateWidgetsEvent", "Update your data, you widgets !");
 
-        setTimeout(() => {
+        this.timeoutHandle = setTimeout(() => {
             this.widgetEventUpdateLoop(timemoutInMs);
         }, timemoutInMs);
     }
@@ -28,7 +29,12 @@ class Dev1CardGrid extends React.Component {
         this.child.current.wrappedInstance.updateTrigger();
 
         // Create a PubSub event loop
-        this.widgetEventUpdateLoop(5000);
+        this.widgetEventUpdateLoop(10000);
+    }
+
+    componentWillUnmount() {
+        // clear the periodic timeout pubsub loop
+        clearTimeout(this.timeoutHandle);
     }
 
     render() {

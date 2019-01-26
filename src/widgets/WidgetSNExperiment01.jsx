@@ -64,8 +64,13 @@ class WidgetSNExperiment01 extends React.Component {
         // Self-generate our own update loop
         // this.updateOurData();
         // Subscribe to update events from our parent
-        var pubsubToken = PubSub.subscribe("updateWidgetsEvent", this.updateViaPubSub);
+        PubSub.subscribe("updateWidgetsEvent", this.updateViaPubSub);
     };
+
+    componentWillUnmount() {
+        // Unsubscribe from all pubsub events
+        PubSub.unsubscribe(this.updateViaPubSub);
+    }
 
     renderCardBody() {
         return (
