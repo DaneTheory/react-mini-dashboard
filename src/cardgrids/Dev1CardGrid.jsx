@@ -13,14 +13,26 @@ class Dev1CardGrid extends React.Component {
         props.changeParentPageTitle("Dev1 Dashboard");
         this.child = React.createRef();
         this.timeoutHandle = null;
+        this.state = { refreshRemainingMs: parseInt(props.refreshInterval) };
     }
 
-    widgetEventUpdateLoop(timemoutInMs) {
-        PubSub.publish("updateWidgetsEvent", "Update your data, you widgets !");
+    triggerWidgetUpdateEvent() {}
 
+    widgetRefreshCountdownLoop(timemoutInMs) {
+        console.log("Time left: " + this.state.refreshRemainingMs);
+
+        // Check to see if timer expired, if so trigger data update
+        if (this.state.refreshRemainingMs === 0) {
+            PubSub.publish("updateWidgetsEvent", "Update your data, you widgets !");
+            this.setState({ refreshRemainingMs: parseInt(this.props.refreshInterval) });
+        }
+
+        // Subtract one second, and then wait for one second
+        this.setState({ refreshRemainingMs: this.state.refreshRemainingMs - 1000 });
+        this.props.setPageCountdown(this.state.refreshRemainingMs);
         this.timeoutHandle = setTimeout(() => {
-            this.widgetEventUpdateLoop(timemoutInMs);
-        }, timemoutInMs);
+            this.widgetRefreshCountdownLoop(timemoutInMs - 1000);
+        }, 1000);
     }
 
     componentDidMount() {
@@ -29,7 +41,7 @@ class Dev1CardGrid extends React.Component {
         this.child.current.wrappedInstance.updateTrigger();
 
         // Create a PubSub event loop
-        this.widgetEventUpdateLoop(10000);
+        this.widgetRefreshCountdownLoop(parseInt(this.props.refreshInterval));
     }
 
     componentWillUnmount() {

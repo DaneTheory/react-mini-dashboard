@@ -17,6 +17,7 @@ import HomeCardGrid from "../cardgrids/HomeCardGrid";
 class App extends React.Component {
     state = {
         pageTitle: "Original Title",
+        refreshRemainingSecs: 120,
         sn_instance: "jnjprodworker.service-now.com",
         leankit_instance: "jnj.leankit.com",
         // sn_instance: "jnjsandbox.service-now.com",
@@ -26,6 +27,10 @@ class App extends React.Component {
     // Later will pass this function to child components so they can change our Page Title
     changePageTitle(newTitle) {
         this.setState({ pageTitle: newTitle });
+    }
+
+    setPageCountdown(numSecs) {
+        this.setState({ refreshRemainingSecs: numSecs });
     }
 
     render() {
@@ -49,7 +54,10 @@ class App extends React.Component {
                         </div>
                         <div className="otherDetails">
                             <div className="title">Other Details:</div>
-                            <div className="body">Environment: {process.env.NODE_ENV}</div>
+                            <div className="body">
+                                <div>Environment: {process.env.NODE_ENV}</div>
+                                <div>Refresh countdown: {this.state.refreshRemainingSecs / 1000}s</div>
+                            </div>
                         </div>
                     </div>
                     <div className="centerPanel_container">
@@ -83,6 +91,8 @@ class App extends React.Component {
                                     sn_instance={this.state.sn_instance}
                                     boldchat_instance={this.state.boldchat_instance}
                                     changeParentPageTitle={this.changePageTitle.bind(this)}
+                                    setPageCountdown={this.setPageCountdown.bind(this)}
+                                    refreshInterval="15000"
                                 />
                             )}
                         />
