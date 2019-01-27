@@ -1,13 +1,15 @@
+// 3rd party imports
 import React from "react";
-import WidgetLeankitCardList from "../widgets/WidgetLeankitCardList";
-import WidgetLeankitDiscoveryTotalCardCount from "../widgets/WidgetLeankitDiscoveryTotalCardCount";
-import WidgetLeankitDiscoveryDefectCardCount from "../widgets/WidgetLeankitDiscoveryDefectCardCount";
-import WidgetLeankitDiscoveryAvgCardAge from "../widgets/WidgetLeankitDiscoveryAvgCardAge";
-import WidgetLeankitDiscoverySolutioningCardList from "../widgets/WidgetLeankitDiscoverySolutioningCardList";
-import WidgetLeankitDiscoveryOwnerList from "../widgets/WidgetLeankitDiscoveryOwnerList";
 import PropTypes from "prop-types";
 
+// project imports
 import CardGrid from "../components/cardGrid";
+import WidgetLeankitCardList from "../widgetsPubSub/WidgetLeankitCardList";
+import WidgetLeankitDiscoveryTotalCardCount from "../widgetsPubSub/WidgetLeankitDiscoveryTotalCardCount";
+import WidgetLeankitDiscoveryDefectCardCount from "../widgetsPubSub/WidgetLeankitDiscoveryDefectCardCount";
+import WidgetLeankitDiscoveryAvgCardAge from "../widgetsPubSub/WidgetLeankitDiscoveryAvgCardAge";
+import WidgetLeankitDiscoverySolutioningCardList from "../widgetsPubSub/WidgetLeankitDiscoverySolutioningCardList";
+import WidgetLeankitDiscoveryOwnerList from "../widgetsPubSub/WidgetLeankitDiscoveryOwnerList";
 
 class LeankitDiscoveryCardGrid extends React.Component {
     constructor(props) {

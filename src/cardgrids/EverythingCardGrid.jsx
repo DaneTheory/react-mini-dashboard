@@ -1,19 +1,20 @@
+// 3rd party imports
+import PropTypes from "prop-types";
 import React from "react";
 
-// My own imports, namely Widgets
+// project imports
+import CardGrid from "../components/cardGrid";
 import WidgetSNINCP1P2Count from "../widgets/WidgetSNINCP1P2Count";
 import WidgetSNUniqueLoginsToday from "../widgets/WidgetSNUniqueLoginsToday";
 import WidgetSNCurrentUsers from "../widgets/WidgetSNCurrentUsers";
 import WidgetSNNewIncidentToday from "../widgets/WidgetsSNNewIncidentsToday";
 import WidgetSNClicksByOS from "../widgets/WidgetSNClicksByOS";
 import WidgetSNClicksByBrowser from "../widgets/WidgetSNClicksByBrowser";
-import WidgetBoldChatActiveCount from "../widgets/WidgetBoldChatActiveCount";
-import WidgetBoldChatInactiveCount from "../widgets/WidgetBoldChatInactiveCount";
-import WidgetLeankitCount from "../widgets/WidgetLeankitCount";
+import WidgetLeankitCount from "../widgetsPubSub/WidgetLeankitCount";
 import WidgetSNBarChart from "../widgets/WidgetSNBarChart";
-import PropTypes from "prop-types";
 
-import CardGrid from "../components/cardGrid";
+import WidgetBoldChatInactiveCount from "../widgetsPubSub/WidgetBoldChatInactiveCount";
+import WidgetBoldChatActiveCount from "../widgetsPubSub/WidgetBoldChatActiveCount";
 
 class AllCardGrid extends React.Component {
     constructor(props) {
