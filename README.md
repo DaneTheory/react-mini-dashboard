@@ -37,7 +37,7 @@
 
 I've tried three different strategies for period data updates for each widget.
 
-1. Widget has it's own custom-length timer (didn't like this, as it means it would be difficult to look at a screen full of widgets, and understand when each would be updating)
+1. Widget has it's own custom-length timer (didn't like this, as it means it would be difficult to look at a screen full of widgets, and understand when each would be updating. Also required using a reactSafe setTimemout, which in turn required each widget to be wrapped in a ReactTimeout)
 1. Parent (Card Grid) has a custom-length timer, and uses React Ref to call Widget's Update Function (didn't like this solution as it means the Parent/CardGrid would have to manage alot of refs, once for each widget)
 1. Parent (Card Grid) has a custom-length timer, and simply issues a PubSub event, which all widgets will listen for. PubSub is constrained to a single-process application
 

@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import WidgetSNBarChart from "../widgets/WidgetSNBarChart";
 import WidgetSNScrollableTable from "../widgets/WidgetSNScrollableTable";
 import WidgetSNUniqueLoginsToday from "../widgets/WidgetSNUniqueLoginsToday";
-import WidgetSNExperiment01 from "../widgets/WidgetSNExperiment01";
+import WidgetSNExperiment01 from "../widgetsPubSub/WidgetSNExperiment01";
 import WidgetSNUniqueLoginsTodaySelfUpdating from "../widgetsSelfUpdating/WidgetSNUniqueLoginsTodaySelfUpdating";
 
 // Other Components
@@ -42,10 +42,6 @@ class Dev1CardGrid extends React.Component {
     }
 
     componentDidMount() {
-        // Call our ref to trigger an experimental update
-        // NOTE: Because we're using ReactTimeout package, we need to add "wrappedIntance"
-        this.child.current.wrappedInstance.updateTrigger();
-
         // Create a PubSub event loop
         this.widgetRefreshCountdownLoop(parseInt(this.props.refreshInterval));
     }
