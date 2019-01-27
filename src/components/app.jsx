@@ -51,14 +51,14 @@ class App extends React.Component {
 
     /* Set the width of the side navigation to 0 */
     closeNav() {
-        console.log("Trying to close");
-        // document.getElementById("mySidenav").style.width = "0";
+        // Close the sidebar by setting width to 0
         this.sidebarRef.current.style.width = "0";
+        // Re-open main page to full width
         this.mainRef.current.style.marginLeft = "0";
         console.log("going to set resize event in 1s");
         setTimeout(() => {
-            console.log("Trigger window resize event now");
             window.dispatchEvent(new Event("resize"));
+            // There's a listener out there for this in the DashboardChartCard, so it can trigger a resize of all active chart cards
         }, 1000);
     }
 
@@ -67,9 +67,7 @@ class App extends React.Component {
             <HashRouter>
                 <div>
                     <div ref={this.sidebarRef} id="mySidenav" className="sidenav">
-                        {/* <a href="#" className="closebtn" onClick={this.closeNav}>
-                            &times;
-                        </a> */}
+                        {/* create a button to close the sidebar panel */}
                         <span className="closebtn" onClick={this.closeNav}>
                             &times;
                         </span>
@@ -104,6 +102,8 @@ class App extends React.Component {
                                 <button className="navButtonsLeft" type="button" onClick={this.openNav}>
                                     &#9776;
                                 </button>
+                                {/* Show the time remaining until the next refresh */}
+                                <div className="refreshTimeRemaining">{this.state.refreshRemainingSecs / 1000}s</div>
                             </div>
                         </div>
                         <div className="centerPanel_container">
