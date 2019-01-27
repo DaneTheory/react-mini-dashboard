@@ -8,6 +8,7 @@ import EverythingCardGrid from "../cardgrids/EverythingCardGrid";
 import Dev1CardGrid from "../cardgrids/Dev1CardGrid";
 import LeankitDiscoveryCardGrid from "../cardgrids/LeankitDiscoveryCardGrid";
 import HomeCardGrid from "../cardgrids/HomeCardGrid";
+import "../scss/main.scss";
 
 // let sn_instance = "jnjprodworker.service-now.com";
 // let boldchat_instance = "api.boldchat.com";
@@ -41,11 +42,11 @@ class App extends React.Component {
 
     /* Set the width of the side navigation to 250px */
     openNav() {
-        console.log("Trying to open");
-        console.log(this.sidebarRef.current.style);
+        // To "open" the sidebar navigation, set's it's width from 0 to 250px
         this.sidebarRef.current.style.width = "250px";
+        // And at the same time, add a similar margin to main panel, which squishes the content over to make room for menu
+        // The margin we're adding is slightly smaller so that the menu goes farther, and cover the original sidebar buttons
         this.mainRef.current.style.marginLeft = "180px";
-        // document.getElementById("mySidenav").style.width = "250px";
     }
 
     /* Set the width of the side navigation to 0 */
@@ -54,6 +55,11 @@ class App extends React.Component {
         // document.getElementById("mySidenav").style.width = "0";
         this.sidebarRef.current.style.width = "0";
         this.mainRef.current.style.marginLeft = "0";
+        console.log("going to set resize event in 1s");
+        setTimeout(() => {
+            console.log("Trigger window resize event now");
+            window.dispatchEvent(new Event("resize"));
+        }, 1000);
     }
 
     render() {

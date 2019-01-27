@@ -1,5 +1,4 @@
 import React from "react";
-import "./DashboardCard.scss";
 
 // Create a widget class ---------
 class DashboardTableCard extends React.Component {
