@@ -1,6 +1,7 @@
 import React from "react";
 import WidgetSNINCP1P2Count from "../widgets/WidgetSNINCP1P2Count";
 import CardGrid from "../components/cardGrid";
+import PropTypes from "prop-types";
 
 class Demo1CardGrid extends React.Component {
     constructor(props) {
@@ -20,5 +21,10 @@ class Demo1CardGrid extends React.Component {
         );
     }
 }
+
+Demo1CardGrid.propTypes = {
+    changeParentPageTitle: PropTypes.string.isRequired,
+    sn_instance: PropTypes.string.isRequired
+};
 
 export default Demo1CardGrid;

@@ -4,6 +4,7 @@ import WidgetSNScrollableTable from "../widgets/WidgetSNScrollableTable";
 import WidgetSNUniqueLoginsToday from "../widgets/WidgetSNUniqueLoginsToday";
 import WidgetSNExperiment01 from "../widgets/WidgetSNExperiment01";
 import PubSub from "pubsub-js";
+import PropTypes from "prop-types";
 
 import CardGrid from "../components/cardGrid";
 
@@ -62,5 +63,12 @@ class Dev1CardGrid extends React.Component {
         );
     }
 }
+
+Dev1CardGrid.propTypes = {
+    changeParentPageTitle: PropTypes.func.isRequired,
+    sn_instance: PropTypes.string.isRequired,
+    refreshInterval: PropTypes.string.isRequired,
+    setPageCountdown: PropTypes.func.isRequired
+};
 
 export default Dev1CardGrid;

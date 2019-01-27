@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 // Create a widget class ---------
 class DashboardTableCard extends React.Component {
@@ -25,5 +26,12 @@ class DashboardTableCard extends React.Component {
         );
     }
 }
+
+DashboardTableCard.propTypes = {
+    children: PropTypes.node.isRequired,
+    position: PropTypes.string.isRequired,
+    color: PropTypes.string,
+    id: PropTypes.string
+};
 
 export default DashboardTableCard;

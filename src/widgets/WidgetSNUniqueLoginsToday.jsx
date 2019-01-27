@@ -73,7 +73,12 @@ class WidgetUniqueLoginsToday extends React.Component {
 
 // Force the caller to include the proper attributes
 WidgetUniqueLoginsToday.propTypes = {
-    instance: PropTypes.string.isRequired
+    instance: PropTypes.string.isRequired,
+    interval: PropTypes.string.isRequired,
+    id: PropTypes.string,
+    position: PropTypes.string.isRequired,
+    color: PropTypes.string,
+    setTimeout: PropTypes.func
 };
 
 // Set default props in case they aren't passed to us by the caller

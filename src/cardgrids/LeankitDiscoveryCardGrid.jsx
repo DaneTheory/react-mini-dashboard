@@ -5,6 +5,7 @@ import WidgetLeankitDiscoveryDefectCardCount from "../widgets/WidgetLeankitDisco
 import WidgetLeankitDiscoveryAvgCardAge from "../widgets/WidgetLeankitDiscoveryAvgCardAge";
 import WidgetLeankitDiscoverySolutioningCardList from "../widgets/WidgetLeankitDiscoverySolutioningCardList";
 import WidgetLeankitDiscoveryOwnerList from "../widgets/WidgetLeankitDiscoveryOwnerList";
+import PropTypes from "prop-types";
 
 import CardGrid from "../components/cardGrid";
 
@@ -51,5 +52,10 @@ class LeankitDiscoveryCardGrid extends React.Component {
         );
     }
 }
+
+LeankitDiscoveryCardGrid.propTypes = {
+    changeParentPageTitle: PropTypes.func.isRequired,
+    leankit_instance: PropTypes.string.isRequired
+};
 
 export default LeankitDiscoveryCardGrid;

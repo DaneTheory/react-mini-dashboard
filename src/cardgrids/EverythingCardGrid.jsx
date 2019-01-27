@@ -11,6 +11,7 @@ import WidgetBoldChatActiveCount from "../widgets/WidgetBoldChatActiveCount";
 import WidgetBoldChatInactiveCount from "../widgets/WidgetBoldChatInactiveCount";
 import WidgetLeankitCount from "../widgets/WidgetLeankitCount";
 import WidgetSNBarChart from "../widgets/WidgetSNBarChart";
+import PropTypes from "prop-types";
 
 import CardGrid from "../components/cardGrid";
 
@@ -39,5 +40,11 @@ class AllCardGrid extends React.Component {
         );
     }
 }
+
+AllCardGrid.propTypes = {
+    changeParentPageTitle: PropTypes.func.isRequired,
+    sn_instance: PropTypes.string.isRequired,
+    boldchat_instance: PropTypes.string.isRequired
+};
 
 export default AllCardGrid;

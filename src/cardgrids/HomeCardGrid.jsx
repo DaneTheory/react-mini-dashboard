@@ -12,6 +12,7 @@ import WidgetBoldChatInactiveCount from "../widgets/WidgetBoldChatInactiveCount"
 import WidgetLeankitCount from "../widgets/WidgetLeankitCount";
 import WidgetSNBarChart from "../widgets/WidgetSNBarChart";
 import WidgetSNScrollableTable from "../widgets/WidgetSNScrollableTable";
+import PropTypes from "prop-types";
 
 import CardGrid from "../components/cardGrid";
 
@@ -44,5 +45,11 @@ class HomeCardGrid extends React.Component {
         );
     }
 }
+
+HomeCardGrid.propTypes = {
+    changeParentPageTitle: PropTypes.func.isRequired,
+    sn_instance: PropTypes.string.isRequired,
+    boldchat_instance: PropTypes.string.isRequired
+};
 
 export default HomeCardGrid;
