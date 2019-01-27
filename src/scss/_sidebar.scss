@@ -11,7 +11,9 @@
     padding-top: 60px; /* Place content 60px from the top */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
 
-    // trying to fix Edge browser, which wants to show vertical scroll bar on left
+    // trying to fix Edge browser, which wants to show vertical scroll bar on left when sidenav is closed
+    // I'm guessing that's because content is squished into width:0, which creates a long scroll
+    // Probably have to improve this if there's enough content in the sidenav to actually scroll
     overflow-y: hidden;
 }
 

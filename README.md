@@ -25,6 +25,7 @@
 1. Recreate all the important charts
 1. Create auto-scrolling widget for boldchat
 1. Test in Edge, Safari, and Firefox
+1. In Edge, sidenav (when closed) causes a scrollbar. I temporarily fixed by adding overflow-y:hidden. Likely need to improve this if there's enough content in the sidenav to actually scroll
 
 ### What I'm learning
 
