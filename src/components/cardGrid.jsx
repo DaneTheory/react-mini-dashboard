@@ -16,7 +16,8 @@ const CardGrid = function(props) {
 
 CardGrid.propTypes = {
     rows: PropTypes.string.isRequired,
-    columns: PropTypes.string.isRequired
+    columns: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired
 };
 
 export default CardGrid;
