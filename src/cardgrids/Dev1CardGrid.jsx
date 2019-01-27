@@ -1,11 +1,16 @@
+// 3rd party
 import React from "react";
+import PubSub from "pubsub-js";
+import PropTypes from "prop-types";
+
+// Widgets
 import WidgetSNBarChart from "../widgets/WidgetSNBarChart";
 import WidgetSNScrollableTable from "../widgets/WidgetSNScrollableTable";
 import WidgetSNUniqueLoginsToday from "../widgets/WidgetSNUniqueLoginsToday";
 import WidgetSNExperiment01 from "../widgets/WidgetSNExperiment01";
-import PubSub from "pubsub-js";
-import PropTypes from "prop-types";
+import WidgetSNUniqueLoginsTodaySelfUpdating from "../widgetsSelfUpdating/WidgetSNUniqueLoginsTodaySelfUpdating";
 
+// Other Components
 import CardGrid from "../components/cardGrid";
 
 class Dev1CardGrid extends React.Component {
@@ -56,8 +61,9 @@ class Dev1CardGrid extends React.Component {
                 <CardGrid rows="10" columns="12">
                     <WidgetSNBarChart color="#ddd" position="span 5 / span 4" instance={this.props.sn_instance} />
                     <WidgetSNScrollableTable position="span 4 / span 4" />
-                    <WidgetSNUniqueLoginsToday position="span 2 / span 2" instance={this.props.sn_instance} interval="20" />
+                    <WidgetSNUniqueLoginsToday position="span 2 / span 2" instance={this.props.sn_instance} interval={20} />
                     <WidgetSNExperiment01 ref={this.child} position="span 2 / span 3" instance={this.props.sn_instance} />
+                    <WidgetSNUniqueLoginsTodaySelfUpdating position="span 2 / span 4" instance={this.props.sn_instance} />
                 </CardGrid>
             </div>
         );

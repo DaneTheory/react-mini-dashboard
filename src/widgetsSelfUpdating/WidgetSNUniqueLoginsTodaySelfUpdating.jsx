@@ -6,10 +6,10 @@ import ReactTimeout from "react-timeout";
 import { checkForAggressiveRefreshInterval } from "../utilities/checkForAggressiveRefreshInterval";
 
 // Create a class component
-class WidgetSNUniqueLoginsToday extends React.Component {
+class WidgetSNUniqueLoginsTodaySelfUpdating extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { widgetName: "WidgetSNUniqueLoginsToday", count: [], instance: props.instance };
+        this.state = { widgetName: "WidgetSNUniqueLoginsTodaySelfUpdating", count: [], instance: props.instance };
     }
 
     async customUpdateFunction() {
@@ -51,7 +51,7 @@ class WidgetSNUniqueLoginsToday extends React.Component {
     renderCardBody() {
         return (
             <div className="item">
-                <div className="single-num-title">Unique Logins Today</div>
+                <div className="single-num-title">Unique Logins Today (Self Updating)</div>
                 <div className="single-num-value">{parseInt(this.state.count).toLocaleString("en")}</div>
             </div>
         );
@@ -63,7 +63,7 @@ class WidgetSNUniqueLoginsToday extends React.Component {
                 id={this.props.id}
                 position={this.props.position}
                 color={this.props.color}
-                widgetName="WidgetSNUniqueLoginsToday"
+                widgetName="WidgetSNUniqueLoginsTodaySelfUpdating"
             >
                 {this.renderCardBody()}
             </DashboardDataCard>
@@ -72,7 +72,7 @@ class WidgetSNUniqueLoginsToday extends React.Component {
 }
 
 // Force the caller to include the proper attributes
-WidgetSNUniqueLoginsToday.propTypes = {
+WidgetSNUniqueLoginsTodaySelfUpdating.propTypes = {
     instance: PropTypes.string.isRequired,
     interval: PropTypes.number.isRequired,
     id: PropTypes.string,
@@ -82,8 +82,8 @@ WidgetSNUniqueLoginsToday.propTypes = {
 };
 
 // Set default props in case they aren't passed to us by the caller
-WidgetSNUniqueLoginsToday.defaultProps = {
+WidgetSNUniqueLoginsTodaySelfUpdating.defaultProps = {
     interval: 60
 };
 
-export default ReactTimeout(WidgetSNUniqueLoginsToday);
+export default ReactTimeout(WidgetSNUniqueLoginsTodaySelfUpdating);

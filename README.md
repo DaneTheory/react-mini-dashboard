@@ -33,6 +33,16 @@
     1. That means backend is a simple proxy which only adds authentication on the way through
 1. For View, AngularJS wasnt great at looping through an Object. Since React is just javascript, it can do it
 
+## Widget Updating Strategies
+
+I've tried three different strategies for period data updates for each widget.
+
+1. Widget has it's own custom-length timer (didn't like this, as it means it would be difficult to look at a screen full of widgets, and understand when each would be updating)
+1. Parent (Card Grid) has a custom-length timer, and uses React Ref to call Widget's Update Function (didn't like this solution as it means the Parent/CardGrid would have to manage alot of refs, once for each widget)
+1. Parent (Card Grid) has a custom-length timer, and simply issues a PubSub event, which all widgets will listen for. PubSub is constrained to a single-process application
+
+In all cases, I started with a javascript setTimeout() timer; however, I like displaying the remaining time before the next refresh. In the case of Javascript setTimeout(), you cannot query the remaining time. So, I ended up converting to a series of 1-second timeouts which keep track of remaining time. That gives me a hook to update the remaining timer display
+
 ## Stock creat-react-app README.md below this line
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
