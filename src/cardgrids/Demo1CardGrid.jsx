@@ -1,5 +1,5 @@
 import React from "react";
-import WidgetSNINCP1P2Count from "../widgets/WidgetSNINCP1P2Count";
+import WidgetSNINCP1P2Count from "../widgetsPubSub/WidgetSNINCP1P2Count";
 import CardGrid from "../components/cardGrid";
 import PropTypes from "prop-types";
 

@@ -1,17 +1,17 @@
 import React from "react";
 
 // My own imports, namely Widgets
-import WidgetSNINCP1P2Count from "../widgets/WidgetSNINCP1P2Count";
-import WidgetSNUniqueLoginsToday from "../widgets/WidgetSNUniqueLoginsToday";
-import WidgetSNCurrentUsers from "../widgets/WidgetSNCurrentUsers";
-import WidgetSNNewIncidentToday from "../widgets/WidgetsSNNewIncidentsToday";
-import WidgetSNClicksByOS from "../widgets/WidgetSNClicksByOS";
-import WidgetSNClicksByBrowser from "../widgets/WidgetSNClicksByBrowser";
+import WidgetSNINCP1P2Count from "../widgetsPubSub/WidgetSNINCP1P2Count";
+import WidgetSNUniqueLoginsToday from "../widgetsPubSub/WidgetSNUniqueLoginsToday";
+import WidgetSNCurrentUsers from "../widgetsPubSub/WidgetSNCurrentUsers";
+import WidgetSNNewIncidentsToday from "../widgetsPubSub/WidgetSNNewIncidentsToday";
+import WidgetSNClicksByOS from "../widgetsPubSub/WidgetSNClicksByOS";
+import WidgetSNClicksByBrowser from "../widgetsPubSub/WidgetSNClicksByBrowser";
 import WidgetBoldChatActiveCount from "../widgetsPubSub/WidgetBoldChatActiveCount";
 import WidgetBoldChatInactiveCount from "../widgetsPubSub/WidgetBoldChatInactiveCount";
 import WidgetLeankitCount from "../widgetsPubSub/WidgetLeankitCount";
-import WidgetSNBarChart from "../widgets/WidgetSNBarChart";
-import WidgetSNScrollableTable from "../widgets/WidgetSNScrollableTable";
+import WidgetSNBarChart from "../widgetsPubSub/WidgetSNBarChart";
+import WidgetSNScrollableTable from "../widgetsPubSub/WidgetSNScrollableTable";
 import PropTypes from "prop-types";
 
 import CardGrid from "../components/cardGrid";
@@ -34,7 +34,7 @@ class HomeCardGrid extends React.Component {
                     <WidgetSNINCP1P2Count position="span 2 / span 2" instance={this.props.sn_instance} />
                     <WidgetSNUniqueLoginsToday position="span 2 / span 2" instance={this.props.sn_instance} />
                     <WidgetSNCurrentUsers position="span 2/span 2" instance={this.props.sn_instance} />
-                    <WidgetSNNewIncidentToday position="span 2/span 2" instance={this.props.sn_instance} />
+                    <WidgetSNNewIncidentsToday position="span 2/span 2" instance={this.props.sn_instance} />
                     <WidgetSNClicksByOS position="span 5/span 2" instance={this.props.sn_instance} interval="300" />
                     <WidgetSNClicksByBrowser position="span 5/span 2" instance={this.props.sn_instance} interval="300" />
                     <WidgetLeankitCount position="span 2/span 2" instance="jnj.leankit.com" interval="300" />

@@ -4,9 +4,9 @@ import PubSub from "pubsub-js";
 import PropTypes from "prop-types";
 
 // Widgets
-import WidgetSNBarChart from "../widgets/WidgetSNBarChart";
-import WidgetSNScrollableTable from "../widgets/WidgetSNScrollableTable";
-import WidgetSNUniqueLoginsToday from "../widgets/WidgetSNUniqueLoginsToday";
+import WidgetSNBarChart from "../widgetsPubSub/WidgetSNBarChart";
+import WidgetSNScrollableTable from "../widgetsPubSub/WidgetSNScrollableTable";
+import WidgetSNUniqueLoginsToday from "../widgetsPubSub/WidgetSNUniqueLoginsToday";
 import WidgetSNExperiment01 from "../widgetsPubSub/WidgetSNExperiment01";
 import WidgetSNUniqueLoginsTodaySelfUpdating from "../widgetsSelfUpdating/WidgetSNUniqueLoginsTodaySelfUpdating";
 

@@ -4,14 +4,14 @@ import React from "react";
 
 // project imports
 import CardGrid from "../components/cardGrid";
-import WidgetSNINCP1P2Count from "../widgets/WidgetSNINCP1P2Count";
-import WidgetSNUniqueLoginsToday from "../widgets/WidgetSNUniqueLoginsToday";
-import WidgetSNCurrentUsers from "../widgets/WidgetSNCurrentUsers";
-import WidgetSNNewIncidentToday from "../widgets/WidgetsSNNewIncidentsToday";
-import WidgetSNClicksByOS from "../widgets/WidgetSNClicksByOS";
-import WidgetSNClicksByBrowser from "../widgets/WidgetSNClicksByBrowser";
+import WidgetSNINCP1P2Count from "../widgetsPubSub/WidgetSNINCP1P2Count";
+import WidgetSNUniqueLoginsToday from "../widgetsPubSub/WidgetSNUniqueLoginsToday";
+import WidgetSNCurrentUsers from "../widgetsPubSub/WidgetSNCurrentUsers";
+import WidgetSNNewIncidentsToday from "../widgetsPubSub/WidgetSNNewIncidentsToday";
+import WidgetSNClicksByOS from "../widgetsPubSub/WidgetSNClicksByOS";
+import WidgetSNClicksByBrowser from "../widgetsPubSub/WidgetSNClicksByBrowser";
 import WidgetLeankitCount from "../widgetsPubSub/WidgetLeankitCount";
-import WidgetSNBarChart from "../widgets/WidgetSNBarChart";
+import WidgetSNBarChart from "../widgetsPubSub/WidgetSNBarChart";
 
 import WidgetBoldChatInactiveCount from "../widgetsPubSub/WidgetBoldChatInactiveCount";
 import WidgetBoldChatActiveCount from "../widgetsPubSub/WidgetBoldChatActiveCount";
@@ -29,7 +29,7 @@ class AllCardGrid extends React.Component {
                     <WidgetSNINCP1P2Count position="span 2 / span 2" instance={this.props.sn_instance} />
                     <WidgetSNUniqueLoginsToday position="span 2 / span 1" color="slategrey" instance={this.props.sn_instance} />
                     <WidgetSNCurrentUsers position="span 2/span 1" color="darkgreen" instance={this.props.sn_instance} />
-                    <WidgetSNNewIncidentToday position="span 2/span 2" color="orangered" instance={this.props.sn_instance} />
+                    <WidgetSNNewIncidentsToday position="span 2/span 2" color="orangered" instance={this.props.sn_instance} />
                     <WidgetSNClicksByOS position="span 5/span 1" color="darkolivegreen" instance={this.props.sn_instance} />
                     <WidgetSNClicksByBrowser position="span 5/span 1" color="darkolivegreen" instance={this.props.sn_instance} />
                     <WidgetLeankitCount position="span 2/span 1" color="mediumpurple" instance="jnj.leankit.com" />
