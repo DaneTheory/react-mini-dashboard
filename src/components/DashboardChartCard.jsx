@@ -47,6 +47,7 @@ class DashboardChartCard extends React.Component {
     }
 
     componentWillUnmount() {
+        // Before we get unmounted, remove the event listener for window resize (related to left nav menu)
         window.removeEventListener("resize", this.triggerOurOwnResizeScrollEvent);
     }
 
