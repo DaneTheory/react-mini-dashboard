@@ -15,6 +15,7 @@
 
 ### Tasks To Do
 
+1. Update all CardGrids to be PubSub
 1. Add back in explanation for render() function
 1. In test deployment on AWS host, cannot reload non-home pages
 1. In API, api.boldchat.com is hard-coded, yikes !

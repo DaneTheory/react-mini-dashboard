@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import WidgetSNBarChart from "../widgetsPubSub/WidgetSNBarChart";
 import WidgetSNScrollableTable from "../widgetsPubSub/WidgetSNScrollableTable";
 import WidgetSNUniqueLoginsToday from "../widgetsPubSub/WidgetSNUniqueLoginsToday";
-import WidgetSNExperiment01 from "../widgetsPubSub/WidgetSNExperiment01";
+import WidgetSNExperiment01 from "../widgetsPrototype/WidgetSNExperiment01";
 import WidgetSNUniqueLoginsTodaySelfUpdating from "../widgetsSelfUpdating/WidgetSNUniqueLoginsTodaySelfUpdating";
 
 // Other Components
@@ -18,37 +18,41 @@ class Dev1CardGrid extends React.Component {
         super(props);
         props.changeParentPageTitle("Dev1 Dashboard");
         this.child = React.createRef();
-        this.timeoutHandle = null;
-        this.state = { refreshRemainingMs: parseInt(props.refreshInterval) };
+        // So we can keep track of the once-per-second timeout
+        this.intervalHandle = null;
+        this.state = { refreshRemainingMs: props.refreshInterval };
     }
 
     triggerWidgetUpdateEvent() {}
 
-    widgetRefreshCountdownLoop(timemoutInMs) {
+    widgetRefreshCountdownLoop() {
         console.log("Time left: " + this.state.refreshRemainingMs);
 
         // Check to see if timer expired, if so trigger data update
-        if (this.state.refreshRemainingMs === 0) {
+        if (this.state.refreshRemainingMs <= 0) {
             PubSub.publish("updateWidgetsEvent", "Update your data, you widgets !");
-            this.setState({ refreshRemainingMs: parseInt(this.props.refreshInterval) });
+            this.setState({ refreshRemainingMs: this.props.refreshInterval });
         }
 
         // Subtract one second, and then wait for one second
-        this.setState({ refreshRemainingMs: this.state.refreshRemainingMs - 1000 });
+        this.setState({ refreshRemainingMs: this.state.refreshRemainingMs - this.props.refreshUpdateInterval });
+        // Update our parent with the number of seconds remaining
         this.props.setPageCountdown(this.state.refreshRemainingMs);
-        this.timeoutHandle = setTimeout(() => {
-            this.widgetRefreshCountdownLoop(timemoutInMs - 1000);
-        }, 1000);
     }
 
     componentDidMount() {
         // Create a PubSub event loop
-        this.widgetRefreshCountdownLoop(parseInt(this.props.refreshInterval));
+        this.widgetRefreshCountdownLoop();
+
+        // Trigger new timeout
+        this.intervalHandle = setInterval(() => {
+            this.widgetRefreshCountdownLoop();
+        }, this.props.refreshUpdateInterval);
     }
 
     componentWillUnmount() {
         // clear the periodic timeout pubsub loop
-        clearTimeout(this.timeoutHandle);
+        clearInterval(this.intervalHandle);
     }
 
     render() {
@@ -69,8 +73,11 @@ class Dev1CardGrid extends React.Component {
 Dev1CardGrid.propTypes = {
     changeParentPageTitle: PropTypes.func.isRequired,
     sn_instance: PropTypes.string.isRequired,
-    refreshInterval: PropTypes.string.isRequired,
+    refreshInterval: PropTypes.number.isRequired,
     setPageCountdown: PropTypes.func.isRequired
 };
+
+// Set default props in case they aren't passed to us by the caller
+Dev1CardGrid.defaultProps = { refreshUpdateInterval: 1000 };
 
 export default Dev1CardGrid;

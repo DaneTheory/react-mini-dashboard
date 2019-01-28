@@ -138,7 +138,7 @@ class App extends React.Component {
                                         boldchat_instance={this.state.boldchat_instance}
                                         changeParentPageTitle={this.changePageTitle.bind(this)}
                                         setPageCountdown={this.setPageCountdown.bind(this)}
-                                        refreshInterval="15000"
+                                        refreshInterval={8000}
                                     />
                                 )}
                             />
