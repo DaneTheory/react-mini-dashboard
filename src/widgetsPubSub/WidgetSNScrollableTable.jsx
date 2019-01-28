@@ -149,6 +149,10 @@ class WidgetSNScrollableTable extends React.Component {
     }
 
     render() {
+        // Standard React Lifecycle method, gets called by React itself
+        // Get called every time the "state" object gets modified, in other words setState() was called
+        // Also called if "props" are modified (which are passed from the parent)
+
         return (
             <DashboardTableCard
                 id={this.props.id}

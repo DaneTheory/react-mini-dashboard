@@ -70,6 +70,10 @@ class WidgetSNINCP1P2Count extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     render() {
+        // Standard React Lifecycle method, gets called by React itself
+        // Get called every time the "state" object gets modified, in other words setState() was called
+        // Also called if "props" are modified (which are passed from the parent)
+
         return (
             <DashboardDataCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetImageNames">
                 <div className="single-num-title">P1/P2 Incidents</div>
