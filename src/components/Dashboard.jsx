@@ -191,6 +191,7 @@ class Dashboard extends React.Component {
                                         sn_instance={this.props.sn_instance}
                                         boldchat_instance={this.props.boldchat_instance}
                                         changeParentPageTitle={this.changePageTitle.bind(this)}
+                                        leankit_instance={this.props.leankit_instance}
                                     />
                                 )}
                             />

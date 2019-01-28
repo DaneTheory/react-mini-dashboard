@@ -4,7 +4,7 @@ import $ from "jquery";
 // Here's the structure that I expect to encounter.
 // The auto-scrolling table is inside a CSS3 Grid element, so starting from the top
 // <div grid-element>                            (allows item to span multiple grid items)
-//    <div class="dataCard item">                ()
+//    <div class="dataCard">                     ()
 //       <div class="fullCardContainer">         (added this to help with React single-div rule, doesn't do much.  Must have 100% width!)
 //          <table class="headerTable"           (separate table just for column headers, so they can stay on screen)
 //          <div class="bodyTableContainerDiv"   (auto-scroll applied to div, not table !)

@@ -63,7 +63,7 @@ class DashboardChartCard extends React.Component {
         }
 
         return (
-            <div className={"chartCard item"} id={this.props.id} style={styles} ref={this.chartCardRef}>
+            <div className={"chartCard"} id={this.props.id} style={styles} ref={this.chartCardRef}>
                 {this.props.children}
             </div>
         );
