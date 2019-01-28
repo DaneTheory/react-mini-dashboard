@@ -86,7 +86,7 @@ class Dashboard extends React.Component {
         console.log("going to set resize event in 1s");
         setTimeout(() => {
             window.dispatchEvent(new Event("resize"));
-            // There's a listener out there for this in the DashboardChartCard, so it can trigger a resize of all active chart cards
+            // There's a listener out there for this in the DashboardChartJSCard, so it can trigger a resize of all active chart cards
         }, 1000);
     }
 

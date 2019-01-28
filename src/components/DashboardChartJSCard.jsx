@@ -1,8 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+
+// I've got two kinds of cards
+// DashboardChartJSCard
+//    Doesn't have a cardBody div within it
+//    Listens for a window.resize() event, and triggers scroll event against itself (related to closing of sidbar)
+// DashboardDataCard
+//    Does have a cardBody div (for text formatting, I guess)
+
+
 // Create a widget class --------
-class DashboardChartCard extends React.Component {
+class DashboardChartJSCard extends React.Component {
     constructor(props) {
         super(props);
 
@@ -70,11 +79,11 @@ class DashboardChartCard extends React.Component {
     }
 }
 
-DashboardChartCard.propTypes = {
+DashboardChartJSCard.propTypes = {
     children: PropTypes.node.isRequired,
     position: PropTypes.string.isRequired,
     color: PropTypes.string,
     id: PropTypes.string
 };
 
-export default DashboardChartCard;
+export default DashboardChartJSCard;

@@ -5,7 +5,7 @@ import PubSub from "pubsub-js";
 import { Bar } from "react-chartjs-2";
 
 // project imports
-import DashboardChartCard from "../components/DashboardChartCard";
+import DashboardChartJSCard from "../components/DashboardChartJSCard";
 import apiProxy from "../api/apiProxy";
 
 // The purpose of this file is to create a React Component which can be included in HTML
@@ -98,9 +98,9 @@ class WidgetSNBarChart extends React.Component {
         // Also called if "props" are modified (which are passed from the parent)
 
         return (
-            <DashboardChartCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetSNBarChart">
+            <DashboardChartJSCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetSNBarChart">
                 {this.renderCardBody()}
-            </DashboardChartCard>
+            </DashboardChartJSCard>
         );
     }
 }
