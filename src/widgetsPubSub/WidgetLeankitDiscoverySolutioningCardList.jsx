@@ -61,7 +61,7 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
         // Enrich each card by adding URL field (boardId is hard-coded)
         for (var i = 0; i < filteredCards.length; i++) {
             var card = filteredCards[i];
-            card.url = `https://jnj.leankit.com/card/${card.id}`;
+            card.url = `https://${this.props.leankit_instance}/card/${card.id}`;
         }
 
         // User comments are not part of original call, so add them now

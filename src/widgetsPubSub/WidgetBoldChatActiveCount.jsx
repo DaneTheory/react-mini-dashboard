@@ -21,7 +21,7 @@ class WidgetBoldChatActiveCount extends React.Component {
         super(props);
 
         // Set our initial React state, this is the *only* time to bypass setState()
-        this.state = { widgetName: "WidgetBoldChatActiveCount", count: [], instance: props.instance, boldchatCount: null };
+        this.state = { widgetName: "WidgetBoldChatActiveCount", count: [], boldchatCount: null };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function
@@ -36,7 +36,7 @@ class WidgetBoldChatActiveCount extends React.Component {
         // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
 
         // Retrieve our data (likely from an API)
-        const response = await apiProxy.get(`/boldchat/${this.state.instance}/data/rest/json/v1/getActiveChats`, {
+        const response = await apiProxy.get(`/boldchat/${this.props.boldchat_instance}/data/rest/json/v1/getActiveChats`, {
             params: {}
         });
 
@@ -97,7 +97,7 @@ WidgetBoldChatActiveCount.defaultProps = {};
 
 // Force the caller to include the proper attributes
 WidgetBoldChatActiveCount.propTypes = {
-    instance: PropTypes.string.isRequired,
+    boldchat_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
     color: PropTypes.string

@@ -15,9 +15,7 @@
 
 ### Tasks To Do
 
-1. Add back in explanation for render() function
-1. In test deployment on AWS host, cannot reload non-home pages
-1. In API, api.boldchat.com is hard-coded, yikes !
+1. Make sure all widgets are getting data
 1. Understand inheritance vs specificity. Inherited property (color) is getting overridden by \* universal selector
 1. Convert Leankit API from Leankit NodeJS agent to actual API calls via network ?
 1. Periodically update data

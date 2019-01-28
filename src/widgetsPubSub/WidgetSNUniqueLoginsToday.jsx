@@ -21,7 +21,7 @@ class WidgetSNUniqueLoginsToday extends React.Component {
         super(props);
 
         // Set our initial React state, this is the *only* time to bypass setState()
-        this.state = { widgetName: "WidgetSNUniqueLoginsToday", count: [], instance: props.instance };
+        this.state = { widgetName: "WidgetSNUniqueLoginsToday", count: [] };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function
@@ -38,7 +38,7 @@ class WidgetSNUniqueLoginsToday extends React.Component {
         console.log("updating sir...");
 
         // Retrieve our data (likely from an API)
-        const response = await apiProxy.get(`/sn/${this.state.instance}/api/now/stats/sys_user_presence`, {
+        const response = await apiProxy.get(`/sn/${this.props.sn_instance}/api/now/stats/sys_user_presence`, {
             params: {
                 // Units: years, months, days, hours, minutes
                 sysparm_query: "sys_updated_on>=javascript:gs.daysAgoStart(0)",
@@ -104,7 +104,7 @@ WidgetSNUniqueLoginsToday.defaultProps = {};
 
 // Force the caller to include the proper attributes
 WidgetSNUniqueLoginsToday.propTypes = {
-    instance: PropTypes.string.isRequired,
+    sn_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
     color: PropTypes.string,

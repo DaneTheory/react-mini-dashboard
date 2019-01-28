@@ -18,10 +18,6 @@ class Dashboard extends React.Component {
 
         this.state = {
             pageTitle: "Original Title",
-            sn_instance: "jnjprodworker.service-now.com",
-            leankit_instance: "jnj.leankit.com",
-            // sn_instance: "jnjsandbox.service-now.com",
-            boldchat_instance: "api.boldchat.com",
             // time remaining until next data refresh PubSub
             refreshRemainingMs: props.refreshInterval
         };
@@ -146,9 +142,10 @@ class Dashboard extends React.Component {
                                 exact
                                 render={() => (
                                     <EverythingCardGrid
-                                        sn_instance={this.state.sn_instance}
-                                        boldchat_instance={this.state.boldchat_instance}
+                                        sn_instance={this.props.sn_instance}
+                                        boldchat_instance={this.props.boldchat_instance}
                                         changeParentPageTitle={this.changePageTitle.bind(this)}
+                                        leankit_instance={this.props.leankit_instance}
                                     />
                                 )}
                             />
@@ -157,8 +154,8 @@ class Dashboard extends React.Component {
                                 exact
                                 render={() => (
                                     <Demo1CardGrid
-                                        sn_instance={this.state.sn_instance}
-                                        boldchat_instance={this.state.boldchat_instance}
+                                        sn_instance={this.props.sn_instance}
+                                        boldchat_instance={this.props.boldchat_instance}
                                         changeParentPageTitle={this.changePageTitle.bind(this)}
                                     />
                                 )}
@@ -168,8 +165,8 @@ class Dashboard extends React.Component {
                                 exact
                                 render={() => (
                                     <Dev1CardGrid
-                                        sn_instance={this.state.sn_instance}
-                                        boldchat_instance={this.state.boldchat_instance}
+                                        sn_instance={this.props.sn_instance}
+                                        boldchat_instance={this.props.boldchat_instance}
                                         changeParentPageTitle={this.changePageTitle.bind(this)}
                                         refreshInterval={8000}
                                     />
@@ -180,8 +177,8 @@ class Dashboard extends React.Component {
                                 exact
                                 render={() => (
                                     <LeankitDiscoveryCardGrid
-                                        sn_instance={this.state.sn_instance}
-                                        leankit_instance="jnj.leankit.com"
+                                        sn_instance={this.props.sn_instance}
+                                        leankit_instance={this.props.leankit_instance}
                                         changeParentPageTitle={this.changePageTitle.bind(this)}
                                     />
                                 )}
@@ -191,9 +188,8 @@ class Dashboard extends React.Component {
                                 exact
                                 render={() => (
                                     <HomeCardGrid
-                                        sn_instance={this.state.sn_instance}
-                                        boldchat_instance={this.state.boldchat_instance}
-                                        leankit_instance={this.state.leankit_instance}
+                                        sn_instance={this.props.sn_instance}
+                                        boldchat_instance={this.props.boldchat_instance}
                                         changeParentPageTitle={this.changePageTitle.bind(this)}
                                     />
                                 )}
@@ -207,12 +203,21 @@ class Dashboard extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 }
 
-Dashboard.propTypes = {
-    refreshInterval: PropTypes.number.isRequired,
-    refreshUpdateInterval: PropTypes.number.isRequired
+// Set default props in case they aren't passed to us by the caller
+Dashboard.defaultProps = {
+    refreshUpdateInterval: 1000,
+    refreshInterval: 8000,
+    sn_instance: "jnjprodworker.service-now.com",
+    boldchat_instance: "api.boldchat.com",
+    leankit_instance: "jnj.leankit.com"
 };
 
-// Set default props in case they aren't passed to us by the caller
-Dashboard.defaultProps = { refreshUpdateInterval: 1000, refreshInterval: 8000 };
+Dashboard.propTypes = {
+    refreshInterval: PropTypes.number.isRequired,
+    refreshUpdateInterval: PropTypes.number.isRequired,
+    sn_instance: PropTypes.string.isRequired,
+    boldchat_instance: PropTypes.string.isRequired,
+    leankit_instance: PropTypes.string.isRequired
+};
 
 export default Dashboard;

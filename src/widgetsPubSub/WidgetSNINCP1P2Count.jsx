@@ -21,7 +21,7 @@ class WidgetSNINCP1P2Count extends React.Component {
         super(props);
 
         // Set our initial React state, this is the *only* time to bypass setState()
-        this.state = { widgetName: "WidgetSNINCP1P2Count", count: [], instance: props.instance };
+        this.state = { widgetName: "WidgetSNINCP1P2Count", count: [] };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function
@@ -36,7 +36,7 @@ class WidgetSNINCP1P2Count extends React.Component {
         // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
 
         // Retrieve our data (likely from an API)
-        const response = await apiProxy.get(`/sn/${this.state.instance}/api/now/stats/incident`, {
+        const response = await apiProxy.get(`/sn/${this.props.sn_instance}/api/now/stats/incident`, {
             params: { sysparm_query: "stateIN100,2^priorityIN1,2", sysparm_count: "true" }
         });
 
@@ -92,7 +92,7 @@ WidgetSNINCP1P2Count.defaultProps = {};
 
 // Force the caller to include the proper attributes
 WidgetSNINCP1P2Count.propTypes = {
-    instance: PropTypes.string.isRequired,
+    sn_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
     color: PropTypes.string

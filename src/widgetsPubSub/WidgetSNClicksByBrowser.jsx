@@ -22,7 +22,7 @@ class WidgetSNClicksByBrowser extends React.Component {
         super(props);
 
         // Set our initial React state, this is the *only* time to bypass setState()
-        this.state = { widgetName: "WidgetSNClicksByBrowser", count: [], instance: props.instance, browserInfo: {} };
+        this.state = { widgetName: "WidgetSNClicksByBrowser", count: [], browserInfo: {} };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function
@@ -40,7 +40,7 @@ class WidgetSNClicksByBrowser extends React.Component {
         // Load the data from the API (notice we're using the await keyword from the async framework)
         let groupby_field = "user_agent";
 
-        let response = await apiProxy.get(`/sn/${this.state.instance}/api/now/stats/syslog_transaction`, {
+        let response = await apiProxy.get(`/sn/${this.props.sn_instance}/api/now/stats/syslog_transaction`, {
             params: {
                 // Units for xAgoStart: years, months, days, hours, minutes
                 sysparm_query: "client_transaction=true^sys_created_on>=javascript:gs.daysAgoStart(0)",
@@ -188,7 +188,7 @@ WidgetSNClicksByBrowser.defaultProps = {};
 
 // Force the caller to include the proper attributes
 WidgetSNClicksByBrowser.propTypes = {
-    instance: PropTypes.string.isRequired,
+    sn_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
     color: PropTypes.string

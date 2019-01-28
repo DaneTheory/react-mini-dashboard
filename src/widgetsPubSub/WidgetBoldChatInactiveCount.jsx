@@ -25,7 +25,7 @@ class WidgetBoldChatInactiveCount extends React.Component {
         super(props);
 
         // Set our initial React state, this is the *only* time to bypass setState()
-        this.state = { widgetName: "WidgetBoldChatInactiveCount", count: [], instance: props.instance, boldchatCount: null };
+        this.state = { widgetName: "WidgetBoldChatInactiveCount", count: [], boldchatCount: null };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function
@@ -46,7 +46,7 @@ class WidgetBoldChatInactiveCount extends React.Component {
         var now = moment();
         let fromDateString = strftime("%Y-%m-%dT%H:%M:01.000Z", now.subtract(agoCount, agoUnits).toDate());
 
-        let targetUrl = `/boldchat/${this.state.instance}/data/rest/json/v1/getInactiveChats`;
+        let targetUrl = `/boldchat/${this.props.boldchat_instance}/data/rest/json/v1/getInactiveChats`;
         let params = {
             FromDate: fromDateString
         };
@@ -73,8 +73,6 @@ class WidgetBoldChatInactiveCount extends React.Component {
                     FromDate: fromDateString,
                     ToDate: toDateString
                 };
-                // toDateString = "ToDate=%s" % (dataObject['Next']['ToDate'])
-                // targetUrl = `/boldchat/${this.state.instance}/data/rest/json/v1/getInactiveChats?${fromDateParam}&${toDateParam}`;
             }
         }
 
@@ -135,7 +133,7 @@ WidgetBoldChatInactiveCount.defaultProps = {};
 
 // Force the caller to include the proper attributes
 WidgetBoldChatInactiveCount.propTypes = {
-    instance: PropTypes.string.isRequired,
+    boldchat_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
     color: PropTypes.string

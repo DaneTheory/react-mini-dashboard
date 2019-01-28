@@ -11,13 +11,13 @@ class WidgetSNUniqueLoginsTodaySelfUpdating extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { widgetName: "WidgetSNUniqueLoginsTodaySelfUpdating", count: [], instance: props.instance };
+        this.state = { widgetName: "WidgetSNUniqueLoginsTodaySelfUpdating", count: [] };
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     async customUpdateFunction() {
         // Retrieve our data (likely from an API)
-        const response = await apiProxy.get(`/sn/${this.state.instance}/api/now/stats/sys_user_presence`, {
+        const response = await apiProxy.get(`/sn/${this.props.sn_instance}/api/now/stats/sys_user_presence`, {
             params: {
                 // Units: years, months, days, hours, minutes
                 sysparm_query: "sys_updated_on>=javascript:gs.daysAgoStart(0)",
@@ -94,7 +94,7 @@ WidgetSNUniqueLoginsTodaySelfUpdating.defaultProps = {
 
 // Force the caller to include the proper attributes
 WidgetSNUniqueLoginsTodaySelfUpdating.propTypes = {
-    instance: PropTypes.string.isRequired,
+    sn_instance: PropTypes.string.isRequired,
     interval: PropTypes.number.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
