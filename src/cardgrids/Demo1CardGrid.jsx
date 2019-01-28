@@ -24,7 +24,7 @@ class Demo1CardGrid extends React.Component {
         return (
             <div>
                 <CardGrid rows="7" columns="6">
-                    <WidgetSNINCP1P2Count position="1 / 3 / span 2 / span 2" color="#3a5174" id="2" instance={this.props.sn_instance} />
+                    <WidgetSNINCP1P2Count position="1 / 3 / span 2 / span 2" color="#3a5174" id="2" sn_instance={this.props.sn_instance} />
                 </CardGrid>
             </div>
         );

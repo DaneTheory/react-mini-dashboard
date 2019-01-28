@@ -27,11 +27,11 @@ class Dev1CardGrid extends React.Component {
     render() {
         return (
             <CardGrid rows="10" columns="12">
-                <WidgetSNBarChart color="#ddd" position="span 5 / span 4" instance={this.props.sn_instance} />
+                <WidgetSNBarChart color="#ddd" position="span 5 / span 4" sn_instance={this.props.sn_instance} />
                 <WidgetSNScrollableTable position="span 4 / span 4" />
-                <WidgetSNUniqueLoginsToday position="span 2 / span 2" instance={this.props.sn_instance} />
-                <WidgetSNExperiment01 position="span 2 / span 3" instance={this.props.sn_instance} />
-                <WidgetSNUniqueLoginsTodaySelfUpdating position="span 2 / span 4" instance={this.props.sn_instance} />
+                <WidgetSNUniqueLoginsToday position="span 2 / span 2" sn_instance={this.props.sn_instance} />
+                <WidgetSNExperiment01 position="span 2 / span 3" sn_instance={this.props.sn_instance} />
+                <WidgetSNUniqueLoginsTodaySelfUpdating position="span 2 / span 4" sn_instance={this.props.sn_instance} />
             </CardGrid>
         );
     }
