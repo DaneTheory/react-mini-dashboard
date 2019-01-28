@@ -16,6 +16,9 @@
 
 ### Tasks To Do
 
+1. Use react-number-formt
+1. Use Google charts to see if they are responsive
+1. Look at awesome react components
 1. Understand inheritance vs specificity. Inherited property (color) is getting overridden by \* universal selector
 1. Periodically update data
 1. Create a chart with real data

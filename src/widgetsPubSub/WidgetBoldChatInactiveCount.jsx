@@ -25,7 +25,7 @@ class WidgetBoldChatInactiveCount extends React.Component {
         super(props);
 
         // Set our initial React state, this is the *only* time to bypass setState()
-        this.state = { widgetName: "WidgetBoldChatInactiveCount", count: [], boldchatCount: null };
+        this.state = { widgetName: "WidgetBoldChatInactiveCount", boldchatCount: null };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function

@@ -2,6 +2,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import PubSub from "pubsub-js";
+import NumberFormat from "react-number-format";
 
 // project imports
 import DashboardDataCard from "../components/DashboardDataCard";
@@ -21,7 +22,7 @@ class WidgetSNCurrentUsers extends React.Component {
         super(props);
 
         // Set our initial React state, this is the *only* time to bypass setState()
-        this.state = { widgetName: "WidgetSNCurrentUsers", count: [] };
+        this.state = { widgetName: "WidgetSNCurrentUsers", count: null };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function
@@ -83,7 +84,9 @@ class WidgetSNCurrentUsers extends React.Component {
         return (
             <DashboardDataCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetSNCurrentUsers">
                 <div className="single-num-title">Current Users (5 mins)</div>
-                <div className="single-num-value">{parseInt(this.state.count).toLocaleString("en")}</div>
+                <div className="single-num-value">
+                    <NumberFormat value={this.state.count} thousandSeparator={true} displayType={"text"} />
+                </div>
             </DashboardDataCard>
         );
     }

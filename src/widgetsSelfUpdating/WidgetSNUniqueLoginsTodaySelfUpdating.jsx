@@ -1,8 +1,12 @@
+// 3rd party imports
 import React from "react";
-import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
 import PropTypes from "prop-types";
 import ReactTimeout from "react-timeout";
+import NumberFormat from "react-number-format";
+
+// Other project imports
+import DashboardDataCard from "../components/DashboardDataCard";
 import { checkForAggressiveRefreshInterval } from "../utilities/checkForAggressiveRefreshInterval";
 
 // Create a class component
@@ -11,7 +15,7 @@ class WidgetSNUniqueLoginsTodaySelfUpdating extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { widgetName: "WidgetSNUniqueLoginsTodaySelfUpdating", count: [] };
+        this.state = { widgetName: "WidgetSNUniqueLoginsTodaySelfUpdating", count: null };
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -58,7 +62,9 @@ class WidgetSNUniqueLoginsTodaySelfUpdating extends React.Component {
         return (
             <div className="item">
                 <div className="single-num-title">Unique Logins Today (Self Updating)</div>
-                <div className="single-num-value">{parseInt(this.state.count).toLocaleString("en")}</div>
+                <div className="single-num-value">
+                    <NumberFormat value={this.state.count} thousandSeparator={true} displayType={"text"} />
+                </div>
             </div>
         );
     }
