@@ -25,7 +25,7 @@ class WidgetLeankitDiscoveryAvgCardAge extends React.Component {
         super(props);
 
         // Set our initial React state, this is the *only* time to bypass setState()
-        this.state = { instance: props.instance, leankit_cards: [], boardId: props.boardId };
+        this.state = { leankit_cards: [] };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function
@@ -40,7 +40,7 @@ class WidgetLeankitDiscoveryAvgCardAge extends React.Component {
         // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
 
         // Retrieve our data (likely from an API)
-        let leankit_cards = await getLeankitCards("jnj.leankit.com", this.state.boardId, "active,backlog");
+        let leankit_cards = await getLeankitCards(this.props.leankit_instance, this.props.boardId, "active,backlog");
 
         // Update our own state with the new data
         this.setState({ leankit_cards: leankit_cards });
@@ -125,10 +125,11 @@ WidgetLeankitDiscoveryAvgCardAge.defaultProps = {};
 
 // Force the caller to include the proper attributes
 WidgetLeankitDiscoveryAvgCardAge.propTypes = {
-    instance: PropTypes.string.isRequired,
+    leankit_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
-    color: PropTypes.string
+    color: PropTypes.string,
+    boardId: PropTypes.string.isRequired
 };
 
 // If we (this file) get "imported", this is what they'll be given

@@ -40,7 +40,7 @@ class Dashboard extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     widgetRefreshCountdownLoop() {
-        console.log("Time left: " + this.state.refreshRemainingMs);
+        // console.log("Time left: " + this.state.refreshRemainingMs);
 
         // Check to see if timer expired, if so trigger data update
         if (this.state.refreshRemainingMs <= 0) {
@@ -181,7 +181,7 @@ class Dashboard extends React.Component {
                                 render={() => (
                                     <LeankitDiscoveryCardGrid
                                         sn_instance={this.state.sn_instance}
-                                        leankit_instance={this.state.leankit_instance}
+                                        leankit_instance="jnj.leankit.com"
                                         changeParentPageTitle={this.changePageTitle.bind(this)}
                                     />
                                 )}

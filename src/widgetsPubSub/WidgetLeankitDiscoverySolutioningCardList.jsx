@@ -27,7 +27,7 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
         super(props);
 
         // Set our initial React state, this is the *only* time to bypass setState()
-        this.state = { instance: props.instance, leankit_cards: [], boardId: props.boardId };
+        this.state = { leankit_cards: [] };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function
@@ -43,7 +43,7 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
 
         // Retrieve our data (likely from an API)
         // Get all the leankit cards
-        let leankit_cards = await getLeankitCards("jnj.leankit.com", this.state.boardId, "active,backlog");
+        let leankit_cards = await getLeankitCards(this.props.leankit_instance, this.props.boardId, "active,backlog");
 
         // Filter down to just solutioning cards
         let filteredCards = leankit_cards.filter(function(card) {
@@ -58,21 +58,20 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
         // Save these cards to our state, which triggers react to render an update to the screen
         this.setState({ leankit_cards: filteredCards });
 
-        // Enrich each card by adding URL field (BoardID is hard-coded)
+        // Enrich each card by adding URL field (boardId is hard-coded)
         for (var i = 0; i < filteredCards.length; i++) {
             var card = filteredCards[i];
-            // card.url = sprintf("%s/%s/%s", "https://jnj.leankit.com/Boards/View", boardID, card["Id"]);
             card.url = `https://jnj.leankit.com/card/${card.id}`;
         }
 
         // User comments are not part of original call, so add them now
-        let leankit_cards_with_comments = await getCommentsforLeankitCards(filteredCards, "jnj.leankit.com");
+        let leankit_cards_with_comments = await getCommentsforLeankitCards(filteredCards, this.props.leankit_instance);
 
         // Save these cards to our state, which triggers react to render an update to the screen
         this.setState({ leankit_cards: leankit_cards_with_comments });
 
         // Get the backlog duration
-        let leankit_cards_with_backlogDuration = await getBacklogDurationForLeankitCards(filteredCards, "jnj.leankit.com");
+        let leankit_cards_with_backlogDuration = await getBacklogDurationForLeankitCards(filteredCards, this.props.leankit_instance);
         // console.log(leankit_cards_with_backlogDuration);
 
         // Update our own state with the new data
@@ -219,10 +218,11 @@ WidgetLeankitDiscoverySolutioningCardList.defaultProps = {};
 
 // Force the caller to include the proper attributes
 WidgetLeankitDiscoverySolutioningCardList.propTypes = {
-    instance: PropTypes.string.isRequired,
+    leankit_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
-    color: PropTypes.string
+    color: PropTypes.string,
+    boardId: PropTypes.string.isRequired
 };
 
 // If we (this file) get "imported", this is what they'll be given

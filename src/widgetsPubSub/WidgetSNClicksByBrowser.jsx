@@ -95,9 +95,9 @@ class WidgetSNClicksByBrowser extends React.Component {
     createBrowserCounts(user_agent_table) {
         // Print out all user_agent strings for trouble-shooting
         // console.log("All user_agent strings:");
-        user_agent_table.forEach(row => {
-            // console.log(`${row.count}: ${row.user_agent}`);
-        });
+        // user_agent_table.forEach(row => {
+        //     console.log(`${row.count}: ${row.user_agent}`);
+        // });
 
         let browserCountObj = {};
 

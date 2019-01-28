@@ -52,7 +52,6 @@ class WidgetSNScrollableTable extends React.Component {
         this.state = {
             widgetName: "WidgetSNScrollableTable",
             count: [],
-            instance: props.instance,
             textTable: textTable,
             scrollableDivIDSelector: "chadTextTable01"
         };

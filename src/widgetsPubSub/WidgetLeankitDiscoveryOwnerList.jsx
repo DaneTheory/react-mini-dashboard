@@ -24,7 +24,7 @@ class WidgetLeankitDiscoveryOwnerList extends React.Component {
         super(props);
 
         // Set our initial React state, this is the *only* time to bypass setState()
-        this.state = { instance: props.instance, leankit_cards: [], boardId: props.boardId, ownerArray: [] };
+        this.state = { leankit_cards: [], ownerArray: [] };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function
@@ -40,7 +40,7 @@ class WidgetLeankitDiscoveryOwnerList extends React.Component {
 
         // Retrieve our data (likely from an API)
         // Get all the leankit cards
-        let leankit_cards = await getLeankitCards("jnj.leankit.com", this.state.boardId, "active,backlog");
+        let leankit_cards = await getLeankitCards(this.props.leankit_instance, this.props.boardId, "active,backlog");
 
         // Filter down to just solutioning cards
         let filteredCards = leankit_cards.filter(function(card) {
@@ -110,7 +110,7 @@ class WidgetLeankitDiscoveryOwnerList extends React.Component {
                             .sort((a, b) => {
                                 return b.count - a.count;
                             })
-                            .map(function(card, index) {
+                            .map(function(card) {
                                 // Set some variables to be used in JSX below
                                 let owner = { text: card.name };
                                 let cardCount = { text: card.count };
@@ -161,10 +161,11 @@ class WidgetLeankitDiscoveryOwnerList extends React.Component {
 
 // Force the caller to include the proper attributes
 WidgetLeankitDiscoveryOwnerList.propTypes = {
-    instance: PropTypes.string.isRequired,
+    leankit_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
-    color: PropTypes.string
+    color: PropTypes.string,
+    boardId: PropTypes.string.isRequired
 };
 
 // Set default props in case they aren't passed to us by the caller
