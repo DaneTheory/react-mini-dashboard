@@ -12,7 +12,7 @@ import "../scss/main.scss";
 
 class App extends React.Component {
     render() {
-        return <Dashboard refreshInterval={11000} />;
+        return <Dashboard refreshInterval={60000} />;
     }
 }
 
