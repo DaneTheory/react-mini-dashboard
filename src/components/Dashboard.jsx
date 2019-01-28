@@ -182,6 +182,7 @@ class Dashboard extends React.Component {
                                     <LeankitDiscoveryCardGrid
                                         sn_instance={this.state.sn_instance}
                                         leankit_instance={this.state.leankit_instance}
+                                        changeParentPageTitle={this.changePageTitle.bind(this)}
                                     />
                                 )}
                             />

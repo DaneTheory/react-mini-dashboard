@@ -179,6 +179,9 @@ class WidgetSNClicksByBrowser extends React.Component {
 // We're outside the class now, just need to define a few additional things
 // -------------------------------------------------------------------------------------------------------
 
+// Set default props in case they aren't passed to us by the caller
+WidgetSNClicksByBrowser.defaultProps = {};
+
 // Force the caller to include the proper attributes
 WidgetSNClicksByBrowser.propTypes = {
     instance: PropTypes.string.isRequired,
@@ -186,9 +189,6 @@ WidgetSNClicksByBrowser.propTypes = {
     position: PropTypes.string.isRequired,
     color: PropTypes.string
 };
-
-// Set default props in case they aren't passed to us by the caller
-WidgetSNClicksByBrowser.defaultProps = {};
 
 // If we (this file) get "imported", this is what they'll be given
 export default WidgetSNClicksByBrowser;

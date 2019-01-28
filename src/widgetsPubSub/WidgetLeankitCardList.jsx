@@ -129,6 +129,9 @@ class WidgetLeankitCardList extends React.Component {
 // We're outside the class now, just need to define a few additional things
 // -------------------------------------------------------------------------------------------------------
 
+// Set default props in case they aren't passed to us by the caller
+WidgetLeankitCardList.defaultProps = {};
+
 // Force the caller to include the proper attributes
 WidgetLeankitCardList.propTypes = {
     instance: PropTypes.string.isRequired,
@@ -136,9 +139,6 @@ WidgetLeankitCardList.propTypes = {
     position: PropTypes.string.isRequired,
     color: PropTypes.string
 };
-
-// Set default props in case they aren't passed to us by the caller
-WidgetLeankitCardList.defaultProps = {};
 
 // If we (this file) get "imported", this is what they'll be given
 export default WidgetLeankitCardList;

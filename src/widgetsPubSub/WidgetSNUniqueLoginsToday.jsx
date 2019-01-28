@@ -95,6 +95,9 @@ class WidgetSNUniqueLoginsToday extends React.Component {
 // We're outside the class now, just need to define a few additional things
 // -------------------------------------------------------------------------------------------------------
 
+// Set default props in case they aren't passed to us by the caller
+WidgetSNUniqueLoginsToday.defaultProps = {};
+
 // Force the caller to include the proper attributes
 WidgetSNUniqueLoginsToday.propTypes = {
     instance: PropTypes.string.isRequired,
@@ -103,9 +106,6 @@ WidgetSNUniqueLoginsToday.propTypes = {
     color: PropTypes.string,
     setTimeout: PropTypes.func
 };
-
-// Set default props in case they aren't passed to us by the caller
-WidgetSNUniqueLoginsToday.defaultProps = {};
 
 // If we (this file) get "imported", this is what they'll be given
 export default WidgetSNUniqueLoginsToday;

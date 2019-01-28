@@ -110,6 +110,9 @@ class WidgetLeankitDiscoveryDefectCardCount extends React.Component {
 // We're outside the class now, just need to define a few additional things
 // -------------------------------------------------------------------------------------------------------
 
+// Set default props in case they aren't passed to us by the caller
+WidgetLeankitDiscoveryDefectCardCount.defaultProps = {};
+
 // Force the caller to include the proper attributes
 WidgetLeankitDiscoveryDefectCardCount.propTypes = {
     instance: PropTypes.string.isRequired,
@@ -117,9 +120,6 @@ WidgetLeankitDiscoveryDefectCardCount.propTypes = {
     position: PropTypes.string.isRequired,
     color: PropTypes.string
 };
-
-// Set default props in case they aren't passed to us by the caller
-WidgetLeankitDiscoveryDefectCardCount.defaultProps = {};
 
 // If we (this file) get "imported", this is what they'll be given
 export default WidgetLeankitDiscoveryDefectCardCount;

@@ -110,13 +110,13 @@ WidgetSNNewIncidentsToday.propTypes = {
     color: PropTypes.string
 };
 
+// Set default props in case they aren't passed to us by the caller
+WidgetSNNewIncidentsToday.defaultProps = {};
+
 // Force the caller to include the proper attributes
 WidgetSNNewIncidentsToday.propTypes = {
     instance: PropTypes.string.isRequired
 };
-
-// Set default props in case they aren't passed to us by the caller
-WidgetSNNewIncidentsToday.defaultProps = {};
 
 // If we (this file) get "imported", this is what they'll be given
 export default WidgetSNNewIncidentsToday;

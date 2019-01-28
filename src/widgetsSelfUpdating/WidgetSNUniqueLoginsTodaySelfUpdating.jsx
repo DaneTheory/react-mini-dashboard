@@ -7,11 +7,14 @@ import { checkForAggressiveRefreshInterval } from "../utilities/checkForAggressi
 
 // Create a class component
 class WidgetSNUniqueLoginsTodaySelfUpdating extends React.Component {
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     constructor(props) {
         super(props);
         this.state = { widgetName: "WidgetSNUniqueLoginsTodaySelfUpdating", count: [], instance: props.instance };
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     async customUpdateFunction() {
         // Retrieve our data (likely from an API)
         const response = await apiProxy.get(`/sn/${this.state.instance}/api/now/stats/sys_user_presence`, {
@@ -27,6 +30,7 @@ class WidgetSNUniqueLoginsTodaySelfUpdating extends React.Component {
         this.setState({ count: response.data.result.stats.count });
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     async updateOurData() {
         // Start timer
         let startTime = new Date();
@@ -43,10 +47,12 @@ class WidgetSNUniqueLoginsTodaySelfUpdating extends React.Component {
             this.updateOurData();
         }, this.props.interval * 1000);
     }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     componentDidMount = async () => {
         this.updateOurData();
     };
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     renderCardBody() {
         return (
@@ -56,6 +62,8 @@ class WidgetSNUniqueLoginsTodaySelfUpdating extends React.Component {
             </div>
         );
     }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     render() {
         return (
@@ -71,6 +79,15 @@ class WidgetSNUniqueLoginsTodaySelfUpdating extends React.Component {
     }
 }
 
+// -------------------------------------------------------------------------------------------------------
+// We're outside the class now, just need to define a few additional things
+// -------------------------------------------------------------------------------------------------------
+
+// Set default props in case they aren't passed to us by the caller
+WidgetSNUniqueLoginsTodaySelfUpdating.defaultProps = {
+    interval: 60
+};
+
 // Force the caller to include the proper attributes
 WidgetSNUniqueLoginsTodaySelfUpdating.propTypes = {
     instance: PropTypes.string.isRequired,
@@ -81,9 +98,7 @@ WidgetSNUniqueLoginsTodaySelfUpdating.propTypes = {
     setTimeout: PropTypes.func
 };
 
-// Set default props in case they aren't passed to us by the caller
-WidgetSNUniqueLoginsTodaySelfUpdating.defaultProps = {
-    interval: 60
-};
-
 export default ReactTimeout(WidgetSNUniqueLoginsTodaySelfUpdating);
+
+// =======================================================================================================
+// =======================================================================================================
