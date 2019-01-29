@@ -181,7 +181,7 @@
     }
 
     // This is the grid item (for charts)
-    .chartCard {
+    .chartJSCard {
         background-color: $color-cardbackground;
         border-radius: 0.2rem;
         width: 100%;
@@ -199,6 +199,17 @@
             // NOTE: I prefer avoiding !important, so opting for solution #1, but leaving these two lines here just in case of emergency.
             // width: 100% !important;
             // height: 100% !important;
+        }
+    }
+
+    .googleChartCard {
+        background-color: $color-cardbackground;
+        border-radius: 0.2rem;
+        width: 100%;
+        height: 100%;
+        table {
+            // Google seems to create a table to hold a gauge, and I'm trying to center the gauge horizontally
+            margin: 0 auto !important;
         }
     }
 }

@@ -8,6 +8,9 @@ import WidgetSNScrollableTable from "../widgetsPubSub/WidgetSNScrollableTable";
 import WidgetSNUniqueLoginsToday from "../widgetsPubSub/WidgetSNUniqueLoginsToday";
 import WidgetSNExperiment01 from "../widgetsPrototype/WidgetSNExperiment01";
 import WidgetSNUniqueLoginsTodaySelfUpdating from "../widgetsSelfUpdating/WidgetSNUniqueLoginsTodaySelfUpdating";
+import WidgetGoogleChartScatter from "../widgetsExperimental/WidgetGoogleChartScatter";
+import WidgetGoogleChartVerticalBar from "../widgetsExperimental/WidgetGoogleChartVerticalBar";
+import WidgetGoogleChartGauge from "../widgetsExperimental/WidgetGoogleChartGauge";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -26,12 +29,15 @@ class Dev1CardGrid extends React.Component {
 
     render() {
         return (
-            <CardGrid rows="10" columns="12">
+            <CardGrid rows="20" columns="12">
                 <WidgetSNBarChart color="#ddd" position="span 5 / span 4" sn_instance={this.props.sn_instance} />
                 <WidgetSNScrollableTable position="span 4 / span 4" />
                 <WidgetSNUniqueLoginsToday position="span 2 / span 2" sn_instance={this.props.sn_instance} />
                 <WidgetSNExperiment01 position="span 2 / span 3" sn_instance={this.props.sn_instance} />
                 <WidgetSNUniqueLoginsTodaySelfUpdating position="span 2 / span 4" sn_instance={this.props.sn_instance} />
+                <WidgetGoogleChartScatter position="span 4 / span 4" sn_instance={this.props.sn_instance} />
+                <WidgetGoogleChartVerticalBar position="span 4 / span 10" sn_instance={this.props.sn_instance} />
+                <WidgetGoogleChartGauge position="span 4 / span 4" />
             </CardGrid>
         );
     }
