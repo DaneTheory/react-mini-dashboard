@@ -25,7 +25,7 @@ class Dashboard extends React.Component {
         // So we can keep track of the once-per-second timeout
         this.intervalHandle = null;
 
-        this.sidebarRef = React.createRef();
+        this.slidingSideBarRef = React.createRef();
         this.mainRef = React.createRef();
         // This is our event handler, it's called from the outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function
@@ -69,7 +69,7 @@ class Dashboard extends React.Component {
     /* Set the width of the side navigation to 250px */
     openNav() {
         // To "open" the sidebar navigation, set's it's width from 0 to 250px
-        this.sidebarRef.current.style.width = "250px";
+        this.slidingSideBarRef.current.style.width = "250px";
         // And at the same time, add a similar margin to main panel, which squishes the content over to make room for menu
         // The margin we're adding is slightly smaller so that the menu goes farther, and cover the original sidebar buttons
         this.mainRef.current.style.marginLeft = "180px";
@@ -80,7 +80,7 @@ class Dashboard extends React.Component {
     /* Set the width of the side navigation to 0 */
     closeNav() {
         // Close the sidebar by setting width to 0
-        this.sidebarRef.current.style.width = "0";
+        this.slidingSideBarRef.current.style.width = "0";
         // Re-open main page to full width
         this.mainRef.current.style.marginLeft = "0";
         console.log("going to set resize event in 1s");
@@ -91,13 +91,18 @@ class Dashboard extends React.Component {
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    doSomethingForDebugging() {
+        console.log("Clicked on Title, this function used for inserting a quick function for debugging");
+        document.documentElement.style.setProperty("--" + "colorThemePageBackground", "#a7a");
+    }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     render() {
         return (
             <HashRouter>
                 {/* HashRouter can have only one child element, so adding a <div> */}
                 <div>
-                    <div ref={this.sidebarRef} id="mySidenav" className="sidenav">
+                    <div ref={this.slidingSideBarRef} className="slidingSideNav">
                         {/* create a button to close the sidebar panel */}
                         <span className="closebtn" onClick={this.closeNav}>
                             &times;
@@ -122,19 +127,17 @@ class Dashboard extends React.Component {
 
                     <div id="main" ref={this.mainRef} className="page_container">
                         <div className="title_container">
-                            <div className="title">
+                            <div className="title" onClick={this.doSomethingForDebugging}>
                                 {this.state.pageTitle} v{process.env.REACT_APP_VERSION}
                             </div>
                         </div>
-                        <div className="leftNav_container">
-                            <div className="navPageNavigation">
-                                {/* Create the hamburger menu button */}
-                                <button className="navButtonsLeft" type="button" onClick={this.openNav}>
-                                    &#9776;
-                                </button>
-                                {/* Show the time remaining until the next refresh */}
-                                <div className="refreshTimeRemaining">{this.state.refreshRemainingMs / 1000}s</div>
-                            </div>
+                        <div className="fixedSideBar_container">
+                            {/* Create the hamburger menu button */}
+                            <button className="navButtonsLeft" type="button" onClick={this.openNav}>
+                                &#9776;
+                            </button>
+                            {/* Show the time remaining until the next refresh */}
+                            <div className="refreshTimeRemaining">{this.state.refreshRemainingMs / 1000}s</div>
                         </div>
                         <div className="centerPanel_container">
                             <Route
@@ -218,7 +221,10 @@ Dashboard.propTypes = {
     refreshUpdateInterval: PropTypes.number.isRequired,
     sn_instance: PropTypes.string.isRequired,
     boldchat_instance: PropTypes.string.isRequired,
-    leankit_instance: PropTypes.string.isRequired
+    leankit_instance: PropTypes.string.isRequired,
+    theme: PropTypes.shape({
+        colorThemePageBackground: PropTypes.string
+    })
 };
 
 export default Dashboard;

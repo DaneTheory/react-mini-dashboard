@@ -36,8 +36,8 @@ class Dev1CardGrid extends React.Component {
                 <WidgetSNExperiment01 position="span 2 / span 3" sn_instance={this.props.sn_instance} />
                 <WidgetSNUniqueLoginsTodaySelfUpdating position="span 2 / span 4" sn_instance={this.props.sn_instance} />
                 <WidgetGoogleChartScatter position="span 4 / span 4" sn_instance={this.props.sn_instance} />
-                <WidgetGoogleChartVerticalBar position="span 4 / span 10" sn_instance={this.props.sn_instance} />
-                <WidgetGoogleChartGauge position="span 4 / span 4" />
+                <WidgetGoogleChartVerticalBar position="span 4 / span 8" sn_instance={this.props.sn_instance} />
+                <WidgetGoogleChartGauge position="span 4 / span 2" boldchat_instance={this.props.boldchat_instance} />
             </CardGrid>
         );
     }
@@ -49,7 +49,8 @@ class Dev1CardGrid extends React.Component {
 
 Dev1CardGrid.propTypes = {
     sn_instance: PropTypes.string.isRequired,
-    changeParentPageTitle: PropTypes.func.isRequired
+    changeParentPageTitle: PropTypes.func.isRequired,
+    boldchat_instance: PropTypes.string.isRequired
 };
 
 // Set default props in case they aren't passed to us by the caller

@@ -1,11 +1,29 @@
-// Dark theme
-$color-pageBackground: #333b50;
-$color-cardbackground: #2b2d3e;
-$color-default: #bbb3b3;
-$color-cardfont: #eeeeee;
-$color-title: #bbb3b3;
-$color-leftNav-buttons: $color-title;
-$color-widget-links: #4183c4;
-$color-leftNav-links: #4183c4;
-$scrollbarTrackBackgroundColor: #242524;
-$scrollbarThumbBackgroundColor: #696464;
+// Need to use CSS variables so they end up in the compiled CSS
+// SASS/SCSS variables are more handy, but they get compiled the whole way to the raw color name in the CSS
+// That means that Javascript won't be able to find/modify the variable, since it doesn't exist
+// Hence, simpler CSS variables which end up in the compiled CSS
+:root {
+    // Default, which *should* be overridden by Javascript re-setting these variables
+    // Dark Theme
+    // --colorThemePageBackground: #333b50;
+    // --colorThemeCardBackground: #2b2d3e;
+    // --colorThemeBodyDefault: #bbb3b3;
+    // --colorThemeCardFont: #eeeeee;
+    // --colorThemePageTitle: #bbb3b3;
+    // --colorThemeLeftNavButtons: #bbb3b3;
+    // --colorThemeWidgetLinks: #4183c4;
+    // --colorThemeScrollbarTrackBackground: #242524;
+    // --colorThemeScrollbarThumbBackground: #696464;
+
+    // These are the CSS variables that I use, they are set via Javascript
+    // I set them to red here, so it's pretty obvious if I forget to set one :)
+    --colorThemePageBackground: #ff0000;
+    --colorThemeCardBackground: #f00;
+    --colorThemeBodyDefault: #f00;
+    --colorThemeCardFont: #f00;
+    --colorThemePageTitle: #f00;
+    --colorThemeLeftNavButtons: #f00;
+    --colorThemeWidgetLinks: #f00;
+    --colorThemeScrollbarTrackBackground: #f00;
+    --colorThemeScrollbarThumbBackground: #f00;
+}
