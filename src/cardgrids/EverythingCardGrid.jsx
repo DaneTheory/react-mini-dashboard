@@ -9,7 +9,7 @@ import WidgetSNCurrentUsers from "../widgetsPubSub/WidgetSNCurrentUsers";
 import WidgetSNNewIncidentsToday from "../widgetsPubSub/WidgetSNNewIncidentsToday";
 import WidgetSNClicksByOS from "../widgetsPubSub/WidgetSNClicksByOS";
 import WidgetSNClicksByBrowser from "../widgetsPubSub/WidgetSNClicksByBrowser";
-import WidgetSNBarChart from "../widgetsPubSub/WidgetSNBarChart";
+import WidgetSNBarChart from "../widgetsExperimental/WidgetChartJSBarChart";
 import WidgetBoldChatInactiveCount from "../widgetsPubSub/WidgetBoldChatInactiveCount";
 import WidgetBoldChatActiveCount from "../widgetsPubSub/WidgetBoldChatActiveCount";
 

@@ -11,7 +11,7 @@ import WidgetSNClicksByOS from "../widgetsPubSub/WidgetSNClicksByOS";
 import WidgetSNClicksByBrowser from "../widgetsPubSub/WidgetSNClicksByBrowser";
 import WidgetBoldChatActiveCount from "../widgetsPubSub/WidgetBoldChatActiveCount";
 import WidgetBoldChatInactiveCount from "../widgetsPubSub/WidgetBoldChatInactiveCount";
-import WidgetSNBarChart from "../widgetsPubSub/WidgetSNBarChart";
+import WidgetSNBarChart from "../widgetsExperimental/WidgetChartJSBarChart";
 import WidgetSNScrollableTable from "../widgetsPubSub/WidgetSNScrollableTable";
 
 // Other project imports

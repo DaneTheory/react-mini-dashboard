@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import PubSub from "pubsub-js";
 import { Chart } from "react-google-charts";
 import DashboardGoogleChartCard from "../components/DashboardGoogleChartCard";
+import { ThemeConsumer } from "../components/ThemeContext";
 
 // project imports
 import apiProxy from "../api/apiProxy";
@@ -12,7 +13,7 @@ import apiProxy from "../api/apiProxy";
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
 
 // Create a React class component, everything below this is a class method (i.e. a function attached to the class)
-class WidgetGoogleChart extends React.Component {
+class WidgetGoogleChartHorizontalBar extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {
@@ -22,7 +23,11 @@ class WidgetGoogleChart extends React.Component {
         super(props);
 
         // Set our initial React state, this is the *only* time to bypass setState()
-        this.state = { widgetName: "WidgetGoogleChart", count: null, rowData: [[8, 12], [4, 5.5], [11, 14], [4, 5], [3, 3.5], [6.5, 7]] };
+        this.state = {
+            widgetName: "WidgetGoogleChartHorizontalBar",
+            count: null,
+            rowData: [[8, 12], [4, 5.5], [11, 14], [4, 5], [3, 3.5], [6.5, 7]]
+        };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function
@@ -94,58 +99,68 @@ class WidgetGoogleChart extends React.Component {
         }
 
         return (
-            <DashboardGoogleChartCard
-                id={this.props.id}
-                position={this.props.position}
-                color={this.props.color}
-                widgetName="WidgetSNBarChart"
-            >
-                <Chart
-                    width={"100%"}
-                    height={"100%"}
-                    chartType="BarChart"
-                    loader={<div>Loading Chart</div>}
-                    data={[
-                        ["Year", "Sales", "Expenses", "Profit"],
-                        ["2014", 1000, 400, 200],
-                        ["2015", 1170, 460, 250],
-                        ["2016", 660, 1120, 300],
-                        ["2017", 1030, 540, 350]
-                    ]}
-                    options={{
-                        title: "Chart Title",
-                        titleTextStyle: {
-                            color: "#bbb3b3"
-                        },
-                        backgroundColor: "#2b2d3e",
-                        chartArea: {
-                            width: "90%",
-                            height: "70%",
-                            backgroundColor: {
-                                fill: "#333b50"
-                            }
-                        },
-                        hAxis: {
-                            gridlines: {
-                                count: 6
-                            },
-                            textStyle: {
-                                color: "#bbb3b3"
-                            }
-                        },
-                        vAxis: {
-                            textStyle: {
-                                color: "#bbb3b3"
-                            }
-                        },
-                        animation: {
-                            duration: 1000,
-                            easing: "out",
-                            startup: true
-                        }
-                    }}
-                />
-            </DashboardGoogleChartCard>
+            <ThemeConsumer>
+                {/* Use a render prop to get the global value from the Context API Consumer */}
+                {theme => (
+                    <DashboardGoogleChartCard
+                        id={this.props.id}
+                        position={this.props.position}
+                        color={this.props.color}
+                        widgetName="WidgetSNBarChart"
+                    >
+                        {/* Use this div to size the chart, rather than using Chart Width/Height */}
+                        {/* Chart width/height seems to create two nested divs, which each have the %size applied, so double affect */}
+                        <div className="manualChartSize" style={{ width: "95%", height: "95%" }}>
+                            <Chart
+                                width={"100%"}
+                                height={"100%"}
+                                chartType="BarChart"
+                                loader={<div>Loading Chart</div>}
+                                data={[
+                                    ["Year", "Sales", "Expenses", "Profit"],
+                                    ["2014", 1000, 400, 200],
+                                    ["2015", 1170, 460, 250],
+                                    ["2016", 660, 1120, 300],
+                                    ["2017", 1030, 540, 350]
+                                ]}
+                                options={{
+                                    title: "Chart Title",
+                                    titleTextStyle: {
+                                        color: theme.currentColorTheme.colorThemeCardFont
+                                    },
+                                    backgroundColor: theme.currentColorTheme.colorThemeCardBackground,
+                                    // backgroundColor: "#2b2d3e",
+                                    chartArea: {
+                                        width: "90%",
+                                        height: "70%",
+                                        backgroundColor: {
+                                            fill: theme.currentColorTheme.colorThemeCardBackground
+                                        }
+                                    },
+                                    hAxis: {
+                                        gridlines: {
+                                            count: 6
+                                        },
+                                        textStyle: {
+                                            color: theme.currentColorTheme.colorThemeCardFont
+                                        }
+                                    },
+                                    vAxis: {
+                                        textStyle: {
+                                            color: theme.currentColorTheme.colorThemeCardFont
+                                        }
+                                    },
+                                    animation: {
+                                        duration: 1000,
+                                        easing: "out",
+                                        startup: true
+                                    }
+                                }}
+                            />
+                        </div>
+                    </DashboardGoogleChartCard>
+                )}
+            </ThemeConsumer>
         );
     }
 }
@@ -155,10 +170,10 @@ class WidgetGoogleChart extends React.Component {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetGoogleChart.defaultProps = {};
+WidgetGoogleChartHorizontalBar.defaultProps = {};
 
 // Force the caller to include the proper attributes
-WidgetGoogleChart.propTypes = {
+WidgetGoogleChartHorizontalBar.propTypes = {
     sn_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
@@ -166,7 +181,7 @@ WidgetGoogleChart.propTypes = {
 };
 
 // If we (this file) get "imported", this is what they'll be given
-export default WidgetGoogleChart;
+export default WidgetGoogleChartHorizontalBar;
 
 // =======================================================================================================
 // =======================================================================================================

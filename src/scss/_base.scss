@@ -16,7 +16,7 @@ body {
     // font-family: "Lato", "Courier New";
     // font-family: "Charm", "Courier New";
     font-family: "Stint Ultra Condensed", "Courier New";
-    background-color: rgba($color: $color-pageBackground, $alpha: 1);
+    background-color: var(--colorThemePageBackground);
     top: 0px;
-    color: $color-default;
+    color: var(--colorThemeFontDefault);
 }

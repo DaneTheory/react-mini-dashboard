@@ -7,6 +7,7 @@ import { Bar } from "react-chartjs-2";
 // project imports
 import DashboardChartJSCard from "../components/DashboardChartJSCard";
 import apiProxy from "../api/apiProxy";
+import { ThemeConsumer } from "../components/ThemeContext";
 
 // The purpose of this file is to create a React Component which can be included in HTML
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
@@ -77,19 +78,28 @@ class WidgetSNBarChart extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     renderCardBody() {
-        let data = {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
-            datasets: [
-                {
-                    label: "My First dataset",
-                    backgroundColor: "slategrey",
-                    borderColor: "slategrey",
-                    data: [0, 10, 5, 2, 20, 30, 45]
-                }
-            ]
-        };
-
-        return <Bar className="chart-itself" data={data} options={{ responive: true, maintainAspectRatio: false }} />;
+        return (
+            <ThemeConsumer>
+                {/* Use a render prop to get the global value from the Context API Consumer */}
+                {theme => (
+                    <Bar
+                        className="chart-itself"
+                        data={{
+                            labels: ["January", "February", "March", "April", "May", "June", "July"],
+                            datasets: [
+                                {
+                                    label: "My First dataset",
+                                    backgroundColor: theme.currentColorTheme.colorThemeChartData,
+                                    borderColor: theme.currentColorTheme.colorThemeChartData,
+                                    data: [0, 10, 5, 2, 20, 30, 45]
+                                }
+                            ]
+                        }}
+                        options={{ responive: true, maintainAspectRatio: false }}
+                    />
+                )}
+            </ThemeConsumer>
+        );
     }
 
     render() {

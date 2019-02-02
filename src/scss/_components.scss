@@ -1,9 +1,9 @@
 // Remove the normal styling from hyperlinks in this particular widget
 .dataCard#WidgetLeankitDiscoverySolutioningCardList td a {
-    color: $color-cardfont;
+    color: var(--colorThemeCardFont);
     text-decoration: none;
     &:hover {
-        color: $color-widget-links;
+        color: var(--colorThemeWidgetLinks);
     }
 }
 
@@ -38,23 +38,23 @@
 
     // the track (or background) of the elevator bar (Chrome/Safari)
     .dataCard::-webkit-scrollbar-track {
-        background-color: $scrollbarTrackBackgroundColor;
+        background-color: var(--colorThemeScrollbarTrackBackground);
         border-radius: 7px;
     }
 
     // the elevator bar (Chrome/Safari)
     .dataCard::-webkit-scrollbar-thumb {
-        background-color: $scrollbarThumbBackgroundColor;
+        background-color: var(--colorThemeScrollbarThumbBackground);
         border-radius: 7px;
     }
 
     .dataCard {
-        scrollbar-color: $scrollbarThumbBackgroundColor $scrollbarTrackBackgroundColor;
+        scrollbar-color: var(--colorThemeScrollbarThumbBackground) var(--colorThemeScrollbarTrackBackground);
     }
 
     .dataCard {
-        background-color: $color-cardbackground;
-        color: $color-cardfont;
+        background-color: var(--colorThemeCardBackground);
+        color: var(--colorThemeCardFont);
         border-radius: 0.2rem;
         padding: 0.5rem;
         width: 100%;
@@ -182,7 +182,7 @@
 
     // This is the grid item (for charts)
     .chartJSCard {
-        background-color: $color-cardbackground;
+        background-color: var(--colorThemeCardBackground);
         border-radius: 0.2rem;
         width: 100%;
         height: 100%;
@@ -191,6 +191,8 @@
         canvas {
             // Spacing around the canvas/chart
             padding: 1.5rem;
+
+            background-color: var(--colorThemeCardBackground);
 
             // There are way to make the chart.js responsive
             // PreReq: The chart.js needs to have option:responive on it.  Probably also maintainAspectRatio:false, then there are two solutions
@@ -203,10 +205,46 @@
     }
 
     .googleChartCard {
-        background-color: $color-cardbackground;
+        background-color: var(--colorThemeCardBackground);
         border-radius: 0.2rem;
         width: 100%;
         height: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        // Google chart creates a div, so style that immediate child as a flex item so we can easily center our content
+        & > div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+    // .googleChartCard > div {
+    //     margin: 10px auto 10px auto;
+    // }
+    // .googleChartCard > div > div {
+    //     margin: 0 auto;
+    // }
+
+    .googleGaugeChartCard {
+        background-color: var(--colorThemeCardBackground);
+        border-radius: 0.2rem;
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        .gaugeTitle {
+            font-size: 3rem;
+            text-align: center;
+            color: var(--colorThemeCardFont);
+            display: block;
+        }
         table {
             // Google seems to create a table to hold a gauge, and I'm trying to center the gauge horizontally
             margin: 0 auto !important;

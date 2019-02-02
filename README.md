@@ -13,13 +13,14 @@
 1. Solved !important override. That indeed is one solution, the other is that the div for the canvas need to be a direct child of the grid element/div. Otherwise, the intermediary div won't stretch to be 100% of height
 1. Tested in Chrome, Safari, Firefox, and Edge. They all work. IE11 doesnt
 1. Convert Leankit API from Leankit NodeJS agent to actual API calls via network ?
+1. Use Google charts to see if they are responsive
+1. Periodically update data
 
 ### Tasks To Do
 
-1. Use Google charts to see if they are responsive
+1. Get the Google Graphs to consume the color theme (then merge in addGoogleChart)
 1. Look at awesome react components
 1. Understand inheritance vs specificity. Inherited property (color) is getting overridden by \* universal selector
-1. Periodically update data
 1. Create a chart with real data
 1. Recreate all the important charts
 1. Create auto-scrolling widget for boldchat
