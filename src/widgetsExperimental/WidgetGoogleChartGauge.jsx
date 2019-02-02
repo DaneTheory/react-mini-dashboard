@@ -3,7 +3,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import PubSub from "pubsub-js";
 import { Chart } from "react-google-charts";
-import DashboardGoogleChartCard from "../components/DashboardGoogleChartCard";
 
 // project imports
 import apiProxy from "../api/apiProxy";
@@ -88,28 +87,27 @@ class WidgetGoogleChartGauge extends React.Component {
         }
 
         return (
-            <DashboardGoogleChartCard
-                id={this.props.id}
-                position={this.props.position}
-                color={this.props.color}
-                widgetName="WidgetSNBarChart"
-            >
+            <div className={"googleGaugeChartCard"} id={this.props.id} style={styles} widgetName="WidgetSNBarChart">
                 <div className="gaugeTitle">All Active Chats</div>
-                <Chart
-                    chartType="Gauge"
-                    width={"100%"}
-                    height={"90%"}
-                    data={[["Label", "Value"], ["Chats", this.state.boldchatCount]]}
-                    options={{
-                        max: 130,
-                        redFrom: 110,
-                        redTo: 130,
-                        yellowFrom: 70,
-                        yellowTo: 110,
-                        minorTicks: 5
-                    }}
-                />
-            </DashboardGoogleChartCard>
+                {/* Use this div to size the chart, rather than using Chart Width/Height */}
+                {/* Chart width/height seems to create two nested divs, which each have the %size applied, so double affect */}
+                <div className="manualChartSize" style={{ width: "95%", height: "95%" }}>
+                    <Chart
+                        chartType="Gauge"
+                        width={"100%"}
+                        height={"90%"}
+                        data={[["Label", "Value"], ["Chats", this.state.boldchatCount]]}
+                        options={{
+                            max: 130,
+                            redFrom: 110,
+                            redTo: 130,
+                            yellowFrom: 90,
+                            yellowTo: 110,
+                            minorTicks: 5
+                        }}
+                    />
+                </div>
+            </div>
         );
     }
 }

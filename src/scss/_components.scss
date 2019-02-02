@@ -192,6 +192,8 @@
             // Spacing around the canvas/chart
             padding: 1.5rem;
 
+            background-color: var(--colorThemeCardBackground);
+
             // There are way to make the chart.js responsive
             // PreReq: The chart.js needs to have option:responive on it.  Probably also maintainAspectRatio:false, then there are two solutions
             // 1) The div containing this canvas needs to be a *direct* child of the grid item.  If you stick an extra <div> in there, it all falls apart (though solution #2 would still work)
@@ -207,9 +209,41 @@
         border-radius: 0.2rem;
         width: 100%;
         height: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        // Google chart creates a div, so style that immediate child as a flex item so we can easily center our content
+        & > div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+    // .googleChartCard > div {
+    //     margin: 10px auto 10px auto;
+    // }
+    // .googleChartCard > div > div {
+    //     margin: 0 auto;
+    // }
+
+    .googleGaugeChartCard {
+        background-color: var(--colorThemeCardBackground);
+        border-radius: 0.2rem;
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
         .gaugeTitle {
             font-size: 3rem;
             text-align: center;
+            color: var(--colorThemeCardFont);
+            display: block;
         }
         table {
             // Google seems to create a table to hold a gauge, and I'm trying to center the gauge horizontally
