@@ -11,6 +11,7 @@ import WidgetSNUniqueLoginsTodaySelfUpdating from "../widgetsSelfUpdating/Widget
 import WidgetGoogleChartScatter from "../widgetsExperimental/WidgetGoogleChartScatter";
 import WidgetGoogleChartHorizontalBar from "../widgetsExperimental/WidgetGoogleChartHorizontalBar";
 import WidgetGoogleChartGauge from "../widgetsExperimental/WidgetGoogleChartGauge";
+import WidgetPubSubJET from "../widgetsExperimental/WidgetSNPubSubJET";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -30,6 +31,11 @@ class Dev1CardGrid extends React.Component {
     render() {
         return (
             <CardGrid rows="20" columns="12">
+                <WidgetPubSubJET
+                    position="span 4/ span 4"
+                    sn_instance={this.props.sn_instance}
+                    boldchat_instance={this.props.boldchat_instance}
+                />
                 <WidgetSNBarChart color="#ddd" position="span 5 / span 4" sn_instance={this.props.sn_instance} />
                 <WidgetSNScrollableTable position="span 4 / span 4" />
                 <WidgetSNUniqueLoginsToday position="span 2 / span 2" sn_instance={this.props.sn_instance} />
