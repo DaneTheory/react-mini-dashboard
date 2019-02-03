@@ -26,7 +26,8 @@ class WidgetPubSubJET extends React.Component {
         super(props);
 
         // Set our initial React state, this is the *only* time to bypass setState()
-        this.state = { widgetName: "WidgetPubSubJET", count: null };
+        // this.state = { widgetName: "WidgetPubSubJET", consumptionUnits: { chad: { count: 42 }, fred: { count: 43 } } };
+        this.state = { widgetName: "WidgetPubSubJET", consumptionUnits: {} };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function
@@ -110,36 +111,161 @@ class WidgetPubSubJET extends React.Component {
         return JETRemoteResolutionINC;
     }
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    async boldChatSummaryReport(agoUnits, agoCount) {
-        // runReport is authorized in the new proxy API
+    async boldChatAnswered(agoCount, agoUnits) {
+        // var url4 = `./cgi-bin/queryLogMeIn.py?profile=${factoryProfile}&function=boldChatSummaryReport&agoUnits=${agoUnits}&agoCount=${agoCount}`;
         // Example of Getting the Report ID
         // https://api{{dataResidency}}.boldchat.com/aid/{{aid}}/data/rest/json/v1/runReport?auth={{auth}}&ReportType=0&Grouping=date&FromDate=2017-09-23T00:00:01.000Z&ToDate=2017-09-30T00:00:01.000Z&FolderID=965423669295807313
         //    FromDate=2017-09-23T00:00:01.000Z
 
         // Compute intial FromDate based on desired history (agoUnits and agoCount)
-        var now = moment();
-        let fromDateString = strftime("%Y-%m-%dT%H:%M:01.000Z", now.subtract(parseInt(agoCount), agoUnits).toDate());
-        console.log(fromDateString);
-        let toDate = "toDate";
+        let fromDateString = strftime(
+            "%Y-%m-%dT%H:%M:01.000Z",
+            moment()
+                .subtract(parseInt(agoCount), agoUnits)
+                .toDate()
+        );
+        // Compute the "to" date to be one hour into the future, just to be sure
+        let toDateString = strftime(
+            "%Y-%m-%dT%H:%M:01.000Z",
+            moment()
+                .add(1, "hours")
+                .toDate()
+        );
         let folderID = "965423669295807313";
 
-        const response = await apiProxy.get(`/boldchat/${this.props.boldchat_instance}/data/rest/json/v1/runReport`, {
+        let responseRunReport = await apiProxy.get(`/boldchat/${this.props.boldchat_instance}/data/rest/json/v1/runReport`, {
             params: {
                 ReportType: "0",
                 Grouping: "date",
                 FromDate: fromDateString,
-                ToDate: toDate,
+                ToDate: toDateString,
                 FolderID: folderID
             }
         });
-        console.log(response);
+        let ReportID = responseRunReport.data.Data.ReportID;
 
-        // getReport same
+        let responseGetReport = await apiProxy.get(`/boldchat/${this.props.boldchat_instance}/data/rest/json/v1/getReport`, {
+            params: { ReportID: ReportID }
+        });
+        let report = responseGetReport.data.Data;
+
+        // console.log("totalClicks: ", report.Summary[1]["Value"]);
+        // console.log("Unavail: ", report.Summary[2]["Value"]);
+        // console.log("Blocked: ", report.Summary[3]["Value"]);
+        // console.log("Abandon: ", report.Summary[4]["Value"]);
+        // console.log("Unanswer: ", report.Summary[5]["Value"]);
+        // console.log("Answered: ", report.Summary[6]["Value"]);
+
+        let answeredChats = report.Summary[6]["Value"];
+        return answeredChats;
     }
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    async JETPortalContacts() {}
+    async JETPortalContacts(agoCount, agoUnits) {
+        // var url5 = querySetup(urlBase, query, factoryProfile, "JETPortalContacts", agoUnits, agoCount);
+        // JSONResults = countRecords(currentProfile, "incident",
+        // "sysparm_query=u_owned_by_group=43a8eef644e71000f9aca72b4342c01a^contact_type=self-service^sys_updated_on>=javascript:gs.%sAgoStart(%s)^sys_created_on>=javascript:gs.%sAgoStart(%s)" % (agoUnits, agoCount, agoUnits, agoCount))
+
+        let globalServiceDesk = "43a8eef644e71000f9aca72b4342c01a";
+        let sq1 = `u_owned_by_group=${globalServiceDesk}`;
+        let sq2 = "contact_type=self-service";
+        let sq3 = `sys_updated_on>=javascript:gs.${agoUnits}AgoStart(${agoCount})`;
+        let sq4 = `sys_created_on>=javascript:gs.${agoUnits}AgoStart(${agoCount})`;
+
+        // Retrieve our data (likely from an API)
+        const response = await apiProxy.get(`/sn/${this.props.sn_instance}/api/now/stats/incident`, {
+            params: {
+                // Units: years, months, days, hours, minutes
+                sysparm_query: [sq1, sq2, sq3, sq4].join("^"),
+                sysparm_count: "true",
+                sysparm_display_value: "true"
+            }
+        });
+        let JETPortalContacts = parseInt(response.data.result.stats.count);
+        return JETPortalContacts;
+    }
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    async JETGenesysCTIByLang() {}
+    async JETGenesysCTIByLang(agoCount, agoUnits) {
+        // var url6 = querySetup(urlBase, query, factoryProfile, "JETGenesysCTIByLang", agoUnits, agoCount);
+        // JSONResults = getAggregateGroupBy(currentProfile, "u_genesys_cti_log", ["u_language"], "sysparm_query=sys_created_on>=javascript:gs.%sAgoStart(%s)" % (agoUnits, agoCount))
+
+        let groupby_field = "u_language";
+        let response = await apiProxy.get(`/sn/${this.props.sn_instance}/api/now/stats/u_genesys_cti_log`, {
+            params: {
+                // Units for xAgoStart: years, months, days, hours, minutes
+                sysparm_query: `sys_created_on>=javascript:gs.${agoUnits}AgoStart(${agoCount})`,
+                sysparm_count: "true",
+                sysparm_display_value: "true",
+                sysparm_group_by: groupby_field
+            }
+        });
+
+        // Restructure the ServiceNow response (somewhat deep object) into an array of simple objects
+        let languageCounts = response.data.result.map(element => {
+            return {
+                // the brackets around [groupby_field] allow me to use a variable as a key name within the new object
+                [groupby_field]: element["groupby_fields"][0]["value"] || "<blank>",
+                count: element.stats.count
+            };
+        });
+
+        // Parse information about all Genesys Phone Call Languages
+        let voiceConsumptionUnits = {};
+        languageCounts.forEach((record, index) => {
+            // console.log("record", record);
+            var consumptionUnit = "";
+
+            var lang = record["u_language"];
+            var count = parseInt(record["count"]);
+            // console.log("lang", lang);
+            if (["GERMAN", "FRENCH", "DUTCH", "RUSSIAN", "ITALIAN"].includes(lang)) {
+                consumptionUnit = "Voice (EMEA)";
+            } else if (["SPANISH", "PORTUGUESE", "CANADIAN"].includes(lang)) {
+                consumptionUnit = "Voice (LATAM)";
+            } else if (["JAPANESE", "MANDARIN", "KOREAN"].includes(lang)) {
+                consumptionUnit = "Voice (ASPAC)";
+            } else if (["ENGLISH"].includes(lang)) {
+                consumptionUnit = "Voice (English)";
+            } else {
+                console.warn("Error, lang wasn't found: " + lang);
+                consumptionUnit = "Voice (Unknown)";
+            }
+
+            // Accumulate an object which has the sum counts of each voice consumption unit
+            voiceConsumptionUnits[consumptionUnit] = voiceConsumptionUnits.hasOwnProperty(consumptionUnit)
+                ? voiceConsumptionUnits[consumptionUnit] + count
+                : count;
+        });
+        return voiceConsumptionUnits;
+    }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    async getJETData() {
+        let JETOnsiteSupportClosedINC = await this.JETOnsiteSupportClosedINC("168", "hours");
+        let JETOnsiteSupportClosedTasks = await this.JETOnsiteSupportClosedTasks("168", "hours");
+        let JETRemoteResolutionINC = await this.JETRemoteResolutionINC("168", "hours");
+        let boldChatAnswered = await this.boldChatAnswered("168", "hours");
+        let JETPortalContacts = await this.JETPortalContacts("168", "hours");
+        let voiceConsumptionUnits = await this.JETGenesysCTIByLang("168", "hours");
+
+        console.log("JETOnsiteSupportClosedINC", JETOnsiteSupportClosedINC);
+        console.log("JETOnsiteSupportClosedTasks", JETOnsiteSupportClosedTasks);
+        console.log("JETRemoteResolutionINC", JETRemoteResolutionINC);
+        console.log("boldChatAnswered", boldChatAnswered);
+        console.log("JETPortalContacts", JETPortalContacts);
+        console.log("voiceConsumptionUnits", voiceConsumptionUnits);
+
+        let consumptionUnits = {
+            JETOnsiteSupportClosedINC: { count: JETOnsiteSupportClosedINC + JETOnsiteSupportClosedTasks },
+            JETRemoteResolutionINC: { count: JETRemoteResolutionINC },
+            boldChatAnswered: { count: boldChatAnswered },
+            JETPortalContacts: { count: JETPortalContacts }
+        };
+        Object.entries(voiceConsumptionUnits).forEach(([key, value]) => {
+            console.log(key, value);
+            consumptionUnits[key] = { count: value };
+        });
+        return consumptionUnits;
+    }
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     // eslint-disable-next-line no-unused-vars
@@ -147,21 +273,10 @@ class WidgetPubSubJET extends React.Component {
         // this function gets the custom data for this widget, and updates our React component state
         // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
 
-        // var url4 = `./cgi-bin/queryLogMeIn.py?profile=${factoryProfile}&function=boldChatSummaryReport&agoUnits=${agoUnits}&agoCount=${agoCount}`;
-        // var url5 = querySetup(urlBase, query, factoryProfile, "JETPortalContacts", agoUnits, agoCount);
-        // var url6 = querySetup(urlBase, query, factoryProfile, "JETGenesysCTIByLang", agoUnits, agoCount);
-
-        let JETOnsiteSupportClosedINC = await this.JETOnsiteSupportClosedINC("168", "hours");
-        let JETOnsiteSupportClosedTasks = await this.JETOnsiteSupportClosedTasks("168", "hours");
-        let JETRemoteResolutionINC = await this.JETRemoteResolutionINC("168", "hours");
-        let boldChatSummaryReport = await this.boldChatSummaryReport("168", "hours");
-
-        console.log("JETOnsiteSupportClosedINC", JETOnsiteSupportClosedINC);
-        console.log("JETOnsiteSupportClosedTasks", JETOnsiteSupportClosedTasks);
-        console.log("JETRemoteResolutionINC", JETRemoteResolutionINC);
+        let consumptionUnits = await this.getJETData();
 
         // Update our own state with the new data
-        this.setState({ count: JETOnsiteSupportClosedINC + JETOnsiteSupportClosedTasks });
+        this.setState({ consumptionUnits: consumptionUnits });
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -188,6 +303,48 @@ class WidgetPubSubJET extends React.Component {
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    renderCardTableOrig() {
+        if (this.state.OSInfo === {}) {
+            return <div className="single-num-value">No Clicks Today :(</div>;
+        } else {
+            return (
+                <div style={{ fontSize: "1.6vw" }}>
+                    <table>
+                        <tbody>
+                            {Object.entries(this.state.consumptionUnits).map(obj => (
+                                <tr key={obj[0]}>
+                                    <td>{obj[0]}</td>
+                                    <td>{obj[1].count}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            );
+        }
+    }
+
+    renderCardTable() {
+        if (this.state.OSInfo === {}) {
+            return <div className="single-num-value">No Clicks Today :(</div>;
+        } else {
+            return (
+                <div style={{ fontSize: "1.6vw" }}>
+                    <table>
+                        <tbody>
+                            {/* This uses destructuring to unpack the result of .entries() into key/value */}
+                            {Object.entries(this.state.consumptionUnits).map(([key, value]) => (
+                                <tr key={key}>
+                                    <td>{key}</td>
+                                    <td>{value.count}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            );
+        }
+    }
 
     render() {
         // Standard React Lifecycle method, gets called by React itself
@@ -197,9 +354,7 @@ class WidgetPubSubJET extends React.Component {
         return (
             <DashboardDataCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetPubSubJET">
                 <div className="single-num-title">JET Data</div>
-                <div className="single-num-value">
-                    <NumberFormat value={this.state.count} thousandSeparator={true} displayType={"text"} />
-                </div>
+                {this.renderCardTable()}
             </DashboardDataCard>
         );
     }
