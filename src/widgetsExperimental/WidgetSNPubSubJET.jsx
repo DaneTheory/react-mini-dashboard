@@ -27,7 +27,7 @@ class WidgetPubSubJET extends React.Component {
 
         // Set our initial React state, this is the *only* time to bypass setState()
         // this.state = { widgetName: "WidgetPubSubJET", consumptionUnits: { chad: { count: 42 }, fred: { count: 43 } } };
-        this.state = { widgetName: "WidgetPubSubJET", consumptionUnits: {} };
+        this.state = { widgetName: "WidgetPubSubJET", JETconsumptionUnits: {} };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function
@@ -89,6 +89,14 @@ class WidgetPubSubJET extends React.Component {
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    async JETOnsiteSupportCombined(agoCount, agoUnits) {
+        let JETOnsiteSupportClosedINC = await this.JETOnsiteSupportClosedINC(agoCount, agoUnits);
+        let JETOnsiteSupportClosedTasks = await this.JETOnsiteSupportClosedTasks(agoCount, agoUnits);
+        return JETOnsiteSupportClosedINC + JETOnsiteSupportClosedTasks;
+    }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     async JETRemoteResolutionINC(agoCount, agoUnits) {
         // var url3 = querySetup(urlBase, query, factoryProfile, "JETRemoteResolutionINC", agoUnits, agoCount);
         // JSONResults = countRecords(currentProfile, "incident",
@@ -144,9 +152,19 @@ class WidgetPubSubJET extends React.Component {
         });
         let ReportID = responseRunReport.data.Data.ReportID;
 
-        let responseGetReport = await apiProxy.get(`/boldchat/${this.props.boldchat_instance}/data/rest/json/v1/getReport`, {
-            params: { ReportID: ReportID }
-        });
+        // Get the status report that we just started. NOTE: we may need to loop a few times until it's done (goes from "running" to "success")
+        let reportStatus, responseGetReport;
+        do {
+            responseGetReport = await apiProxy.get(`/boldchat/${this.props.boldchat_instance}/data/rest/json/v1/getReport`, {
+                params: { ReportID: ReportID }
+            });
+
+            console.log(responseGetReport);
+            // can be "running" or "success"
+            reportStatus = responseGetReport.data.Status;
+            console.log("Report Status", responseGetReport.data.Status);
+        } while (reportStatus !== "success");
+
         let report = responseGetReport.data.Data;
 
         // console.log("totalClicks: ", report.Summary[1]["Value"]);
@@ -218,13 +236,13 @@ class WidgetPubSubJET extends React.Component {
             var count = parseInt(record["count"]);
             // console.log("lang", lang);
             if (["GERMAN", "FRENCH", "DUTCH", "RUSSIAN", "ITALIAN"].includes(lang)) {
-                consumptionUnit = "Voice (EMEA)";
+                consumptionUnit = "VoiceEMEA";
             } else if (["SPANISH", "PORTUGUESE", "CANADIAN"].includes(lang)) {
-                consumptionUnit = "Voice (LATAM)";
+                consumptionUnit = "VoiceLATAM";
             } else if (["JAPANESE", "MANDARIN", "KOREAN"].includes(lang)) {
-                consumptionUnit = "Voice (ASPAC)";
+                consumptionUnit = "VoiceASPAC";
             } else if (["ENGLISH"].includes(lang)) {
-                consumptionUnit = "Voice (English)";
+                consumptionUnit = "VoiceEnglish";
             } else {
                 console.warn("Error, lang wasn't found: " + lang);
                 consumptionUnit = "Voice (Unknown)";
@@ -240,31 +258,38 @@ class WidgetPubSubJET extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     async getJETData() {
-        let JETOnsiteSupportClosedINC = await this.JETOnsiteSupportClosedINC("168", "hours");
-        let JETOnsiteSupportClosedTasks = await this.JETOnsiteSupportClosedTasks("168", "hours");
+        let JETOnsiteSupport = await this.JETOnsiteSupportCombined("168", "hours");
         let JETRemoteResolutionINC = await this.JETRemoteResolutionINC("168", "hours");
         let boldChatAnswered = await this.boldChatAnswered("168", "hours");
         let JETPortalContacts = await this.JETPortalContacts("168", "hours");
         let voiceConsumptionUnits = await this.JETGenesysCTIByLang("168", "hours");
 
-        console.log("JETOnsiteSupportClosedINC", JETOnsiteSupportClosedINC);
-        console.log("JETOnsiteSupportClosedTasks", JETOnsiteSupportClosedTasks);
+        console.log("JETOnsiteSupport", JETOnsiteSupport);
         console.log("JETRemoteResolutionINC", JETRemoteResolutionINC);
         console.log("boldChatAnswered", boldChatAnswered);
         console.log("JETPortalContacts", JETPortalContacts);
         console.log("voiceConsumptionUnits", voiceConsumptionUnits);
 
-        let consumptionUnits = {
-            JETOnsiteSupportClosedINC: { count: JETOnsiteSupportClosedINC + JETOnsiteSupportClosedTasks },
-            JETRemoteResolutionINC: { count: JETRemoteResolutionINC },
-            boldChatAnswered: { count: boldChatAnswered },
-            JETPortalContacts: { count: JETPortalContacts }
+        let JETconsumptionUnits = {
+            JETOnsiteSupport: {
+                name: "Onsite Support",
+                count: JETOnsiteSupport,
+                unitCost: 95.0,
+                weeklyTargetCount: 5536
+            },
+            JETRemoteResolutionINC: { name: "Remote Resolution", count: JETRemoteResolutionINC, unitCost: 25.58, weeklyTargetCount: 1299 },
+            JETchatContact: { name: "Chat Contact", count: boldChatAnswered, unitCost: 4.64, weeklyTargetCount: 10277 },
+            JETPortalContacts: { name: "Portal Contact", count: JETPortalContacts, unitCost: 4.64, weeklyTargetCount: 4304 },
+            VoiceEMEA: { name: "Voice (EMEA)", count: voiceConsumptionUnits["VoiceEMEA"], unitCost: 24.86, weeklyTargetCount: 1901 },
+            VoiceASPAC: { name: "Voice (ASPAC)", count: voiceConsumptionUnits["VoiceASPAC"], unitCost: 10.54, weeklyTargetCount: 2288 },
+            VoiceLATAM: { name: "Voice (LATAM)", count: voiceConsumptionUnits["VoiceLATAM"], unitCost: 9.44, weeklyTargetCount: 1443 },
+            VoiceEnglish: { name: "Voice (English)", count: voiceConsumptionUnits["VoiceEnglish"], unitCost: 6.25, weeklyTargetCount: 4525 }
         };
-        Object.entries(voiceConsumptionUnits).forEach(([key, value]) => {
-            console.log(key, value);
-            consumptionUnits[key] = { count: value };
-        });
-        return consumptionUnits;
+        // Object.entries(voiceConsumptionUnits).forEach(([key, value]) => {
+        //     console.log(key, value);
+        //     JETconsumptionUnits[key] = { count: value };
+        // });
+        return JETconsumptionUnits;
     }
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -273,10 +298,10 @@ class WidgetPubSubJET extends React.Component {
         // this function gets the custom data for this widget, and updates our React component state
         // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
 
-        let consumptionUnits = await this.getJETData();
+        let JETconsumptionUnits = await this.getJETData();
 
         // Update our own state with the new data
-        this.setState({ consumptionUnits: consumptionUnits });
+        this.setState({ JETconsumptionUnits: JETconsumptionUnits });
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -303,26 +328,6 @@ class WidgetPubSubJET extends React.Component {
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    renderCardTableOrig() {
-        if (this.state.OSInfo === {}) {
-            return <div className="single-num-value">No Clicks Today :(</div>;
-        } else {
-            return (
-                <div style={{ fontSize: "1.6vw" }}>
-                    <table>
-                        <tbody>
-                            {Object.entries(this.state.consumptionUnits).map(obj => (
-                                <tr key={obj[0]}>
-                                    <td>{obj[0]}</td>
-                                    <td>{obj[1].count}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            );
-        }
-    }
 
     renderCardTable() {
         if (this.state.OSInfo === {}) {
@@ -331,12 +336,32 @@ class WidgetPubSubJET extends React.Component {
             return (
                 <div style={{ fontSize: "1.6vw" }}>
                     <table>
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Cnt</th>
+                                <th>Unit$</th>
+                                <th>Wkly Tgt</th>
+                                <th>Pct</th>
+                                <th>Actual $</th>
+                                <th>Variance</th>
+                            </tr>
+                        </thead>
                         <tbody>
                             {/* This uses destructuring to unpack the result of .entries() into key/value */}
-                            {Object.entries(this.state.consumptionUnits).map(([key, value]) => (
+                            {Object.entries(this.state.JETconsumptionUnits).map(([key, value]) => (
                                 <tr key={key}>
-                                    <td>{key}</td>
-                                    <td>{value.count}</td>
+                                    <td>{value.name}</td>
+                                    <td>
+                                        <NumberFormat value={value.count} thousandSeparator={true} displayType={"text"} />
+                                    </td>
+                                    <td>{value.unitCost}</td>
+                                    <td>
+                                        <NumberFormat value={value.weeklyTargetCount} thousandSeparator={true} displayType={"text"} />
+                                    </td>
+                                    <td>Pct</td>
+                                    <td>Actual</td>
+                                    <td>Variance</td>
                                 </tr>
                             ))}
                         </tbody>
