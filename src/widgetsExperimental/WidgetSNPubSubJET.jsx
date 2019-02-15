@@ -8,6 +8,9 @@ import NumberFormat from "react-number-format";
 import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
 
+// other imports
+var classNames = require("classnames");
+
 // These have to be after imports
 var strftime = require("strftime");
 var moment = require("moment");
@@ -159,7 +162,6 @@ class WidgetPubSubJET extends React.Component {
                 params: { ReportID: ReportID }
             });
 
-            console.log(responseGetReport);
             // can be "running" or "success"
             reportStatus = responseGetReport.data.Status;
             console.log("Report Status", responseGetReport.data.Status);
@@ -228,7 +230,7 @@ class WidgetPubSubJET extends React.Component {
 
         // Parse information about all Genesys Phone Call Languages
         let voiceConsumptionUnits = {};
-        languageCounts.forEach((record, index) => {
+        languageCounts.forEach(record => {
             // console.log("record", record);
             var consumptionUnit = "";
 
@@ -256,35 +258,91 @@ class WidgetPubSubJET extends React.Component {
         return voiceConsumptionUnits;
     }
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    computeVariance(JETconsumptionUnits) {
+        Object.entries(JETconsumptionUnits).forEach(([key, value]) => {
+            value.pctOfTarget = value.count / value.weeklyTargetCount;
+            value.targetCost = value.unitCost * value.weeklyTargetCount;
+            value.actualCost = value.unitCost * value.count;
+            value.dollarVariance = value.actualCost - value.targetCost;
+        });
+
+        return JETconsumptionUnits;
+    }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     async getJETData() {
-        let JETOnsiteSupport = await this.JETOnsiteSupportCombined("168", "hours");
-        let JETRemoteResolutionINC = await this.JETRemoteResolutionINC("168", "hours");
-        let boldChatAnswered = await this.boldChatAnswered("168", "hours");
-        let JETPortalContacts = await this.JETPortalContacts("168", "hours");
-        let voiceConsumptionUnits = await this.JETGenesysCTIByLang("168", "hours");
+        // Make calls to get each kind of data for JET
+        // let JETOnsiteSupport = await this.JETOnsiteSupportCombined("168", "hours");
+        // let JETRemoteResolutionINC = await this.JETRemoteResolutionINC("168", "hours");
+        // let boldChatAnswered = await this.boldChatAnswered("168", "hours");
+        // let JETPortalContacts = await this.JETPortalContacts("168", "hours");
+        // let voiceConsumptionUnits = await this.JETGenesysCTIByLang("168", "hours");
 
-        console.log("JETOnsiteSupport", JETOnsiteSupport);
-        console.log("JETRemoteResolutionINC", JETRemoteResolutionINC);
-        console.log("boldChatAnswered", boldChatAnswered);
-        console.log("JETPortalContacts", JETPortalContacts);
-        console.log("voiceConsumptionUnits", voiceConsumptionUnits);
+        let [JETOnsiteSupport, JETRemoteResolutionINC, boldChatAnswered, JETPortalContacts, voiceConsumptionUnits] = await Promise.all([
+            this.JETOnsiteSupportCombined("168", "hours"),
+            this.JETRemoteResolutionINC("168", "hours"),
+            this.boldChatAnswered("168", "hours"),
+            this.JETPortalContacts("168", "hours"),
+            this.JETGenesysCTIByLang("168", "hours")
+        ]);
 
+        // Show what we got
+        // console.log("JETOnsiteSupport", JETOnsiteSupport);
+        // console.log("JETRemoteResolutionINC", JETRemoteResolutionINC);
+        // console.log("boldChatAnswered", boldChatAnswered);
+        // console.log("JETPortalContacts", JETPortalContacts);
+        // console.log("voiceConsumptionUnits", voiceConsumptionUnits);
+
+        // Take the data we got back, and insert into a more complete data structure which includes targets and unit costs
         let JETconsumptionUnits = {
             JETOnsiteSupport: {
                 name: "Onsite Support",
+                order: 800,
                 count: JETOnsiteSupport,
                 unitCost: 95.0,
                 weeklyTargetCount: 5536
             },
-            JETRemoteResolutionINC: { name: "Remote Resolution", count: JETRemoteResolutionINC, unitCost: 25.58, weeklyTargetCount: 1299 },
-            JETchatContact: { name: "Chat Contact", count: boldChatAnswered, unitCost: 4.64, weeklyTargetCount: 10277 },
-            JETPortalContacts: { name: "Portal Contact", count: JETPortalContacts, unitCost: 4.64, weeklyTargetCount: 4304 },
-            VoiceEMEA: { name: "Voice (EMEA)", count: voiceConsumptionUnits["VoiceEMEA"], unitCost: 24.86, weeklyTargetCount: 1901 },
-            VoiceASPAC: { name: "Voice (ASPAC)", count: voiceConsumptionUnits["VoiceASPAC"], unitCost: 10.54, weeklyTargetCount: 2288 },
-            VoiceLATAM: { name: "Voice (LATAM)", count: voiceConsumptionUnits["VoiceLATAM"], unitCost: 9.44, weeklyTargetCount: 1443 },
-            VoiceEnglish: { name: "Voice (English)", count: voiceConsumptionUnits["VoiceEnglish"], unitCost: 6.25, weeklyTargetCount: 4525 }
+            JETRemoteResolutionINC: {
+                name: "Remote Resolution",
+                order: 700,
+                count: JETRemoteResolutionINC,
+                unitCost: 25.58,
+                weeklyTargetCount: 1299
+            },
+            JETchatContact: { name: "Chat Contact", order: 100, count: boldChatAnswered, unitCost: 4.64, weeklyTargetCount: 10277 },
+            JETPortalContacts: { name: "Portal Contact", order: 110, count: JETPortalContacts, unitCost: 4.64, weeklyTargetCount: 4304 },
+            VoiceEMEA: {
+                name: "Voice (EMEA)",
+                order: 600,
+                count: voiceConsumptionUnits["VoiceEMEA"],
+                unitCost: 24.86,
+                weeklyTargetCount: 1901
+            },
+            VoiceASPAC: {
+                name: "Voice (ASPAC)",
+                order: 400,
+                count: voiceConsumptionUnits["VoiceASPAC"],
+                unitCost: 9.44,
+                weeklyTargetCount: 1443
+            },
+            VoiceLATAM: {
+                name: "Voice (LATAM)",
+                order: 500,
+                count: voiceConsumptionUnits["VoiceLATAM"],
+                unitCost: 10.54,
+                weeklyTargetCount: 2288
+            },
+            VoiceEnglish: {
+                name: "Voice (English)",
+                order: 300,
+                count: voiceConsumptionUnits["VoiceEnglish"],
+                unitCost: 6.25,
+                weeklyTargetCount: 4525
+            }
         };
+
+        JETconsumptionUnits = this.computeVariance(JETconsumptionUnits);
+
         // Object.entries(voiceConsumptionUnits).forEach(([key, value]) => {
         //     console.log(key, value);
         //     JETconsumptionUnits[key] = { count: value };
@@ -310,10 +368,10 @@ class WidgetPubSubJET extends React.Component {
         // Standard React Lifecycle method, gets called by React itself
         // React calls this once after component gets "mounted", in other words called *after* the render() method below
 
-        // manual update of our own data
+        // perform initial update of our own data
         this.getDataAndUpdateState();
 
-        // Now listen for update requests by subscribing to update events
+        // Now listen for update request to update data by subscribing to update events
         PubSub.subscribe("updateWidgetsEvent", this.getDataAndUpdateState);
     };
 
@@ -349,21 +407,52 @@ class WidgetPubSubJET extends React.Component {
                         </thead>
                         <tbody>
                             {/* This uses destructuring to unpack the result of .entries() into key/value */}
-                            {Object.entries(this.state.JETconsumptionUnits).map(([key, value]) => (
-                                <tr key={key}>
-                                    <td>{value.name}</td>
-                                    <td>
-                                        <NumberFormat value={value.count} thousandSeparator={true} displayType={"text"} />
-                                    </td>
-                                    <td>{value.unitCost}</td>
-                                    <td>
-                                        <NumberFormat value={value.weeklyTargetCount} thousandSeparator={true} displayType={"text"} />
-                                    </td>
-                                    <td>Pct</td>
-                                    <td>Actual</td>
-                                    <td>Variance</td>
-                                </tr>
-                            ))}
+                            {Object.entries(this.state.JETconsumptionUnits)
+                                .sort((a, b) => {
+                                    // .entries() gives us an array of key/value for each object, so [1] is the value
+                                    // We want to sort by the designated "order" variable in each object
+                                    return a[1].order - b[1].order;
+                                })
+                                .map(function([key, value]) {
+                                    let fontColorVariance = value.dollarVariance > 0 ? "redFont" : "greenFont";
+                                    return (
+                                        <tr key={key}>
+                                            <td>{value.name}</td>
+                                            <td>
+                                                <NumberFormat value={value.count} thousandSeparator={true} displayType={"text"} />
+                                            </td>
+                                            <td>{value.unitCost}</td>
+                                            <td>
+                                                <NumberFormat
+                                                    value={value.weeklyTargetCount}
+                                                    thousandSeparator={true}
+                                                    displayType={"text"}
+                                                />
+                                            </td>
+                                            <td>
+                                                <NumberFormat value={value.pctOfTarget * 100} decimalScale={0} displayType={"text"} />%
+                                            </td>
+                                            <td>
+                                                $
+                                                <NumberFormat
+                                                    value={value.actualCost}
+                                                    thousandSeparator={true}
+                                                    decimalScale={0}
+                                                    displayType={"text"}
+                                                />
+                                            </td>
+                                            <td className={classNames(fontColorVariance)}>
+                                                $
+                                                <NumberFormat
+                                                    value={value.dollarVariance}
+                                                    thousandSeparator={true}
+                                                    decimalScale={0}
+                                                    displayType={"text"}
+                                                />
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
                         </tbody>
                     </table>
                 </div>

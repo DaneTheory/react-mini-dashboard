@@ -87,7 +87,7 @@ class WidgetGoogleChartGauge extends React.Component {
         }
 
         return (
-            <div className={"googleGaugeChartCard"} id={this.props.id} style={styles} widgetName="WidgetSNBarChart">
+            <div className={"googleGaugeChartCard"} id={this.props.id} style={styles}>
                 <div className="gaugeTitle">All Active Chats</div>
                 {/* Use this div to size the chart, rather than using Chart Width/Height */}
                 {/* Chart width/height seems to create two nested divs, which each have the %size applied, so double affect */}
