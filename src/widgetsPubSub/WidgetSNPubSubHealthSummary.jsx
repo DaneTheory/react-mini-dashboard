@@ -63,7 +63,7 @@ class WidgetSNPubSubHealthSummary extends React.Component {
 
             // Example: app128031.iad4.service-now.com:jnjprod033
             // Split it on either "." or ":"
-            let [osName, location, domain1, domain2, friendlyName] = node_id.split(/[\.\:]+/);
+            let [, location, , , friendlyName] = node_id.split(/[.:]+/);
 
             // Example: <sessionsummary end_user="212" logged_in="114" total="114"/>
             let sessionsummary = xmldoc.getElementsByTagName("sessionsummary");
@@ -85,7 +85,14 @@ class WidgetSNPubSubHealthSummary extends React.Component {
             // </sql_response>
             let sql_response = parseFloat(xmldoc.getElementsByTagName("sql_response")[0].childNodes[0].attributes["mean"].value);
 
-            return { name: friendlyName, logged_in: logged_in, uptimeDays: uptimeDays, sys_load: sys_load, sql_response: sql_response };
+            return {
+                name: friendlyName,
+                logged_in: logged_in,
+                uptimeDays: uptimeDays,
+                sys_load: sys_load,
+                sql_response: sql_response,
+                location: location
+            };
         });
 
         console.log("nodeResults", nodeResults);
