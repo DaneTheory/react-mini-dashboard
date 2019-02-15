@@ -7,10 +7,6 @@ var moment = require("moment");
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 async function JETGetDataOnsiteSupportClosedINC(agoCount, agoUnits, sn_instance) {
-    // var url1 = querySetup(urlBase, query, factoryProfile, "JETOnsiteSupportClosedINC", agoUnits, agoCount);
-    //   sq1 = "sysparm_query=u_resolved_by_group=d5f37b8d0a0a3c5f01ddc2e63933dd51^ORu_resolved_by_group=d5f37b800a0a3c5f00ba3dabf02d7997^ORu_resolved_by_group=e6c3f57ea9aa2c04705be10945347396^contact_type!=Bright Red^contact_type!=Bright Red PT"
-    //   sq2 = "^closed_at>=javascript:gs.%sAgoStart(%s)" % (agoUnits, agoCount)
-
     // JETOnsiteSupportClosedINC
     let desksideServicesL2 = "d5f37b8d0a0a3c5f01ddc2e63933dd51";
     let LMW = "d5f37b800a0a3c5f00ba3dabf02d7997";
@@ -35,9 +31,6 @@ async function JETGetDataOnsiteSupportClosedINC(agoCount, agoUnits, sn_instance)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 async function JETGetDataOnsiteSupportClosedTasks(agoCount, agoUnits, sn_instance) {
-    // var url2 = querySetup(urlBase, query, factoryProfile, "JETOnsiteSupportClosedTasks", agoUnits, agoCount);
-    //   "sysparm_query=assignment_group=d5f37b8d0a0a3c5f01ddc2e63933dd51^ORassignment_group=d5f37b800a0a3c5f00ba3dabf02d7997^ORassignment_group=e6c3f57ea9aa2c04705be10945347396^closed_at>=javascript:gs.%sAgoStart(%s)" % (agoUnits, agoCount))
-
     // JETOnsiteSupportClosedTasks
     let desksideServicesL2 = "d5f37b8d0a0a3c5f01ddc2e63933dd51";
     let LMW = "d5f37b800a0a3c5f00ba3dabf02d7997";
@@ -68,10 +61,6 @@ async function JETGetDataOnsiteSupportCombined(agoCount, agoUnits, sn_instance) 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 async function JETGetDataRemoteResolutionINC(agoCount, agoUnits, sn_instance) {
-    // var url3 = querySetup(urlBase, query, factoryProfile, "JETRemoteResolutionINC", agoUnits, agoCount);
-    // JSONResults = countRecords(currentProfile, "incident",
-    // "sysparm_query=u_resolved_by_group=ed43150ba92e6c04705be109453473ee^closed_at>=javascript:gs.%sAgoStart(%s)" % (agoUnits, agoCount))
-
     let RCC = "ed43150ba92e6c04705be109453473ee";
     let sq1 = `u_resolved_by_group=${RCC}`;
     let sq2 = `closed_at>=javascript:gs.${agoUnits}AgoStart(${agoCount})`;
@@ -89,13 +78,7 @@ async function JETGetDataRemoteResolutionINC(agoCount, agoUnits, sn_instance) {
     return JETRemoteResolutionINC;
 }
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-async function JETGetDataboldChatAnswered(agoCount, agoUnits, boldchat_instance) {
-    console.log("boldchat_instance", boldchat_instance);
-    // var url4 = `./cgi-bin/queryLogMeIn.py?profile=${factoryProfile}&function=boldChatSummaryReport&agoUnits=${agoUnits}&agoCount=${agoCount}`;
-    // Example of Getting the Report ID
-    // https://api{{dataResidency}}.boldchat.com/aid/{{aid}}/data/rest/json/v1/runReport?auth={{auth}}&ReportType=0&Grouping=date&FromDate=2017-09-23T00:00:01.000Z&ToDate=2017-09-30T00:00:01.000Z&FolderID=965423669295807313
-    //    FromDate=2017-09-23T00:00:01.000Z
-
+async function JETGetDataBoldChatReport(agoCount, agoUnits, boldchat_instance) {
     // Compute intial FromDate based on desired history (agoUnits and agoCount)
     let fromDateString = strftime(
         "%Y-%m-%dT%H:%M:01.000Z",
@@ -132,10 +115,16 @@ async function JETGetDataboldChatAnswered(agoCount, agoUnits, boldchat_instance)
 
         // can be "running" or "success"
         reportStatus = responseGetReport.data.Status;
-        console.log("Report Status", responseGetReport.data.Status);
+        // console.log("Report Status", responseGetReport.data.Status);
     } while (reportStatus !== "success");
 
     let report = responseGetReport.data.Data;
+    return report;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+async function JETGetDataBoldChatAnswered(agoCount, agoUnits, boldchat_instance) {
+    let boldChatReport = await JETGetDataBoldChatReport(agoCount, agoUnits, boldchat_instance);
 
     // console.log("totalClicks: ", report.Summary[1]["Value"]);
     // console.log("Unavail: ", report.Summary[2]["Value"]);
@@ -144,15 +133,19 @@ async function JETGetDataboldChatAnswered(agoCount, agoUnits, boldchat_instance)
     // console.log("Unanswer: ", report.Summary[5]["Value"]);
     // console.log("Answered: ", report.Summary[6]["Value"]);
 
-    let answeredChats = report.Summary[6]["Value"];
+    let answeredChats = boldChatReport.Summary[6]["Value"];
+    return answeredChats;
+}
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+async function JETGetDataBoldChatUnAnswered(agoCount, agoUnits, boldchat_instance) {
+    let boldChatReport = await JETGetDataBoldChatReport(agoCount, agoUnits, boldchat_instance);
+
+    // 6th field (index 5) is Unanswered Chats (see previous function JETGetDataBoldChatAnswered() for all fields)
+    let answeredChats = boldChatReport.Summary[5]["Value"];
     return answeredChats;
 }
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 async function JETGetDataPortalContacts(agoCount, agoUnits, sn_instance) {
-    // var url5 = querySetup(urlBase, query, factoryProfile, "JETPortalContacts", agoUnits, agoCount);
-    // JSONResults = countRecords(currentProfile, "incident",
-    // "sysparm_query=u_owned_by_group=43a8eef644e71000f9aca72b4342c01a^contact_type=self-service^sys_updated_on>=javascript:gs.%sAgoStart(%s)^sys_created_on>=javascript:gs.%sAgoStart(%s)" % (agoUnits, agoCount, agoUnits, agoCount))
-
     let globalServiceDesk = "43a8eef644e71000f9aca72b4342c01a";
     let sq1 = `u_owned_by_group=${globalServiceDesk}`;
     let sq2 = "contact_type=self-service";
@@ -239,14 +232,19 @@ function computeVariance(JETconsumptionUnits) {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export async function getJETData(sn_instance, boldchat_instance) {
-    let a = await JETGetDataboldChatAnswered("168", "hours", boldchat_instance);
-    console.log("a", a);
-
     // Call all JETGetData* functions in parallel, waiting for all of them to finish before proceeding
-    let [JETOnsiteSupport, JETRemoteResolutionINC, boldChatAnswered, JETPortalContacts, voiceConsumptionUnits] = await Promise.all([
+    let [
+        JETOnsiteSupport,
+        JETRemoteResolutionINC,
+        boldChatAnswered,
+        boldChatUnAnswered,
+        JETPortalContacts,
+        voiceConsumptionUnits
+    ] = await Promise.all([
         JETGetDataOnsiteSupportCombined("168", "hours", sn_instance),
         JETGetDataRemoteResolutionINC("168", "hours", sn_instance),
-        JETGetDataboldChatAnswered("168", "hours", boldchat_instance),
+        JETGetDataBoldChatAnswered("168", "hours", boldchat_instance),
+        JETGetDataBoldChatUnAnswered("168", "hours", boldchat_instance),
         JETGetDataPortalContacts("168", "hours", sn_instance),
         JETGetDataGenesysCTIByLang("168", "hours", sn_instance)
     ]);
@@ -260,28 +258,21 @@ export async function getJETData(sn_instance, boldchat_instance) {
 
     // Take the data we got back, and insert into a more complete data structure which includes targets and unit costs
     let JETconsumptionUnits = {
-        JETOnsiteSupport: {
-            name: "Onsite Support",
-            order: 800,
-            count: JETOnsiteSupport,
-            unitCost: 95.0,
-            weeklyTargetCount: 5536
-        },
-        JETRemoteResolutionINC: {
-            name: "Remote Resolution",
-            order: 700,
-            count: JETRemoteResolutionINC,
-            unitCost: 25.58,
-            weeklyTargetCount: 1299
+        JETchatBotContact: {
+            name: "Unanswered Chat (i.e. Bot)",
+            order: 50,
+            count: boldChatUnAnswered,
+            unitCost: 0.0,
+            weeklyTargetCount: 10000
         },
         JETchatContact: { name: "Chat Contact", order: 100, count: boldChatAnswered, unitCost: 4.64, weeklyTargetCount: 10277 },
-        JETPortalContacts: { name: "Portal Contact", order: 110, count: JETPortalContacts, unitCost: 4.64, weeklyTargetCount: 4304 },
-        VoiceEMEA: {
-            name: "Voice (EMEA)",
-            order: 600,
-            count: voiceConsumptionUnits["VoiceEMEA"],
-            unitCost: 24.86,
-            weeklyTargetCount: 1901
+        JETPortalContacts: { name: "Portal Contact", order: 200, count: JETPortalContacts, unitCost: 4.64, weeklyTargetCount: 4304 },
+        VoiceEnglish: {
+            name: "Voice (English)",
+            order: 300,
+            count: voiceConsumptionUnits["VoiceEnglish"],
+            unitCost: 6.25,
+            weeklyTargetCount: 4525
         },
         VoiceASPAC: {
             name: "Voice (ASPAC)",
@@ -297,12 +288,26 @@ export async function getJETData(sn_instance, boldchat_instance) {
             unitCost: 10.54,
             weeklyTargetCount: 2288
         },
-        VoiceEnglish: {
-            name: "Voice (English)",
-            order: 300,
-            count: voiceConsumptionUnits["VoiceEnglish"],
-            unitCost: 6.25,
-            weeklyTargetCount: 4525
+        VoiceEMEA: {
+            name: "Voice (EMEA)",
+            order: 600,
+            count: voiceConsumptionUnits["VoiceEMEA"],
+            unitCost: 24.86,
+            weeklyTargetCount: 1901
+        },
+        JETRemoteResolutionINC: {
+            name: "Remote Resolution",
+            order: 700,
+            count: JETRemoteResolutionINC,
+            unitCost: 25.58,
+            weeklyTargetCount: 1299
+        },
+        JETOnsiteSupport: {
+            name: "Onsite Support",
+            order: 800,
+            count: JETOnsiteSupport,
+            unitCost: 95.0,
+            weeklyTargetCount: 5536
         }
     };
 

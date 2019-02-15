@@ -102,21 +102,29 @@ class WidgetPubSubJET extends React.Component {
                                     return (
                                         <tr key={key}>
                                             <td>{value.name}</td>
-                                            <td>
+                                            <td align="right">
                                                 <NumberFormat value={value.count} thousandSeparator={true} displayType={"text"} />
                                             </td>
-                                            <td>{value.unitCost}</td>
-                                            <td>
+                                            <td align="right">
+                                                $
+                                                <NumberFormat
+                                                    value={value.unitCost}
+                                                    decimalScale={2}
+                                                    fixedDecimalScale={true}
+                                                    displayType={"text"}
+                                                />
+                                            </td>
+                                            <td align="right">
                                                 <NumberFormat
                                                     value={value.weeklyTargetCount}
                                                     thousandSeparator={true}
                                                     displayType={"text"}
                                                 />
                                             </td>
-                                            <td>
+                                            <td align="right">
                                                 <NumberFormat value={value.pctOfTarget * 100} decimalScale={0} displayType={"text"} />%
                                             </td>
-                                            <td>
+                                            <td align="right">
                                                 $
                                                 <NumberFormat
                                                     value={value.actualCost}
@@ -125,7 +133,7 @@ class WidgetPubSubJET extends React.Component {
                                                     displayType={"text"}
                                                 />
                                             </td>
-                                            <td className={classNames(fontColorVariance)}>
+                                            <td className={classNames(fontColorVariance)} align="right">
                                                 $
                                                 <NumberFormat
                                                     value={value.dollarVariance}
