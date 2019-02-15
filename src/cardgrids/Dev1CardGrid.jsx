@@ -13,6 +13,7 @@ import WidgetGoogleChartHorizontalBar from "../widgetsExperimental/WidgetGoogleC
 import WidgetGoogleChartGauge from "../widgetsExperimental/WidgetGoogleChartGauge";
 import WidgetSNPubSubJETCostDataTable from "../widgetsExperimental/WidgetSNPubSubJETCostDataTable";
 import WidgetPubSubJETHorizontalGoogleBarChart from "../widgetsPubSub/WidgetPubSubJETHorizontalGoogleBarChart";
+import WidgetSNPubSubHealthSummary from "../widgetsPubSub/WidgetSNPubSubHealthSummary";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -33,15 +34,16 @@ class Dev1CardGrid extends React.Component {
         return (
             <CardGrid rows="20" columns="12">
                 <WidgetSNPubSubJETCostDataTable
-                    position="span 4/ span 4"
+                    position="1 / 1 / span 4/ span 4"
                     sn_instance={this.props.sn_instance}
                     boldchat_instance={this.props.boldchat_instance}
                 />
                 <WidgetPubSubJETHorizontalGoogleBarChart
-                    position="span 4 / span 4"
+                    position="1 / 5 / span 4 / span 4"
                     sn_instance={this.props.sn_instance}
                     boldchat_instance={this.props.boldchat_instance}
                 />
+                <WidgetSNPubSubHealthSummary position="1 / 9 / span 8 / span 3" sn_instance={this.props.sn_instance} />
 
                 <WidgetSNBarChart color="#ddd" position="span 5 / span 4" sn_instance={this.props.sn_instance} />
                 <WidgetSNScrollableTable position="span 4 / span 4" />
