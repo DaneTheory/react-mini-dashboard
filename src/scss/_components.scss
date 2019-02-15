@@ -128,24 +128,6 @@
                     }
                 }
             }
-            .single-num-title {
-                font-size: 1.1vw;
-                // line-height: 2rem;
-                text-align: center;
-            }
-            .single-num-value {
-                font-size: 3.3vw;
-                // line-height: 4rem;
-                text-align: center;
-                // line-height: normal;ß
-            }
-            .waiting-for-data {
-                padding-top: 2vw;
-                font-size: 1.5vw;
-                // line-height: 4rem;
-                text-align: center;
-                // line-height: normal;ß
-            }
         }
 
         // Scrolling Table Widget
@@ -211,6 +193,7 @@
         height: 100%;
 
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
 
@@ -249,5 +232,24 @@
             // Google seems to create a table to hold a gauge, and I'm trying to center the gauge horizontally
             margin: 0 auto !important;
         }
+    }
+    .single-num-title {
+        font-size: 1.1vw;
+        // line-height: 2rem;
+        text-align: center;
+        font-family: "Nunito", "Courier New";
+    }
+    .single-num-value {
+        font-size: 3.3vw;
+        // line-height: 4rem;
+        text-align: center;
+        // line-height: normal;ß
+    }
+    .waiting-for-data {
+        padding-top: 2vw;
+        font-size: 1.5vw;
+        // line-height: 4rem;
+        text-align: center;
+        // line-height: normal;ß
     }
 }

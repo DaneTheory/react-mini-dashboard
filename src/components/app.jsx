@@ -23,7 +23,7 @@ let theme = {
     lightColorTheme: {
         colorThemePageBackground: "#ffffff",
         colorThemeCardBackground: "#dce1ea",
-        colorThemeFontDefault: "#bbb3b3",
+        colorThemeFontDefault: "#000000",
         colorThemeCardFont: "#000000",
         colorThemePageTitle: "#000000",
         colorThemeLeftNavButtons: "#bbb3b3",

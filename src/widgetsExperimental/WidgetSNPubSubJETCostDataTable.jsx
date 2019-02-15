@@ -15,7 +15,7 @@ var classNames = require("classnames");
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
 
 // Create a React class component, everything below this is a class method (i.e. a function attached to the class)
-class WidgetPubSubJET extends React.Component {
+class WidgetSNPubSubJETCostDataTable extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {
@@ -25,8 +25,8 @@ class WidgetPubSubJET extends React.Component {
         super(props);
 
         // Set our initial React state, this is the *only* time to bypass setState()
-        // this.state = { widgetName: "WidgetPubSubJET", consumptionUnits: { chad: { count: 42 }, fred: { count: 43 } } };
-        this.state = { widgetName: "WidgetPubSubJET", JETconsumptionUnits: {} };
+        // this.state = { widgetName: "WidgetSNPubSubJETCostDataTable", consumptionUnits: { chad: { count: 42 }, fred: { count: 43 } } };
+        this.state = { widgetName: "WidgetSNPubSubJETCostDataTable", JETconsumptionUnits: {} };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function
@@ -158,8 +158,13 @@ class WidgetPubSubJET extends React.Component {
         // Also called if "props" are modified (which are passed from the parent)
 
         return (
-            <DashboardDataCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetPubSubJET">
-                <div className="single-num-title">JET Data</div>
+            <DashboardDataCard
+                id={this.props.id}
+                position={this.props.position}
+                color={this.props.color}
+                widgetName="WidgetSNPubSubJETCostDataTable"
+            >
+                <div className="single-num-title">JET Cost Data Table</div>
                 {this.renderCardTable()}
             </DashboardDataCard>
         );
@@ -171,10 +176,10 @@ class WidgetPubSubJET extends React.Component {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetPubSubJET.defaultProps = {};
+WidgetSNPubSubJETCostDataTable.defaultProps = {};
 
 // Force the caller to include the proper attributes
-WidgetPubSubJET.propTypes = {
+WidgetSNPubSubJETCostDataTable.propTypes = {
     sn_instance: PropTypes.string.isRequired,
     boldchat_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
@@ -183,7 +188,7 @@ WidgetPubSubJET.propTypes = {
 };
 
 // If we (this file) get "imported", this is what they'll be given
-export default WidgetPubSubJET;
+export default WidgetSNPubSubJETCostDataTable;
 
 // =======================================================================================================
 // =======================================================================================================

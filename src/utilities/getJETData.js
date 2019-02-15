@@ -259,7 +259,7 @@ export async function getJETData(sn_instance, boldchat_instance) {
     // Take the data we got back, and insert into a more complete data structure which includes targets and unit costs
     let JETconsumptionUnits = {
         JETchatBotContact: {
-            name: "Unanswered Chat (i.e. Bot)",
+            name: "Bot Contact (UnAnswr Chat)",
             order: 50,
             count: boldChatUnAnswered,
             unitCost: 0.0,
