@@ -7,9 +7,6 @@ import PubSub from "pubsub-js";
 import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
 
-// Additional imports
-var classNames = require("classnames");
-
 // The purpose of this file is to create a React Component which can be included in HTML
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
 
