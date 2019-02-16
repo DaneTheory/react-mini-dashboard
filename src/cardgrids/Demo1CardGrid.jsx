@@ -47,7 +47,11 @@ class Dev1CardGrid extends React.Component {
                 />
                 <WidgetSNPubSubHealthSummary position="1 / 9 / span 8 / span 2" sn_instance={this.props.sn_instance} />
 
-                <WidgetSNBoldchatAutoScroll position="5 / 1 / span 10 / span 6" boldchat_instance={this.props.boldchat_instance} />
+                <WidgetSNBoldchatAutoScroll
+                    position="5 / 1 / span 10 / span 6"
+                    boldchat_instance={this.props.boldchat_instance}
+                    sn_instance={this.props.sn_instance}
+                />
 
                 <WidgetSNUniqueLoginsToday position="5 / 7 / span 2 / span 2" sn_instance={this.props.sn_instance} />
 

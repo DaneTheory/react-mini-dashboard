@@ -60,7 +60,7 @@ class WidgetSNBoldchatAutoScroll extends React.Component {
         })(this.state.scrollableDivIDSelector);
 
         // Get our data from API
-        let BoldChatData = await getBoldChatData(this.props.boldchat_instance);
+        let BoldChatData = await getBoldChatData(this.props.boldchat_instance, this.props.sn_instance);
 
         // Update our own state with the new data
         this.setState({ boldChatsActive: BoldChatData.chats });
@@ -155,7 +155,8 @@ WidgetSNBoldchatAutoScroll.propTypes = {
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
     color: PropTypes.string,
-    boldchat_instance: PropTypes.string.isRequired
+    boldchat_instance: PropTypes.string.isRequired,
+    sn_instance: PropTypes.string.isRequired
 };
 
 // If we (this file) get "imported", this is what they'll be given
