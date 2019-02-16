@@ -84,13 +84,13 @@
 
         // Typically used for large single numbers, outside of tables
         .redFont {
-            color: red;
+            color: var(--colorThemeCardRedFont);
         }
         .orangeFont {
             color: orange;
         }
         .greenFont {
-            color: green;
+            color: var(--colorThemeCardGreenFont);
         }
 
         table {
@@ -101,29 +101,30 @@
 
             tr {
                 td {
-                    border: 1px solid rgba(0, 0, 0, 0.356);
+                    border: 1px solid var(--colorThemeCardTableGridLines);
                     padding: 0.2rem 0.5rem 0.2rem 0.5rem;
                     font-size: 0.6vw;
 
                     &.redFont {
-                        color: red;
-                        font-weight: 900;
+                        color: var(--colorThemeCardRedFont);
+                        font-weight: 700;
                     }
                     &.orangeFont {
                         color: orange;
-                        font-weight: 900;
+                        font-weight: 700;
                     }
                     &.greenFont {
-                        color: green;
-                        font-weight: 900;
+                        color: var(--colorThemeCardGreenFont);
+                        font-weight: 700;
                     }
 
                     &.tdRed {
-                        color: red;
+                        color: var(--colorThemeCardRedFont);
                     }
 
                     &.blueFont {
-                        color: blue;
+                        color: var(--colorThemeCardBlueFont);
+                        font-weight: 700;
                     }
                 }
                 th {
@@ -165,7 +166,7 @@
 
                     tr {
                         td {
-                            border: 1px solid rgba(0, 0, 0, 0.356);
+                            border: 1px solid var(--colorThemeCardTableGridLines);
                             padding: 0.2rem 0.5rem 0.2rem 0.5rem;
                             font-size: 0.6vw;
                         }
@@ -272,14 +273,14 @@
     }
 
     .cellRed {
-        background-color: red;
+        background-color: var(--colorThemeCardTableCellBackgroundRed);
     }
 
     .cellYellow {
-        background-color: yellow;
+        background-color: var(--colorThemeCardTableCellBackgroundAmber);
     }
 
     .cellGreen {
-        background-color: green;
+        background-color: var(--colorThemeCardTableCellBackgroundGreen);
     }
 }

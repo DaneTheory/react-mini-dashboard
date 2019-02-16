@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 // Widget imports
 import WidgetSNUniqueLoginsToday from "../widgetsPubSub/WidgetSNUniqueLoginsToday";
-import WidgetGoogleChartGauge from "../widgetsExperimental/WidgetGoogleChartGauge";
+import WidgetBoldChatActiveGauge from "../widgetsPubSub/WidgetBoldChatActiveGauge";
 import WidgetSNPubSubJETCostDataTable from "../widgetsExperimental/WidgetSNPubSubJETCostDataTable";
 import WidgetPubSubJETHorizontalGoogleBarChart from "../widgetsPubSub/WidgetPubSubJETHorizontalGoogleBarChart";
 import WidgetSNPubSubHealthSummary from "../widgetsPubSub/WidgetSNPubSubHealthSummary";
@@ -55,7 +55,7 @@ class Dev1CardGrid extends React.Component {
 
                 <WidgetSNClicksByOS position="7 / 7 / span 4 /span 2" sn_instance={this.props.sn_instance} />
 
-                <WidgetGoogleChartGauge position="9 / 9 / span 4 / span 2" boldchat_instance={this.props.boldchat_instance} />
+                <WidgetBoldChatActiveGauge position="9 / 9 / span 4 / span 2" boldchat_instance={this.props.boldchat_instance} />
 
                 <WidgetSNNewIncidentsToday position="9 / 11 / span 2/span 2" sn_instance={this.props.sn_instance} />
 

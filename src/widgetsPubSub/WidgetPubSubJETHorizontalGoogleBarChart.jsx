@@ -157,7 +157,7 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
                                             easing: "out",
                                             startup: true
                                         },
-                                        colors: ["green"]
+                                        colors: [theme.currentColorTheme.colorThemeChartGreen]
                                     }}
                                 />
                             </div>

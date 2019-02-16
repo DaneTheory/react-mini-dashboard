@@ -102,6 +102,7 @@ class WidgetSNBoldchatAutoScroll extends React.Component {
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th>WWID</th>
                             <th>Initial Question</th>
                         </tr>
                     </thead>

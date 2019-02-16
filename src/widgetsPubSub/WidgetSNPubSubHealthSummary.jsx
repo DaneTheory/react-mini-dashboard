@@ -146,10 +146,9 @@ class WidgetSNPubSubHealthSummary extends React.Component {
                                 // Only show nodes where there are users logged in
                                 .filter(node => node["logged_in"] > 0)
                                 .map((node, index) => {
-                                    let sysLoadColor =
-                                        node["sys_load"] > 10 ? "cellRed" : node["sys_load"] > 3 ? "cellYellow" : "cellGreen";
+                                    let sysLoadColor = node["sys_load"] > 3 ? "cellRed" : node["sys_load"] > 2 ? "cellYellow" : "cellGreen";
                                     let sqlResponseColor =
-                                        node["sql_response"] > 10 ? "cellRed" : node["sql_response"] > 3 ? "cellYellow" : "cellGreen";
+                                        node["sql_response"] > 3 ? "cellRed" : node["sql_response"] > 2 ? "cellYellow" : "cellGreen";
                                     return (
                                         <tr key={node["name"]}>
                                             <td>{index}</td>

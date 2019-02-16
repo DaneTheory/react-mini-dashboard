@@ -26,4 +26,17 @@
     --colorThemeWidgetLinks: #f00;
     --colorThemeScrollbarTrackBackground: #f00;
     --colorThemeScrollbarThumbBackground: #f00;
+
+    // New colors
+    --colorThemeCardBlueFont: #f00;
+    --colorThemeCardTableGridLines: #f00;
+    --colorThemeCardGreenFont: #f00;
+    --colorThemeCardRedFont: #f00;
+    --colorThemeChartGreen: #f00;
+    --colorThemeCardTableCellBackgroundRed: #f00;
+    --colorThemeCardTableCellBackgroundAmber: #f00;
+    --colorThemeCardTableCellBackgroundGreen: #f00;
+
+    // This is a dummy variable simply so I can easily trigger the color editor in my IDE (VS Code)
+    --colorForNothing: #ff7b00;
 }
