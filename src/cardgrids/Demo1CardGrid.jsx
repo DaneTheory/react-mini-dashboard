@@ -55,7 +55,11 @@ class Dev1CardGrid extends React.Component {
 
                 <WidgetSNClicksByOS position="7 / 7 / span 4 /span 2" sn_instance={this.props.sn_instance} />
 
-                <WidgetBoldChatActiveGauge position="9 / 9 / span 4 / span 2" boldchat_instance={this.props.boldchat_instance} />
+                <WidgetBoldChatActiveGauge
+                    position="9 / 9 / span 4 / span 2"
+                    boldchat_instance={this.props.boldchat_instance}
+                    sn_instance={this.props.sn_instance}
+                />
 
                 <WidgetSNNewIncidentsToday position="9 / 11 / span 2/span 2" sn_instance={this.props.sn_instance} />
 

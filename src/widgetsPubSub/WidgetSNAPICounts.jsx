@@ -2,6 +2,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import PubSub from "pubsub-js";
+import NumberFormat from "react-number-format";
 
 // project imports
 import DashboardDataCard from "../components/DashboardDataCard";
@@ -100,7 +101,14 @@ class WidgetSNAPICounts extends React.Component {
                                     <tr key={app_id["appid"]}>
                                         <td>{index + 1}</td>
                                         <td>{app_id["appid"]}</td>
-                                        <td>{app_id["count"]}</td>
+                                        <td align="right">
+                                            <NumberFormat
+                                                value={app_id["count"]}
+                                                decimalScale={0}
+                                                displayType={"text"}
+                                                thousandSeparator={true}
+                                            />
+                                        </td>
                                     </tr>
                                 );
                             })}
