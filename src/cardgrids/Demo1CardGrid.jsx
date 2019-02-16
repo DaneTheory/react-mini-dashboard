@@ -4,10 +4,6 @@ import PropTypes from "prop-types";
 
 // Widget imports
 import WidgetSNUniqueLoginsToday from "../widgetsPubSub/WidgetSNUniqueLoginsToday";
-import WidgetSNExperiment01 from "../widgetsPrototype/WidgetSNExperiment01";
-import WidgetSNUniqueLoginsTodaySelfUpdating from "../widgetsSelfUpdating/WidgetSNUniqueLoginsTodaySelfUpdating";
-import WidgetGoogleChartScatter from "../widgetsExperimental/WidgetGoogleChartScatter";
-import WidgetGoogleChartHorizontalBar from "../widgetsExperimental/WidgetGoogleChartHorizontalBar";
 import WidgetGoogleChartGauge from "../widgetsExperimental/WidgetGoogleChartGauge";
 import WidgetSNPubSubJETCostDataTable from "../widgetsExperimental/WidgetSNPubSubJETCostDataTable";
 import WidgetPubSubJETHorizontalGoogleBarChart from "../widgetsPubSub/WidgetPubSubJETHorizontalGoogleBarChart";
@@ -16,6 +12,8 @@ import WidgetSNBoldchatAutoScroll from "../widgetsPubSub/WidgetSNBoldchatAutoScr
 import WidgetSNClicksByOS from "../widgetsPubSub/WidgetSNClicksByOS";
 import WidgetSNNewIncidentsToday from "../widgetsPubSub/WidgetSNNewIncidentsToday";
 import WidgetSNCurrentUsers from "../widgetsPubSub/WidgetSNCurrentUsers";
+import WidgetBoldChatActiveCount from "../widgetsPubSub/WidgetBoldChatActiveCount";
+import WidgetSNAPICounts from "../widgetsPubSub/WidgetSNAPICounts";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -27,7 +25,7 @@ class Dev1CardGrid extends React.Component {
         super(props);
 
         // Update our parent (the Dashboard) with a new page title
-        props.changeParentPageTitle("Demo1 Dashboard");
+        props.changeParentPageTitle("Iris Dashboard (Demo1)");
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -48,7 +46,7 @@ class Dev1CardGrid extends React.Component {
                 <WidgetSNPubSubHealthSummary position="1 / 9 / span 8 / span 2" sn_instance={this.props.sn_instance} />
 
                 <WidgetSNBoldchatAutoScroll
-                    position="5 / 1 / span 10 / span 6"
+                    position="5 / 1 / span 8 / span 6"
                     boldchat_instance={this.props.boldchat_instance}
                     sn_instance={this.props.sn_instance}
                 />
@@ -62,14 +60,14 @@ class Dev1CardGrid extends React.Component {
                 <WidgetSNNewIncidentsToday position="9 / 11 / span 2/span 2" sn_instance={this.props.sn_instance} />
 
                 <WidgetSNCurrentUsers position="11 / 7 / span 2/span 2" sn_instance={this.props.sn_instance} />
+                <WidgetBoldChatActiveCount
+                    position="11 / 11 / span 2/span 2"
+                    color="IndianRed"
+                    boldchat_instance={this.props.boldchat_instance}
+                    sn_instance={this.props.sn_instance}
+                />
 
-                {/* <WidgetSNBarChart color="#ddd" position="span 5 / span 4" sn_instance={this.props.sn_instance} /> */}
-
-                {/* <WidgetSNScrollableTable position="span 4 / span 4" /> */}
-                <WidgetSNExperiment01 position="span 2 / span 3" sn_instance={this.props.sn_instance} />
-                <WidgetSNUniqueLoginsTodaySelfUpdating position="span 2 / span 4" sn_instance={this.props.sn_instance} />
-                <WidgetGoogleChartScatter position="span 4 / span 4" sn_instance={this.props.sn_instance} />
-                <WidgetGoogleChartHorizontalBar position="span 4 / span 8" sn_instance={this.props.sn_instance} />
+                <WidgetSNAPICounts position="1 / 11 / span 8 / span 2" />
             </CardGrid>
         );
     }

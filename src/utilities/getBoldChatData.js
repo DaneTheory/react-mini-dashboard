@@ -14,6 +14,7 @@ export async function getBoldChatData(boldchat_instance, sn_instance) {
     let BoldChatData = {};
     BoldChatData["boldChatBot"] = 0;
     BoldChatData["boldChatAgent"] = 0;
+    BoldChatData["nullcount"] = 0;
 
     // Loop through all chats
     boldChats.forEach(chat => {
@@ -48,6 +49,7 @@ export async function getBoldChatData(boldchat_instance, sn_instance) {
         // If InitialQuestion field is blank/null, then make it say that so humans can read it
         if (!chat.InitialQuestion) {
             chat.InitialQuestion = "<<null>> (maybe user started with chatbot ?)";
+            BoldChatData["nullcount"] += 1;
         }
 
         // End of chat loop
@@ -67,8 +69,6 @@ export async function getBoldChatData(boldchat_instance, sn_instance) {
             return item.CustomFields.WWID || item.CustomFields.customfield_wwid;
         });
 
-    console.log("wwidArray", wwidArray);
-
     // Convert array to a comma-separated string
     let wwids = wwidArray.join(",");
     // Call ServiceNow, and get an array of which of those WWIDS has the IT role (u_it_members)
@@ -80,7 +80,6 @@ export async function getBoldChatData(boldchat_instance, sn_instance) {
             sysparm_limit: 500
         }
     });
-    console.log("User has role response", role_response.data.result);
 
     // Create an array of just the WWIDS, and store into the returned data object for later use (e.g. highlighting in blue)
     BoldChatData["ITUsers"] = role_response.data.result.map(function(currUser) {
@@ -89,7 +88,6 @@ export async function getBoldChatData(boldchat_instance, sn_instance) {
 
     // Store list of chats into object, and return object
     BoldChatData.chats = boldChats;
-    console.log("Boldchat data object that we'll return", BoldChatData);
     return BoldChatData;
 }
 

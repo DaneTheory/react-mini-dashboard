@@ -39,7 +39,7 @@ export function setTableSizeViaJquery(scrollingTableID) {
     // Find the div containing the table for the data (this is the item on which we'll set the height)
     let bodyTableContainerDiv = gridItem.find(".bodyTableContainerDiv");
     // Compute the desired height by tagking the gridItem height, and subtracting what's occupied by the header table
-    let desiredTbodyHeight = gridItem.height() - headerTable.height() - 25;
+    let desiredTbodyHeight = gridItem.height() - headerTable.height() - 40;
     // console.log("New desired height for widget: ", desiredTbodyHeight);
     // Now set the height for the div (which scrolls) which contains the table of data
     bodyTableContainerDiv.height(desiredTbodyHeight);

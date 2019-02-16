@@ -123,7 +123,7 @@ class WidgetSNBoldchatAutoScroll extends React.Component {
                                 }
                                 return (
                                     <tr key={chat["ChatID"]}>
-                                        <td>{index}</td>
+                                        <td>{index + 1}</td>
                                         <td className={classNames(chatNameFontColor)}>{ChatName}</td>
                                         <td>{WWID}</td>
                                         <td>{chat["InitialQuestion"]}</td>
