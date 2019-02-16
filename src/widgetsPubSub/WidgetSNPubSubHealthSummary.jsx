@@ -95,8 +95,6 @@ class WidgetSNPubSubHealthSummary extends React.Component {
             };
         });
 
-        console.log("nodeResults", nodeResults);
-
         // Update our own state with the new data
         this.setState({ nodeResults: nodeResults });
     }

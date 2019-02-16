@@ -3,17 +3,10 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // Widget imports
-import WidgetSNBarChart from "../widgetsExperimental/WidgetChartJSBarChart";
-import WidgetSNScrollableTable from "../widgetsPubSub/WidgetSNScrollableTable";
-import WidgetSNUniqueLoginsToday from "../widgetsPubSub/WidgetSNUniqueLoginsToday";
 import WidgetSNExperiment01 from "../widgetsPrototype/WidgetSNExperiment01";
 import WidgetSNUniqueLoginsTodaySelfUpdating from "../widgetsSelfUpdating/WidgetSNUniqueLoginsTodaySelfUpdating";
 import WidgetGoogleChartScatter from "../widgetsExperimental/WidgetGoogleChartScatter";
 import WidgetGoogleChartHorizontalBar from "../widgetsExperimental/WidgetGoogleChartHorizontalBar";
-import WidgetGoogleChartGauge from "../widgetsExperimental/WidgetGoogleChartGauge";
-import WidgetSNPubSubJETCostDataTable from "../widgetsExperimental/WidgetSNPubSubJETCostDataTable";
-import WidgetPubSubJETHorizontalGoogleBarChart from "../widgetsPubSub/WidgetPubSubJETHorizontalGoogleBarChart";
-import WidgetSNPubSubHealthSummary from "../widgetsPubSub/WidgetSNPubSubHealthSummary";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -32,27 +25,14 @@ class Dev1CardGrid extends React.Component {
 
     render() {
         return (
-            <CardGrid rows="20" columns="12">
-                <WidgetSNPubSubJETCostDataTable
-                    position="1 / 1 / span 4/ span 4"
-                    sn_instance={this.props.sn_instance}
-                    boldchat_instance={this.props.boldchat_instance}
-                />
-                <WidgetPubSubJETHorizontalGoogleBarChart
-                    position="1 / 5 / span 4 / span 4"
-                    sn_instance={this.props.sn_instance}
-                    boldchat_instance={this.props.boldchat_instance}
-                />
-                <WidgetSNPubSubHealthSummary position="1 / 9 / span 8 / span 3" sn_instance={this.props.sn_instance} />
+            <CardGrid rows="20" row_height="3.5vw" columns="12" column_width="1fr">
+                {/* <WidgetSNBarChart color="#ddd" position="span 5 / span 4" sn_instance={this.props.sn_instance} /> */}
 
-                <WidgetSNBarChart color="#ddd" position="span 5 / span 4" sn_instance={this.props.sn_instance} />
-                <WidgetSNScrollableTable position="span 4 / span 4" />
-                <WidgetSNUniqueLoginsToday position="span 2 / span 2" sn_instance={this.props.sn_instance} />
+                {/* <WidgetSNScrollableTable position="span 4 / span 4" /> */}
                 <WidgetSNExperiment01 position="span 2 / span 3" sn_instance={this.props.sn_instance} />
                 <WidgetSNUniqueLoginsTodaySelfUpdating position="span 2 / span 4" sn_instance={this.props.sn_instance} />
                 <WidgetGoogleChartScatter position="span 4 / span 4" sn_instance={this.props.sn_instance} />
                 <WidgetGoogleChartHorizontalBar position="span 4 / span 8" sn_instance={this.props.sn_instance} />
-                <WidgetGoogleChartGauge position="span 4 / span 2" boldchat_instance={this.props.boldchat_instance} />
             </CardGrid>
         );
     }

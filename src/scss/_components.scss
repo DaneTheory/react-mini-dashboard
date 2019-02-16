@@ -25,8 +25,10 @@
 
 .dataCard_container {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(6, 1fr);
+
+    // This now gets set dymanically by cardCard.jsx
+    // grid-template-columns: repeat(6, 1fr);
+    // grid-template-rows: repeat(6, 1fr);
     height: 60vw;
     grid-gap: 1rem;
     margin: 0 1.5rem 0 1.5rem;
@@ -62,6 +64,8 @@
 
         // Center the content in the dataCard (combined with margin:auto in .cardBody)
         display: flex;
+        flex-direction: column;
+
         overflow: auto;
 
         .cardBody {
@@ -103,7 +107,7 @@
                     td {
                         border: 1px solid rgba(0, 0, 0, 0.356);
                         padding: 0.2rem 0.5rem 0.2rem 0.5rem;
-                        font-size: 0.7vw;
+                        font-size: 0.6vw;
 
                         &.redFont {
                             color: red;
@@ -151,11 +155,25 @@
                 table.scrollableTable {
                     // the idea is that this table is larger than it's parent div, and as you scroll the parent div, this table goes up and down
 
+                    font-family: "Nunito", "Courier New";
+
                     // Forces table to occupy entire width of parent element, otherwise it shrinks to fit data
                     min-width: 100%;
                     tbody {
                         // Simply collapses the visual double-border between cells into a single border
                         border-collapse: collapse;
+                    }
+
+                    tr {
+                        td {
+                            border: 1px solid rgba(0, 0, 0, 0.356);
+                            padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+                            font-size: 0.6vw;
+                        }
+                        th {
+                            font-size: 0.8vw;
+                            font-weight: 800;
+                        }
                     }
                 }
             }
@@ -238,6 +256,7 @@
         // line-height: 2rem;
         text-align: center;
         font-family: "Nunito", "Courier New";
+        padding-bottom: 0.2vw;
     }
     .single-num-value {
         font-size: 3.3vw;
