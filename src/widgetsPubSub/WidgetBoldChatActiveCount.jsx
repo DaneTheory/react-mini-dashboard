@@ -79,7 +79,7 @@ class WidgetBoldChatActiveCount extends React.Component {
                 color={this.props.color}
                 widgetName="WidgetBoldChatActiveCount"
             >
-                <div className="single-num-title">BoldChats Active</div>
+                <div className="single-num-title">BoldChats Active/Null</div>
                 <div className="single-num-value">
                     {this.state.BoldChatData.chats.length} / {this.state.BoldChatData.nullcount}
                 </div>

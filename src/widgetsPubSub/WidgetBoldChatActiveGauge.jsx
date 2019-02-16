@@ -107,7 +107,7 @@ class WidgetBoldChatActiveGauge extends React.Component {
                         }}
                     />
                 </div>
-                <div>
+                <div style={{ fontSize: "1.3vw" }}>
                     Agent:{this.state.BoldChatData.boldChatAgent} ChatBot: {this.state.BoldChatData.boldChatBot}{" "}
                 </div>
             </div>
