@@ -3,30 +3,75 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // Widget imports
-import WidgetSNINCP1P2Count from "../widgetsPubSub/WidgetSNINCP1P2Count";
+import WidgetSNUniqueLoginsToday from "../widgetsPubSub/WidgetSNUniqueLoginsToday";
+import WidgetBoldChatActiveGauge from "../widgetsPubSub/WidgetBoldChatActiveGauge";
+import WidgetSNPubSubJETCostDataTable from "../widgetsExperimental/WidgetSNPubSubJETCostDataTable";
+import WidgetPubSubJETHorizontalGoogleBarChart from "../widgetsPubSub/WidgetPubSubJETHorizontalGoogleBarChart";
+import WidgetSNPubSubHealthSummary from "../widgetsPubSub/WidgetSNPubSubHealthSummary";
+import WidgetSNBoldchatAutoScroll from "../widgetsPubSub/WidgetSNBoldchatAutoScroll";
+import WidgetSNClicksByOS from "../widgetsPubSub/WidgetSNClicksByOS";
+import WidgetSNNewIncidentsToday from "../widgetsPubSub/WidgetSNNewIncidentsToday";
+import WidgetSNCurrentUsers from "../widgetsPubSub/WidgetSNCurrentUsers";
+import WidgetBoldChatActiveCount from "../widgetsPubSub/WidgetBoldChatActiveCount";
+import WidgetSNAPICounts from "../widgetsPubSub/WidgetSNAPICounts";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
 
-class Demo1CardGrid extends React.Component {
+class Dev1CardGrid extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {
         super(props);
 
         // Update our parent (the Dashboard) with a new page title
-        props.changeParentPageTitle("Demo1 Dashboard");
+        props.changeParentPageTitle("Iris Dashboard (Demo1)");
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     render() {
         return (
-            <div>
-                <CardGrid rows="7" columns="6">
-                    <WidgetSNINCP1P2Count position="1 / 3 / span 2 / span 2" color="#3a5174" id="2" sn_instance={this.props.sn_instance} />
-                </CardGrid>
-            </div>
+            <CardGrid rows="20" row_height="3.5vw" columns="12" column_width="1fr">
+                <WidgetSNPubSubJETCostDataTable
+                    position="1 / 1 / span 4/ span 4"
+                    sn_instance={this.props.sn_instance}
+                    boldchat_instance={this.props.boldchat_instance}
+                />
+                <WidgetPubSubJETHorizontalGoogleBarChart
+                    position="1 / 5 / span 4 / span 4"
+                    sn_instance={this.props.sn_instance}
+                    boldchat_instance={this.props.boldchat_instance}
+                />
+                <WidgetSNPubSubHealthSummary position="1 / 9 / span 8 / span 2" sn_instance={this.props.sn_instance} />
+
+                <WidgetSNBoldchatAutoScroll
+                    position="5 / 1 / span 8 / span 6"
+                    boldchat_instance={this.props.boldchat_instance}
+                    sn_instance={this.props.sn_instance}
+                />
+
+                <WidgetSNUniqueLoginsToday position="5 / 7 / span 2 / span 2" sn_instance={this.props.sn_instance} />
+
+                <WidgetSNClicksByOS position="7 / 7 / span 4 /span 2" sn_instance={this.props.sn_instance} />
+
+                <WidgetBoldChatActiveGauge
+                    position="9 / 9 / span 4 / span 2"
+                    boldchat_instance={this.props.boldchat_instance}
+                    sn_instance={this.props.sn_instance}
+                />
+
+                <WidgetSNNewIncidentsToday position="9 / 11 / span 2/span 2" sn_instance={this.props.sn_instance} />
+
+                <WidgetSNCurrentUsers position="11 / 7 / span 2/span 2" sn_instance={this.props.sn_instance} />
+                <WidgetBoldChatActiveCount
+                    position="11 / 11 / span 2/span 2"
+                    boldchat_instance={this.props.boldchat_instance}
+                    sn_instance={this.props.sn_instance}
+                />
+
+                <WidgetSNAPICounts position="1 / 11 / span 8 / span 2" />
+            </CardGrid>
         );
     }
 }
@@ -35,11 +80,15 @@ class Demo1CardGrid extends React.Component {
 // We're outside the class now, just need to define a few additional things
 // -------------------------------------------------------------------------------------------------------
 
-Demo1CardGrid.propTypes = {
+Dev1CardGrid.propTypes = {
+    sn_instance: PropTypes.string.isRequired,
     changeParentPageTitle: PropTypes.func.isRequired,
-    sn_instance: PropTypes.string.isRequired
+    boldchat_instance: PropTypes.string.isRequired
 };
 
-export default Demo1CardGrid;
+// Set default props in case they aren't passed to us by the caller
+Dev1CardGrid.defaultProps = {};
+
+export default Dev1CardGrid;
 
 // ====================================================================================

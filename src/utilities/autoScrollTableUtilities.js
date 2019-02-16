@@ -39,7 +39,7 @@ export function setTableSizeViaJquery(scrollingTableID) {
     // Find the div containing the table for the data (this is the item on which we'll set the height)
     let bodyTableContainerDiv = gridItem.find(".bodyTableContainerDiv");
     // Compute the desired height by tagking the gridItem height, and subtracting what's occupied by the header table
-    let desiredTbodyHeight = gridItem.height() - headerTable.height() - 5;
+    let desiredTbodyHeight = gridItem.height() - headerTable.height() - 40;
     // console.log("New desired height for widget: ", desiredTbodyHeight);
     // Now set the height for the div (which scrolls) which contains the table of data
     bodyTableContainerDiv.height(desiredTbodyHeight);
@@ -64,13 +64,13 @@ export function initScroll(uniqueCssSelector, scrollLengthInSecs) {
     // Define a callback function to be used when auto-scroll hits the bottom
     let callbackForWhenScrollHitsBottom = function() {
         // This is the callback for when the animation finishes
-        console.log("Down Scroll Done, so scrolling back to top");
+        console.log(uniqueCssSelector + ": Down Scroll Done, so scrolling back to top");
 
         // The scrollable div (which we want to now scroll up) is the parent of the table containing the data
         let scrollableDiv = $(uniqueCssSelector).parent();
         // Now stop that scroll (isn't it already stopped ?), and then scroll back to top
         scrollableDiv.stop().animate({ scrollTop: 0 }, scrollLengthInMS, "swing", function() {
-            console.log("Back at the top, so restarting scroll");
+            console.log(uniqueCssSelector + ": Back at the top, so restarting scroll");
             initScroll(uniqueCssSelector, scrollLengthInSecs);
         });
     };

@@ -124,7 +124,7 @@ class WidgetGoogleChartHorizontalBar extends React.Component {
                                     ["2017", 1030, 540, 350]
                                 ]}
                                 options={{
-                                    title: "Chart Title",
+                                    title: "Horizontal Bar Chart Title",
                                     titleTextStyle: {
                                         color: theme.currentColorTheme.colorThemeCardFont
                                     },

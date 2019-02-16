@@ -2,16 +2,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import PubSub from "pubsub-js";
-import { Chart } from "react-google-charts";
+import NumberFormat from "react-number-format";
 
 // project imports
+import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
 
 // The purpose of this file is to create a React Component which can be included in HTML
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
 
 // Create a React class component, everything below this is a class method (i.e. a function attached to the class)
-class WidgetGoogleChartGauge extends React.Component {
+class WidgetSNAPICounts extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {
@@ -21,10 +22,7 @@ class WidgetGoogleChartGauge extends React.Component {
         super(props);
 
         // Set our initial React state, this is the *only* time to bypass setState()
-        this.state = {
-            widgetName: "WidgetGoogleChartGauge",
-            boldchatCount: null
-        };
+        this.state = { widgetName: "WidgetSNAPICounts", app_ids: [] };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function
@@ -39,12 +37,23 @@ class WidgetGoogleChartGauge extends React.Component {
         // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
 
         // Retrieve our data (likely from an API)
-        const response = await apiProxy.get(`/boldchat/${this.props.boldchat_instance}/data/rest/json/v1/getActiveChats`, {
-            params: {}
+        let response = await apiProxy.get("/azure-app-insights-api/dev/metrics/requests/count", {
+            params: {
+                timespan: "P7D",
+                aggregation: "sum",
+                segment: "customDimensions/requester"
+            }
+        });
+
+        let app_ids = response.data.value.segments.map(segment => {
+            return {
+                appid: segment["customDimensions/requester"],
+                count: segment["requests/count"]["sum"]
+            };
         });
 
         // Update our own state with the new data
-        this.setState({ boldchatCount: response.data.Data.length });
+        this.setState({ app_ids: app_ids });
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -72,42 +81,62 @@ class WidgetGoogleChartGauge extends React.Component {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+    renderTable() {
+        if (this.state.OSInfo === {}) {
+            return <div className="single-num-value">No Clicks Today :(</div>;
+        } else {
+            return (
+                <div style={{ fontSize: "1.6vw" }}>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>App ID</th>
+                                <th>Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.app_ids.map((app_id, index) => {
+                                return (
+                                    <tr key={app_id["appid"]}>
+                                        <td>{index + 1}</td>
+                                        <td>{app_id["appid"]}</td>
+                                        <td align="right">
+                                            <NumberFormat
+                                                value={app_id["count"]}
+                                                decimalScale={0}
+                                                displayType={"text"}
+                                                thousandSeparator={true}
+                                            />
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            );
+        }
+    }
+
+    renderCardHeader() {
+        return <div className="single-num-title">Apigee API Counts (7 days)</div>;
+    }
+
+    renderCardBody() {
+        return <div className="item">{this.renderTable()}</div>;
+    }
+
     render() {
         // Standard React Lifecycle method, gets called by React itself
         // Get called every time the "state" object gets modified, in other words setState() was called
         // Also called if "props" are modified (which are passed from the parent)
 
-        let styles = {};
-        // If the caller passed in styles, use them
-        if (this.props.position) {
-            styles.gridArea = this.props.position;
-        }
-        if (this.props.color) {
-            styles.backgroundColor = this.props.color;
-        }
-
         return (
-            <div className={"googleGaugeChartCard"} id={this.props.id} style={styles}>
-                <div className="gaugeTitle">All Active Chats</div>
-                {/* Use this div to size the chart, rather than using Chart Width/Height */}
-                {/* Chart width/height seems to create two nested divs, which each have the %size applied, so double affect */}
-                <div className="manualChartSize" style={{ width: "95%", height: "95%" }}>
-                    <Chart
-                        chartType="Gauge"
-                        width={"100%"}
-                        height={"90%"}
-                        data={[["Label", "Value"], ["Chats", this.state.boldchatCount]]}
-                        options={{
-                            max: 130,
-                            redFrom: 110,
-                            redTo: 130,
-                            yellowFrom: 90,
-                            yellowTo: 110,
-                            minorTicks: 5
-                        }}
-                    />
-                </div>
-            </div>
+            <DashboardDataCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetSNAPICounts">
+                {this.renderCardHeader()}
+                {this.renderCardBody()}
+            </DashboardDataCard>
         );
     }
 }
@@ -117,18 +146,17 @@ class WidgetGoogleChartGauge extends React.Component {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetGoogleChartGauge.defaultProps = {};
+WidgetSNAPICounts.defaultProps = {};
 
 // Force the caller to include the proper attributes
-WidgetGoogleChartGauge.propTypes = {
-    boldchat_instance: PropTypes.string.isRequired,
+WidgetSNAPICounts.propTypes = {
+    id: PropTypes.string,
     position: PropTypes.string.isRequired,
-    color: PropTypes.string,
-    id: PropTypes.string
+    color: PropTypes.string
 };
 
 // If we (this file) get "imported", this is what they'll be given
-export default WidgetGoogleChartGauge;
+export default WidgetSNAPICounts;
 
 // =======================================================================================================
 // =======================================================================================================

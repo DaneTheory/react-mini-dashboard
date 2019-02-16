@@ -5,7 +5,7 @@ import PubSub from "pubsub-js";
 
 // project imports
 import DashboardDataCard from "../components/DashboardDataCard";
-import apiProxy from "../api/apiProxy";
+import { getBoldChatData } from "../utilities/getBoldChatData";
 
 // The purpose of this file is to create a React Component which can be included in HTML
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
@@ -21,7 +21,7 @@ class WidgetBoldChatActiveCount extends React.Component {
         super(props);
 
         // Set our initial React state, this is the *only* time to bypass setState()
-        this.state = { widgetName: "WidgetBoldChatActiveCount", boldchatCount: null };
+        this.state = { widgetName: "WidgetBoldChatActiveCount", BoldChatData: { chats: [] }, boldchatCount: null };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function
@@ -36,12 +36,10 @@ class WidgetBoldChatActiveCount extends React.Component {
         // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
 
         // Retrieve our data (likely from an API)
-        const response = await apiProxy.get(`/boldchat/${this.props.boldchat_instance}/data/rest/json/v1/getActiveChats`, {
-            params: {}
-        });
+        let BoldChatData = await getBoldChatData(this.props.boldchat_instance, this.props.sn_instance);
 
         // Update our own state with the new data
-        this.setState({ boldchatCount: response.data.Data.length });
+        this.setState({ BoldChatData: BoldChatData });
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -81,8 +79,10 @@ class WidgetBoldChatActiveCount extends React.Component {
                 color={this.props.color}
                 widgetName="WidgetBoldChatActiveCount"
             >
-                <div className="single-num-title">BoldChats Active</div>
-                <div className="single-num-value">{this.state.boldchatCount}</div>
+                <div className="single-num-title">BoldChats Active/Null</div>
+                <div className="single-num-value">
+                    {this.state.BoldChatData.chats.length} / {this.state.BoldChatData.nullcount}
+                </div>
             </DashboardDataCard>
         );
     }
@@ -98,6 +98,7 @@ WidgetBoldChatActiveCount.defaultProps = {};
 // Force the caller to include the proper attributes
 WidgetBoldChatActiveCount.propTypes = {
     boldchat_instance: PropTypes.string.isRequired,
+    sn_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
     color: PropTypes.string

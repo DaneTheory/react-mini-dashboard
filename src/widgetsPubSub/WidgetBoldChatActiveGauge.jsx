@@ -5,13 +5,13 @@ import PubSub from "pubsub-js";
 import { Chart } from "react-google-charts";
 
 // project imports
-import apiProxy from "../api/apiProxy";
+import { getBoldChatData } from "../utilities/getBoldChatData";
 
 // The purpose of this file is to create a React Component which can be included in HTML
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
 
 // Create a React class component, everything below this is a class method (i.e. a function attached to the class)
-class WidgetGoogleChartGauge extends React.Component {
+class WidgetBoldChatActiveGauge extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {
@@ -22,8 +22,8 @@ class WidgetGoogleChartGauge extends React.Component {
 
         // Set our initial React state, this is the *only* time to bypass setState()
         this.state = {
-            widgetName: "WidgetGoogleChartGauge",
-            boldchatCount: null
+            widgetName: "WidgetBoldChatActiveGauge",
+            BoldChatData: { chats: [] }
         };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
@@ -38,13 +38,13 @@ class WidgetGoogleChartGauge extends React.Component {
         // this function gets the custom data for this widget, and updates our React component state
         // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
 
-        // Retrieve our data (likely from an API)
-        const response = await apiProxy.get(`/boldchat/${this.props.boldchat_instance}/data/rest/json/v1/getActiveChats`, {
-            params: {}
-        });
+        // Get our data from API
+        let BoldChatData = await getBoldChatData(this.props.boldchat_instance, this.props.sn_instance);
+
+        console.warn(BoldChatData);
 
         // Update our own state with the new data
-        this.setState({ boldchatCount: response.data.Data.length });
+        this.setState({ BoldChatData: BoldChatData });
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -88,15 +88,15 @@ class WidgetGoogleChartGauge extends React.Component {
 
         return (
             <div className={"googleGaugeChartCard"} id={this.props.id} style={styles}>
-                <div className="gaugeTitle">All Active Chats</div>
+                <div className="single-num-title">All Active Chats</div>
                 {/* Use this div to size the chart, rather than using Chart Width/Height */}
                 {/* Chart width/height seems to create two nested divs, which each have the %size applied, so double affect */}
-                <div className="manualChartSize" style={{ width: "95%", height: "95%" }}>
+                <div className="manualChartSize" style={{ width: "95%", height: "70%" }}>
                     <Chart
                         chartType="Gauge"
                         width={"100%"}
-                        height={"90%"}
-                        data={[["Label", "Value"], ["Chats", this.state.boldchatCount]]}
+                        height={"100%"}
+                        data={[["Label", "Value"], ["Chats", this.state.BoldChatData.boldChatAgent || 0]]}
                         options={{
                             max: 130,
                             redFrom: 110,
@@ -106,6 +106,9 @@ class WidgetGoogleChartGauge extends React.Component {
                             minorTicks: 5
                         }}
                     />
+                </div>
+                <div style={{ fontSize: "1.3vw" }}>
+                    Agent:{this.state.BoldChatData.boldChatAgent} ChatBot: {this.state.BoldChatData.boldChatBot}{" "}
                 </div>
             </div>
         );
@@ -117,18 +120,19 @@ class WidgetGoogleChartGauge extends React.Component {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetGoogleChartGauge.defaultProps = {};
+WidgetBoldChatActiveGauge.defaultProps = {};
 
 // Force the caller to include the proper attributes
-WidgetGoogleChartGauge.propTypes = {
+WidgetBoldChatActiveGauge.propTypes = {
     boldchat_instance: PropTypes.string.isRequired,
+    sn_instance: PropTypes.string.isRequired,
     position: PropTypes.string.isRequired,
     color: PropTypes.string,
     id: PropTypes.string
 };
 
 // If we (this file) get "imported", this is what they'll be given
-export default WidgetGoogleChartGauge;
+export default WidgetBoldChatActiveGauge;
 
 // =======================================================================================================
 // =======================================================================================================
