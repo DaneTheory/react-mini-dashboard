@@ -47,7 +47,7 @@ export async function getBoldChatData(boldchat_instance, sn_instance) {
 
         // If InitialQuestion field is blank/null, then make it say that so humans can read it
         if (!chat.InitialQuestion) {
-            chat.InitialQuestion = "<<null>>";
+            chat.InitialQuestion = "<<null>> (maybe user started with chatbot ?)";
         }
 
         // End of chat loop
@@ -56,15 +56,18 @@ export async function getBoldChatData(boldchat_instance, sn_instance) {
     // Build an array of those WWIDs which do exist (Filtering out any chats where the WWID field is not populated in the CustomFields object)
     let wwidArray = boldChats
         .filter(function(chat) {
-            if (!chat.CustomFields || !chat.CustomFields.WWID) {
+            if (chat.CustomFields && (chat.CustomFields.WWID || chat.CustomFields.customfield_wwid)) {
                 // console.warn("chat without WWID", chat);
-                return false;
+                return true;
             }
-            return true;
+            return false;
         })
         .map(function(item) {
-            return item.CustomFields.WWID;
+            // Seems that BoldChat puts WWID is put in two places (one field for chatbot, one for normal chat)
+            return item.CustomFields.WWID || item.CustomFields.customfield_wwid;
         });
+
+    console.log("wwidArray", wwidArray);
 
     // Convert array to a comma-separated string
     let wwids = wwidArray.join(",");
@@ -80,7 +83,7 @@ export async function getBoldChatData(boldchat_instance, sn_instance) {
     console.log("User has role response", role_response.data.result);
 
     // Create an array of just the WWIDS, and store into the returned data object for later use (e.g. highlighting in blue)
-    BoldChatData["currentLMIChatsITUsers"] = role_response.data.result.map(function(currUser) {
+    BoldChatData["ITUsers"] = role_response.data.result.map(function(currUser) {
         return currUser["user.employee_number"];
     });
 

@@ -10,6 +10,9 @@ import { getBoldChatData } from "../utilities/getBoldChatData";
 // Import utility functions for constructing/scrolling our scrollable table
 import * as scrollableTable from "../utilities/autoScrollTableUtilities";
 
+// other imports
+var classNames = require("classnames");
+
 // The purpose of this file is to create a React Component which can be included in HTML
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
 
@@ -25,7 +28,7 @@ class WidgetSNBoldchatAutoScroll extends React.Component {
 
         this.state = {
             widgetName: "WidgetSNBoldchatAutoScroll",
-            boldChatsActive: [],
+            BoldChatData: { chats: [] },
             scrollableDivIDSelector: "chadTextTable02"
         };
 
@@ -63,7 +66,7 @@ class WidgetSNBoldchatAutoScroll extends React.Component {
         let BoldChatData = await getBoldChatData(this.props.boldchat_instance, this.props.sn_instance);
 
         // Update our own state with the new data
-        this.setState({ boldChatsActive: BoldChatData.chats });
+        this.setState({ BoldChatData: BoldChatData });
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -108,11 +111,21 @@ class WidgetSNBoldchatAutoScroll extends React.Component {
                 <div className="bodyTableContainerDiv">
                     <table id={this.state.scrollableDivIDSelector} className="scrollableTable">
                         <tbody>
-                            {this.state.boldChatsActive.map((chat, index) => {
+                            {this.state.BoldChatData.chats.map((chat, index) => {
+                                // If IT User, then highlight them
+                                // Seems that BoldChat puts WWID is put in two places (one field for chatbot, one for normal chat)
+                                let WWID = chat["CustomFields"]["WWID"] || chat["CustomFields"]["customfield_wwid"];
+                                let ChatName = chat["ChatName"];
+                                let chatNameFontColor = null;
+                                if (this.state.BoldChatData.ITUsers.includes(WWID)) {
+                                    ChatName = ChatName + " (IT User)";
+                                    chatNameFontColor = "blueFont";
+                                }
                                 return (
                                     <tr key={chat["ChatID"]}>
                                         <td>{index}</td>
-                                        <td>{chat["ChatName"]}</td>
+                                        <td className={classNames(chatNameFontColor)}>{ChatName}</td>
+                                        <td>{WWID}</td>
                                         <td>{chat["InitialQuestion"]}</td>
                                     </tr>
                                 );

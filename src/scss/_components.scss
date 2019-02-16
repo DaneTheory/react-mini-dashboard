@@ -68,68 +68,67 @@
 
         overflow: auto;
 
-        .cardBody {
-            // Used for occasional troubleshooting
-            // border: 1px solid #00000015;
+        font-size: 1.4vw;
+        font-family: "Nunito", "Courier New";
 
-            font-size: 1.4vw;
-            font-family: "Nunito", "Courier New";
+        // Align content - works in tandem with the display:flex in .dataCard
+        // NOTE: Centering content left/right is easy without flex.  Centering up/down is tricky.  display:flex (parent) and margin:auto (child) make that easy
+        margin: auto;
 
-            // Align content - works in tandem with the display:flex in .dataCard
-            // NOTE: Centering content left/right is easy without flex.  Centering up/down is tricky.  display:flex (parent) and margin:auto (child) make that easy
-            margin: auto;
+        min-height: 100%;
+        min-width: 100%;
 
-            min-height: 100%;
-            min-width: 100%;
+        // For widgets with text, I want display=inline
+        // display: inline;
+        // On 2019-01-20, did some experimenting, and removed this.  Testing seems fine.  Without it, seems to default to display:block
 
-            // For widgets with text, I want display=inline
-            // display: inline;
-            // On 2019-01-20, did some experimenting, and removed this.  Testing seems fine.  Without it, seems to default to display:block
+        // Typically used for large single numbers, outside of tables
+        .redFont {
+            color: red;
+        }
+        .orangeFont {
+            color: orange;
+        }
+        .greenFont {
+            color: green;
+        }
 
-            // Typically used for large single numbers, outside of tables
-            .redFont {
-                color: red;
-            }
-            .orangeFont {
-                color: orange;
-            }
-            .greenFont {
-                color: green;
-            }
+        table {
+            // remove the double border between cells, make it a single border
+            border-collapse: collapse;
+            // Center the table left/right in it's containing div
+            margin: 0 auto;
 
-            table {
-                // remove the double border between cells, make it a single border
-                border-collapse: collapse;
-                // Center the table left/right in it's containing div
-                margin: 0 auto;
+            tr {
+                td {
+                    border: 1px solid rgba(0, 0, 0, 0.356);
+                    padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+                    font-size: 0.6vw;
 
-                tr {
-                    td {
-                        border: 1px solid rgba(0, 0, 0, 0.356);
-                        padding: 0.2rem 0.5rem 0.2rem 0.5rem;
-                        font-size: 0.6vw;
-
-                        &.redFont {
-                            color: red;
-                            font-weight: 900;
-                        }
-                        &.orangeFont {
-                            color: orange;
-                            font-weight: 900;
-                        }
-                        &.greenFont {
-                            color: green;
-                            font-weight: 900;
-                        }
-
-                        &.tdRed {
-                            color: red;
-                        }
+                    &.redFont {
+                        color: red;
+                        font-weight: 900;
                     }
-                    th {
-                        font-size: 0.8vw;
-                        font-weight: 800;
+                    &.orangeFont {
+                        color: orange;
+                        font-weight: 900;
                     }
+                    &.greenFont {
+                        color: green;
+                        font-weight: 900;
+                    }
+
+                    &.tdRed {
+                        color: red;
+                    }
+
+                    &.blueFont {
+                        color: blue;
+                    }
+                }
+                th {
+                    font-size: 0.8vw;
+                    font-weight: 800;
                 }
             }
         }
