@@ -8,7 +8,7 @@ import WidgetBoldChatActiveGauge from "../widgetsPubSub/WidgetBoldChatActiveGaug
 import WidgetSNPubSubJETCostDataTable from "../widgetsExperimental/WidgetSNPubSubJETCostDataTable";
 import WidgetPubSubJETHorizontalGoogleBarChart from "../widgetsPubSub/WidgetPubSubJETHorizontalGoogleBarChart";
 import WidgetSNPubSubHealthSummary from "../widgetsPubSub/WidgetSNPubSubHealthSummary";
-import WidgetSNBoldchatAutoScroll from "../widgetsPubSub/WidgetSNBoldchatAutoScroll";
+import WidgetSNBoldchatTableAutoScroll from "../widgetsPubSub/WidgetSNBoldchatTableAutoScroll";
 import WidgetSNClicksByOS from "../widgetsPubSub/WidgetSNClicksByOS";
 import WidgetSNNewIncidentsToday from "../widgetsPubSub/WidgetSNNewIncidentsToday";
 import WidgetSNCurrentUsers from "../widgetsPubSub/WidgetSNCurrentUsers";
@@ -31,6 +31,7 @@ class Dev1CardGrid extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     render() {
+        // console.log("Demo1CardGrid: render()");
         return (
             <CardGrid rows="20" row_height="3.5vw" columns="12" column_width="1fr">
                 <WidgetSNPubSubJETCostDataTable
@@ -45,7 +46,7 @@ class Dev1CardGrid extends React.Component {
                 />
                 <WidgetSNPubSubHealthSummary position="1 / 9 / span 8 / span 2" sn_instance={this.props.sn_instance} />
 
-                <WidgetSNBoldchatAutoScroll
+                <WidgetSNBoldchatTableAutoScroll
                     position="5 / 1 / span 8 / span 6"
                     boldchat_instance={this.props.boldchat_instance}
                     sn_instance={this.props.sn_instance}

@@ -47,10 +47,12 @@ export function setTableSizeViaJquery(scrollingTableID) {
 //  ----------------------------------------------------------------------------
 // Start the scrolling action on the div which contains the table full of data
 export function initScroll(uniqueCssSelector, scrollLengthInSecs) {
-    // conver seconds to milliseconds
+    // console.warn("initscroll");
+
+    // convert seconds to milliseconds
     let scrollLengthInMS = scrollLengthInSecs * 1000;
 
-    // Compute how much we should scroll.  There's a div that contains all the content, and a div that defines the (smaller) view
+    // Compute how much we should scroll.  There's a div that contains all the content, and a div that defines the (smaller) "viewport"
     // Compute the difference between those two (in pixels)
     let scrollDistancePixels =
         $(uniqueCssSelector).height() -
@@ -58,36 +60,48 @@ export function initScroll(uniqueCssSelector, scrollLengthInSecs) {
             .parent()
             .height();
 
-    // via jQuery, grab the div which contains the table (see description at top)
-    let scrollableDiv = $(uniqueCssSelector).parent();
+    // console.warn("scrollDistancePixels: ", scrollDistancePixels);
 
-    // Define a callback function to be used when auto-scroll hits the bottom
-    let callbackForWhenScrollHitsBottom = function() {
-        // This is the callback for when the animation finishes
-        console.log(uniqueCssSelector + ": Down Scroll Done, so scrolling back to top");
-
-        // The scrollable div (which we want to now scroll up) is the parent of the table containing the data
+    // If table has more than can fit into widget, then start scrolling it
+    if (scrollDistancePixels > 0) {
+        // via jQuery, grab the div which contains the table (see description at top)
         let scrollableDiv = $(uniqueCssSelector).parent();
-        // Now stop that scroll (isn't it already stopped ?), and then scroll back to top
-        scrollableDiv.stop().animate({ scrollTop: 0 }, scrollLengthInMS, "swing", function() {
-            console.log(uniqueCssSelector + ": Back at the top, so restarting scroll");
-            initScroll(uniqueCssSelector, scrollLengthInSecs);
-        });
-    };
 
-    // Start scroll animation on that div, here are the expected args
-    // arg1: object os properties to animate  (scrollTop scrolls vertically, scrollLeft scrolls horizontally)
-    // arg2: duration (millseconds ?)
-    // arg3: easing function (i.e. linear or swing)
-    // arg4: callback when complete
-    scrollableDiv.animate(
-        {
-            scrollTop: scrollDistancePixels
-        },
-        scrollLengthInMS,
-        "swing",
-        callbackForWhenScrollHitsBottom
-    );
+        // Define a callback function to be used when auto-scroll hits the bottom
+        let callbackForWhenScrollHitsBottom = function() {
+            // This is the callback for when the animation finishes
+            // console.log(uniqueCssSelector + ": Down Scroll Done, so scrolling back to top");
+
+            // The scrollable div (which we want to now scroll up) is the parent of the table containing the data
+            let scrollableDiv = $(uniqueCssSelector).parent();
+            // Now stop that jQuery scroll (isn't it already stopped ?), and then scroll back to top
+            scrollableDiv.stop().animate({ scrollTop: 0 }, scrollLengthInMS, "swing", function() {
+                // console.log(uniqueCssSelector + ": Back at the top, so restarting scroll");
+                initScroll(uniqueCssSelector, scrollLengthInSecs);
+            });
+        };
+
+        // Start jQuery scroll animation on that div, here are the expected args
+        //    arg1: object os properties to animate  (scrollTop scrolls vertically, scrollLeft scrolls horizontally)
+        //    arg2: duration (millseconds ?)
+        //    arg3: easing function (i.e. linear or swing)
+        //    arg4: callback when complete
+
+        // Check to see if it's already animating
+        if (scrollableDiv.is(":animated")) {
+            // console.warn("already animated!");
+        } else {
+            console.log("starting table scroll animation");
+            scrollableDiv.animate(
+                {
+                    scrollTop: scrollDistancePixels
+                },
+                scrollLengthInMS,
+                "swing",
+                callbackForWhenScrollHitsBottom
+            );
+        }
+    }
 }
 //  ----------------------------------------------------------------------------
 //  ----------------------------------------------------------------------------

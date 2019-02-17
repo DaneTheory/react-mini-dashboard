@@ -99,6 +99,7 @@ class Dashboard extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     render() {
+        // console.log("Dashboard: render()");
         return (
             <HashRouter>
                 {/* HashRouter can have only one child element, so adding a <div> */}

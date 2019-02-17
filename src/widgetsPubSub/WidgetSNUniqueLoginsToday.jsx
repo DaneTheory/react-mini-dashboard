@@ -36,8 +36,6 @@ class WidgetSNUniqueLoginsToday extends React.Component {
         // this function gets the custom data for this widget, and updates our React component state
         // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
 
-        console.log("updating sir...");
-
         // Retrieve our data (likely from an API)
         const response = await apiProxy.get(`/sn/${this.props.sn_instance}/api/now/stats/sys_user_presence`, {
             params: {
