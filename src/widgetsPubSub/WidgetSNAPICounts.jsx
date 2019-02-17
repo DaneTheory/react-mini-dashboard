@@ -39,7 +39,7 @@ class WidgetSNAPICounts extends React.Component {
         console.warn("getting data");
 
         // Retrieve our data (likely from an API)
-        let response = await apiProxy.get("/azure-app-insights-api/dev/metrics/requests/count", {
+        let response = await apiProxy.get("/azure-app-insights-api/prod/metrics/requests/count", {
             params: {
                 timespan: "P7D",
                 aggregation: "sum",

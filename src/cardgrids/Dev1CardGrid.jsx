@@ -7,6 +7,7 @@ import WidgetSNExperiment01 from "../widgetsPrototype/WidgetSNExperiment01";
 import WidgetSNUniqueLoginsTodaySelfUpdating from "../widgetsSelfUpdating/WidgetSNUniqueLoginsTodaySelfUpdating";
 import WidgetGoogleChartScatter from "../widgetsExperimental/WidgetGoogleChartScatter";
 import WidgetGoogleChartHorizontalBar from "../widgetsExperimental/WidgetGoogleChartHorizontalBar";
+import WidgetSNAPICounts from "../widgetsPubSub/WidgetSNAPICounts";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -33,6 +34,7 @@ class Dev1CardGrid extends React.Component {
                 <WidgetSNUniqueLoginsTodaySelfUpdating position="span 2 / span 4" sn_instance={this.props.sn_instance} />
                 <WidgetGoogleChartScatter position="span 4 / span 4" sn_instance={this.props.sn_instance} />
                 <WidgetGoogleChartHorizontalBar position="span 4 / span 8" sn_instance={this.props.sn_instance} />
+                <WidgetSNAPICounts position="span 8 / span 2" />
             </CardGrid>
         );
     }

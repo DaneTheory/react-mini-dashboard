@@ -125,8 +125,8 @@ class WidgetSNPubSubHealthSummary extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     renderTable() {
-        if (this.state.OSInfo === {}) {
-            return <div className="single-num-value">No Clicks Today :(</div>;
+        if (this.state.nodeResults.length === 0) {
+            return <div className="waiting-for-data">Waiting for Data...</div>;
         } else {
             return (
                 <div style={{ fontSize: "1.6vw" }}>
