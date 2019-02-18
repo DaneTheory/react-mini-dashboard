@@ -14,7 +14,7 @@ var classNames = require("classnames");
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
 
 // Create a React class component, everything below this is a class method (i.e. a function attached to the class)
-class WidgetSNPubSubHealthSummary extends React.Component {
+class WidgetSNPubSubPlatformHealthSummary extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {
@@ -24,7 +24,7 @@ class WidgetSNPubSubHealthSummary extends React.Component {
         super(props);
 
         // Set our initial React state, this is the *only* time to bypass setState()
-        this.state = { widgetName: "WidgetSNPubSubHealthSummary", nodeResults: [] };
+        this.state = { widgetName: "WidgetSNPubSubPlatformHealthSummary", nodeResults: [] };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function
@@ -146,19 +146,32 @@ class WidgetSNPubSubHealthSummary extends React.Component {
                                 // Only show nodes where there are users logged in
                                 .filter(node => node["logged_in"] > 0)
                                 .map((node, index) => {
-                                    let sysLoadColor = node["sys_load"] > 3 ? "cellRed" : node["sys_load"] > 2 ? "cellYellow" : "cellGreen";
-                                    let sqlResponseColor =
-                                        node["sql_response"] > 3 ? "cellRed" : node["sql_response"] > 2 ? "cellYellow" : "cellGreen";
+                                    let numUsersColor =
+                                        node["logged_in"] > 300 ? "cellRed" : node["logged_in"] > 250 ? "cellYellow" : "cellGreen";
+                                    let sysLoadColor =
+                                        node["sys_load"] > 12 ? "cellRed" : node["sys_load"] > 9 ? "cellYellow" : "cellGreen";
+                                    let dbResponseColor =
+                                        node["sql_response"] > 4 ? "cellRed" : node["sql_response"] > 3 ? "cellYellow" : "cellGreen";
                                     return (
                                         <tr key={node["name"]}>
                                             <td>{index}</td>
                                             <td>{node["name"]}</td>
+
+                                            {/* Uptime */}
                                             <td align="right">{node["uptimeDays"].toFixed(1)}d</td>
-                                            <td align="right">{node["logged_in"]}</td>
+
+                                            {/* Users Logged in */}
+                                            <td className={classNames(numUsersColor)} align="right">
+                                                {node["logged_in"]}
+                                            </td>
+
+                                            {/* sysLoad */}
                                             <td className={classNames(sysLoadColor)} align="right">
                                                 {node["sys_load"].toFixed(1)}
                                             </td>
-                                            <td className={classNames(sqlResponseColor)} align="right">
+
+                                            {/* DB Response */}
+                                            <td className={classNames(dbResponseColor)} align="right">
                                                 {node["sql_response"].toFixed(1)}s
                                             </td>
                                         </tr>
@@ -189,7 +202,7 @@ class WidgetSNPubSubHealthSummary extends React.Component {
                 id={this.props.id}
                 position={this.props.position}
                 color={this.props.color}
-                widgetName="WidgetSNPubSubHealthSummary"
+                widgetName="WidgetSNPubSubPlatformHealthSummary"
             >
                 {this.renderCardHeader()}
                 {this.renderCardBody()}
@@ -203,10 +216,10 @@ class WidgetSNPubSubHealthSummary extends React.Component {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetSNPubSubHealthSummary.defaultProps = {};
+WidgetSNPubSubPlatformHealthSummary.defaultProps = {};
 
 // Force the caller to include the proper attributes
-WidgetSNPubSubHealthSummary.propTypes = {
+WidgetSNPubSubPlatformHealthSummary.propTypes = {
     sn_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
@@ -214,7 +227,7 @@ WidgetSNPubSubHealthSummary.propTypes = {
 };
 
 // If we (this file) get "imported", this is what they'll be given
-export default WidgetSNPubSubHealthSummary;
+export default WidgetSNPubSubPlatformHealthSummary;
 
 // =======================================================================================================
 // =======================================================================================================

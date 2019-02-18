@@ -140,7 +140,7 @@ class WidgetSNBoldchatTableAutoScroll extends React.Component {
         scrollableTable.scrollToTop("#" + this.state.scrollableDivIDSelector);
 
         // Start the window scroll, 2nd arg is scroll length in seconds
-        scrollableTable.initScroll("#" + this.state.scrollableDivIDSelector, 7);
+        scrollableTable.initScroll("#" + this.state.scrollableDivIDSelector, this.props.scrollDuration);
 
         // Listen for Window resize, and when that happens, re-compute the size of the scrollable div
         // Need to create an IIFE so that closure remembers value of the name of our div
@@ -191,12 +191,16 @@ class WidgetSNBoldchatTableAutoScroll extends React.Component {
                                     ChatName = ChatName + " (IT User)";
                                     chatNameFontColor = "blueFont";
                                 }
+                                let chatInitialQuestionFontColor = chat["InitialQuestion"].includes("Talking with Chatbot")
+                                    ? "greenFont"
+                                    : null;
+                                // Create the HTML table row
                                 return (
                                     <tr key={chat["ChatID"]}>
                                         <td>{index + 1}</td>
                                         <td className={classNames(chatNameFontColor)}>{ChatName}</td>
                                         <td>{WWID}</td>
-                                        <td>{chat["InitialQuestion"]}</td>
+                                        <td className={classNames(chatInitialQuestionFontColor)}>{chat["InitialQuestion"]}</td>
                                     </tr>
                                 );
                             })}
@@ -233,7 +237,9 @@ class WidgetSNBoldchatTableAutoScroll extends React.Component {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetSNBoldchatTableAutoScroll.defaultProps = {};
+WidgetSNBoldchatTableAutoScroll.defaultProps = {
+    scrollDuration: 60
+};
 
 // Force the caller to include the proper attributes
 WidgetSNBoldchatTableAutoScroll.propTypes = {

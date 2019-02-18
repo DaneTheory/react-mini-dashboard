@@ -113,10 +113,10 @@ class Dashboard extends React.Component {
                         <div>
                             Available Dashboards:
                             <Link to="/">Home</Link>
+                            <Link to="/demo1-dashboard">Demo1 Dashboard</Link>
                             <Link to="/leankit-discovery-dashboard">Leankit Discovery Dashboard</Link>
                             <br />
                             <Link to="/everything-dashboard">Everything Dashboard</Link>
-                            <Link to="/demo1-dashboard">Demo1 Dashboard</Link>
                             <Link to="/dev1-dashboard">Dev1 Dashboard</Link>
                         </div>
                         <div className="otherDetails">

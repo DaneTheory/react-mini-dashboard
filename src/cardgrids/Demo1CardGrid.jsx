@@ -7,7 +7,7 @@ import WidgetSNUniqueLoginsToday from "../widgetsPubSub/WidgetSNUniqueLoginsToda
 import WidgetBoldChatActiveGauge from "../widgetsPubSub/WidgetBoldChatActiveGauge";
 import WidgetSNPubSubJETCostDataTable from "../widgetsExperimental/WidgetSNPubSubJETCostDataTable";
 import WidgetPubSubJETHorizontalGoogleBarChart from "../widgetsPubSub/WidgetPubSubJETHorizontalGoogleBarChart";
-import WidgetSNPubSubHealthSummary from "../widgetsPubSub/WidgetSNPubSubHealthSummary";
+import WidgetSNPubSubPlatformHealthSummary from "../widgetsPubSub/WidgetSNPubSubPlatformHealthSummary";
 import WidgetSNBoldchatTableAutoScroll from "../widgetsPubSub/WidgetSNBoldchatTableAutoScroll";
 import WidgetSNClicksByOS from "../widgetsPubSub/WidgetSNClicksByOS";
 import WidgetSNNewIncidentsToday from "../widgetsPubSub/WidgetSNNewIncidentsToday";
@@ -44,7 +44,7 @@ class Dev1CardGrid extends React.Component {
                     sn_instance={this.props.sn_instance}
                     boldchat_instance={this.props.boldchat_instance}
                 />
-                <WidgetSNPubSubHealthSummary position="1 / 9 / span 8 / span 2" sn_instance={this.props.sn_instance} />
+                <WidgetSNPubSubPlatformHealthSummary position="1 / 9 / span 8 / span 2" sn_instance={this.props.sn_instance} />
 
                 <WidgetSNBoldchatTableAutoScroll
                     position="5 / 1 / span 8 / span 6"
