@@ -36,8 +36,10 @@ class WidgetSNAPICounts extends React.Component {
         // this function gets the custom data for this widget, and updates our React component state
         // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
 
+        console.warn("getting data");
+
         // Retrieve our data (likely from an API)
-        let response = await apiProxy.get("/azure-app-insights-api/dev/metrics/requests/count", {
+        let response = await apiProxy.get("/azure-app-insights-api/prod/metrics/requests/count", {
             params: {
                 timespan: "P7D",
                 aggregation: "sum",
@@ -45,12 +47,17 @@ class WidgetSNAPICounts extends React.Component {
             }
         });
 
+        console.warn("and finished");
+
+        // Distill down to simpler object
         let app_ids = response.data.value.segments.map(segment => {
             return {
                 appid: segment["customDimensions/requester"],
                 count: segment["requests/count"]["sum"]
             };
         });
+
+        console.warn(app_ids);
 
         // Update our own state with the new data
         this.setState({ app_ids: app_ids });

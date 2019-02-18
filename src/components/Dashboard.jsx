@@ -99,6 +99,7 @@ class Dashboard extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     render() {
+        // console.log("Dashboard: render()");
         return (
             <HashRouter>
                 {/* HashRouter can have only one child element, so adding a <div> */}
@@ -112,10 +113,10 @@ class Dashboard extends React.Component {
                         <div>
                             Available Dashboards:
                             <Link to="/">Home</Link>
+                            <Link to="/demo1-dashboard">Demo1 Dashboard</Link>
                             <Link to="/leankit-discovery-dashboard">Leankit Discovery Dashboard</Link>
                             <br />
                             <Link to="/everything-dashboard">Everything Dashboard</Link>
-                            <Link to="/demo1-dashboard">Demo1 Dashboard</Link>
                             <Link to="/dev1-dashboard">Dev1 Dashboard</Link>
                         </div>
                         <div className="otherDetails">
