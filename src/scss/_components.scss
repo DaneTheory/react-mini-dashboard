@@ -34,23 +34,27 @@
     margin: 0 1.5rem 0 1.5rem;
 
     // The width of the overall scrollbar (Chrome/Safari)
-    .dataCard::-webkit-scrollbar {
+    .dataCard,
+    .bodyTableContainerDiv::-webkit-scrollbar {
         width: 0.5em;
     }
 
     // the track (or background) of the elevator bar (Chrome/Safari)
-    .dataCard::-webkit-scrollbar-track {
+    .dataCard,
+    .bodyTableContainerDiv::-webkit-scrollbar-track {
         background-color: var(--colorThemeScrollbarTrackBackground);
         border-radius: 7px;
     }
 
     // the elevator bar (Chrome/Safari)
-    .dataCard::-webkit-scrollbar-thumb {
+    .dataCard,
+    .bodyTableContainerDiv::-webkit-scrollbar-thumb {
         background-color: var(--colorThemeScrollbarThumbBackground);
         border-radius: 7px;
     }
 
-    .dataCard {
+    .dataCard,
+    .bodyTableContainerDiv {
         scrollbar-color: var(--colorThemeScrollbarThumbBackground) var(--colorThemeScrollbarTrackBackground);
     }
 

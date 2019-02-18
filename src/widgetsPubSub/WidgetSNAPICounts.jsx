@@ -39,28 +39,27 @@ class WidgetSNAPICounts extends React.Component {
         console.warn("getting data");
 
         // Retrieve our data (likely from an API)
-        let response = await apiProxy.get("/azure-app-insights-api/prod/metrics/requests/count", {
-            params: {
-                timespan: "P7D",
-                aggregation: "sum",
-                segment: "customDimensions/requester"
-            }
-        });
+        try {
+            var response = await apiProxy.get("/azure-app-insights-api/prod/metrics/requests/count", {
+                params: {
+                    timespan: "P7D",
+                    aggregation: "sum",
+                    segment: "customDimensions/requester"
+                }
+            });
+            // Distill down to simpler object
+            let app_ids = response.data.value.segments.map(segment => {
+                return {
+                    appid: segment["customDimensions/requester"],
+                    count: segment["requests/count"]["sum"]
+                };
+            });
 
-        console.warn("and finished");
-
-        // Distill down to simpler object
-        let app_ids = response.data.value.segments.map(segment => {
-            return {
-                appid: segment["customDimensions/requester"],
-                count: segment["requests/count"]["sum"]
-            };
-        });
-
-        console.warn(app_ids);
-
-        // Update our own state with the new data
-        this.setState({ app_ids: app_ids });
+            // Update our own state with the new data
+            this.setState({ app_ids: app_ids });
+        } catch (e) {
+            console.warn(`${this.state.widgetName}: Error occurred getting widget data --> ${e.response.data}`);
+        }
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -89,8 +88,8 @@ class WidgetSNAPICounts extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     renderTable() {
-        if (this.state.OSInfo === {}) {
-            return <div className="single-num-value">No Clicks Today :(</div>;
+        if (this.state.app_ids.length === 0) {
+            return <div className="waiting-for-data">Waiting for Data...</div>;
         } else {
             return (
                 <div style={{ fontSize: "1.6vw" }}>
