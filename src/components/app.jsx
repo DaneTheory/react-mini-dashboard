@@ -22,8 +22,11 @@ let theme = {
         colorThemeCardTableGridLines: "#b9b9b998",
         colorThemeCardGreenFont: "#66ff66",
         colorThemeCardRedFont: "#ff6666",
-        colorThemeChartGreen: "#03d103",
-        colorThemeChartRed: "#ff0000",
+
+        colorThemeChartGreen: "#338a2e",
+        colorThemeChartBrown: "#aa7c39",
+        colorThemeChartPurple: "#6f256f",
+
         colorThemeCardTableCellBackgroundRed: "#af0000",
         colorThemeCardTableCellBackgroundAmber: "#e46e00",
         colorThemeCardTableCellBackgroundGreen: "#009c00"
@@ -44,8 +47,11 @@ let theme = {
         colorThemeCardTableGridLines: "#b9b9b998",
         colorThemeCardGreenFont: "#36a336",
         colorThemeCardRedFont: "#ff6666",
-        colorThemeChartGreen: "#03d103",
-        colorThemeChartRed: "#ff0000",
+
+        colorThemeChartGreen: "#338a2e",
+        colorThemeChartBrown: "#aa7c39",
+        colorThemeChartPurple: "#6f256f",
+
         colorThemeCardTableCellBackgroundRed: "#d40000",
         colorThemeCardTableCellBackgroundAmber: "#ff7b00",
         colorThemeCardTableCellBackgroundGreen: "#00c200"

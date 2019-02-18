@@ -7,8 +7,17 @@ import DashboardDataCard from "../components/DashboardDataCard";
 import DashboardGoogleChartCard from "../components/DashboardGoogleChartCard";
 import { ThemeConsumer } from "../components/ThemeContext";
 
+// project imports
+import { getLeankitCards } from "../utilities/getLeankitCards";
+import { getCommentsforLeankitCards } from "../utilities/getCommentsForLeankitCards";
+import { getBacklogDurationForLeankitCards } from "../utilities/getBacklogDurationForLeankitCards";
+import { listCardsAdvanced } from "../utilities/leankitBurndownChartData";
+
 // The purpose of this file is to create a React Component which can be included in HTML
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
+
+// ------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 
 // Create a React class component, everything below this is a class method (i.e. a function attached to the class)
 class WidgetLeankitDeliveryBurndown extends React.Component {
@@ -41,18 +50,67 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
         // Create an array of values for use in the chart data
         let chartData = {
             pointsPerDay: [
-                ["date", "Planned Points", "Unplanned Points", "burndownLinePerDay"],
-                ["2/13/2019", 100, 0, 100],
-                ["2/14/2019", 100, 5, 90],
-                ["2/15/2019", 90, 5, 80],
-                ["2/17/2019", 60, 10, 70],
-                ["2/18/2019", 60, 5, 70],
-                ["2/19/2019", 60, 0, 60]
+                [
+                    "date",
+                    "Planned Points",
+                    { type: "string", role: "style" },
+                    "Unplanned Points",
+                    "burndownLinePerDay",
+                    { type: "string", role: "style" }
+                ],
+                ["2/13/2019", 100, null, 0, 100, null],
+                ["2/14/2019", 100, null, 5, 90, null],
+                ["2/15/2019", 90, "point { size: 18; shape-type: star; fill-color: #00f; }", 5, 80, null],
+                ["2/17/2019", 60, null, 10, 70, null],
+                ["2/18/2019", 60, null, 5, 70, null],
+                ["2/19/2019", 60, null, 0, 60, null]
             ]
         };
 
         // Update our own state with the new data
         this.setState({ chartData: chartData });
+
+        // this function gets the custom data for this widget, and updates our React component state
+        // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
+
+        // Retrieve our data (likely from an API)
+        // Get all the leankit cards
+        let leankit_cards = await getLeankitCards(this.props.leankit_instance, this.props.boardId, "active,backlog");
+
+        // Filter down to just solutioning cards
+        let filteredCards = leankit_cards.filter(function(card) {
+            return card.u_lanes[1].name === "Solutioning" && card.u_lanes[2].name === "Non-Project WUs";
+        });
+
+        // Put a dummy value in for backlogDuration, we'll figure it out later
+        filteredCards.forEach(card => {
+            card.backlogDuration = { days: "unknown" };
+        });
+
+        // Save these cards to our state, which triggers react to render an update to the screen
+        this.setState({ leankit_cards: filteredCards });
+
+        // Enrich each card by adding URL field (boardId is hard-coded)
+        for (var i = 0; i < filteredCards.length; i++) {
+            var card = filteredCards[i];
+            card.url = `https://${this.props.leankit_instance}/card/${card.id}`;
+        }
+
+        // User comments are not part of original call, so add them now
+        let leankit_cards_with_comments = await getCommentsforLeankitCards(filteredCards, this.props.leankit_instance);
+
+        // Save these cards to our state, which triggers react to render an update to the screen
+        this.setState({ leankit_cards: leankit_cards_with_comments });
+
+        // Get the backlog duration
+        let leankit_cards_with_backlogDuration = await getBacklogDurationForLeankitCards(filteredCards, this.props.leankit_instance);
+        // console.log(leankit_cards_with_backlogDuration);
+
+        console.log("leankit_cards before advanced call", leankit_cards);
+        let leankitDataObject = listCardsAdvanced(leankit_cards, this.props.boardId);
+        console.log("leankitDataObject:", leankitDataObject);
+
+        console.log("leankit_cards:", leankit_cards_with_backlogDuration);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -112,7 +170,7 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
                             color={this.props.color}
                             widgetName="WidgetSNBarChart"
                         >
-                            <div className="single-num-title">JET Consumption vs Target</div>
+                            <div className="single-num-title">Iris Development Burndown</div>
 
                             {/* Use this div to size the chart, rather than using Chart Width/Height */}
                             {/* Chart width/height seems to create two nested divs, which each have the %size applied, so double affect */}
@@ -129,25 +187,47 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
                                         },
                                         backgroundColor: theme.currentColorTheme.colorThemeCardBackground,
                                         chartArea: {
-                                            left: "10%",
+                                            left: "4%",
                                             right: 0,
                                             top: "5%",
-                                            bottom: "15%",
+                                            bottom: "10%",
                                             backgroundColor: {
                                                 fill: theme.currentColorTheme.colorThemeCardBackground
                                             }
                                         },
                                         vAxis: {
-                                            minValue: 0
+                                            minValue: 0,
+                                            gridlines: {
+                                                color: "#00f"
+                                            }
                                         },
-                                        curveType: ["function", "function", null],
-
+                                        series: {
+                                            // Planned Pts
+                                            0: {
+                                                curveType: "function",
+                                                pointSize: 10,
+                                                color: theme.currentColorTheme.colorThemeChartBrown,
+                                                lineWidth: 5
+                                            },
+                                            // Unplanned Pts
+                                            1: {
+                                                curveType: "function",
+                                                pointSize: 5,
+                                                color: theme.currentColorTheme.colorThemeChartPurple,
+                                                lineWidth: 1
+                                            },
+                                            // Burndown (Ideal)
+                                            2: {
+                                                pointSize: 5,
+                                                color: theme.currentColorTheme.colorThemeChartGreen,
+                                                lineWidth: 5
+                                            }
+                                        },
                                         animation: {
                                             duration: 1000,
                                             easing: "out",
                                             startup: true
-                                        },
-                                        colors: [theme.currentColorTheme.colorThemeChartGreen, theme.currentColorTheme.colorThemeChartRed]
+                                        }
                                     }}
                                 />
                             </div>
@@ -171,7 +251,8 @@ WidgetLeankitDeliveryBurndown.propTypes = {
     leankit_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
-    color: PropTypes.string
+    color: PropTypes.string,
+    boardId: PropTypes.string.isRequired
 };
 
 // If we (this file) get "imported", this is what they'll be given
