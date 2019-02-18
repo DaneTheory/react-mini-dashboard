@@ -247,7 +247,8 @@ WidgetSNBoldchatTableAutoScroll.propTypes = {
     position: PropTypes.string.isRequired,
     color: PropTypes.string,
     boldchat_instance: PropTypes.string.isRequired,
-    sn_instance: PropTypes.string.isRequired
+    sn_instance: PropTypes.string.isRequired,
+    scrollDuration: PropTypes.number.isRequired
 };
 
 // If we (this file) get "imported", this is what they'll be given
