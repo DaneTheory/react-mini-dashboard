@@ -23,6 +23,7 @@ let theme = {
         colorThemeCardGreenFont: "#66ff66",
         colorThemeCardRedFont: "#ff6666",
         colorThemeChartGreen: "#03d103",
+        colorThemeChartRed: "#ff0000",
         colorThemeCardTableCellBackgroundRed: "#af0000",
         colorThemeCardTableCellBackgroundAmber: "#e46e00",
         colorThemeCardTableCellBackgroundGreen: "#009c00"
@@ -44,6 +45,7 @@ let theme = {
         colorThemeCardGreenFont: "#36a336",
         colorThemeCardRedFont: "#ff6666",
         colorThemeChartGreen: "#03d103",
+        colorThemeChartRed: "#ff0000",
         colorThemeCardTableCellBackgroundRed: "#d40000",
         colorThemeCardTableCellBackgroundAmber: "#ff7b00",
         colorThemeCardTableCellBackgroundGreen: "#00c200"
@@ -52,7 +54,7 @@ let theme = {
 };
 
 // Select a color theme to use
-theme.currentColorTheme = theme.darkColorTheme;
+theme.currentColorTheme = theme.lightColorTheme;
 
 // Apply the chose color theme to all of our CSS color variables
 Object.entries(theme.currentColorTheme).forEach(color => {

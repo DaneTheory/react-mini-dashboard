@@ -9,6 +9,8 @@ import Demo1CardGrid from "../cardgrids/Demo1CardGrid";
 import EverythingCardGrid from "../cardgrids/EverythingCardGrid";
 import Dev1CardGrid from "../cardgrids/Dev1CardGrid";
 import LeankitDiscoveryCardGrid from "../cardgrids/LeankitDiscoveryCardGrid";
+import LeankitDeliveryCardGrid from "../cardgrids/LeankitDeliveryCardGrid";
+
 import HomeCardGrid from "../cardgrids/HomeCardGrid";
 
 class Dashboard extends React.Component {
@@ -115,6 +117,7 @@ class Dashboard extends React.Component {
                             <Link to="/">Home</Link>
                             <Link to="/demo1-dashboard">Demo1 Dashboard</Link>
                             <Link to="/leankit-discovery-dashboard">Leankit Discovery Dashboard</Link>
+                            <Link to="/leankit-delivery-dashboard">Leankit Delivery Dashboard</Link>
                             <br />
                             <Link to="/everything-dashboard">Everything Dashboard</Link>
                             <Link to="/dev1-dashboard">Dev1 Dashboard</Link>
@@ -182,6 +185,17 @@ class Dashboard extends React.Component {
                                 exact
                                 render={() => (
                                     <LeankitDiscoveryCardGrid
+                                        sn_instance={this.props.sn_instance}
+                                        leankit_instance={this.props.leankit_instance}
+                                        changeParentPageTitle={this.changePageTitle.bind(this)}
+                                    />
+                                )}
+                            />
+                            <Route
+                                path="/leankit-delivery-dashboard"
+                                exact
+                                render={() => (
+                                    <LeankitDeliveryCardGrid
                                         sn_instance={this.props.sn_instance}
                                         leankit_instance={this.props.leankit_instance}
                                         changeParentPageTitle={this.changePageTitle.bind(this)}
