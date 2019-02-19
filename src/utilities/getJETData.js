@@ -220,7 +220,7 @@ async function JETGetDataGenesysCTIByLang(agoCount, agoUnits, sn_instance) {
 }
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 function computeVariance(JETconsumptionUnits) {
-    Object.entries(JETconsumptionUnits).forEach(([key, value]) => {
+    Object.entries(JETconsumptionUnits).forEach(([, value]) => {
         value.pctOfTarget = value.count / value.weeklyTargetCount;
         value.targetCost = value.unitCost * value.weeklyTargetCount;
         value.actualCost = value.unitCost * value.count;

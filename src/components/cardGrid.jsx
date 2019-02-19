@@ -23,7 +23,9 @@ CardGrid.defaultProps = {
 CardGrid.propTypes = {
     rows: PropTypes.string.isRequired,
     columns: PropTypes.string.isRequired,
-    children: PropTypes.node.isRequired
+    children: PropTypes.node.isRequired,
+    column_width: PropTypes.string,
+    row_height: PropTypes.string
 };
 
 export default CardGrid;
