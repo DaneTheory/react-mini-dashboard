@@ -184,7 +184,10 @@ class WidgetSNBoldchatTableAutoScroll extends React.Component {
                             {this.state.BoldChatData.chats.map((chat, index) => {
                                 // If IT User, then highlight them
                                 // Seems that BoldChat puts WWID is put in two places (one field for chatbot, one for normal chat)
-                                let WWID = chat["CustomFields"]["WWID"] || chat["CustomFields"]["customfield_wwid"];
+                                let WWID =
+                                    (chat["CustomFields"] && chat["CustomFields"]["WWID"]) ||
+                                    (chat["CustomFields"] && chat["CustomFields"]["customfield_wwid"]) ||
+                                    "No WWID";
                                 let ChatName = chat["ChatName"];
                                 let chatNameFontColor = null;
                                 if (this.state.BoldChatData.ITUsers.includes(WWID)) {
