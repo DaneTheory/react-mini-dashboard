@@ -17,30 +17,44 @@
 
     // These are the CSS variables that I use, they are set via Javascript
     // I set them to red here, so it's pretty obvious if I forget to set one :)
-    --colorThemePageBackground: #ff0000;
-    --colorThemeCardBackground: #f00;
     --colorThemeBodyDefault: #f00;
-    --colorThemeCardFontDefault: #f00;
+
+    // Page
+    --colorThemePageBackground: #ff0000;
     --colorThemePageTitle: #f00;
+
+    // Default
+    --colorThemeFontDefault: #f00;
+
+    // Card
+    --colorThemeCardBackground: #f00;
+    --colorThemeCardFontDefault: #f00;
+    --colorThemeCardFontBlue: #f00;
+    --colorThemeCardFontRed: #f00;
+    --colorThemeCardFontGreen: #f00;
+    --colorThemeCardTableGridLines: #f00;
+    --colorThemeCardTableCellBackgroundRed: #f00;
+    --colorThemeCardTableCellBackgroundAmber: #f00;
+    --colorThemeCardTableCellBackgroundGreen: #f00;
+
+    // Left Nav
     --colorThemeLeftNavButtons: #f00;
+    --colorThemeLeftNavLinks: "#f00";
+    --colorThemeLeftNavLinksHover: "#f00";
+
+    // Widget Links
     --colorThemeWidgetLinks: #f00;
+
+    // Scrollbar
     --colorThemeScrollbarTrackBackground: #f00;
     --colorThemeScrollbarThumbBackground: #f00;
 
-    // New colors
-    --colorThemeCardFontBlue: #f00;
-    --colorThemeCardTableGridLines: #f00;
-    --colorThemeCardFontGreen: #f00;
-    --colorThemeCardFontRed: #f00;
+    // Chart
     --colorThemeChartGreen: #f00;
     --colorThemeChartGreen: "#f00";
     --colorThemeChartBrown: "#f00";
     --colorThemeChartPurple: "#f00";
-    --colorThemeCardTableCellBackgroundRed: #f00;
-    --colorThemeCardTableCellBackgroundAmber: #f00;
-    --colorThemeCardTableCellBackgroundGreen: #f00;
-    --colorThemeLeftNavLinks: "#f00";
 
     // This is a dummy variable simply so I can easily trigger the color editor in my IDE (VS Code)
-    --colorForNothing: #6f256f;
+    --colorForNothing: #e749e7;
 }

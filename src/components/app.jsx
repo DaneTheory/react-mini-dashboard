@@ -29,6 +29,7 @@ let theme = {
         // LeftNav
         colorThemeLeftNavButtons: "#bbb3b3",
         colorThemeLeftNavLinks: "#bbb3b3",
+        colorThemeLeftNavLinksHover: "#4183c4",
 
         // Widget Links
         colorThemeWidgetLinks: "#4183c4",
@@ -38,10 +39,10 @@ let theme = {
         colorThemeScrollbarThumbBackground: "#000",
 
         // Chart
+        colorThemeChartData: "#c0cde2",
         colorThemeChartGreen: "#338a2e",
         colorThemeChartBrown: "#aa7c39",
-        colorThemeChartPurple: "#6f256f",
-        colorThemeChartData: "#c0cde2"
+        colorThemeChartPurple: "#e749e7"
     },
 
     lightColorTheme: {
@@ -84,7 +85,7 @@ let theme = {
 };
 
 // Select a color theme to use
-theme.currentColorTheme = theme.lightColorTheme;
+theme.currentColorTheme = theme.darkColorTheme;
 
 // Apply the chose color theme to all of our CSS color variables
 Object.entries(theme.currentColorTheme).forEach(color => {

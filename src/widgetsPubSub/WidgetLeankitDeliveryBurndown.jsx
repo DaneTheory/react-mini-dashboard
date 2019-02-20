@@ -32,7 +32,8 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
         // Set our initial React state, this is the *only* time to bypass setState()
         this.state = {
             widgetName: "WidgetLeankitDeliveryBurndown",
-            chartData: null
+            chartData: null,
+            leankitDataObject: { listCards: {} }
         };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
@@ -48,23 +49,27 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
         // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
 
         // Create an array of values for use in the chart data
+        // let chartData = {
+        //     pointsPerDay: [
+        //         [
+        //             "date",
+        //             "Planned Points",
+        //             { type: "string", role: "style" },
+        //             "Unplanned Points",
+        //             "burndownLinePerDay",
+        //             { type: "string", role: "style" }
+        //         ],
+        //         ["2/13/2019", 100, null, 0, 100, null],
+        //         ["2/14/2019", 100, null, 5, 90, null],
+        //         ["2/15/2019", 90, "point { size: 18; shape-type: star; fill-color: #fff; }", 5, 80, null],
+        //         ["2/17/2019", 60, null, 10, 70, null],
+        //         ["2/18/2019", 60, null, 5, 70, null],
+        //         ["2/19/2019", 60, null, 0, 60, null]
+        //     ]
+        // };
+
         let chartData = {
-            pointsPerDay: [
-                [
-                    "date",
-                    "Planned Points",
-                    { type: "string", role: "style" },
-                    "Unplanned Points",
-                    "burndownLinePerDay",
-                    { type: "string", role: "style" }
-                ],
-                ["2/13/2019", 100, null, 0, 100, null],
-                ["2/14/2019", 100, null, 5, 90, null],
-                ["2/15/2019", 90, "point { size: 18; shape-type: star; fill-color: #00f; }", 5, 80, null],
-                ["2/17/2019", 60, null, 10, 70, null],
-                ["2/18/2019", 60, null, 5, 70, null],
-                ["2/19/2019", 60, null, 0, 60, null]
-            ]
+            pointsPerDay: []
         };
 
         // Update our own state with the new data
@@ -77,40 +82,61 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
         // Get all the leankit cards
         let leankit_cards = await getLeankitCards(this.props.leankit_instance, this.props.boardId, "active,backlog");
 
-        // Filter down to just solutioning cards
-        let filteredCards = leankit_cards.filter(function(card) {
-            return card.u_lanes[1].name === "Solutioning" && card.u_lanes[2].name === "Non-Project WUs";
-        });
-
-        // Put a dummy value in for backlogDuration, we'll figure it out later
-        filteredCards.forEach(card => {
-            card.backlogDuration = { days: "unknown" };
-        });
-
         // Save these cards to our state, which triggers react to render an update to the screen
-        this.setState({ leankit_cards: filteredCards });
+        this.setState({ leankit_cards: leankit_cards });
 
         // Enrich each card by adding URL field (boardId is hard-coded)
-        for (var i = 0; i < filteredCards.length; i++) {
-            var card = filteredCards[i];
+        for (var i = 0; i < leankit_cards.length; i++) {
+            var card = leankit_cards[i];
             card.url = `https://${this.props.leankit_instance}/card/${card.id}`;
         }
-
-        // User comments are not part of original call, so add them now
-        let leankit_cards_with_comments = await getCommentsforLeankitCards(filteredCards, this.props.leankit_instance);
-
-        // Save these cards to our state, which triggers react to render an update to the screen
-        this.setState({ leankit_cards: leankit_cards_with_comments });
+        this.setState({ leankit_cards: leankit_cards });
 
         // Get the backlog duration
-        let leankit_cards_with_backlogDuration = await getBacklogDurationForLeankitCards(filteredCards, this.props.leankit_instance);
+        // let leankit_cards_with_backlogDuration = await getBacklogDurationForLeankitCards(filteredCards, this.props.leankit_instance);
         // console.log(leankit_cards_with_backlogDuration);
 
         console.log("leankit_cards before advanced call", leankit_cards);
         let leankitDataObject = listCardsAdvanced(leankit_cards, this.props.boardId);
         console.log("leankitDataObject:", leankitDataObject);
 
-        console.log("leankit_cards:", leankit_cards_with_backlogDuration);
+        // Save these cards to our state, which triggers react to render an update to the screen
+        this.setState({ leankitDataObject: leankitDataObject });
+
+        let labels = this.state.leankitDataObject.burndownChart.labels;
+        console.log("Labels", labels);
+
+        let series1 = this.state.leankitDataObject.burndownChart.data[0];
+        let series2 = this.state.leankitDataObject.burndownChart.data[1];
+        let series3 = this.state.leankitDataObject.burndownChart.data[2];
+
+        // Create initial chart data with one column
+        chartData = labels.map(label => {
+            return [label];
+        });
+
+        function addColumn(dataArray, columnArray) {
+            dataArray = dataArray.map((dataElement, index) => {
+                dataElement.push(columnArray[index]);
+                return dataElement;
+            });
+            return dataArray;
+        }
+
+        console.log("chartData", chartData);
+        chartData = addColumn(chartData, series1);
+        chartData = addColumn(chartData, series2);
+        chartData = addColumn(chartData, series3);
+        chartData.unshift(["Date", "Planned", "Burndown", "Unplanned"]);
+        console.log("chartData", chartData);
+
+        this.setState({
+            chartData: {
+                pointsPerDay: chartData
+            }
+        });
+
+        console.log(this.state.chartData);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -195,10 +221,20 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
                                                 fill: theme.currentColorTheme.colorThemeCardBackground
                                             }
                                         },
+                                        hAxis: {
+                                            textStyle: {
+                                                color: theme.currentColorTheme.colorThemeCardFontDefault
+                                            }
+                                        },
                                         vAxis: {
+                                            textStyle: {
+                                                color: theme.currentColorTheme.colorThemeCardFontDefault
+                                            },
+                                            maxValue: 125,
                                             minValue: 0,
                                             gridlines: {
-                                                color: "#00f"
+                                                color: theme.currentColorTheme.colorThemeCardFontDefault,
+                                                count: 10
                                             }
                                         },
                                         series: {
@@ -209,18 +245,18 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
                                                 color: theme.currentColorTheme.colorThemeChartBrown,
                                                 lineWidth: 5
                                             },
-                                            // Unplanned Pts
+                                            // Burndown (Ideal)
                                             1: {
+                                                pointSize: 5,
+                                                color: theme.currentColorTheme.colorThemeChartGreen,
+                                                lineWidth: 5
+                                            },
+                                            // Unplanned Pts
+                                            2: {
                                                 curveType: "function",
                                                 pointSize: 5,
                                                 color: theme.currentColorTheme.colorThemeChartPurple,
                                                 lineWidth: 1
-                                            },
-                                            // Burndown (Ideal)
-                                            2: {
-                                                pointSize: 5,
-                                                color: theme.currentColorTheme.colorThemeChartGreen,
-                                                lineWidth: 5
                                             }
                                         },
                                         animation: {

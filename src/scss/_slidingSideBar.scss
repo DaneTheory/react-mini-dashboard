@@ -29,7 +29,7 @@
     /* When you mouse over the navigation links or close button, change their color */
     a:hover,
     .closebtn:hover {
-        color: #f1f1f1;
+        color: var(--colorThemeLeftNavLinksHover);
         cursor: pointer;
     }
 
@@ -40,7 +40,7 @@
         right: 15px;
         font-size: 36px;
         margin-left: 50px;
-        color: #818181;
+        color: var(--colorThemeLeftNavLinks);
     }
 }
 
