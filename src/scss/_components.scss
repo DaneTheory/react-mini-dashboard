@@ -1,6 +1,6 @@
 // Remove the normal styling from hyperlinks in this particular widget
 .dataCard#WidgetLeankitDiscoverySolutioningCardList td a {
-    color: var(--colorThemeCardFont);
+    color: var(--colorThemeCardFontDefault);
     text-decoration: none;
     &:hover {
         color: var(--colorThemeWidgetLinks);
@@ -29,7 +29,8 @@
     // This now gets set dymanically by cardCard.jsx
     // grid-template-columns: repeat(6, 1fr);
     // grid-template-rows: repeat(6, 1fr);
-    height: 60vw;
+    // height: 60vw;
+    // height: 1vh;
     grid-gap: 1rem;
     margin: 0 1.5rem 0 1.5rem;
 
@@ -60,7 +61,7 @@
 
     .dataCard {
         background-color: var(--colorThemeCardBackground);
-        color: var(--colorThemeCardFont);
+        color: var(--colorThemeCardFontDefault);
         border-radius: 0.2rem;
         padding: 0.5rem;
         width: 100%;
@@ -88,13 +89,13 @@
 
         // Typically used for large single numbers, outside of tables
         .redFont {
-            color: var(--colorThemeCardRedFont);
+            color: var(--colorThemeCardFontRed);
         }
         .orangeFont {
             color: orange;
         }
         .greenFont {
-            color: var(--colorThemeCardGreenFont);
+            color: var(--colorThemeCardFontGreen);
         }
 
         table {
@@ -110,7 +111,7 @@
                     font-size: 0.6vw;
 
                     &.redFont {
-                        color: var(--colorThemeCardRedFont);
+                        color: var(--colorThemeCardFontRed);
                         font-weight: 700;
                     }
                     &.orangeFont {
@@ -118,16 +119,16 @@
                         font-weight: 700;
                     }
                     &.greenFont {
-                        color: var(--colorThemeCardGreenFont);
+                        color: var(--colorThemeCardFontGreen);
                         font-weight: 700;
                     }
 
                     &.tdRed {
-                        color: var(--colorThemeCardRedFont);
+                        color: var(--colorThemeCardFontRed);
                     }
 
                     &.blueFont {
-                        color: var(--colorThemeCardBlueFont);
+                        color: var(--colorThemeCardFontBlue);
                         font-weight: 700;
                     }
                 }
@@ -247,7 +248,7 @@
         .gaugeTitle {
             font-size: 3rem;
             text-align: center;
-            color: var(--colorThemeCardFont);
+            color: var(--colorThemeCardFontDefault);
             display: block;
         }
         table {

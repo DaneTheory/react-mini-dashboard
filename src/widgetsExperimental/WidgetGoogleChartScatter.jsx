@@ -124,30 +124,30 @@ class WidgetGoogleScatterChart extends React.Component {
                                     {
                                         title: "Age vs. Weight comparison",
                                         titleTextStyle: {
-                                            color: theme.currentColorTheme.colorThemeCardFont
+                                            color: theme.currentColorTheme.colorThemeCardFontDefault
                                         },
                                         colors: [theme.currentColorTheme.colorThemeChartData],
                                         hAxis: {
                                             title: "Age",
                                             viewWindow: { min: 0, max: 15 },
                                             textStyle: {
-                                                color: theme.currentColorTheme.colorThemeCardFont
+                                                color: theme.currentColorTheme.colorThemeCardFontDefault
                                             },
                                             titleTextStyle: {
-                                                color: theme.currentColorTheme.colorThemeCardFont
+                                                color: theme.currentColorTheme.colorThemeCardFontDefault
                                             },
-                                            baselineColor: theme.currentColorTheme.colorThemeCardFont
+                                            baselineColor: theme.currentColorTheme.colorThemeCardFontDefault
                                         },
                                         vAxis: {
                                             title: "Weight",
                                             viewWindow: { min: 0, max: 15 },
                                             textStyle: {
-                                                color: theme.currentColorTheme.colorThemeCardFont
+                                                color: theme.currentColorTheme.colorThemeCardFontDefault
                                             },
                                             titleTextStyle: {
-                                                color: theme.currentColorTheme.colorThemeCardFont
+                                                color: theme.currentColorTheme.colorThemeCardFontDefault
                                             },
-                                            baselineColor: theme.currentColorTheme.colorThemeCardFont
+                                            baselineColor: theme.currentColorTheme.colorThemeCardFontDefault
                                         },
                                         legend: "none",
                                         animation: {

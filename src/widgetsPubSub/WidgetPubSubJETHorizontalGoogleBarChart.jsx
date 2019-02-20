@@ -123,7 +123,7 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
                                     data={this.state.chartData}
                                     options={{
                                         titleTextStyle: {
-                                            color: theme.currentColorTheme.colorThemeCardFont
+                                            color: theme.currentColorTheme.colorThemeCardFontDefault
                                         },
                                         backgroundColor: theme.currentColorTheme.colorThemeCardBackground,
                                         chartArea: {
@@ -140,7 +140,7 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
                                                 count: 6
                                             },
                                             textStyle: {
-                                                color: theme.currentColorTheme.colorThemeCardFont
+                                                color: theme.currentColorTheme.colorThemeCardFontDefault
                                             },
                                             format: "percent",
                                             viewWindow: {
@@ -149,7 +149,7 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
                                         },
                                         vAxis: {
                                             textStyle: {
-                                                color: theme.currentColorTheme.colorThemeCardFont
+                                                color: theme.currentColorTheme.colorThemeCardFontDefault
                                             }
                                         },
                                         animation: {

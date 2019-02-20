@@ -33,7 +33,7 @@ class Dev1CardGrid extends React.Component {
     render() {
         // console.log("Demo1CardGrid: render()");
         return (
-            <CardGrid rows="20" row_height="3.5vw" columns="12" column_width="1fr">
+            <CardGrid rows="12" row_height="3.5vw" columns="12" column_width="1fr">
                 <WidgetSNPubSubJETCostDataTable
                     position="1 / 1 / span 4/ span 4"
                     sn_instance={this.props.sn_instance}

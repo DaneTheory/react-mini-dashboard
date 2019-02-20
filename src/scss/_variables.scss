@@ -8,7 +8,7 @@
     // --colorThemePageBackground: #333b50;
     // --colorThemeCardBackground: #2b2d3e;
     // --colorThemeBodyDefault: #bbb3b3;
-    // --colorThemeCardFont: #eeeeee;
+    // --colorThemeCardFontDefault: #eeeeee;
     // --colorThemePageTitle: #bbb3b3;
     // --colorThemeLeftNavButtons: #bbb3b3;
     // --colorThemeWidgetLinks: #4183c4;
@@ -20,7 +20,7 @@
     --colorThemePageBackground: #ff0000;
     --colorThemeCardBackground: #f00;
     --colorThemeBodyDefault: #f00;
-    --colorThemeCardFont: #f00;
+    --colorThemeCardFontDefault: #f00;
     --colorThemePageTitle: #f00;
     --colorThemeLeftNavButtons: #f00;
     --colorThemeWidgetLinks: #f00;
@@ -28,10 +28,10 @@
     --colorThemeScrollbarThumbBackground: #f00;
 
     // New colors
-    --colorThemeCardBlueFont: #f00;
+    --colorThemeCardFontBlue: #f00;
     --colorThemeCardTableGridLines: #f00;
-    --colorThemeCardGreenFont: #f00;
-    --colorThemeCardRedFont: #f00;
+    --colorThemeCardFontGreen: #f00;
+    --colorThemeCardFontRed: #f00;
     --colorThemeChartGreen: #f00;
     --colorThemeChartGreen: "#f00";
     --colorThemeChartBrown: "#f00";
@@ -39,6 +39,7 @@
     --colorThemeCardTableCellBackgroundRed: #f00;
     --colorThemeCardTableCellBackgroundAmber: #f00;
     --colorThemeCardTableCellBackgroundGreen: #f00;
+    --colorThemeLeftNavLinks: "#f00";
 
     // This is a dummy variable simply so I can easily trigger the color editor in my IDE (VS Code)
     --colorForNothing: #6f256f;

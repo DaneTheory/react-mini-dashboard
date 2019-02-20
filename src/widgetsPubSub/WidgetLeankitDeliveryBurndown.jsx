@@ -183,7 +183,7 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
                                     data={this.state.chartData.pointsPerDay}
                                     options={{
                                         titleTextStyle: {
-                                            color: theme.currentColorTheme.colorThemeCardFont
+                                            color: theme.currentColorTheme.colorThemeCardFontDefault
                                         },
                                         backgroundColor: theme.currentColorTheme.colorThemeCardBackground,
                                         chartArea: {
