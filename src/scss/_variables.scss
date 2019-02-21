@@ -8,7 +8,7 @@
     // --colorThemePageBackground: #333b50;
     // --colorThemeCardBackground: #2b2d3e;
     // --colorThemeBodyDefault: #bbb3b3;
-    // --colorThemeCardFont: #eeeeee;
+    // --colorThemeCardFontDefault: #eeeeee;
     // --colorThemePageTitle: #bbb3b3;
     // --colorThemeLeftNavButtons: #bbb3b3;
     // --colorThemeWidgetLinks: #4183c4;
@@ -17,29 +17,44 @@
 
     // These are the CSS variables that I use, they are set via Javascript
     // I set them to red here, so it's pretty obvious if I forget to set one :)
-    --colorThemePageBackground: #ff0000;
-    --colorThemeCardBackground: #f00;
     --colorThemeBodyDefault: #f00;
-    --colorThemeCardFont: #f00;
-    --colorThemePageTitle: #f00;
-    --colorThemeLeftNavButtons: #f00;
-    --colorThemeWidgetLinks: #f00;
-    --colorThemeScrollbarTrackBackground: #f00;
-    --colorThemeScrollbarThumbBackground: #f00;
 
-    // New colors
-    --colorThemeCardBlueFont: #f00;
+    // Page
+    --colorThemePageBackground: #ff0000;
+    --colorThemePageTitle: #f00;
+
+    // Default
+    --colorThemeFontDefault: #f00;
+
+    // Card
+    --colorThemeCardBackground: #f00;
+    --colorThemeCardFontDefault: #f00;
+    --colorThemeCardFontBlue: #f00;
+    --colorThemeCardFontRed: #f00;
+    --colorThemeCardFontGreen: #f00;
     --colorThemeCardTableGridLines: #f00;
-    --colorThemeCardGreenFont: #f00;
-    --colorThemeCardRedFont: #f00;
-    --colorThemeChartGreen: #f00;
-    --colorThemeChartGreen: "#f00";
-    --colorThemeChartBrown: "#f00";
-    --colorThemeChartPurple: "#f00";
     --colorThemeCardTableCellBackgroundRed: #f00;
     --colorThemeCardTableCellBackgroundAmber: #f00;
     --colorThemeCardTableCellBackgroundGreen: #f00;
 
+    // Left Nav
+    --colorThemeLeftNavButtons: #f00;
+    --colorThemeLeftNavLinks: "#f00";
+    --colorThemeLeftNavLinksHover: "#f00";
+
+    // Widget Links
+    --colorThemeWidgetLinks: #f00;
+
+    // Scrollbar
+    --colorThemeScrollbarTrackBackground: #f00;
+    --colorThemeScrollbarThumbBackground: #f00;
+
+    // Chart
+    --colorThemeChartGreen: #f00;
+    --colorThemeChartGreen: "#f00";
+    --colorThemeChartBrown: "#f00";
+    --colorThemeChartPurple: "#f00";
+
     // This is a dummy variable simply so I can easily trigger the color editor in my IDE (VS Code)
-    --colorForNothing: #6f256f;
+    --colorForNothing: #e749e7;
 }

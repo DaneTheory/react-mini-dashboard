@@ -126,7 +126,7 @@ class WidgetGoogleChartHorizontalBar extends React.Component {
                                 options={{
                                     title: "Horizontal Bar Chart Title",
                                     titleTextStyle: {
-                                        color: theme.currentColorTheme.colorThemeCardFont
+                                        color: theme.currentColorTheme.colorThemeCardFontDefault
                                     },
                                     backgroundColor: theme.currentColorTheme.colorThemeCardBackground,
                                     // backgroundColor: "#2b2d3e",
@@ -142,12 +142,12 @@ class WidgetGoogleChartHorizontalBar extends React.Component {
                                             count: 6
                                         },
                                         textStyle: {
-                                            color: theme.currentColorTheme.colorThemeCardFont
+                                            color: theme.currentColorTheme.colorThemeCardFontDefault
                                         }
                                     },
                                     vAxis: {
                                         textStyle: {
-                                            color: theme.currentColorTheme.colorThemeCardFont
+                                            color: theme.currentColorTheme.colorThemeCardFontDefault
                                         }
                                     },
                                     animation: {

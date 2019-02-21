@@ -2,19 +2,24 @@
 import React from "react";
 import PropTypes from "prop-types";
 import PubSub from "pubsub-js";
-import { Chart } from "react-google-charts";
 import DashboardDataCard from "../components/DashboardDataCard";
-import DashboardGoogleChartCard from "../components/DashboardGoogleChartCard";
 import { ThemeConsumer } from "../components/ThemeContext";
 
 // project imports
-import { getJETData } from "../utilities/getJETData";
+import { getLeankitCards } from "../utilities/getLeankitCards";
+import { createLeankitDataObject } from "../utilities/createLeankitDataObject";
+
+// other imports
+var classNames = require("classnames");
 
 // The purpose of this file is to create a React Component which can be included in HTML
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
 
+// ------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
+
 // Create a React class component, everything below this is a class method (i.e. a function attached to the class)
-class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
+class WidgetLeankitDeliveryRemainingPoints extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {
@@ -25,8 +30,9 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
 
         // Set our initial React state, this is the *only* time to bypass setState()
         this.state = {
-            widgetName: "WidgetPubSubJETHorizontalGoogleBarChart",
-            chartData: null
+            widgetName: "WidgetLeankitDeliveryRemainingPoints",
+            chartData: {},
+            leankitDataObject: { listCards: {} }
         };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
@@ -41,16 +47,15 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
         // this function gets the custom data for this widget, and updates our React component state
         // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
 
-        let JETconsumptionUnits = await getJETData(this.props.sn_instance, this.props.boldchat_instance);
+        // Retrieve our data (likely from an API)
+        // Get all the leankit cards
+        let leankit_cards = await getLeankitCards(this.props.leankit_instance, this.props.boardId, "active,backlog");
 
-        // Create an array of values for use in the chart data
-        let chartData = [["Name", "Pct of Target"]];
-        Object.values(JETconsumptionUnits).forEach(JETconsumptionUnit => {
-            chartData.push([JETconsumptionUnit.name, JETconsumptionUnit.pctOfTarget]);
-        });
+        // Save these cards to our state, which triggers react to render an update to the screen
+        this.setState({ leankit_cards: leankit_cards });
 
-        // Update our own state with the new data
-        this.setState({ chartData: chartData });
+        let leankitDataObject = createLeankitDataObject(leankit_cards, this.props.boardId);
+        this.setState({ leankitDataObject: leankitDataObject });
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -92,7 +97,7 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
             styles.backgroundColor = this.props.color;
         }
 
-        if (!this.state.chartData) {
+        if (!this.state.leankitDataObject.leankitStats) {
             return (
                 <DashboardDataCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="Loading data">
                     <div>Loading Data...</div>
@@ -100,68 +105,22 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
             );
         } else {
             // We've got data, so load the chart now
+            let remainingPlannedPoints = this.state.leankitDataObject.leankitStats.find(element => {
+                return element.name === "Remaining Planned Points";
+            });
             return (
                 <ThemeConsumer>
                     {/* Use a render prop to get the global value from the Context API Consumer */}
                     {theme => (
-                        <DashboardGoogleChartCard
+                        <DashboardDataCard
                             id={this.props.id}
                             position={this.props.position}
                             color={this.props.color}
-                            widgetName="WidgetSNBarChart"
+                            widgetName="WidgetLeankitDiscoveryTotalCardCount"
                         >
-                            <div className="single-num-title">JET Consumption vs Target</div>
-
-                            {/* Use this div to size the chart, rather than using Chart Width/Height */}
-                            {/* Chart width/height seems to create two nested divs, which each have the %size applied, so double affect */}
-                            <div className="manualChartSize" style={{ width: "95%", height: "95%" }}>
-                                <Chart
-                                    width={"100%"}
-                                    height={"100%"}
-                                    chartType="BarChart"
-                                    loader={<div>Loading Chart</div>}
-                                    data={this.state.chartData}
-                                    options={{
-                                        titleTextStyle: {
-                                            color: theme.currentColorTheme.colorThemeCardFontDefault
-                                        },
-                                        backgroundColor: theme.currentColorTheme.colorThemeCardBackground,
-                                        chartArea: {
-                                            left: "30%",
-                                            right: 0,
-                                            top: "5%",
-                                            bottom: "15%",
-                                            backgroundColor: {
-                                                fill: theme.currentColorTheme.colorThemeCardBackground
-                                            }
-                                        },
-                                        hAxis: {
-                                            gridlines: {
-                                                count: 6
-                                            },
-                                            textStyle: {
-                                                color: theme.currentColorTheme.colorThemeCardFontDefault
-                                            },
-                                            format: "percent",
-                                            viewWindow: {
-                                                min: 0
-                                            }
-                                        },
-                                        vAxis: {
-                                            textStyle: {
-                                                color: theme.currentColorTheme.colorThemeCardFontDefault
-                                            }
-                                        },
-                                        animation: {
-                                            duration: 1000,
-                                            easing: "out",
-                                            startup: true
-                                        },
-                                        colors: [theme.currentColorTheme.colorThemeChartGreen]
-                                    }}
-                                />
-                            </div>
-                        </DashboardGoogleChartCard>
+                            <div className="single-num-title">Remaining Points</div>
+                            <div className="Font20x greenFont">{remainingPlannedPoints.stat}</div>
+                        </DashboardDataCard>
                     )}
                 </ThemeConsumer>
             );
@@ -174,19 +133,19 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetPubSubJETHorizontalGoogleBarChart.defaultProps = {};
+WidgetLeankitDeliveryRemainingPoints.defaultProps = {};
 
 // Force the caller to include the proper attributes
-WidgetPubSubJETHorizontalGoogleBarChart.propTypes = {
-    sn_instance: PropTypes.string.isRequired,
-    boldchat_instance: PropTypes.string.isRequired,
+WidgetLeankitDeliveryRemainingPoints.propTypes = {
+    leankit_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
-    color: PropTypes.string
+    color: PropTypes.string,
+    boardId: PropTypes.string.isRequired
 };
 
 // If we (this file) get "imported", this is what they'll be given
-export default WidgetPubSubJETHorizontalGoogleBarChart;
+export default WidgetLeankitDeliveryRemainingPoints;
 
 // =======================================================================================================
 // =======================================================================================================

@@ -2,8 +2,11 @@ import { sprintf } from "sprintf-js";
 
 // Changes that need to be made
 // Size = size
-// Type = type.name
-// Lane = u_lanes[1].name
+// Type = type.name = card["type"]["title"]
+// card["Lane2"] = card.u_lanes[1].name
+// card["Tags"] = card["tags"]
+// card["lastMoveDay"]  -->  movedOn: "2019-01-31T14:17:55Z"
+// card["created"]  --> card["createdOn"]        createdOn: "2018-12-17T20:59:32Z"
 
 function isWorkingDay(date) {
     // List of known holidays
@@ -68,7 +71,6 @@ function getSprintInfo(listCards, verbose = false) {
     // var setLane2 = new Set(listCards.map(a => a.Lane2));
     var setLane2 = new Set(listCards.map(a => a.u_lanes[1].name));
     var listLane2 = Array.from(setLane2);
-    console.log("listLane2", listLane2);
 
     // Keep only Lane names start with "Sprint", and contain "(" and ")"
     var results = listLane2.filter(function(v) {
@@ -120,11 +122,12 @@ function createPlannedLine(listCards, theLabels, totalPlannedPoints, doneLanes) 
     // Compute (accumulate) how many Planned points were completed for each day of current sprint
     var donePointsPerDay = {};
     for (let card of listCards) {
-        if (cardIsDone(card, doneLanes) && card["TypeName"] === "Planned") {
+        if (cardIsDone(card, doneLanes) && card["type"]["title"] === "Planned") {
             // This is a done Planned card, accumulate the done Planned points for that day
-            var lastMoved = new Date(card["lastMoveDay"]);
+            // var lastMoved = new Date(card["lastMoveDay"]);
+            var lastMoved = new Date(card["movedOn"]);
             var lastMovedStr = lastMoved.getMonth() + 1 + "/" + lastMoved.getDate();
-            addPointsToObject(donePointsPerDay, lastMovedStr, parseInt(card["Size"]));
+            addPointsToObject(donePointsPerDay, lastMovedStr, parseInt(card["size"]));
         }
     }
 
@@ -165,7 +168,7 @@ function createTheoreticalBurnDownLine(theLabels, totalPlannedPoints, numDays) {
         if (isWorkingDay(theLabels[i])) {
             burndownCurrent -= neededPointsPerDay;
         }
-        burndownLinePerDay.push(burndownCurrent);
+        burndownLinePerDay.push(Number(burndownCurrent.toFixed(1)));
         // console.log("isWorkingDay: " + theLabels[i] + "   workingDay: " + isWorkingDay(theLabels[i]));
     }
     burndownLinePerDay.push(burndownFinish);
@@ -180,25 +183,26 @@ function createUnplannedLine(listCards, theLabels, sprintLane, doneLanes) {
         var card = listCards[i];
 
         // Find Unplanned Cards
-        if (card["TypeName"] === "Unplanned") {
+        if (card["type"]["title"] === "Unplanned") {
+            let cardPoints = parseInt(card["size"]) || 0;
             // Unplanned Cards in the Sprint Lane (so accumulate points)
-            if (card["Lane2"].includes(sprintLane)) {
-                var lastMoved1 = new Date(card["lastMoveDay"]);
+            if (card.u_lanes[1].name.includes(sprintLane)) {
+                var lastMoved1 = new Date(card["movedOn"]);
                 var lastMovedStr1 = lastMoved1.getMonth() + 1 + "/" + lastMoved1.getDate();
-                addPointsToObject(unplannedPointsPerDay, lastMovedStr1, parseInt(card["Size"]));
+                addPointsToObject(unplannedPointsPerDay, lastMovedStr1, cardPoints);
             }
             // Unplanned Cards in the Done Lane (so accumulate on created day, and decrement points on lastMove day)
             if (cardIsDone(card, doneLanes)) {
                 // Accumulate points on on the day created
-                var createdDate = new Date(card["created"]);
+                var createdDate = new Date(card["createdOn"]);
                 var createdDateStr = createdDate.getMonth() + 1 + "/" + createdDate.getDate();
-                addPointsToObject(unplannedPointsPerDay, createdDateStr, parseInt(card["Size"]));
+                addPointsToObject(unplannedPointsPerDay, createdDateStr, cardPoints);
 
                 // Decrement points on last move day
-                var lastMoved2 = new Date(card["lastMoveDay"]);
+                var lastMoved2 = new Date(card["movedOn"]);
                 var lastMovedStr2 = lastMoved2.getMonth() + 1 + "/" + lastMoved2.getDate();
                 // Subtract the points (by inverting the number of points associated with card)
-                addPointsToObject(unplannedPointsPerDay, lastMovedStr2, 0 - parseInt(card["Size"]));
+                addPointsToObject(unplannedPointsPerDay, lastMovedStr2, 0 - cardPoints);
             }
         }
     }
@@ -273,19 +277,17 @@ function getTotalPoints(listCards, sprintLanes) {
     var totalPlannedPoints = 0;
     var totalUnplannedPoints = 0;
 
-    console.log("sprintLanes", sprintLanes);
-
     for (var i = 0; i < listCards.length; i++) {
         var card = listCards[i];
         // if (sprintLanes.includes(card["Lane2"])) {
         if (sprintLanes.includes(card["u_lanes"][1].name)) {
-            // if (card["TypeName"] == "Planned") {
-            if (card["type"]["title"] == "Planned") {
+            // if (card["type"]["title"] == "Planned") {
+            if (card["type"]["title"] === "Planned") {
                 // This is a Planned Card
                 totalPlannedPoints += parseInt(card["size"]);
             }
-            // if (card["TypeName"] == "Unplanned") {
-            if (card["type"]["title"] == "Unplanned") {
+            // if (card["type"]["title"] == "Unplanned") {
+            if (card["type"]["title"] === "Unplanned") {
                 // This is a Planned Card
                 totalUnplannedPoints += parseInt(card["size"]);
             }
@@ -297,29 +299,34 @@ function getTotalPoints(listCards, sprintLanes) {
 // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 // private helper function
 function cardIsDone(card, doneLanes) {
-    return doneLanes.includes(card["Lane2"]);
+    return doneLanes.includes(card.u_lanes[1].name);
 }
 // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 // private helper function
 function cardIsEpic(card) {
-    return card["TypeName"] == "Epic";
+    return card["type"]["title"] === "Epic";
 }
 // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 // private helper function
 function cardIsPlanned(card) {
-    return card["TypeName"] == "Planned";
+    return card["type"]["title"] === "Planned";
 }
 // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 // private helper function
 function cardIsEarlyWin(card) {
-    return card["Tags"].includes("Early Win");
+    return card["tags"].includes("Early Win");
+}
+// -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+// private helper function
+function cardIsBlocked(card) {
+    return card["blockedStatus"].isBlocked;
 }
 // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 // private helper function
 function cardInSprint(card, sprintLanes) {
     // sprintLanes is an array of lane names (which are considered part of sprint)
     // Checks to see if card's Level-2 Lane name is the same as one of the defined sprint lanes
-    return sprintLanes.includes(card["Lane2"]);
+    return sprintLanes.includes(card.u_lanes[1].name);
 }
 
 // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -338,30 +345,28 @@ function getLeankitStats(listCards, sprintName, sprintLanes, totalPlannedPoints,
         if (cardInSprint(card, sprintLanes) && !cardIsEpic(card)) {
             cardCount += 1;
             if (cardIsEarlyWin(card)) {
-                earlyPoints += parseInt(card["Size"]);
+                earlyPoints += parseInt(card["size"]);
             }
-            if (card["hasAcceptCriteria"] == true) cardCountHasAC += 1;
+            if (card["hasAcceptCriteria"] === true) cardCountHasAC += 1;
             if (cardIsPlanned(card) && cardIsDone(card, doneLanes)) {
-                donePointsPlanned += parseInt(card["Size"]);
-                if (cardIsEarlyWin(card)) donePointsPlannedEarlyWin += parseInt(card["Size"]);
+                donePointsPlanned += parseInt(card["size"]);
+                if (cardIsEarlyWin(card)) donePointsPlannedEarlyWin += parseInt(card["size"]);
             }
         }
     }
 
-    var leankitStats = new Array();
+    var leankitStats = [];
     leankitStats.push({ name: "Sprint Name", stat: sprintName });
     leankitStats.push({ name: "Total Planned Points", stat: totalPlannedPoints });
     leankitStats.push({ name: "Early Win Points", stat: earlyPoints });
     var earlyPointPct = (earlyPoints / totalPlannedPoints) * 100;
-    var ngclasscolor = "cell-green";
-    if (earlyPointPct < 25.0) ngclasscolor = "cell-yellow";
-    if (earlyPointPct < 15.0) ngclasscolor = "cell-red";
     var earlyPointsString = earlyPointPct.toFixed(0);
-    leankitStats.push({ name: "Early Win %", ngclass: ngclasscolor, stat: earlyPointsString + "%" });
+    leankitStats.push({ name: "Early Win %", stat: earlyPointsString + "%" });
     leankitStats.push({ name: "# of Cards", stat: cardCount });
     leankitStats.push({ name: "Cards w/ AC", stat: cardCountHasAC });
     leankitStats.push({ name: "Planned Points (Done)", stat: donePointsPlanned });
     leankitStats.push({ name: "Early Win Points (Done)", stat: donePointsPlannedEarlyWin });
+    leankitStats.push({ name: "Remaining Planned Points", stat: totalPlannedPoints - donePointsPlanned });
     var earlyPointPctDone = (donePointsPlannedEarlyWin / earlyPoints) * 100;
     var earlyPointsPctDoneString = earlyPointPctDone.toFixed(0);
     leankitStats.push({ name: "Early Win (% Done)", stat: earlyPointsPctDoneString + "%" });
@@ -371,16 +376,17 @@ function getLeankitStats(listCards, sprintName, sprintLanes, totalPlannedPoints,
 // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 // private helper function
 function getListPointsByOwner(listCards, sprintLane) {
-    var objectCardOwners = new Object();
+    var objectCardOwners = {};
     for (var i = 0; i < listCards.length; i++) {
         var card = listCards[i];
-        if (card["u_lanes"][1].name.includes(sprintLane) && card["TypeName"] == "Planned") {
+        if (card["u_lanes"][1].name.includes(sprintLane) && card["type"]["title"] === "Planned") {
             // This is a Planned Card, not yet Done
-            addPointsToObject(objectCardOwners, card["Users"], parseInt(card["Size"]));
+            let ownerName = (card["assignedUsers"][0] && card["assignedUsers"][0]["fullName"]) || "Null";
+            addPointsToObject(objectCardOwners, ownerName, parseInt(card["size"]));
         }
     }
     // Convert Object to Array of Objects (which gives more structure/names to the View)
-    var listCardOwners = new Array();
+    var listCardOwners = [];
     for (var key in objectCardOwners) {
         if (objectCardOwners.hasOwnProperty(key)) {
             listCardOwners.push({ owner: key, points: objectCardOwners[key] });
@@ -393,10 +399,10 @@ function getListPointsByOwner(listCards, sprintLane) {
 // private helper function
 function getListCardsIsHuddle(listCards, sprintLanes) {
     // Cards Tagged Huddle
-    var listCardsIsHuddle = new Array();
+    var listCardsIsHuddle = [];
     for (var i = 0; i < listCards.length; i++) {
         var card = listCards[i];
-        if (sprintLanes.includes(card["Lane2"]) && card["Tags"].toLowerCase().includes("huddle")) {
+        if (sprintLanes.includes(card.u_lanes[1].name) && card["tags"].includes("Huddle")) {
             // This is huddle card (tagged Huddle or Blocked)
             listCardsIsHuddle.push(card);
         }
@@ -408,10 +414,10 @@ function getListCardsIsHuddle(listCards, sprintLanes) {
 // private helper function
 function getListCardsIsBlocked(listCards, sprintLanes, doneLanes) {
     // Cards Tagged IsBlocked
-    var listCardsIsBlocked = new Array();
+    var listCardsIsBlocked = [];
     for (var i = 0; i < listCards.length; i++) {
         var card = listCards[i];
-        if (sprintLanes.includes(card["Lane2"]) && !cardIsDone(card, doneLanes) && card["IsBlocked"] == true) {
+        if (sprintLanes.includes(card.u_lanes[1].name) && !cardIsDone(card, doneLanes) && cardIsBlocked(card) === true) {
             // This is huddle card (tagged Huddle or Blocked)
             listCardsIsBlocked.push(card);
         }
@@ -423,10 +429,10 @@ function getListCardsIsBlocked(listCards, sprintLanes, doneLanes) {
 // private helper function
 function getListCardsIsEarlyWin(listCards, sprintLanes, doneLanes) {
     // Cards Tagged IsEarlyWin
-    var listCardsIsEarlyWin = new Array();
+    var listCardsIsEarlyWin = [];
     for (var i = 0; i < listCards.length; i++) {
         var card = listCards[i];
-        if (sprintLanes.includes(card["Lane2"]) && !cardIsDone(card, doneLanes) && card["Tags"].includes("Early Win")) {
+        if (sprintLanes.includes(card.u_lanes[1].name) && !cardIsDone(card, doneLanes) && card["tags"].includes("Early Win")) {
             // This is huddle card (tagged Huddle or Blocked)
             listCardsIsEarlyWin.push(card);
         }
@@ -438,10 +444,10 @@ function getListCardsIsEarlyWin(listCards, sprintLanes, doneLanes) {
 // private helper function
 function getListCardsIsSoon(listCards, sprintLanes, doneLanes) {
     // Cards Tagged IsSoon
-    var listCardsIsSoon = new Array();
+    var listCardsIsSoon = [];
     for (var i = 0; i < listCards.length; i++) {
         var card = listCards[i];
-        if (sprintLanes.includes(card["Lane2"]) && !cardIsDone(card, doneLanes) && card["Tags"].toLowerCase().includes("soon")) {
+        if (sprintLanes.includes(card.u_lanes[1].name) && !cardIsDone(card, doneLanes) && card["tags"].includes("Soon")) {
             // This is soon card (tagged "Soon")
             listCardsIsSoon.push(card);
         }
@@ -453,10 +459,10 @@ function getListCardsIsSoon(listCards, sprintLanes, doneLanes) {
 // private helper function
 function getListCardsIsStretch(listCards, sprintLanes, doneLanes) {
     // Cards Tagged IsStretch
-    var listCardsIsStretch = new Array();
+    var listCardsIsStretch = [];
     for (var i = 0; i < listCards.length; i++) {
         var card = listCards[i];
-        if (sprintLanes.includes(card["Lane2"]) && !cardIsDone(card, doneLanes) && card["Tags"].includes("Stretch")) {
+        if (sprintLanes.includes(card.u_lanes[1].name) && !cardIsDone(card, doneLanes) && card["tags"].includes("Stretch")) {
             // This is huddle card (tagged Huddle or Blocked)
             listCardsIsStretch.push(card);
         }
@@ -467,13 +473,14 @@ function getListCardsIsStretch(listCards, sprintLanes, doneLanes) {
 // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 // private helper function
 function getListCardsDoneToday(listCards, doneLanes) {
-    var listCardsDoneToday = new Array();
+    var listCardsDoneToday = [];
     var today = new Date();
-    var todayStr = sprintf("%02d/%02d/%4d", today.getMonth() + 1, today.getDate(), today.getFullYear());
-    // console.log(sprintf("   Today is %s", todayStr));
+    var todayStr = sprintf("%04d-%02d-%2d", today.getFullYear(), today.getMonth() + 1, today.getDate());
     for (var i = 0; i < listCards.length; i++) {
         var card = listCards[i];
-        if (cardIsDone(card, doneLanes) && card["lastMoveDay"] == todayStr && card["TypeName"] != "Epic") {
+        // Example: 2019-02-20T16:15:22Z
+        var lastMoveDay = card["movedOn"].split("T")[0];
+        if (cardIsDone(card, doneLanes) && lastMoveDay === todayStr && card["type"]["title"] !== "Epic") {
             // This card Done Today
             listCardsDoneToday.push(card);
         }
@@ -485,10 +492,10 @@ function getListCardsDoneToday(listCards, doneLanes) {
 // private helper function
 function getListCardsDone(listCards, doneLanes) {
     // console.log("Looking for Cards Done");
-    var listCardsDone = new Array();
+    var listCardsDone = [];
     for (var i = 0; i < listCards.length; i++) {
         var card = listCards[i];
-        if (cardIsDone(card, doneLanes) && card["TypeName"] != "Epic") {
+        if (cardIsDone(card, doneLanes) && card["type"]["title"] !== "Epic") {
             // This card is Done
             listCardsDone.push(card);
         }
@@ -505,7 +512,7 @@ function getColorPerDay(theLabels, mainColor, highlightColor) {
     var colorPerDay = [];
     for (var i = 0; i < theLabels.length; i++) {
         colorPerDay.push(mainColor);
-        if (theLabels[i] == todayStr) colorPerDay[i] = highlightColor;
+        if (theLabels[i] === todayStr) colorPerDay[i] = highlightColor;
     }
     return colorPerDay;
 }
@@ -568,66 +575,73 @@ function createBurnDownChart(listCards) {
 
 // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 // public method
-export function listCardsAdvanced(cards, boardID) {
-    let dataStore = {};
-    let verbose = false;
+export function createLeankitDataObject(cards, boardID) {
+    let leankitDataObject = {};
 
     // get cards from AXIOS
 
-    dataStore["listCards"] = cards;
+    leankitDataObject["listCards"] = cards;
 
     // Enrich each card by adding URL field (BoardID is hard-coded)
-    addURLtoCards(dataStore["listCards"], boardID);
+    addURLtoCards(leankitDataObject["listCards"], boardID);
 
     // Create entire burndownChart
-    dataStore["burndownChart"] = createBurnDownChart(dataStore["listCards"]);
+    leankitDataObject["burndownChart"] = createBurnDownChart(leankitDataObject["listCards"]);
 
     // Parse cards, get lanes, and figure out the sprint start/finish dates
     var sprintName, sprintLane, sprintLanes, doneLanes;
-    [, sprintName, sprintLane, sprintLanes, doneLanes, , ,] = getSprintInfo(dataStore["listCards"], verbose);
+    [, sprintName, sprintLane, sprintLanes, doneLanes, , ,] = getSprintInfo(leankitDataObject["listCards"]);
 
     // Get total number of planned points
-    [dataStore["totalPlannedPoints"], dataStore["totalUnplannedPoints"]] = getTotalPoints(dataStore["listCards"], sprintLanes);
+    [leankitDataObject["totalPlannedPoints"], leankitDataObject["totalUnplannedPoints"]] = getTotalPoints(
+        leankitDataObject["listCards"],
+        sprintLanes
+    );
 
     // Widget: Leankit Stats
-    dataStore["leankitStats"] = getLeankitStats(
-        dataStore["listCards"],
+    leankitDataObject["leankitStats"] = getLeankitStats(
+        leankitDataObject["listCards"],
         sprintName,
         sprintLanes,
-        dataStore["totalPlannedPoints"],
+        leankitDataObject["totalPlannedPoints"],
         doneLanes
     );
 
     // Widget: Points by Owner
-    dataStore["leankitCardOwners"] = getListPointsByOwner(dataStore["listCards"], sprintLane);
+    leankitDataObject["leankitCardOwners"] = getListPointsByOwner(leankitDataObject["listCards"], sprintLane);
 
     // Widget: Huddle Cards
-    dataStore["listCardsIsHuddle"] = getListCardsIsHuddle(dataStore["listCards"], sprintLanes);
+    leankitDataObject["listCardsIsHuddle"] = getListCardsIsHuddle(leankitDataObject["listCards"], sprintLanes);
 
     // Widget: Blocked Cards
-    dataStore["listCardsIsBlocked"] = getListCardsIsBlocked(dataStore["listCards"], sprintLanes, doneLanes);
+    leankitDataObject["listCardsIsBlocked"] = getListCardsIsBlocked(leankitDataObject["listCards"], sprintLanes, doneLanes);
 
     // Widget: Early Win Cards
-    dataStore["listCardsIsEarlyWin"] = getListCardsIsEarlyWin(dataStore["listCards"], sprintLanes, doneLanes);
+    leankitDataObject["listCardsIsEarlyWin"] = getListCardsIsEarlyWin(leankitDataObject["listCards"], sprintLanes, doneLanes);
 
     // Widget: Soon Cards
-    dataStore["listCardsIsSoon"] = getListCardsIsSoon(dataStore["listCards"], sprintLanes, doneLanes);
+    leankitDataObject["listCardsIsSoon"] = getListCardsIsSoon(leankitDataObject["listCards"], sprintLanes, doneLanes);
 
     // Widget: Stretch
-    dataStore["listCardsIsStretch"] = getListCardsIsStretch(dataStore["listCards"], sprintLanes, doneLanes);
+    leankitDataObject["listCardsIsStretch"] = getListCardsIsStretch(leankitDataObject["listCards"], sprintLanes, doneLanes);
 
     // Widget: Done Today !
-    dataStore["listCardsDoneToday"] = getListCardsDoneToday(dataStore["listCards"], doneLanes);
+    leankitDataObject["listCardsDoneToday"] = getListCardsDoneToday(leankitDataObject["listCards"], doneLanes);
 
     // Widget: Done
-    dataStore["listCardsIsDone"] = getListCardsDone(dataStore["listCards"], doneLanes);
+    leankitDataObject["listCardsIsDone"] = getListCardsDone(leankitDataObject["listCards"], doneLanes);
 
     // Widget: Planned Cards (filter the list down)
-    dataStore["listCards"] = dataStore["listCards"].filter(function(el) {
-        return el.Lane2 == sprintLane && el.TypeName != "Unplanned" && !el.Tags.includes("Stretch") && !el.Tags.includes("soon");
+    leankitDataObject["listCardsIsPlanned"] = leankitDataObject["listCards"].filter(function(el) {
+        return (
+            el.u_lanes[1].name === sprintLane &&
+            el["type"]["title"] !== "Unplanned" &&
+            !el.tags.includes("Stretch") &&
+            !el.tags.includes("Soon")
+        );
     });
 
-    return dataStore;
+    return leankitDataObject;
 
     // end of very large listCards function
 }

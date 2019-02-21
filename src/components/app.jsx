@@ -8,59 +8,84 @@ import { ThemeProvider } from "../components/ThemeContext";
 
 let theme = {
     darkColorTheme: {
+        // Page
         colorThemePageBackground: "#636977",
-        colorThemeCardBackground: "#2b2d3e",
-        colorThemeFontDefault: "#bbb3b3",
-        colorThemeCardFont: "#eeeeee",
         colorThemePageTitle: "#bbb3b3",
-        colorThemeLeftNavButtons: "#bbb3b3",
-        colorThemeWidgetLinks: "#4183c4",
-        colorThemeScrollbarTrackBackground: "#2b2d3e",
-        colorThemeScrollbarThumbBackground: "#000",
-        colorThemeChartData: "#c0cde2",
-        colorThemeCardBlueFont: "#0bc2f0",
+
+        // Default
+        colorThemeFontDefault: "#bbb3b3",
+
+        // Card
+        colorThemeCardBackground: "#2b2d3e",
+        colorThemeCardFontDefault: "#eeeeee",
+        colorThemeCardFontBlue: "#0bc2f0",
+        colorThemeCardFontGreen: "#66ff66",
+        colorThemeCardFontRed: "#ff6666",
         colorThemeCardTableGridLines: "#b9b9b998",
-        colorThemeCardGreenFont: "#66ff66",
-        colorThemeCardRedFont: "#ff6666",
-
-        colorThemeChartGreen: "#338a2e",
-        colorThemeChartBrown: "#aa7c39",
-        colorThemeChartPurple: "#6f256f",
-
         colorThemeCardTableCellBackgroundRed: "#af0000",
         colorThemeCardTableCellBackgroundAmber: "#e46e00",
-        colorThemeCardTableCellBackgroundGreen: "#009c00"
+        colorThemeCardTableCellBackgroundGreen: "#009c00",
+
+        // LeftNav
+        colorThemeLeftNavButtons: "#bbb3b3",
+        colorThemeLeftNavLinks: "#bbb3b3",
+        colorThemeLeftNavLinksHover: "#4183c4",
+
+        // Widget Links
+        colorThemeWidgetLinks: "#4183c4",
+
+        // Scrollbar
+        colorThemeScrollbarTrackBackground: "#2b2d3e",
+        colorThemeScrollbarThumbBackground: "#000",
+
+        // Chart
+        colorThemeChartData: "#c0cde2",
+        colorThemeChartGreen: "#338a2e",
+        colorThemeChartBrown: "#aa7c39",
+        colorThemeChartPurple: "#e749e7"
     },
 
     lightColorTheme: {
+        // Page
         colorThemePageBackground: "#ffffff",
-        colorThemeCardBackground: "#e7ecf7",
-        colorThemeFontDefault: "#000000",
-        colorThemeCardFont: "#000000",
         colorThemePageTitle: "#000000",
-        colorThemeLeftNavButtons: "#bbb3b3",
-        colorThemeWidgetLinks: "#4183c4",
-        colorThemeScrollbarTrackBackground: "#242524",
-        colorThemeScrollbarThumbBackground: "#696464",
-        colorThemeChartData: "#192453",
-        colorThemeCardBlueFont: "#00add8",
+
+        // Default
+        colorThemeFontDefault: "#000000",
+
+        // Card
+        colorThemeCardBackground: "#e7ecf7",
+        colorThemeCardFontDefault: "#000000",
+        colorThemeCardFontBlue: "#00add8",
+        colorThemeCardFontGreen: "#36a336",
+        colorThemeCardFontRed: "#ff6666",
         colorThemeCardTableGridLines: "#b9b9b998",
-        colorThemeCardGreenFont: "#36a336",
-        colorThemeCardRedFont: "#ff6666",
-
-        colorThemeChartGreen: "#338a2e",
-        colorThemeChartBrown: "#aa7c39",
-        colorThemeChartPurple: "#6f256f",
-
         colorThemeCardTableCellBackgroundRed: "#d40000",
         colorThemeCardTableCellBackgroundAmber: "#ff7b00",
-        colorThemeCardTableCellBackgroundGreen: "#00c200"
+        colorThemeCardTableCellBackgroundGreen: "#00c200",
+
+        // Left Nav
+        colorThemeLeftNavButtons: "#bbb3b3",
+        colorThemeLeftNavLinks: "#bbb3b3",
+
+        // Widget Links
+        colorThemeWidgetLinks: "#4183c4",
+
+        // Srollbar
+        colorThemeScrollbarTrackBackground: "#242524",
+        colorThemeScrollbarThumbBackground: "#696464",
+
+        // Chart
+        colorThemeChartData: "#192453",
+        colorThemeChartGreen: "#338a2e",
+        colorThemeChartBrown: "#aa7c39",
+        colorThemeChartPurple: "#6f256f"
     },
     currentColorTheme: null
 };
 
 // Select a color theme to use
-theme.currentColorTheme = theme.lightColorTheme;
+theme.currentColorTheme = theme.darkColorTheme;
 
 // Apply the chose color theme to all of our CSS color variables
 Object.entries(theme.currentColorTheme).forEach(color => {
