@@ -113,12 +113,19 @@ class Dashboard extends React.Component {
                         </span>
 
                         <div>
-                            Available Dashboards:
+                            <div className={"Font18x"} style={{ textDecoration: "underline" }}>
+                                Available Dashboards:
+                            </div>
                             <Link to="/">Home</Link>
                             <Link to="/demo1-dashboard">Demo1 Dashboard</Link>
                             <Link to="/leankit-discovery-dashboard">Leankit Discovery Dashboard</Link>
                             <Link to="/leankit-delivery-dashboard">Leankit Delivery Dashboard</Link>
                             <br />
+                            <br />
+                            <br />
+                            <div className={"Font18x"} style={{ textDecoration: "underline" }}>
+                                Other Dashboards:
+                            </div>
                             <Link to="/everything-dashboard">Everything Dashboard</Link>
                             <Link to="/dev1-dashboard">Dev1 Dashboard</Link>
                         </div>

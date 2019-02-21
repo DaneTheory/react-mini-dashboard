@@ -147,11 +147,10 @@ class WidgetSNPubSubPlatformHealthSummary extends React.Component {
                                 .filter(node => node["logged_in"] > 0)
                                 .map((node, index) => {
                                     let numUsersColor =
-                                        node["logged_in"] > 300 ? "cellRed" : node["logged_in"] > 250 ? "cellYellow" : "cellGreen";
-                                    let sysLoadColor =
-                                        node["sys_load"] > 12 ? "cellRed" : node["sys_load"] > 9 ? "cellYellow" : "cellGreen";
+                                        node["logged_in"] > 300 ? "cellRed" : node["logged_in"] > 250 ? "cellAmber" : "cellGreen";
+                                    let sysLoadColor = node["sys_load"] > 12 ? "cellRed" : node["sys_load"] > 9 ? "cellAmber" : "cellGreen";
                                     let dbResponseColor =
-                                        node["sql_response"] > 4 ? "cellRed" : node["sql_response"] > 3 ? "cellYellow" : "cellGreen";
+                                        node["sql_response"] > 4 ? "cellRed" : node["sql_response"] > 3 ? "cellAmber" : "cellGreen";
                                     return (
                                         <tr key={node["name"]}>
                                             <td>{index}</td>

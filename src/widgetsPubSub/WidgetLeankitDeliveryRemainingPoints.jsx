@@ -19,7 +19,7 @@ var classNames = require("classnames");
 // ------------------------------------------------------------------------------------------------
 
 // Create a React class component, everything below this is a class method (i.e. a function attached to the class)
-class WidgetLeankitDeliveryStats extends React.Component {
+class WidgetLeankitDeliveryRemainingPoints extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {
@@ -30,7 +30,7 @@ class WidgetLeankitDeliveryStats extends React.Component {
 
         // Set our initial React state, this is the *only* time to bypass setState()
         this.state = {
-            widgetName: "WidgetLeankitDeliveryStats",
+            widgetName: "WidgetLeankitDeliveryRemainingPoints",
             chartData: {},
             leankitDataObject: { listCards: {} }
         };
@@ -105,6 +105,9 @@ class WidgetLeankitDeliveryStats extends React.Component {
             );
         } else {
             // We've got data, so load the chart now
+            let remainingPlannedPoints = this.state.leankitDataObject.leankitStats.find(element => {
+                return element.name === "Remaining Planned Points";
+            });
             return (
                 <ThemeConsumer>
                     {/* Use a render prop to get the global value from the Context API Consumer */}
@@ -115,29 +118,8 @@ class WidgetLeankitDeliveryStats extends React.Component {
                             color={this.props.color}
                             widgetName="WidgetLeankitDiscoveryTotalCardCount"
                         >
-                            <div className="single-num-title">Leankit Stats</div>
-                            <br />
-                            <div className="Font13x">Planned: {this.state.leankitDataObject.totalPlannedPoints} points</div>
-                            <div className="Font13x">Unplanned: {this.state.leankitDataObject.totalUnplannedPoints} points</div>
-                            <br />
-                            <table>
-                                <tbody>
-                                    {this.state.leankitDataObject.leankitStats.map(function(leankitStat, index) {
-                                        // Now return a JSX statement for rendering
-                                        let cellColor = null;
-                                        if (leankitStat["name"] === "Early Win %") {
-                                            let earlyWinPct = parseFloat(leankitStat["stat"]);
-                                            cellColor = earlyWinPct < 25 ? "cellRed" : earlyWinPct < 15 ? "cellAmber" : "cellGreen";
-                                        }
-                                        return (
-                                            <tr key={leankitStat["name"]}>
-                                                <td>{leankitStat["name"]}</td>
-                                                <td className={classNames(cellColor)}>{leankitStat["stat"]}</td>
-                                            </tr>
-                                        );
-                                    })}
-                                </tbody>
-                            </table>
+                            <div className="single-num-title">Remaining Points</div>
+                            <div className="Font20x greenFont">{remainingPlannedPoints.stat}</div>
                         </DashboardDataCard>
                     )}
                 </ThemeConsumer>
@@ -151,10 +133,10 @@ class WidgetLeankitDeliveryStats extends React.Component {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetLeankitDeliveryStats.defaultProps = {};
+WidgetLeankitDeliveryRemainingPoints.defaultProps = {};
 
 // Force the caller to include the proper attributes
-WidgetLeankitDeliveryStats.propTypes = {
+WidgetLeankitDeliveryRemainingPoints.propTypes = {
     leankit_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
@@ -163,7 +145,7 @@ WidgetLeankitDeliveryStats.propTypes = {
 };
 
 // If we (this file) get "imported", this is what they'll be given
-export default WidgetLeankitDeliveryStats;
+export default WidgetLeankitDeliveryRemainingPoints;
 
 // =======================================================================================================
 // =======================================================================================================

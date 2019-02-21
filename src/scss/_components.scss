@@ -98,6 +98,13 @@
             color: var(--colorThemeCardFontGreen);
         }
 
+        .cardBody {
+            // Try to center just about any div within a widget card
+            div {
+                text-align: center;
+            }
+        }
+
         table {
             // remove the double border between cells, make it a single border
             border-collapse: collapse;
@@ -281,7 +288,7 @@
         background-color: var(--colorThemeCardTableCellBackgroundRed);
     }
 
-    .cellYellow {
+    .cellAmber {
         background-color: var(--colorThemeCardTableCellBackgroundAmber);
     }
 
@@ -292,4 +299,14 @@
 
 .waiting-for-data {
     opacity: 0.35;
+}
+
+// Create a series of fonts, each one 15% bigger than the last
+$previous: 0.2;
+@for $i from 0 through 30 {
+    .Font#{$i}x {
+        font-size: $previous + vw;
+        $new: $previous * 1.15;
+        $previous: $new;
+    }
 }

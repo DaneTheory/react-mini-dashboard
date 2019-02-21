@@ -19,7 +19,7 @@ var classNames = require("classnames");
 // ------------------------------------------------------------------------------------------------
 
 // Create a React class component, everything below this is a class method (i.e. a function attached to the class)
-class WidgetLeankitDeliveryStats extends React.Component {
+class WidgetLeankitPointsByOwner extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {
@@ -30,7 +30,7 @@ class WidgetLeankitDeliveryStats extends React.Component {
 
         // Set our initial React state, this is the *only* time to bypass setState()
         this.state = {
-            widgetName: "WidgetLeankitDeliveryStats",
+            widgetName: "WidgetLeankitPointsByOwner",
             chartData: {},
             leankitDataObject: { listCards: {} }
         };
@@ -115,27 +115,22 @@ class WidgetLeankitDeliveryStats extends React.Component {
                             color={this.props.color}
                             widgetName="WidgetLeankitDiscoveryTotalCardCount"
                         >
-                            <div className="single-num-title">Leankit Stats</div>
-                            <br />
-                            <div className="Font13x">Planned: {this.state.leankitDataObject.totalPlannedPoints} points</div>
-                            <div className="Font13x">Unplanned: {this.state.leankitDataObject.totalUnplannedPoints} points</div>
-                            <br />
+                            <div className="single-num-title">Points by Owner</div>
                             <table>
                                 <tbody>
-                                    {this.state.leankitDataObject.leankitStats.map(function(leankitStat, index) {
-                                        // Now return a JSX statement for rendering
-                                        let cellColor = null;
-                                        if (leankitStat["name"] === "Early Win %") {
-                                            let earlyWinPct = parseFloat(leankitStat["stat"]);
-                                            cellColor = earlyWinPct < 25 ? "cellRed" : earlyWinPct < 15 ? "cellAmber" : "cellGreen";
-                                        }
-                                        return (
-                                            <tr key={leankitStat["name"]}>
-                                                <td>{leankitStat["name"]}</td>
-                                                <td className={classNames(cellColor)}>{leankitStat["stat"]}</td>
-                                            </tr>
-                                        );
-                                    })}
+                                    {this.state.leankitDataObject.leankitCardOwners
+                                        .sort((a, b) => {
+                                            return b.points - a.points;
+                                        })
+                                        .map(function(cardOwner, index) {
+                                            // Now return a JSX statement for rendering
+                                            return (
+                                                <tr key={cardOwner["owner"]}>
+                                                    <td>{cardOwner["owner"]}</td>
+                                                    <td>{cardOwner["points"]} pts</td>
+                                                </tr>
+                                            );
+                                        })}
                                 </tbody>
                             </table>
                         </DashboardDataCard>
@@ -151,10 +146,10 @@ class WidgetLeankitDeliveryStats extends React.Component {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetLeankitDeliveryStats.defaultProps = {};
+WidgetLeankitPointsByOwner.defaultProps = {};
 
 // Force the caller to include the proper attributes
-WidgetLeankitDeliveryStats.propTypes = {
+WidgetLeankitPointsByOwner.propTypes = {
     leankit_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
@@ -163,7 +158,7 @@ WidgetLeankitDeliveryStats.propTypes = {
 };
 
 // If we (this file) get "imported", this is what they'll be given
-export default WidgetLeankitDeliveryStats;
+export default WidgetLeankitPointsByOwner;
 
 // =======================================================================================================
 // =======================================================================================================

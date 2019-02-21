@@ -358,15 +358,13 @@ function getLeankitStats(listCards, sprintName, sprintLanes, totalPlannedPoints,
     leankitStats.push({ name: "Total Planned Points", stat: totalPlannedPoints });
     leankitStats.push({ name: "Early Win Points", stat: earlyPoints });
     var earlyPointPct = (earlyPoints / totalPlannedPoints) * 100;
-    var ngclasscolor = "cell-green";
-    if (earlyPointPct < 25.0) ngclasscolor = "cell-yellow";
-    if (earlyPointPct < 15.0) ngclasscolor = "cell-red";
     var earlyPointsString = earlyPointPct.toFixed(0);
-    leankitStats.push({ name: "Early Win %", ngclass: ngclasscolor, stat: earlyPointsString + "%" });
+    leankitStats.push({ name: "Early Win %", stat: earlyPointsString + "%" });
     leankitStats.push({ name: "# of Cards", stat: cardCount });
     leankitStats.push({ name: "Cards w/ AC", stat: cardCountHasAC });
     leankitStats.push({ name: "Planned Points (Done)", stat: donePointsPlanned });
     leankitStats.push({ name: "Early Win Points (Done)", stat: donePointsPlannedEarlyWin });
+    leankitStats.push({ name: "Remaining Planned Points", stat: totalPlannedPoints - donePointsPlanned });
     var earlyPointPctDone = (donePointsPlannedEarlyWin / earlyPoints) * 100;
     var earlyPointsPctDoneString = earlyPointPctDone.toFixed(0);
     leankitStats.push({ name: "Early Win (% Done)", stat: earlyPointsPctDoneString + "%" });
@@ -381,7 +379,8 @@ function getListPointsByOwner(listCards, sprintLane) {
         var card = listCards[i];
         if (card["u_lanes"][1].name.includes(sprintLane) && card["type"]["title"] === "Planned") {
             // This is a Planned Card, not yet Done
-            addPointsToObject(objectCardOwners, card["Users"], parseInt(card["size"]));
+            let ownerName = (card["assignedUsers"][0] && card["assignedUsers"][0]["fullName"]) || "Null";
+            addPointsToObject(objectCardOwners, ownerName, parseInt(card["size"]));
         }
     }
     // Convert Object to Array of Objects (which gives more structure/names to the View)

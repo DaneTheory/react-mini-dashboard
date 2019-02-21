@@ -109,8 +109,6 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
         this.setState({
             chartData: chartData
         });
-
-        console.log(this.state.chartData);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
