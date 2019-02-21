@@ -185,13 +185,11 @@ function createUnplannedLine(listCards, theLabels, sprintLane, doneLanes) {
         // Find Unplanned Cards
         if (card["type"]["title"] === "Unplanned") {
             let cardPoints = parseInt(card["size"]) || 0;
-            console.log(card.title);
             // Unplanned Cards in the Sprint Lane (so accumulate points)
             if (card.u_lanes[1].name.includes(sprintLane)) {
                 var lastMoved1 = new Date(card["movedOn"]);
                 var lastMovedStr1 = lastMoved1.getMonth() + 1 + "/" + lastMoved1.getDate();
                 addPointsToObject(unplannedPointsPerDay, lastMovedStr1, cardPoints);
-                console.log(`   Add ${cardPoints} to ${lastMovedStr1}`);
             }
             // Unplanned Cards in the Done Lane (so accumulate on created day, and decrement points on lastMove day)
             if (cardIsDone(card, doneLanes)) {
@@ -199,16 +197,13 @@ function createUnplannedLine(listCards, theLabels, sprintLane, doneLanes) {
                 var createdDate = new Date(card["createdOn"]);
                 var createdDateStr = createdDate.getMonth() + 1 + "/" + createdDate.getDate();
                 addPointsToObject(unplannedPointsPerDay, createdDateStr, cardPoints);
-                console.log(`   Add ${cardPoints} to ${createdDateStr}`);
 
                 // Decrement points on last move day
                 var lastMoved2 = new Date(card["movedOn"]);
                 var lastMovedStr2 = lastMoved2.getMonth() + 1 + "/" + lastMoved2.getDate();
                 // Subtract the points (by inverting the number of points associated with card)
                 addPointsToObject(unplannedPointsPerDay, lastMovedStr2, 0 - cardPoints);
-                console.log(`   Add ${0 - cardPoints} to ${lastMovedStr1}`);
             }
-            console.log(card.title, unplannedPointsPerDay);
         }
     }
 
