@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 // Widget imports
 import WidgetLeankitDiscoveryTotalCardCount from "../widgetsPubSub/WidgetLeankitDiscoveryTotalCardCount";
 import WidgetLeankitDeliveryBurndown from "../widgetsPubSub/WidgetLeankitDeliveryBurndown";
+import WidgetLeankitDeliveryStats from "../widgetsPubSub/WidgetLeankitDeliveryStats";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -24,12 +25,17 @@ class LeankitDiscoveryCardGrid extends React.Component {
             <div>
                 <CardGrid rows="30" columns="12">
                     <WidgetLeankitDeliveryBurndown
-                        position="span 16 / span 10"
+                        position="span 8 / span 10"
                         leankit_instance={this.props.leankit_instance}
                         boardId={this.props.boardId}
                     />
                     <WidgetLeankitDiscoveryTotalCardCount
                         position="span 2 / span 2"
+                        leankit_instance={this.props.leankit_instance}
+                        boardId={this.props.boardId}
+                    />
+                    <WidgetLeankitDeliveryStats
+                        position="3 / 11 / span 6 / span 2"
                         leankit_instance={this.props.leankit_instance}
                         boardId={this.props.boardId}
                     />

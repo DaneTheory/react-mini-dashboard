@@ -9,9 +9,7 @@ import { ThemeConsumer } from "../components/ThemeContext";
 
 // project imports
 import { getLeankitCards } from "../utilities/getLeankitCards";
-import { getCommentsforLeankitCards } from "../utilities/getCommentsForLeankitCards";
-import { getBacklogDurationForLeankitCards } from "../utilities/getBacklogDurationForLeankitCards";
-import { listCardsAdvanced } from "../utilities/leankitBurndownChartData";
+import { createLeankitDataObject } from "../utilities/createLeankitDataObject";
 
 // The purpose of this file is to create a React Component which can be included in HTML
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
@@ -32,7 +30,7 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
         // Set our initial React state, this is the *only* time to bypass setState()
         this.state = {
             widgetName: "WidgetLeankitDeliveryBurndown",
-            chartData: null,
+            chartData: {},
             leankitDataObject: { listCards: {} }
         };
 
@@ -68,12 +66,8 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
         //     ]
         // };
 
-        let chartData = {
-            pointsPerDay: []
-        };
-
         // Update our own state with the new data
-        this.setState({ chartData: chartData });
+        // this.setState({ chartData: chartData });
 
         // this function gets the custom data for this widget, and updates our React component state
         // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
@@ -85,33 +79,17 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
         // Save these cards to our state, which triggers react to render an update to the screen
         this.setState({ leankit_cards: leankit_cards });
 
-        // Enrich each card by adding URL field (boardId is hard-coded)
-        for (var i = 0; i < leankit_cards.length; i++) {
-            var card = leankit_cards[i];
-            card.url = `https://${this.props.leankit_instance}/card/${card.id}`;
-        }
-        this.setState({ leankit_cards: leankit_cards });
-
-        // Get the backlog duration
-        // let leankit_cards_with_backlogDuration = await getBacklogDurationForLeankitCards(filteredCards, this.props.leankit_instance);
-        // console.log(leankit_cards_with_backlogDuration);
-
         console.log("leankit_cards before advanced call", leankit_cards);
-        let leankitDataObject = listCardsAdvanced(leankit_cards, this.props.boardId);
+        let leankitDataObject = createLeankitDataObject(leankit_cards, this.props.boardId);
         console.log("leankitDataObject:", leankitDataObject);
 
-        // Save these cards to our state, which triggers react to render an update to the screen
-        this.setState({ leankitDataObject: leankitDataObject });
-
-        let labels = this.state.leankitDataObject.burndownChart.labels;
-        console.log("Labels", labels);
-
-        let series1 = this.state.leankitDataObject.burndownChart.data[0];
-        let series2 = this.state.leankitDataObject.burndownChart.data[1];
-        let series3 = this.state.leankitDataObject.burndownChart.data[2];
+        let labels = leankitDataObject.burndownChart.labels;
+        let series1 = leankitDataObject.burndownChart.data[0];
+        let series2 = leankitDataObject.burndownChart.data[1];
+        let series3 = leankitDataObject.burndownChart.data[2];
 
         // Create initial chart data with one column
-        chartData = labels.map(label => {
+        let chartData = labels.map(label => {
             return [label];
         });
 
@@ -123,17 +101,13 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
             return dataArray;
         }
 
-        console.log("chartData", chartData);
         chartData = addColumn(chartData, series1);
         chartData = addColumn(chartData, series2);
         chartData = addColumn(chartData, series3);
         chartData.unshift(["Date", "Planned", "Burndown", "Unplanned"]);
-        console.log("chartData", chartData);
 
         this.setState({
-            chartData: {
-                pointsPerDay: chartData
-            }
+            chartData: chartData
         });
 
         console.log(this.state.chartData);
@@ -206,7 +180,7 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
                                     height={"100%"}
                                     chartType="LineChart"
                                     loader={<div>Loading Chart</div>}
-                                    data={this.state.chartData.pointsPerDay}
+                                    data={this.state.chartData}
                                     options={{
                                         titleTextStyle: {
                                             color: theme.currentColorTheme.colorThemeCardFontDefault
@@ -230,8 +204,11 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
                                             textStyle: {
                                                 color: theme.currentColorTheme.colorThemeCardFontDefault
                                             },
-                                            maxValue: 125,
+                                            // maxValue: 125,
                                             minValue: 0,
+                                            viewWindow: {
+                                                min: 0
+                                            },
                                             gridlines: {
                                                 color: theme.currentColorTheme.colorThemeCardFontDefault,
                                                 count: 10

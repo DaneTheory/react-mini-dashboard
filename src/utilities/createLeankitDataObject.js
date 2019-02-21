@@ -126,7 +126,6 @@ function createPlannedLine(listCards, theLabels, totalPlannedPoints, doneLanes) 
             // var lastMoved = new Date(card["lastMoveDay"]);
             var lastMoved = new Date(card["movedOn"]);
             var lastMovedStr = lastMoved.getMonth() + 1 + "/" + lastMoved.getDate();
-            console.log("lastMovedStr:", lastMovedStr);
             addPointsToObject(donePointsPerDay, lastMovedStr, parseInt(card["size"]));
         }
     }
@@ -168,7 +167,7 @@ function createTheoreticalBurnDownLine(theLabels, totalPlannedPoints, numDays) {
         if (isWorkingDay(theLabels[i])) {
             burndownCurrent -= neededPointsPerDay;
         }
-        burndownLinePerDay.push(burndownCurrent);
+        burndownLinePerDay.push(Number(burndownCurrent.toFixed(1)));
         // console.log("isWorkingDay: " + theLabels[i] + "   workingDay: " + isWorkingDay(theLabels[i]));
     }
     burndownLinePerDay.push(burndownFinish);
@@ -575,62 +574,64 @@ function createBurnDownChart(listCards) {
 
 // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 // public method
-export function listCardsAdvanced(cards, boardID) {
-    let dataStore = {};
-    let verbose = false;
+export function createLeankitDataObject(cards, boardID) {
+    let leankitDataObject = {};
 
     // get cards from AXIOS
 
-    dataStore["listCards"] = cards;
+    leankitDataObject["listCards"] = cards;
 
     // Enrich each card by adding URL field (BoardID is hard-coded)
-    addURLtoCards(dataStore["listCards"], boardID);
+    addURLtoCards(leankitDataObject["listCards"], boardID);
 
     // Create entire burndownChart
-    dataStore["burndownChart"] = createBurnDownChart(dataStore["listCards"]);
+    leankitDataObject["burndownChart"] = createBurnDownChart(leankitDataObject["listCards"]);
 
     // Parse cards, get lanes, and figure out the sprint start/finish dates
     var sprintName, sprintLane, sprintLanes, doneLanes;
-    [, sprintName, sprintLane, sprintLanes, doneLanes, , ,] = getSprintInfo(dataStore["listCards"], verbose);
+    [, sprintName, sprintLane, sprintLanes, doneLanes, , ,] = getSprintInfo(leankitDataObject["listCards"]);
 
     // Get total number of planned points
-    [dataStore["totalPlannedPoints"], dataStore["totalUnplannedPoints"]] = getTotalPoints(dataStore["listCards"], sprintLanes);
+    [leankitDataObject["totalPlannedPoints"], leankitDataObject["totalUnplannedPoints"]] = getTotalPoints(
+        leankitDataObject["listCards"],
+        sprintLanes
+    );
 
     // Widget: Leankit Stats
-    dataStore["leankitStats"] = getLeankitStats(
-        dataStore["listCards"],
+    leankitDataObject["leankitStats"] = getLeankitStats(
+        leankitDataObject["listCards"],
         sprintName,
         sprintLanes,
-        dataStore["totalPlannedPoints"],
+        leankitDataObject["totalPlannedPoints"],
         doneLanes
     );
 
     // Widget: Points by Owner
-    dataStore["leankitCardOwners"] = getListPointsByOwner(dataStore["listCards"], sprintLane);
+    leankitDataObject["leankitCardOwners"] = getListPointsByOwner(leankitDataObject["listCards"], sprintLane);
 
     // Widget: Huddle Cards
-    dataStore["listCardsIsHuddle"] = getListCardsIsHuddle(dataStore["listCards"], sprintLanes);
+    leankitDataObject["listCardsIsHuddle"] = getListCardsIsHuddle(leankitDataObject["listCards"], sprintLanes);
 
     // Widget: Blocked Cards
-    dataStore["listCardsIsBlocked"] = getListCardsIsBlocked(dataStore["listCards"], sprintLanes, doneLanes);
+    leankitDataObject["listCardsIsBlocked"] = getListCardsIsBlocked(leankitDataObject["listCards"], sprintLanes, doneLanes);
 
     // Widget: Early Win Cards
-    dataStore["listCardsIsEarlyWin"] = getListCardsIsEarlyWin(dataStore["listCards"], sprintLanes, doneLanes);
+    leankitDataObject["listCardsIsEarlyWin"] = getListCardsIsEarlyWin(leankitDataObject["listCards"], sprintLanes, doneLanes);
 
     // Widget: Soon Cards
-    dataStore["listCardsIsSoon"] = getListCardsIsSoon(dataStore["listCards"], sprintLanes, doneLanes);
+    leankitDataObject["listCardsIsSoon"] = getListCardsIsSoon(leankitDataObject["listCards"], sprintLanes, doneLanes);
 
     // Widget: Stretch
-    dataStore["listCardsIsStretch"] = getListCardsIsStretch(dataStore["listCards"], sprintLanes, doneLanes);
+    leankitDataObject["listCardsIsStretch"] = getListCardsIsStretch(leankitDataObject["listCards"], sprintLanes, doneLanes);
 
     // Widget: Done Today !
-    dataStore["listCardsDoneToday"] = getListCardsDoneToday(dataStore["listCards"], doneLanes);
+    leankitDataObject["listCardsDoneToday"] = getListCardsDoneToday(leankitDataObject["listCards"], doneLanes);
 
     // Widget: Done
-    dataStore["listCardsIsDone"] = getListCardsDone(dataStore["listCards"], doneLanes);
+    leankitDataObject["listCardsIsDone"] = getListCardsDone(leankitDataObject["listCards"], doneLanes);
 
     // Widget: Planned Cards (filter the list down)
-    dataStore["listCards"] = dataStore["listCards"].filter(function(el) {
+    leankitDataObject["listCardsIsPlanned"] = leankitDataObject["listCards"].filter(function(el) {
         return (
             el.u_lanes[1].name === sprintLane &&
             el["type"]["title"] !== "Unplanned" &&
@@ -639,7 +640,7 @@ export function listCardsAdvanced(cards, boardID) {
         );
     });
 
-    return dataStore;
+    return leankitDataObject;
 
     // end of very large listCards function
 }
