@@ -1,6 +1,6 @@
 // 3rd party imports
 import React from "react";
-import { HashRouter, Route, Link } from "react-router-dom";
+import { HashRouter, Route, Link, Redirect } from "react-router-dom";
 import PubSub from "pubsub-js";
 import PropTypes from "prop-types";
 
@@ -209,18 +209,7 @@ class Dashboard extends React.Component {
                                     />
                                 )}
                             />
-                            <Route
-                                path="/"
-                                exact
-                                render={() => (
-                                    <HomeCardGrid
-                                        sn_instance={this.props.sn_instance}
-                                        boldchat_instance={this.props.boldchat_instance}
-                                        changeParentPageTitle={this.changePageTitle.bind(this)}
-                                        leankit_instance={this.props.leankit_instance}
-                                    />
-                                )}
-                            />
+                            <Route path="/" exact render={() => <Redirect to="/demo1-dashboard" />} />
                         </div>
                     </div>
                 </div>
