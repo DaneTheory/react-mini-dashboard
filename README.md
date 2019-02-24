@@ -2,26 +2,98 @@
 
 ### Create a host
 
-1. Launch a new Redhat (RHEL) Instance (Currently tested on RHEL7 2018 Q2)
-    1. Select t2.large
-    1. Add tags (Environment and Application)
-    1. Select a security group (Default, Web, and Database)
-    1. Define IAM Role
-    1. Launch (without keys)
+-   Launch a new Redhat (RHEL) Instance (Currently tested on RHEL7 2018 Q2)
+    -   Select t2.large
+    -   Add tags (Environment and Application)
+    -   Select a security group (Default, Web, and Database)
+    -   Define IAM Role
+    -   Launch (without keys)
+
+### Prep for React Dashboard
+
+-   yum install httpd git vim
+-   useradd dashboard-api-proxy
+-   useradd dashboard-react
+-   curl -sL https://rpm.nodesource.com/setup_10.x | bash -
+-   yum install -y nodejs
 
 ### Deploy React Dashboard
 
-1. cd /var/www
-1. mkdir nodejs
-1.
+-   vim /etc/systemd/system/dashboard-react.service
+
+```
+[Unit]
+Description=Node.js React Dashboard Application
+
+[Service]
+ExecStart=/bin/node /var/www/nodejs/dashboard-react/server.js
+# Required on some systems
+#WorkingDirectory=/opt/nodeserver
+Restart=always
+# Restart service after 10 seconds if node service crashes
+RestartSec=10
+# Output to syslog
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=react-dashboard
+User=dashboard-react
+#Group=<alternate group>
+Environment=NODE_ENV=production PORT=5439
+
+[Install]
+WantedBy=multi-user.target
+```
+
+-   systemctl enable dashboard-react.service
+-   systemctl daemon-reload
+-   systemctl restart dashboard-react
+-   Deploy the actual app
+    -   cd /var/www
+    -   mkdir nodejs
+    -   cd nodejs
+    -   mkdir dashboard-react
+    -   cd dashboard-react
+    -   git clone https://github.com/cburkins/react-mini-dashboard.git .
+    -   Create .env file -
+    -   ./deploy.sh
 
 ### Deploy API Gateway
 
 1. Log into host
 1. sudo su -
 1. cd /var/www
-1. mkdir dashboard-api-proxy
-1. cd dashboard-api-proxy
+1. mkdir dashboard-api-proxy; cd dashboard-api-proxy
+1. git clone https://github.com/cburkins/nodejs-express-gateway.git .
+1. npm install
+1. chown -R dashboard-api-proxy .
+1. vim /etc/systemd/system/dashboard-api-proxy.service
+
+```
+[Unit]
+Description=Node.js Example Server
+
+[Service]
+ExecStart=/bin/node /var/www/nodejs/dashboard-api-proxy/server.js
+# Required on some systems
+# WorkingDirectory=/opt/nodeserver
+Restart=always
+# Restart service after 10 seconds if node service crashes
+RestartSec=10
+# Output to syslog
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=nodejs-example
+User=dashboard-api-proxy
+#Group=<alternate group>
+Environment=NODE_ENV=production PORT=1521
+
+[Install]
+WantedBy=multi-user.target
+```
+
+1. systemctl enable dashboard-api-proxy.service
+1. systemctl daemon-reload
+1. systemctl restart dashboard-api-proxy
 
 ### Tasks Completed
 

@@ -101,7 +101,7 @@ class App extends React.Component {
     render() {
         return (
             <ThemeProvider value={theme}>
-                <Dashboard refreshInterval={60000} theme={theme.current} />;
+                <Dashboard refreshInterval={60000} theme={theme.current} />
             </ThemeProvider>
         );
     }
