@@ -131,6 +131,7 @@ class Dashboard extends React.Component {
                             <div className="title">Other Details:</div>
                             <div className="body">
                                 <div>Environment: {process.env.NODE_ENV}</div>
+                                <div>Custom Env: {process.env.REACT_ENV}</div>
                             </div>
                         </div>
                     </div>

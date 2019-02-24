@@ -1,3 +1,28 @@
+## Deployment Instructions
+
+### Create a host
+
+1. Launch a new Redhat (RHEL) Instance (Currently tested on RHEL7 2018 Q2)
+    1. Select t2.large
+    1. Add tags (Environment and Application)
+    1. Select a security group (Default, Web, and Database)
+    1. Define IAM Role
+    1. Launch (without keys)
+
+### Deploy React Dashboard
+
+1. cd /var/www
+1. mkdir nodejs
+1.
+
+### Deploy API Gateway
+
+1. Log into host
+1. sudo su -
+1. cd /var/www
+1. mkdir dashboard-api-proxy
+1. cd dashboard-api-proxy
+
 ### Tasks Completed
 
 1. Installed Semantic UI via CDN (link is specific to version)

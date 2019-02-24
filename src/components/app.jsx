@@ -6,6 +6,8 @@ import Dashboard from "../components/Dashboard";
 import "../scss/main.scss";
 import { ThemeProvider } from "../components/ThemeContext";
 
+console.log("process.env", process.env);
+
 let theme = {
     darkColorTheme: {
         // Page
