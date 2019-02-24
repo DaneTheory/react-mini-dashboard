@@ -17,7 +17,7 @@ var classNames = require("classnames");
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
 
 // Create a React class component, everything below this is a class method (i.e. a function attached to the class)
-class WidgetSNBoldchatTableAutoScroll extends React.Component {
+class WidgetSNBoldchatTableAutoScroll extends React.PureComponent {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {
@@ -117,8 +117,6 @@ class WidgetSNBoldchatTableAutoScroll extends React.Component {
     componentDidMount = async () => {
         // Standard React Lifecycle method, gets called by React itself
         // React calls this once after component gets "mounted", in other words called *after* the render() method below
-
-        console.log("TableAutoScroll: componentDidMount()");
 
         // manual update of our own data
         this.getDataAndUpdateState();

@@ -198,7 +198,7 @@ async function JETGetDataGenesysCTIByLang(agoCount, agoUnits, sn_instance) {
         var lang = record["u_language"];
         var count = parseInt(record["count"]);
         // console.log("lang", lang);
-        if (["GERMAN", "FRENCH", "DUTCH", "RUSSIAN", "ITALIAN"].includes(lang)) {
+        if (["GERMAN", "FRENCH", "DUTCH", "RUSSIAN", "ITALIAN", "CAFRENCH"].includes(lang)) {
             consumptionUnit = "VoiceEMEA";
         } else if (["SPANISH", "PORTUGUESE", "CANADIAN"].includes(lang)) {
             consumptionUnit = "VoiceLATAM";
@@ -259,7 +259,7 @@ export async function getJETData(sn_instance, boldchat_instance) {
     // Take the data we got back, and insert into a more complete data structure which includes targets and unit costs
     let JETconsumptionUnits = {
         JETchatBotContact: {
-            name: "Bot Contact (UnAnswr Chat)",
+            name: "Bot Contact",
             order: 50,
             count: boldChatUnAnswered,
             unitCost: 0.0,

@@ -15,7 +15,7 @@ var classNames = require("classnames");
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
 
 // Create a React class component, everything below this is a class method (i.e. a function attached to the class)
-class WidgetSNPubSubJETCostDataTable extends React.Component {
+class WidgetSNPubSubJETCostDataTable extends React.PureComponent {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {
@@ -156,7 +156,6 @@ class WidgetSNPubSubJETCostDataTable extends React.Component {
         // Standard React Lifecycle method, gets called by React itself
         // Get called every time the "state" object gets modified, in other words setState() was called
         // Also called if "props" are modified (which are passed from the parent)
-
         return (
             <DashboardDataCard
                 id={this.props.id}

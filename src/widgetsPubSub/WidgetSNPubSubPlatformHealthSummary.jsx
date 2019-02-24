@@ -14,7 +14,7 @@ var classNames = require("classnames");
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
 
 // Create a React class component, everything below this is a class method (i.e. a function attached to the class)
-class WidgetSNPubSubPlatformHealthSummary extends React.Component {
+class WidgetSNPubSubPlatformHealthSummary extends React.PureComponent {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {

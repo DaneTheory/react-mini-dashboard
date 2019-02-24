@@ -11,7 +11,7 @@ import { getBoldChatData } from "../utilities/getBoldChatData";
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
 
 // Create a React class component, everything below this is a class method (i.e. a function attached to the class)
-class WidgetBoldChatActiveCount extends React.Component {
+class WidgetBoldChatActiveCount extends React.PureComponent {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {

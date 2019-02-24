@@ -9,9 +9,6 @@ import { ThemeConsumer } from "../components/ThemeContext";
 import { getLeankitCards } from "../utilities/getLeankitCards";
 import { createLeankitDataObject } from "../utilities/createLeankitDataObject";
 
-// other imports
-var classNames = require("classnames");
-
 // The purpose of this file is to create a React Component which can be included in HTML
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
 
