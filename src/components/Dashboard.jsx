@@ -11,8 +11,6 @@ import Dev1CardGrid from "../cardgrids/Dev1CardGrid";
 import LeankitDiscoveryCardGrid from "../cardgrids/LeankitDiscoveryCardGrid";
 import LeankitDeliveryCardGrid from "../cardgrids/LeankitDeliveryCardGrid";
 
-import HomeCardGrid from "../cardgrids/HomeCardGrid";
-
 class Dashboard extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     constructor(props) {
@@ -101,11 +99,11 @@ class Dashboard extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     render() {
-        // console.log("Dashboard: render()");
         return (
             <HashRouter>
                 {/* HashRouter can have only one child element, so adding a <div> */}
                 <div>
+                    {/* Sidebar */}
                     <div ref={this.slidingSideBarRef} className="slidingSideNav">
                         {/* create a button to close the sidebar panel */}
                         <span className="closebtn" onClick={this.closeNav}>
@@ -137,6 +135,7 @@ class Dashboard extends React.Component {
                         </div>
                     </div>
 
+                    {/* Main page_container: contains title, fixed sidbar, and widgets */}
                     <div id="main" ref={this.mainRef} className="page_container">
                         <div className="title_container">
                             <div className="title" onClick={this.doSomethingForDebugging}>

@@ -12,7 +12,7 @@ import apiProxy from "../api/apiProxy";
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
 
 // Create a React class component, everything below this is a class method (i.e. a function attached to the class)
-class WidgetSNAPICounts extends React.Component {
+class WidgetSNAPICounts extends React.PureComponent {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {
@@ -35,8 +35,6 @@ class WidgetSNAPICounts extends React.Component {
     async getDataAndUpdateState(msg = "Default message", data = "Default data") {
         // this function gets the custom data for this widget, and updates our React component state
         // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
-
-        console.warn("getting data");
 
         // Retrieve our data (likely from an API)
         try {
