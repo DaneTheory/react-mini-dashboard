@@ -198,9 +198,9 @@ async function JETGetDataGenesysCTIByLang(agoCount, agoUnits, sn_instance) {
         var lang = record["u_language"];
         var count = parseInt(record["count"]);
         // console.log("lang", lang);
-        if (["GERMAN", "FRENCH", "DUTCH", "RUSSIAN", "ITALIAN", "CAFRENCH"].includes(lang)) {
+        if (["GERMAN", "FRENCH", "DUTCH", "RUSSIAN", "ITALIAN"].includes(lang)) {
             consumptionUnit = "VoiceEMEA";
-        } else if (["SPANISH", "PORTUGUESE", "CANADIAN"].includes(lang)) {
+        } else if (["SPANISH", "PORTUGUESE", "CANADIAN", "CAFRENCH"].includes(lang)) {
             consumptionUnit = "VoiceLATAM";
         } else if (["JAPANESE", "MANDARIN", "KOREAN"].includes(lang)) {
             consumptionUnit = "VoiceASPAC";
