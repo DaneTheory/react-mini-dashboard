@@ -310,3 +310,27 @@ $previous: 0.2;
         $previous: $new;
     }
 }
+
+.versionTitleNestedOuter {
+    // Visual styling
+    white-space: nowrap;
+    // Positioning of outer div
+    // position: absolute;
+    // left: 33px;
+    // top: 30px;
+    // Transform: origin is top/left
+    transform-origin: 0% 0%;
+    // Transform goes right to left (first rotate, then translate/move)
+    transform: translate(2.5vw, 15vw) rotate(90deg);
+}
+
+.versionTitleNestedInner {
+    // In a nested Div, the outer div transform gets done first, then inner
+    // Flip the div (set rotation-origin at center of div, then rotate 180 degrees)
+    transform-origin: 50% 50%;
+    transform: rotate(180deg);
+
+    opacity: 0.2;
+    color: var(--colorThemeCardFontDefault);
+    font-family: "Lato", "Courier New";
+}

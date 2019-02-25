@@ -140,7 +140,7 @@ class Dashboard extends React.Component {
                     <div id="main" ref={this.mainRef} className="page_container">
                         <div className="title_container">
                             <div className="title" onClick={this.doSomethingForDebugging}>
-                                {this.state.pageTitle} ({process.env.REACT_APP_ENV}) v{process.env.REACT_APP_VERSION}
+                                {this.state.pageTitle}
                             </div>
                         </div>
                         <div className="fixedSideBar_container">
@@ -150,6 +150,11 @@ class Dashboard extends React.Component {
                             </button>
                             {/* Show the time remaining until the next refresh */}
                             <div className="refreshTimeRemaining">{this.state.refreshRemainingMs / 1000}s</div>
+                            <div className="versionTitleNestedOuter">
+                                <div className="versionTitleNestedInner Font18x">
+                                    {process.env.REACT_APP_ENV} v{process.env.REACT_APP_VERSION}
+                                </div>
+                            </div>
                         </div>
                         <div className="centerPanel_container">
                             <Route
