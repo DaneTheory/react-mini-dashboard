@@ -140,7 +140,7 @@ class Dashboard extends React.Component {
                     <div id="main" ref={this.mainRef} className="page_container">
                         <div className="title_container">
                             <div className="title" onClick={this.doSomethingForDebugging}>
-                                {this.state.pageTitle} v{process.env.REACT_APP_VERSION}
+                                {this.state.pageTitle} ({process.env.REACT_APP_ENV}) v{process.env.REACT_APP_VERSION}
                             </div>
                         </div>
                         <div className="fixedSideBar_container">
