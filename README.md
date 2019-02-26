@@ -9,7 +9,7 @@
     -   Define IAM Role
     -   Launch (without keys)
 
-## Prep for React Dashboard
+## Prep host for Installation of React Dashboard
 
 -   yum install httpd git vim
 -   useradd dashboard-api-proxy
@@ -17,7 +17,7 @@
 -   curl -sL https://rpm.nodesource.com/setup_10.x | bash -
 -   yum install -y nodejs
 
-## Deploy React Dashboard
+## Install and Deploy React Dashboard
 
 -   vim /etc/systemd/system/dashboard-react.service
 
@@ -57,9 +57,11 @@ WantedBy=multi-user.target
     -   Create .env file -
     -   ./deploy.sh
 
-## Deploy API Gateway
+## Install and Deploy API Gateway
 
-1. Log into host
+NOTE: As you'll see, this is a separate rep
+
+1. Log into _same_ host as above
 1. sudo su -
 1. cd /var/www
 1. mkdir dashboard-api-proxy; cd dashboard-api-proxy
@@ -94,7 +96,7 @@ WantedBy=multi-user.target
 1. systemctl enable dashboard-api-proxy.service
 1. systemctl daemon-reload
 1. systemctl restart dashboard-api-proxy
-1. Create config files
+1. Create config files (so that the API Proxy can call the backend)
     1. As each API has a slightly different authentication mechanism, each config file is slightly different
     1. Here's an example of the ServiceNow configuration file
 
@@ -121,7 +123,9 @@ WantedBy=multi-user.target
 }
 ```
 
-# History
+# Project History
+
+The first version of this dashboad was written in AngularJS. It was meant as an exercise to learn AngularJS. Two years later, the dashboard proved so useful that I was still using it, but enhancments felt unwieldy. As another experiment, I spent the Winter of 2018 re-writing it in React. While the React version is less DRY, it feels much easier to understand. Namely, all the working parts of a single widget are in a single file (e.g. API call to generate the data, and the HTML/Javascript to display the corresponding result)
 
 ## History: Differences between the AngularJS and React Dashboard
 
