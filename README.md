@@ -57,7 +57,7 @@ WantedBy=multi-user.target
     -   Create .env file -
     -   ./deploy.sh
 
-### Deploy API Gateway
+## Deploy API Gateway
 
 1. Log into host
 1. sudo su -
@@ -121,7 +121,9 @@ WantedBy=multi-user.target
 }
 ```
 
-### History: Differences between the AngularJS and React Dashboard
+# History
+
+## History: Differences between the AngularJS and React Dashboard
 
 1. Installed Semantic UI via CDN (link is specific to version)
 1. Create a node.js API proxy with embedded credentials
@@ -140,14 +142,14 @@ WantedBy=multi-user.target
 1. Periodically update data
 1. Get the Google Graphs to consume the color theme (then merge in addGoogleChart)
 
-### History: What I'm learning
+## History: What I'm learning
 
 1. Even though my initial design in React is less DRY than AngularJS, feels a lot easier to understand
 1. Replaced Python API with a simple proxy using NodeJS Express. Moved all logic from backend to frontend
     1. That means backend is a simple proxy which only adds authentication on the way through
 1. For View, AngularJS wasnt great at looping through an Object. Since React is just javascript, it can do it
 
-### History: Widget Updating Strategies
+## History: Widget Updating Strategies
 
 I've tried three different strategies for period data updates for each widget.
 
