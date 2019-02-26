@@ -7,6 +7,7 @@ import WidgetLeankitDeliveryBurndown from "../widgetsPubSub/WidgetLeankitDeliver
 import WidgetLeankitDeliveryStats from "../widgetsPubSub/WidgetLeankitDeliveryStats";
 import WidgetLeankitPointsByOwner from "../widgetsPubSub/WidgetLeankitPointsByOwner";
 import WidgetLeankitDeliveryRemainingPoints from "../widgetsPubSub/WidgetLeankitDeliveryRemainingPoints";
+import WidgetIrisWUStale from "../widgetsPubSub/WidgetIrisWUStale";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -45,6 +46,7 @@ class LeankitDiscoveryCardGrid extends React.Component {
                         leankit_instance={this.props.leankit_instance}
                         boardId={this.props.boardId}
                     />
+                    <WidgetIrisWUStale position="span 4 / span 4" sn_instance={this.props.sn_instance} />
                 </CardGrid>
             </div>
         );
@@ -63,6 +65,7 @@ LeankitDiscoveryCardGrid.defaultProps = {
 LeankitDiscoveryCardGrid.propTypes = {
     changeParentPageTitle: PropTypes.func.isRequired,
     leankit_instance: PropTypes.string.isRequired,
+    sn_instance: PropTypes.string.isRequired,
     boardId: PropTypes.string.isRequired
 };
 
