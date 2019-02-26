@@ -46,7 +46,7 @@ class LeankitDiscoveryCardGrid extends React.Component {
                         leankit_instance={this.props.leankit_instance}
                         boardId={this.props.boardId}
                     />
-                    <WidgetIrisWUStale position="span 4 / span 4" sn_instance={this.props.sn_instance} />
+                    <WidgetIrisWUStale position="span 8 / span 8" sn_instance={this.props.sn_instance} />
                 </CardGrid>
             </div>
         );
