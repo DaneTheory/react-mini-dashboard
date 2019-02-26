@@ -21,8 +21,8 @@ class IrisReleaseNotesCardGrid extends React.Component {
     render() {
         return (
             <div>
-                <CardGrid rows="30" columns="12">
-                    <WidgetSNIrisReleaseNotes position="span 8 / span 10" sn_instance={this.props.sn_instance} />
+                <CardGrid rows="10" columns="12">
+                    <WidgetSNIrisReleaseNotes position="span 10 / span 10" sn_instance={this.props.sn_instance} />
                 </CardGrid>
             </div>
         );

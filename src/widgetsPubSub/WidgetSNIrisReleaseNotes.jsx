@@ -24,7 +24,7 @@ class WidgetSNIrisReleaseNotes extends React.PureComponent {
         super(props);
 
         // Set our initial React state, this is the *only* time to bypass setState()
-        this.state = { widgetName: "WidgetSNIrisReleaseNotes", nodeResults: [] };
+        this.state = { widgetName: "WidgetSNIrisReleaseNotes", wuArray: [], wuByDate: { workunits: [] } };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function
@@ -71,72 +71,42 @@ class WidgetSNIrisReleaseNotes extends React.PureComponent {
                     releaseDaysAway})^u_release_number.u_product.number=PDCT000010000001^ORDERBYu_release_number.u_release_date`,
                 // sysparm_count: "true",
                 sysparm_display_value: "true",
-                sysparm_limit: 200
-                // sysparm_fields: fields.join(",")
-                // sysparm_group_by: groupby_field
-            }
-        });
-        console.warn(response_wu);
-
-        // Retrieve our data (likely from an API)
-        let response = await apiProxy.get(`/sn/${this.props.sn_instance}/api/now/table/sys_cluster_state`, {
-            params: {
-                // Units for xAgoStart: years, months, days, hours, minutes
-                // sysparm_query: "client_transaction=true^sys_created_on>=javascript:gs.daysAgoStart(0)",
-                // sysparm_count: "true",
-                sysparm_display_value: "true"
+                sysparm_limit: 200,
+                sysparm_fields: fields.join(",")
                 // sysparm_group_by: groupby_field
             }
         });
 
-        let nodeResults = response.data.result.map(node => {
-            // console.log("node", node);
+        var wuResults = response_wu.data.result;
 
-            let parser = new DOMParser();
-            let xmldoc = parser.parseFromString(node.stats, "text/xml");
-            // console.log("xmldoc", xmldoc);
-
-            let node_id = xmldoc.getElementsByTagName("system.cluster.node_id")[0].firstChild.wholeText;
-
-            let uptime = xmldoc.getElementsByTagName("servlet.uptime")[0].firstChild.wholeText;
-            let uptimeDays = parseFloat(uptime) / 1000 / 60 / 60 / 24;
-
-            // Example: app128031.iad4.service-now.com:jnjprod033
-            // Split it on either "." or ":"
-            let [, location, , , friendlyName] = node_id.split(/[.:]+/);
-
-            // Example: <sessionsummary end_user="212" logged_in="114" total="114"/>
-            let sessionsummary = xmldoc.getElementsByTagName("sessionsummary");
-            let logged_in = parseInt(sessionsummary[0].attributes["logged_in"].value);
-
-            // Get system load (Example data)
-            // <sys_load>
-            // <one count="60" max="9" mean="1.3666666666666667" median="1.0" min="0" ninetypercent="4" ninetypercentTrimmedMean="0.8333"/>
-            // <five count="300" max="13" mean="1.7166666666666666" median="1.0" min="0" ninetypercent="5" ninetypercentTrimmedMean="1.0407"/>
-            // <fifteen count="900" max="25" mean="2.5244444444444443" median="1.0" min="0" ninetypercent="6" ninetypercentTrimmedMean="1.5975"/>
-            // </sys_load>
-            let sys_load = parseFloat(xmldoc.getElementsByTagName("sys_load")[0].childNodes[0].attributes["mean"].value);
-
-            // Get SQL response (Example data)
-            // <sql_response>
-            // <one count="8771" max="788" mean="1.2182191312279103" median="0.0" min="0" ninetypercent="1" ninetypercentTrimmedMean="0.3407"/>
-            // <five count="53999" max="4101" mean="1.675531028352377" median="0.0" min="0" ninetypercent="1" ninetypercentTrimmedMean="0.3055"/>
-            // <fifteen count="203581" max="17034" mean="2.3490011346834923" median="0.0" min="0" ninetypercent="1" ninetypercentTrimmedMean="0.3196"/>
-            // </sql_response>
-            let sql_response = parseFloat(xmldoc.getElementsByTagName("sql_response")[0].childNodes[0].attributes["mean"].value);
-
-            return {
-                name: friendlyName,
-                logged_in: logged_in,
-                uptimeDays: uptimeDays,
-                sys_load: sys_load,
-                sql_response: sql_response,
-                location: location
-            };
+        // Group by u_release_number.u_release_date
+        var wuResultsByDate = {};
+        wuResults.forEach(function(wu) {
+            var releaseDate = wu["u_release_number.u_release_date"];
+            if (!wuResultsByDate[releaseDate]) {
+                // first time I'm seeing this release date
+                wuResultsByDate[releaseDate] = [wu];
+            } else {
+                // I've seen this release date before, append to it
+                wuResultsByDate[releaseDate].push(wu);
+            }
         });
 
+        // Convert dictionary to array
+        var wuResultsByDateArray = [];
+        for (var theDate in wuResultsByDate) {
+            wuResultsByDateArray.push({ releaseDate: theDate, workUnits: wuResultsByDate[theDate] });
+        }
+
+        let wuByDate = {};
+        wuByDate["releaseDaysPrior"] = releaseDaysPrior;
+        wuByDate["releaseDaysAway"] = releaseDaysAway;
+        wuByDate["workunits"] = wuResultsByDateArray;
+        this.setState({ wuByDate: wuByDate });
+
+        console.warn("wuByDate", this.state.wuByDate);
         // Update our own state with the new data
-        this.setState({ nodeResults: nodeResults });
+        this.setState({ wuArray: response_wu.data.result });
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -163,61 +133,62 @@ class WidgetSNIrisReleaseNotes extends React.PureComponent {
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    renderTable(wuArray) {
+        return (
+            <table width="90%" style={{ marginBottom: "3vw" }}>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Work Unit</th>
+                        <th>Process Area</th>
+                        <th>Title</th>
+                        <th>What's Changed</th>
+                        <th>Release Title</th>
+                        <th>Test Points</th>
+                        <th>Dev Points</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {wuArray.map((wu, index) => {
+                        return (
+                            <tr key={wu["number"]}>
+                                <td>{index}</td>
+                                <td>
+                                    {wu["number"]}
+                                    <br />
+                                    {wu["u_request_type"]}
+                                </td>
+                                <td>{wu["u_process"]}</td>
+                                <td>{wu["u_title"]}</td>
+                                <td>{wu["u_what_s_changed"]}</td>
+                                <td>{wu["u_release_number.u_release_titile"]}</td>
+                                <td>{wu["u_test_estimation"]}</td>
+                                <td>{wu["u_dev_estimation"]}</td>
+                            </tr>
+                        );
+                    })}
+                </tbody>
+            </table>
+        );
+    }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    renderTable() {
-        if (this.state.nodeResults.length === 0) {
+    renderAllTables() {
+        if (this.state.wuArray.length === 0) {
             return <div className="waiting-for-data">Waiting for Data...</div>;
         } else {
             return (
                 <div style={{ fontSize: "1.6vw" }}>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Node</th>
-                                <th>Uptime</th>
-                                <th>Users</th>
-                                <th>Load</th>
-                                <th>DB</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.state.nodeResults
-                                // Only show nodes where there are users logged in
-                                .filter(node => node["logged_in"] > 0)
-                                .map((node, index) => {
-                                    let numUsersColor =
-                                        node["logged_in"] > 300 ? "cellRed" : node["logged_in"] > 250 ? "cellAmber" : "cellGreen";
-                                    let sysLoadColor = node["sys_load"] > 12 ? "cellRed" : node["sys_load"] > 9 ? "cellAmber" : "cellGreen";
-                                    let dbResponseColor =
-                                        node["sql_response"] > 4 ? "cellRed" : node["sql_response"] > 3 ? "cellAmber" : "cellGreen";
-                                    return (
-                                        <tr key={node["name"]}>
-                                            <td>{index}</td>
-                                            <td>{node["name"]}</td>
-
-                                            {/* Uptime */}
-                                            <td align="right">{node["uptimeDays"].toFixed(1)}d</td>
-
-                                            {/* Users Logged in */}
-                                            <td className={classNames(numUsersColor)} align="right">
-                                                {node["logged_in"]}
-                                            </td>
-
-                                            {/* sysLoad */}
-                                            <td className={classNames(sysLoadColor)} align="right">
-                                                {node["sys_load"].toFixed(1)}
-                                            </td>
-
-                                            {/* DB Response */}
-                                            <td className={classNames(dbResponseColor)} align="right">
-                                                {node["sql_response"].toFixed(1)}s
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
-                        </tbody>
-                    </table>
+                    {this.state.wuByDate.workunits.map((singleRelease, index) => {
+                        return (
+                            <div key={index}>
+                                <div className="Font15x" style={{ textAlign: "left", marginBottom: "1vw", marginLeft: "2vw" }}>
+                                    Release Date: {singleRelease.releaseDate}
+                                </div>
+                                {this.renderTable(singleRelease.workUnits)}
+                            </div>
+                        );
+                    })}
                 </div>
             );
         }
@@ -228,7 +199,7 @@ class WidgetSNIrisReleaseNotes extends React.PureComponent {
     }
 
     renderCardBody() {
-        return <div className="item">{this.renderTable()}</div>;
+        return <div className="item">{this.renderAllTables()}</div>;
     }
 
     render() {
