@@ -1,6 +1,6 @@
-## Deployment Instructions
+# Deployment Instructions
 
-### Create a host
+## Create a host
 
 -   Launch a new Redhat (RHEL) Instance (Currently tested on RHEL7 2018 Q2)
     -   Select t2.large
@@ -9,7 +9,7 @@
     -   Define IAM Role
     -   Launch (without keys)
 
-### Prep for React Dashboard
+## Prep for React Dashboard
 
 -   yum install httpd git vim
 -   useradd dashboard-api-proxy
@@ -17,7 +17,7 @@
 -   curl -sL https://rpm.nodesource.com/setup_10.x | bash -
 -   yum install -y nodejs
 
-### Deploy React Dashboard
+## Deploy React Dashboard
 
 -   vim /etc/systemd/system/dashboard-react.service
 
