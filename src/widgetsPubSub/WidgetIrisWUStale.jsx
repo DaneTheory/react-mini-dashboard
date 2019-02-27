@@ -2,6 +2,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import PubSub from "pubsub-js";
+import NumberFormat from "react-number-format";
 
 // project imports
 import DashboardDataCard from "../components/DashboardDataCard";
@@ -128,7 +129,8 @@ class WidgetIrisWUStale extends React.PureComponent {
                 </thead>
                 <tbody>
                     {wuArray.map((wu, index) => {
-                        let createdAgo = moment(wu.sys_created_on).fromNow();
+                        // let createdAgo = moment(wu.sys_created_on).fromNow();
+                        let createdAgo = moment().diff(moment(wu.sys_created_on), "years", true);
                         let updatedAgo = moment(wu.sys_updated_on).fromNow();
                         return (
                             <tr key={wu["number"]}>
@@ -141,7 +143,10 @@ class WidgetIrisWUStale extends React.PureComponent {
                                 <td>{wu["u_process"]}</td>
                                 <td>{wu["short_description"]}</td>
                                 <td>{wu["u_release_number.u_release_titile"]}</td>
-                                <td>{createdAgo}</td>
+
+                                <td>
+                                    <NumberFormat value={createdAgo} decimalScale={2} fixedDecimalScale={true} displayType={"text"} /> years
+                                </td>
                                 <td>{updatedAgo}</td>
                                 <td>{wu["u_sdlc_phase"]}</td>
                                 <td>{wu["u_sdlc_status"]}</td>
