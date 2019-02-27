@@ -61,35 +61,28 @@ class WidgetIrisWUStale extends React.PureComponent {
             "u_title",
             "u_process",
             "u_request_type",
-            "u_what_s_changed"
+            "u_what_s_changed",
+            "u_sdlc_phase",
+            "u_sdlc_status"
         ];
 
-        let daysOld = 500;
-
+        let daysOld = 730;
+        let irisProductID = "967f5101b14c4580ce38de7ebbabfe4e";
         let response_wu = await apiProxy.get(`/sn/${this.props.sn_instance}/api/now/table/rm_enhancement`, {
             params: {
                 // Units for xAgoStart: years, months, days, hours, minutes
-                sysparm_query: `sys_created_on<=javascript:gs.daysAgoStart(${0 -
-                    daysOld})^u_sdlc_phaseNOT INClosed,Canceled^u_product=967f5101b14c4580ce38de7ebbabfe4e`,
-
-                // u_sdlc_phaseNOT INClosed,Canceled^u_product=967f5101b14c4580ce38de7ebbabfe4e
-                // sysparm_count: "true",
+                sysparm_query: `sys_created_on<=javascript:gs.daysAgoStart(${daysOld})^u_sdlc_phaseNOT INClosed,Canceled^u_product=${irisProductID}^ORDERBYsys_created_on`,
                 sysparm_display_value: "true",
-                sysparm_limit: 200,
+                sysparm_limit: 500,
                 sysparm_fields: fields.join(",")
-                // sysparm_group_by: groupby_field
             }
         });
 
-        var wuResults = response_wu.data.result;
-
+        // Update our own state with the new data
         let workUnitObject = {};
         workUnitObject["daysOld"] = daysOld;
-        workUnitObject["workunits"] = wuResults;
+        workUnitObject["workunits"] = response_wu.data.result;
         this.setState({ workUnitObject: workUnitObject });
-
-        console.warn("workUnitObject", this.state.workUnitObject);
-        // Update our own state with the new data
         this.setState({ wuArray: response_wu.data.result });
     }
 
@@ -130,6 +123,7 @@ class WidgetIrisWUStale extends React.PureComponent {
                         <th>Created On</th>
                         <th>Updated On</th>
                         <th>Phase</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -138,7 +132,7 @@ class WidgetIrisWUStale extends React.PureComponent {
                         let updatedAgo = moment(wu.sys_updated_on).fromNow();
                         return (
                             <tr key={wu["number"]}>
-                                <td>{index}</td>
+                                <td>{index + 1}</td>
                                 <td>
                                     {wu["number"]}
                                     <br />
@@ -150,6 +144,7 @@ class WidgetIrisWUStale extends React.PureComponent {
                                 <td>{createdAgo}</td>
                                 <td>{updatedAgo}</td>
                                 <td>{wu["u_sdlc_phase"]}</td>
+                                <td>{wu["u_sdlc_status"]}</td>
                             </tr>
                         );
                     })}
@@ -168,7 +163,7 @@ class WidgetIrisWUStale extends React.PureComponent {
     }
 
     renderCardHeader() {
-        return <div className="single-num-title">Iris Release Notes</div>;
+        return <div className="single-num-title">Iris Work Units (Created > 2 years ago)</div>;
     }
 
     renderCardBody() {
