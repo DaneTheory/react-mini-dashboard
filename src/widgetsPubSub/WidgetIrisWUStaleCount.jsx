@@ -17,7 +17,7 @@ var moment = require("moment");
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
 
 // Create a React class component, everything below this is a class method (i.e. a function attached to the class)
-class WidgetIrisWUStale extends React.PureComponent {
+class WidgetIrisWUStaleList extends React.PureComponent {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {
@@ -27,7 +27,7 @@ class WidgetIrisWUStale extends React.PureComponent {
         super(props);
 
         // Set our initial React state, this is the *only* time to bypass setState()
-        this.state = { widgetName: "WidgetIrisWUStale", wuArray: [], workUnitObject: { workunits: [] } };
+        this.state = { widgetName: "WidgetIrisWUStaleList", wuArray: [], workUnitObject: { workunits: [] } };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function
@@ -67,7 +67,7 @@ class WidgetIrisWUStale extends React.PureComponent {
             "u_sdlc_status"
         ];
 
-        let daysOld = 730;
+        let daysOld = 365;
         let irisProductID = "967f5101b14c4580ce38de7ebbabfe4e";
         let response_wu = await apiProxy.get(`/sn/${this.props.sn_instance}/api/now/table/rm_enhancement`, {
             params: {
@@ -111,53 +111,6 @@ class WidgetIrisWUStale extends React.PureComponent {
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    renderTable(wuArray) {
-        return (
-            <table width="90%" style={{ marginBottom: "3vw" }}>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Work Unit</th>
-                        <th>Process Area</th>
-                        <th>Short Description</th>
-                        <th>Release Title</th>
-                        <th>Created On</th>
-                        <th>Updated On</th>
-                        <th>Phase</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {wuArray.map((wu, index) => {
-                        // let createdAgo = moment(wu.sys_created_on).fromNow();
-                        let createdAgo = moment().diff(moment(wu.sys_created_on), "years", true);
-                        let updatedAgo = moment(wu.sys_updated_on).fromNow();
-                        return (
-                            <tr key={wu["number"]}>
-                                <td>{index + 1}</td>
-                                <td>
-                                    {wu["number"]}
-                                    <br />
-                                    {wu["u_request_type"]}
-                                </td>
-                                <td>{wu["u_process"]}</td>
-                                <td>{wu["short_description"]}</td>
-                                <td>{wu["u_release_number.u_release_titile"]}</td>
-
-                                <td>
-                                    <NumberFormat value={createdAgo} decimalScale={2} fixedDecimalScale={true} displayType={"text"} /> years
-                                </td>
-                                <td>{updatedAgo}</td>
-                                <td>{wu["u_sdlc_phase"]}</td>
-                                <td>{wu["u_sdlc_status"]}</td>
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
-        );
-    }
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     renderAllTables() {
         if (this.state.wuArray.length === 0) {
@@ -168,11 +121,13 @@ class WidgetIrisWUStale extends React.PureComponent {
     }
 
     renderCardHeader() {
-        return <div className="single-num-title">Iris Work Units (Created > 2 years ago)</div>;
+        return <div className="single-num-title">Old Iris Work Units</div>;
     }
 
     renderCardBody() {
-        return <div className="item">{this.renderAllTables()}</div>;
+        let count = this.state.wuArray.length;
+        let countColorClass = count > 100 ? "redFont" : count > 50 ? "amberFont" : "greenFont";
+        return <div className={classNames("item", "Font20x", countColorClass)}>{count}</div>;
     }
 
     render() {
@@ -181,7 +136,12 @@ class WidgetIrisWUStale extends React.PureComponent {
         // Also called if "props" are modified (which are passed from the parent)
 
         return (
-            <DashboardDataCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetIrisWUStale">
+            <DashboardDataCard
+                id={this.props.id}
+                position={this.props.position}
+                color={this.props.color}
+                widgetName="WidgetIrisWUStaleList"
+            >
                 {this.renderCardHeader()}
                 {this.renderCardBody()}
             </DashboardDataCard>
@@ -194,10 +154,10 @@ class WidgetIrisWUStale extends React.PureComponent {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetIrisWUStale.defaultProps = {};
+WidgetIrisWUStaleList.defaultProps = {};
 
 // Force the caller to include the proper attributes
-WidgetIrisWUStale.propTypes = {
+WidgetIrisWUStaleList.propTypes = {
     sn_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
@@ -205,7 +165,7 @@ WidgetIrisWUStale.propTypes = {
 };
 
 // If we (this file) get "imported", this is what they'll be given
-export default WidgetIrisWUStale;
+export default WidgetIrisWUStaleList;
 
 // =======================================================================================================
 // =======================================================================================================

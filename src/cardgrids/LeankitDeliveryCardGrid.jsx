@@ -7,7 +7,8 @@ import WidgetLeankitDeliveryBurndown from "../widgetsPubSub/WidgetLeankitDeliver
 import WidgetLeankitDeliveryStats from "../widgetsPubSub/WidgetLeankitDeliveryStats";
 import WidgetLeankitPointsByOwner from "../widgetsPubSub/WidgetLeankitPointsByOwner";
 import WidgetLeankitDeliveryRemainingPoints from "../widgetsPubSub/WidgetLeankitDeliveryRemainingPoints";
-import WidgetIrisWUStale from "../widgetsPubSub/WidgetIrisWUStale";
+import WidgetIrisWUStaleList from "../widgetsPubSub/WidgetIrisWUStaleList";
+import WidgetIrisWUStaleCount from "../widgetsPubSub/WidgetIrisWUStaleCount";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -46,7 +47,8 @@ class LeankitDiscoveryCardGrid extends React.Component {
                         leankit_instance={this.props.leankit_instance}
                         boardId={this.props.boardId}
                     />
-                    <WidgetIrisWUStale position="span 8 / span 8" sn_instance={this.props.sn_instance} />
+                    <WidgetIrisWUStaleList position="span 8 / span 6" sn_instance={this.props.sn_instance} />
+                    <WidgetIrisWUStaleCount position="span 2 / span 2" sn_instance={this.props.sn_instance} />
                 </CardGrid>
             </div>
         );
