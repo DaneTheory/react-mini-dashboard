@@ -10,6 +10,7 @@ import EverythingCardGrid from "../cardgrids/EverythingCardGrid";
 import Dev1CardGrid from "../cardgrids/Dev1CardGrid";
 import LeankitDiscoveryCardGrid from "../cardgrids/LeankitDiscoveryCardGrid";
 import LeankitDeliveryCardGrid from "../cardgrids/LeankitDeliveryCardGrid";
+import IrisReleaseNotesCardGrid from "../cardgrids/IrisReleaseNotesCardGrid";
 
 class Dashboard extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -116,6 +117,7 @@ class Dashboard extends React.Component {
                             </div>
                             <Link to="/">Home</Link>
                             <Link to="/demo1-dashboard">Demo1 Dashboard</Link>
+                            <Link to="/releasenotes">Iris Release Notes</Link>
                             <Link to="/leankit-discovery-dashboard">Leankit Discovery Dashboard</Link>
                             <Link to="/leankit-delivery-dashboard">Leankit Delivery Dashboard</Link>
                             <br />
@@ -176,6 +178,16 @@ class Dashboard extends React.Component {
                                     <Demo1CardGrid
                                         sn_instance={this.props.sn_instance}
                                         boldchat_instance={this.props.boldchat_instance}
+                                        changeParentPageTitle={this.changePageTitle.bind(this)}
+                                    />
+                                )}
+                            />
+                            <Route
+                                path="/releasenotes"
+                                exact
+                                render={() => (
+                                    <IrisReleaseNotesCardGrid
+                                        sn_instance={this.props.sn_instance}
                                         changeParentPageTitle={this.changePageTitle.bind(this)}
                                     />
                                 )}
