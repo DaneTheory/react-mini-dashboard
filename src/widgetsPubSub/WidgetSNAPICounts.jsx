@@ -56,7 +56,7 @@ class WidgetSNAPICounts extends React.PureComponent {
             // Update our own state with the new data
             this.setState({ app_ids: app_ids });
         } catch (e) {
-            console.warn(`${this.state.widgetName}: Error occurred getting widget data --> ${e.response.data}`);
+            console.warn(`${this.state.widgetName}: Error occurred getting widget data --> ${e || e.response || e.response.data}`);
         }
     }
 
