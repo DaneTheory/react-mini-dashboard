@@ -7,9 +7,6 @@ import PubSub from "pubsub-js";
 import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
 
-// Additional imports
-var classNames = require("classnames");
-
 // The purpose of this file is to create a React Component which can be included in HTML
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
 
@@ -142,7 +139,7 @@ class WidgetSNIrisReleaseNotes extends React.PureComponent {
                         <th>Work Unit</th>
                         <th>Process Area</th>
                         <th>Title</th>
-                        <th>What's Changed</th>
+                        <th>What&apos;s Changed</th>
                         <th>Release Title</th>
                         <th>Test Points</th>
                         <th>Dev Points</th>

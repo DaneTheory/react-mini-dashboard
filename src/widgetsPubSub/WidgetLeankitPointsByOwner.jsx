@@ -3,7 +3,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import PubSub from "pubsub-js";
 import DashboardDataCard from "../components/DashboardDataCard";
-import { ThemeConsumer } from "../components/ThemeContext";
 
 // project imports
 import { getLeankitCards } from "../utilities/getLeankitCards";
@@ -103,36 +102,31 @@ class WidgetLeankitPointsByOwner extends React.Component {
         } else {
             // We've got data, so load the chart now
             return (
-                <ThemeConsumer>
-                    {/* Use a render prop to get the global value from the Context API Consumer */}
-                    {theme => (
-                        <DashboardDataCard
-                            id={this.props.id}
-                            position={this.props.position}
-                            color={this.props.color}
-                            widgetName="WidgetLeankitDiscoveryTotalCardCount"
-                        >
-                            <div className="single-num-title">Points by Owner</div>
-                            <table>
-                                <tbody>
-                                    {this.state.leankitDataObject.leankitCardOwners
-                                        .sort((a, b) => {
-                                            return b.points - a.points;
-                                        })
-                                        .map(function(cardOwner, index) {
-                                            // Now return a JSX statement for rendering
-                                            return (
-                                                <tr key={cardOwner["owner"]}>
-                                                    <td>{cardOwner["owner"]}</td>
-                                                    <td>{cardOwner["points"]} pts</td>
-                                                </tr>
-                                            );
-                                        })}
-                                </tbody>
-                            </table>
-                        </DashboardDataCard>
-                    )}
-                </ThemeConsumer>
+                <DashboardDataCard
+                    id={this.props.id}
+                    position={this.props.position}
+                    color={this.props.color}
+                    widgetName="WidgetLeankitDiscoveryTotalCardCount"
+                >
+                    <div className="single-num-title">Points by Owner</div>
+                    <table>
+                        <tbody>
+                            {this.state.leankitDataObject.leankitCardOwners
+                                .sort((a, b) => {
+                                    return b.points - a.points;
+                                })
+                                .map(function(cardOwner) {
+                                    // Now return a JSX statement for rendering
+                                    return (
+                                        <tr key={cardOwner["owner"]}>
+                                            <td>{cardOwner["owner"]}</td>
+                                            <td>{cardOwner["points"]} pts</td>
+                                        </tr>
+                                    );
+                                })}
+                        </tbody>
+                    </table>
+                </DashboardDataCard>
             );
         }
     }

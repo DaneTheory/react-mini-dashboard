@@ -2,7 +2,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import PubSub from "pubsub-js";
-import NumberFormat from "react-number-format";
 
 // project imports
 import DashboardDataCard from "../components/DashboardDataCard";
@@ -10,8 +9,6 @@ import apiProxy from "../api/apiProxy";
 
 // Additional imports
 var classNames = require("classnames");
-var strftime = require("strftime");
-var moment = require("moment");
 
 // The purpose of this file is to create a React Component which can be included in HTML
 // This is a self-contained class which knows how to get it's own data, and display it in HTML

@@ -9,8 +9,6 @@ import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
 
 // Additional imports
-var classNames = require("classnames");
-var strftime = require("strftime");
 var moment = require("moment");
 
 // The purpose of this file is to create a React Component which can be included in HTML
@@ -166,7 +164,7 @@ class WidgetIrisWUStaleList extends React.PureComponent {
     }
 
     renderCardHeader() {
-        return <div className="single-num-title">Iris Work Units (Created > 2 years ago)</div>;
+        return <div className="single-num-title">Iris Work Units (Created &gt; 2 years ago)</div>;
     }
 
     renderCardBody() {

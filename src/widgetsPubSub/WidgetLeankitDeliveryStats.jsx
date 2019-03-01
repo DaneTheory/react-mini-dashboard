@@ -3,7 +3,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import PubSub from "pubsub-js";
 import DashboardDataCard from "../components/DashboardDataCard";
-import { ThemeConsumer } from "../components/ThemeContext";
 
 // project imports
 import { getLeankitCards } from "../utilities/getLeankitCards";
@@ -106,41 +105,36 @@ class WidgetLeankitDeliveryStats extends React.Component {
         } else {
             // We've got data, so load the chart now
             return (
-                <ThemeConsumer>
-                    {/* Use a render prop to get the global value from the Context API Consumer */}
-                    {theme => (
-                        <DashboardDataCard
-                            id={this.props.id}
-                            position={this.props.position}
-                            color={this.props.color}
-                            widgetName="WidgetLeankitDiscoveryTotalCardCount"
-                        >
-                            <div className="single-num-title">Leankit Stats</div>
-                            <br />
-                            <div className="Font13x">Planned: {this.state.leankitDataObject.totalPlannedPoints} points</div>
-                            <div className="Font13x">Unplanned: {this.state.leankitDataObject.totalUnplannedPoints} points</div>
-                            <br />
-                            <table>
-                                <tbody>
-                                    {this.state.leankitDataObject.leankitStats.map(function(leankitStat, index) {
-                                        // Now return a JSX statement for rendering
-                                        let cellColor = null;
-                                        if (leankitStat["name"] === "Early Win %") {
-                                            let earlyWinPct = parseFloat(leankitStat["stat"]);
-                                            cellColor = earlyWinPct < 25 ? "cellRed" : earlyWinPct < 15 ? "cellAmber" : "cellGreen";
-                                        }
-                                        return (
-                                            <tr key={leankitStat["name"]}>
-                                                <td>{leankitStat["name"]}</td>
-                                                <td className={classNames(cellColor)}>{leankitStat["stat"]}</td>
-                                            </tr>
-                                        );
-                                    })}
-                                </tbody>
-                            </table>
-                        </DashboardDataCard>
-                    )}
-                </ThemeConsumer>
+                <DashboardDataCard
+                    id={this.props.id}
+                    position={this.props.position}
+                    color={this.props.color}
+                    widgetName="WidgetLeankitDiscoveryTotalCardCount"
+                >
+                    <div className="single-num-title">Leankit Stats</div>
+                    <br />
+                    <div className="Font13x">Planned: {this.state.leankitDataObject.totalPlannedPoints} points</div>
+                    <div className="Font13x">Unplanned: {this.state.leankitDataObject.totalUnplannedPoints} points</div>
+                    <br />
+                    <table>
+                        <tbody>
+                            {this.state.leankitDataObject.leankitStats.map(function(leankitStat) {
+                                // Now return a JSX statement for rendering
+                                let cellColor = null;
+                                if (leankitStat["name"] === "Early Win %") {
+                                    let earlyWinPct = parseFloat(leankitStat["stat"]);
+                                    cellColor = earlyWinPct < 25 ? "cellRed" : earlyWinPct < 15 ? "cellAmber" : "cellGreen";
+                                }
+                                return (
+                                    <tr key={leankitStat["name"]}>
+                                        <td>{leankitStat["name"]}</td>
+                                        <td className={classNames(cellColor)}>{leankitStat["stat"]}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </DashboardDataCard>
             );
         }
     }

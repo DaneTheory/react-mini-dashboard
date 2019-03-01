@@ -10,8 +10,6 @@ import apiProxy from "../api/apiProxy";
 
 // Additional imports
 var classNames = require("classnames");
-var strftime = require("strftime");
-var moment = require("moment");
 
 // The purpose of this file is to create a React Component which can be included in HTML
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
@@ -137,8 +135,6 @@ class WidgetIrisINCBreachList extends React.PureComponent {
                                 })
                                 .map((incident, index) => {
                                     // let createdAgo = moment(incident.sys_created_on).fromNow();
-                                    let createdAgo = moment().diff(moment(incident.sys_created_on), "years", true);
-                                    let updatedAgo = moment(incident.sys_updated_on).fromNow();
                                     let sla_pct = incident.sla_pct;
                                     let slaColorClass = sla_pct > 95 ? "cellRed" : sla_pct > 50 ? "cellAmber" : "cellGreen";
                                     return (

@@ -3,7 +3,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import PubSub from "pubsub-js";
 import DashboardDataCard from "../components/DashboardDataCard";
-import { ThemeConsumer } from "../components/ThemeContext";
 
 // project imports
 import { getLeankitCards } from "../utilities/getLeankitCards";
@@ -106,20 +105,15 @@ class WidgetLeankitDeliveryRemainingPoints extends React.Component {
                 return element.name === "Remaining Planned Points";
             });
             return (
-                <ThemeConsumer>
-                    {/* Use a render prop to get the global value from the Context API Consumer */}
-                    {theme => (
-                        <DashboardDataCard
-                            id={this.props.id}
-                            position={this.props.position}
-                            color={this.props.color}
-                            widgetName="WidgetLeankitDiscoveryTotalCardCount"
-                        >
-                            <div className="single-num-title">Remaining Points</div>
-                            <div className="Font20x greenFont">{remainingPlannedPoints.stat}</div>
-                        </DashboardDataCard>
-                    )}
-                </ThemeConsumer>
+                <DashboardDataCard
+                    id={this.props.id}
+                    position={this.props.position}
+                    color={this.props.color}
+                    widgetName="WidgetLeankitDiscoveryTotalCardCount"
+                >
+                    <div className="single-num-title">Remaining Points</div>
+                    <div className="Font20x greenFont">{remainingPlannedPoints.stat}</div>
+                </DashboardDataCard>
             );
         }
     }
