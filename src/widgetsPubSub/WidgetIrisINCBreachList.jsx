@@ -53,15 +53,11 @@ class WidgetIrisINCBreachList extends React.PureComponent {
             }
         });
 
-        console.warn("inc", response_INC);
-
         // Update our own state with the new data
         // this.setState({ irisINCs: response_INC.data.result });
 
         let incidents_all = await Promise.all(
             response_INC.data.result.map(async incident => {
-                console.log(incident.number);
-
                 let inc_sys_id = incident.sys_id;
                 let response_sla = await apiProxy.get(`/sn/${this.props.sn_instance}/api/now/table/task_sla`, {
                     params: {
@@ -74,14 +70,11 @@ class WidgetIrisINCBreachList extends React.PureComponent {
                 });
                 let a = response_sla.data.result[0].percentage;
                 a = a.replace(/,/g, "");
-                console.warn(incident.number, a, parseFloat(a));
                 incident.sla_pct = parseFloat(a);
 
                 return incident;
             })
         );
-        console.error("Done!");
-        console.log(incidents_all);
 
         // Update our own state with the new data
         this.setState({ irisINCs: incidents_all });
