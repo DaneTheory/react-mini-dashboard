@@ -166,7 +166,7 @@ class WidgetIrisINCBreachList extends React.PureComponent {
     }
 
     renderCardHeader() {
-        return <div className="single-num-title">Iris Incidents (Breached>50%)</div>;
+        return <div className="single-num-title">Iris Incidents (Breached&gt;50%)</div>;
     }
 
     renderCardBody() {
