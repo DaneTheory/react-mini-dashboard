@@ -117,7 +117,7 @@ class WidgetIrisINCBreachList extends React.PureComponent {
             return <div className="waiting-for-data">Waiting for Data...</div>;
         } else {
             return (
-                <div style={{ fontSize: "2.5vw" }}>
+                <div>
                     <table width="90%" style={{ marginBottom: "3vw" }}>
                         <thead>
                             <tr>
@@ -133,15 +133,18 @@ class WidgetIrisINCBreachList extends React.PureComponent {
                                 .sort((a, b) => {
                                     return b.sla_pct - a.sla_pct;
                                 })
+                                .filter(incident => {
+                                    return incident.sla_pct > 50;
+                                })
                                 .map((incident, index) => {
                                     // let createdAgo = moment(incident.sys_created_on).fromNow();
                                     let sla_pct = incident.sla_pct;
-                                    let slaColorClass = sla_pct > 95 ? "cellRed" : sla_pct > 50 ? "cellAmber" : "cellGreen";
+                                    let slaColorClass = sla_pct > 90 ? "cellRed" : sla_pct > 60 ? "cellAmber" : "cellGreen";
                                     return (
-                                        <tr key={incident["number"]} style={{ fontSize: "2.5vw" }}>
-                                            <td>{index + 1}</td>
-                                            <td>{incident["number"]}</td>
-                                            <td className={classNames(slaColorClass)}>
+                                        <tr key={incident["number"]} style={{ fontSize: "4vw" }}>
+                                            <td style={{ fontSize: "1.5vw" }}>{index + 1}</td>
+                                            <td style={{ fontSize: "1.0vw" }}>{incident["number"]}</td>
+                                            <td style={{ fontSize: "1.0vw" }} className={classNames(slaColorClass)}>
                                                 <NumberFormat
                                                     value={sla_pct}
                                                     decimalScale={0}
@@ -150,8 +153,8 @@ class WidgetIrisINCBreachList extends React.PureComponent {
                                                 />
                                                 %
                                             </td>
-                                            <td>{incident["short_description"]}</td>
-                                            <td>{incident["sys_created_by"]}</td>
+                                            <td style={{ fontSize: "0.9vw" }}>{incident["short_description"].substr(0, 90)}...</td>
+                                            <td style={{ fontSize: "0.9vw" }}>{incident["sys_created_by"]}</td>
                                         </tr>
                                     );
                                 })}
@@ -163,7 +166,7 @@ class WidgetIrisINCBreachList extends React.PureComponent {
     }
 
     renderCardHeader() {
-        return <div className="single-num-title">Iris Incidents (Breached)</div>;
+        return <div className="single-num-title">Iris Incidents (Breached>50%)</div>;
     }
 
     renderCardBody() {
