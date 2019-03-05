@@ -95,8 +95,8 @@ class Dashboard extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     doSomethingForDebugging() {
         console.log("Clicked on Title, this function used for inserting a quick function for debugging");
-        let colorVariableName = "colorThemePageBackground";
-        document.documentElement.style.setProperty("--" + colorVariableName, "#a7a");
+        // let colorVariableName = "colorThemePageBackground";
+        // document.documentElement.style.setProperty("--" + colorVariableName, "#a7a");
     }
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
