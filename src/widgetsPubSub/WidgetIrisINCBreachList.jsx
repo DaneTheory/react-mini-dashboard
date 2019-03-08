@@ -69,16 +69,25 @@ class WidgetIrisINCBreachList extends React.PureComponent {
                         sysparm_limit: 500
                     }
                 });
-                let a = response_sla.data.result[0].percentage;
-                a = a.replace(/,/g, "");
-                incident.sla_pct = parseFloat(a);
-                incident.sla_record = response_sla.data.result[0];
+                let sla_records = response_sla.data.result;
+
+                // Incident can have multiple SLA records, look for record that's "in progress", and contains the word "resolution"
+                let sla_records_resolution_in_progress = sla_records.filter(sla_record => {
+                    return sla_record.stage === "In progress" && sla_record.sla.display_value.toLowerCase().includes("resolution");
+                });
+                // Select the first (and likely only) SLA record that matches criteria
+                let sla_record = sla_records_resolution_in_progress[0];
+
+                // Compute a proper percentage by removing comma from string (e.g. 1,014) and converting string to float, assign back to record
+                let sla_pct_string_without_comma = sla_record.percentage.replace(/,/g, "");
+                sla_record.sla_pct_float = parseFloat(sla_pct_string_without_comma);
+
+                // Assign the modified SLA record back to the incident
+                incident.sla_record = sla_record;
 
                 return incident;
             })
         );
-
-        console.warn(incidents_all);
 
         // Update our own state with the new data
         this.setState({ irisINCs: incidents_all });
@@ -112,12 +121,15 @@ class WidgetIrisINCBreachList extends React.PureComponent {
     renderAllTables() {
         let sla_threshold_pct = 50;
         if (this.state.irisINCs.length === 0) {
+            // Show a please message while we're waiting for data from the API call
             return <div className="waiting-for-data">Waiting for Data...</div>;
         } else if (
+            // If there are zero incidents above specified breach pct, then show a fun picture
             this.state.irisINCs.filter(incident => {
-                return incident.sla_pct > sla_threshold_pct;
+                return incident.sla_record.sla_pct_float > sla_threshold_pct;
             }).length === 0
         ) {
+            // Show a fun picture
             return (
                 <div>
                     <br />
@@ -128,6 +140,7 @@ class WidgetIrisINCBreachList extends React.PureComponent {
                 </div>
             );
         } else {
+            // OK, looks like we have incidents above the specified breach percentage, list them out
             return (
                 <div>
                     <table width="90%" style={{ marginBottom: "3vw" }}>
@@ -138,25 +151,36 @@ class WidgetIrisINCBreachList extends React.PureComponent {
                                 <th>Breach</th>
                                 <th>Short Description</th>
                                 <th>Created By</th>
-                                {/* <th>Time Remaining</th> */}
+                                <th>Priority</th>
+                                <th>Time Remaining</th>
                             </tr>
                         </thead>
                         <tbody>
                             {this.state.irisINCs
                                 .sort((a, b) => {
-                                    return b.sla_pct - a.sla_pct;
+                                    // Sort the incidents by SLA from high to low
+                                    return b.sla_record.sla_pct_float - a.sla_record.sla_pct_float;
                                 })
                                 .filter(incident => {
-                                    return incident.sla_pct > sla_threshold_pct;
+                                    // Only show incidents that have exceeded the prescribed SLA percentage
+                                    return incident.sla_record.sla_pct_float > sla_threshold_pct;
                                 })
                                 .map((incident, index) => {
-                                    // let createdAgo = moment(incident.sys_created_on).fromNow();
-                                    let sla_pct = incident.sla_pct;
+                                    // Construct a url to get to this incident
+                                    let host = this.props.sn_instance.replace("worker", "");
+                                    let sys_id = incident.sys_id;
+                                    let url = `https://${host}/nav_to.do?uri=/incident.do?sys_id=${sys_id}&sysparm_stack=&sysparm_view=`;
+
+                                    // Determine % of sla that we've consume, and assign a RAG indictor to it
+                                    let sla_pct = incident.sla_record.sla_pct_float;
                                     let slaColorClass = sla_pct > 90 ? "cellRed" : sla_pct > 60 ? "cellAmber" : "cellGreen";
+
                                     return (
                                         <tr key={incident["number"]} style={{ fontSize: "4vw" }}>
                                             <td style={{ fontSize: "1.5vw" }}>{index + 1}</td>
-                                            <td style={{ fontSize: "1.0vw" }}>{incident["number"]}</td>
+                                            <td style={{ fontSize: "1.0vw" }}>
+                                                <a href={url}>{incident["number"]}</a>
+                                            </td>
                                             <td style={{ fontSize: "1.0vw" }} className={classNames(slaColorClass)}>
                                                 <NumberFormat
                                                     value={sla_pct}
@@ -166,9 +190,10 @@ class WidgetIrisINCBreachList extends React.PureComponent {
                                                 />
                                                 %
                                             </td>
-                                            <td style={{ fontSize: "0.9vw" }}>{incident["short_description"].substr(0, 90)}...</td>
+                                            <td style={{ fontSize: "0.9vw" }}>{incident["short_description"].substr(0, 60)}...</td>
                                             <td style={{ fontSize: "0.9vw" }}>{incident["sys_created_by"]}</td>
-                                            {/* <td>{incident["sla_record"]["business_time_left"]}</td> */}
+                                            <td style={{ fontSize: "0.9vw" }}>{incident["priority"]}</td>
+                                            <td>{incident["sla_record"]["business_time_left"]}</td>
                                         </tr>
                                     );
                                 })}
