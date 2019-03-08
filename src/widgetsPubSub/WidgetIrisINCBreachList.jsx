@@ -142,8 +142,8 @@ class WidgetIrisINCBreachList extends React.PureComponent {
                     <br />
                     <div>Way to go ! &nbsp;&nbsp; Zero Incidents nearing breach.</div>
                     <div />
-                    <div>Here&apos;s a picture of kittens</div>
-                    <img src={kittens} alt="" />
+                    <div style={{ marginBottom: "3vw" }}>Here&apos;s a picture of kittens</div>
+                    <img style={{ width: "20vw" }} src={kittens} alt="" />
                 </div>
             );
         } else {
