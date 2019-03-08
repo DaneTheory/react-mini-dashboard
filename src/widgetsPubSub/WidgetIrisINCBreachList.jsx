@@ -126,7 +126,7 @@ class WidgetIrisINCBreachList extends React.PureComponent {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     renderAllTables() {
-        let sla_threshold_pct = 50;
+        let sla_threshold_pct = this.props.sla_threshhold_pct;
         if (this.state.irisINCs.length === 0) {
             // Show a please message while we're waiting for data from the API call
             return <div className="waiting-for-data">Waiting for Data...</div>;
@@ -212,7 +212,7 @@ class WidgetIrisINCBreachList extends React.PureComponent {
     }
 
     renderCardHeader() {
-        return <div className="single-num-title">Iris Incidents (Breached&gt;50%)</div>;
+        return <div className="single-num-title">Iris Incidents (Breached&gt;{this.props.sla_threshhold_pct}%)</div>;
     }
 
     renderCardBody() {
@@ -243,14 +243,17 @@ class WidgetIrisINCBreachList extends React.PureComponent {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetIrisINCBreachList.defaultProps = {};
+WidgetIrisINCBreachList.defaultProps = {
+    sla_threshhold_pct: 50
+};
 
 // Force the caller to include the proper attributes
 WidgetIrisINCBreachList.propTypes = {
     sn_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
-    color: PropTypes.string
+    color: PropTypes.string,
+    sla_threshhold_pct: PropTypes.number.isRequired
 };
 
 // If we (this file) get "imported", this is what they'll be given
