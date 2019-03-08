@@ -7,6 +7,7 @@ import NumberFormat from "react-number-format";
 // project imports
 import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
+import kittens from "./kittens.png";
 
 // Additional imports
 var classNames = require("classnames");
@@ -71,10 +72,13 @@ class WidgetIrisINCBreachList extends React.PureComponent {
                 let a = response_sla.data.result[0].percentage;
                 a = a.replace(/,/g, "");
                 incident.sla_pct = parseFloat(a);
+                incident.sla_record = response_sla.data.result[0];
 
                 return incident;
             })
         );
+
+        console.warn(incidents_all);
 
         // Update our own state with the new data
         this.setState({ irisINCs: incidents_all });
@@ -106,8 +110,23 @@ class WidgetIrisINCBreachList extends React.PureComponent {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     renderAllTables() {
+        let sla_threshold_pct = 50;
         if (this.state.irisINCs.length === 0) {
             return <div className="waiting-for-data">Waiting for Data...</div>;
+        } else if (
+            this.state.irisINCs.filter(incident => {
+                return incident.sla_pct > sla_threshold_pct;
+            }).length === 0
+        ) {
+            return (
+                <div>
+                    <br />
+                    <div>Way to go ! &nbsp;&nbsp; Zero Incidents nearing breach.</div>
+                    <div />
+                    <div>Here&apos;s a picture of kittens</div>
+                    <img src={kittens} alt="" />
+                </div>
+            );
         } else {
             return (
                 <div>
@@ -119,6 +138,7 @@ class WidgetIrisINCBreachList extends React.PureComponent {
                                 <th>Breach</th>
                                 <th>Short Description</th>
                                 <th>Created By</th>
+                                {/* <th>Time Remaining</th> */}
                             </tr>
                         </thead>
                         <tbody>
@@ -127,7 +147,7 @@ class WidgetIrisINCBreachList extends React.PureComponent {
                                     return b.sla_pct - a.sla_pct;
                                 })
                                 .filter(incident => {
-                                    return incident.sla_pct > 50;
+                                    return incident.sla_pct > sla_threshold_pct;
                                 })
                                 .map((incident, index) => {
                                     // let createdAgo = moment(incident.sys_created_on).fromNow();
@@ -148,6 +168,7 @@ class WidgetIrisINCBreachList extends React.PureComponent {
                                             </td>
                                             <td style={{ fontSize: "0.9vw" }}>{incident["short_description"].substr(0, 90)}...</td>
                                             <td style={{ fontSize: "0.9vw" }}>{incident["sys_created_by"]}</td>
+                                            {/* <td>{incident["sla_record"]["business_time_left"]}</td> */}
                                         </tr>
                                     );
                                 })}
