@@ -76,16 +76,23 @@ class WidgetIrisINCBreachList extends React.PureComponent {
                     return sla_record.stage === "In progress" && sla_record.sla.display_value.toLowerCase().includes("resolution");
                 });
                 // Select the first (and likely only) SLA record that matches criteria
-                let sla_record = sla_records_resolution_in_progress[0];
+                if (sla_records_resolution_in_progress.length !== 1) {
+                    console.warning(`Didn't see exactly 1 SLA record for ${incident.number}`, sla_records);
+                    // Since this Incident appears to NOT have an SLA record, don't include in results (simply return)
+                    return;
+                } else {
+                    let sla_record = sla_records_resolution_in_progress[0];
+                    console.log(sla_record);
 
-                // Compute a proper percentage by removing comma from string (e.g. 1,014) and converting string to float, assign back to record
-                let sla_pct_string_without_comma = sla_record.percentage.replace(/,/g, "");
-                sla_record.sla_pct_float = parseFloat(sla_pct_string_without_comma);
+                    // Compute a proper percentage by removing comma from string (e.g. 1,014) and converting string to float, assign back to record
+                    let sla_pct_string_without_comma = sla_record.percentage.replace(/,/g, "");
+                    sla_record.sla_pct_float = parseFloat(sla_pct_string_without_comma);
 
-                // Assign the modified SLA record back to the incident
-                incident.sla_record = sla_record;
+                    // Assign the modified SLA record back to the incident
+                    incident.sla_record = sla_record;
 
-                return incident;
+                    return incident;
+                }
             })
         );
 
