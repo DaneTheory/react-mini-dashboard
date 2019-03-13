@@ -2,7 +2,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import PubSub from "pubsub-js";
-import NumberFormat from "react-number-format";
+import CountUp from "react-countup";
 
 // project imports
 import DashboardDataCard from "../components/DashboardDataCard";
@@ -22,7 +22,7 @@ class WidgetSNUniqueLoginsToday extends React.PureComponent {
         super(props);
 
         // Set our initial React state, this is the *only* time to bypass setState()
-        this.state = { widgetName: "WidgetSNUniqueLoginsToday", count: null };
+        this.state = { widgetName: "WidgetSNUniqueLoginsToday", prevcount: 0, count: null };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function
@@ -47,6 +47,7 @@ class WidgetSNUniqueLoginsToday extends React.PureComponent {
         });
 
         // Update our own state with the new data
+        this.setState({ prevcount: this.state.count });
         this.setState({ count: response.data.result.stats.count });
     }
 
@@ -89,7 +90,15 @@ class WidgetSNUniqueLoginsToday extends React.PureComponent {
             >
                 <div className="single-num-title">Unique Logins Today</div>
                 <div className="single-num-value">
-                    <NumberFormat value={this.state.count} thousandSeparator={true} displayType={"text"} />
+                    {/* <NumberFormat value={this.state.count} thousandSeparator={true} displayType={"text"} /> */}
+                    <CountUp
+                        start={this.state.prevcount}
+                        end={this.state.count}
+                        duration={this.props.countUpAnimationDuration}
+                        useEasing={true}
+                        decimals={0}
+                        separator=","
+                    />
                 </div>
             </DashboardDataCard>
         );
@@ -101,7 +110,9 @@ class WidgetSNUniqueLoginsToday extends React.PureComponent {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetSNUniqueLoginsToday.defaultProps = {};
+WidgetSNUniqueLoginsToday.defaultProps = {
+    countUpAnimationDuration: 45
+};
 
 // Force the caller to include the proper attributes
 WidgetSNUniqueLoginsToday.propTypes = {
@@ -109,7 +120,8 @@ WidgetSNUniqueLoginsToday.propTypes = {
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
     color: PropTypes.string,
-    setTimeout: PropTypes.func
+    setTimeout: PropTypes.func,
+    countUpAnimationDuration: PropTypes.number
 };
 
 // If we (this file) get "imported", this is what they'll be given
