@@ -14,6 +14,7 @@ import WidgetSNNewIncidentsToday from "../widgetsPubSub/WidgetSNNewIncidentsToda
 import WidgetSNCurrentUsers from "../widgetsPubSub/WidgetSNCurrentUsers";
 import WidgetBoldChatActiveCount from "../widgetsPubSub/WidgetBoldChatActiveCount";
 import WidgetSNAPICounts from "../widgetsPubSub/WidgetSNAPICounts";
+import WidgetSpaceAvailable from "../widgetsPubSub/WidgetSpaceAvailable";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -71,7 +72,9 @@ class Dev1CardGrid extends React.Component {
                     sn_instance={this.props.sn_instance}
                 />
 
-                <WidgetSNAPICounts position="1 / 11 / span 8 / span 2" />
+                <WidgetSNAPICounts position="1 / 11 / span 4 / span 2" />
+
+                {/* <WidgetSpaceAvailable position="5 / 11 / span 4 / span 2" /> */}
             </CardGrid>
         );
     }
