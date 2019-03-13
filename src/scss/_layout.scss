@@ -22,11 +22,12 @@
 // Container on the left for all the navigation
 .fixedSideBar_container {
     grid-area: 2 / 1 / span 1 / span 1;
-    padding: 0.8rem;
+    padding: 0.4rem;
     font-size: 1.3vw;
 
     .navButtonsLeft {
         background-color: var(--colorThemeLeftNavButtons);
+        margin-left: 0.6rem;
         width: 2.5vw;
         height: 2.5vw;
     }

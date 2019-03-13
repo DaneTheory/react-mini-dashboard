@@ -12,6 +12,7 @@ import LeankitDiscoveryCardGrid from "../cardgrids/LeankitDiscoveryCardGrid";
 import LeankitDeliveryCardGrid from "../cardgrids/LeankitDeliveryCardGrid";
 import IrisReleaseNotesCardGrid from "../cardgrids/IrisReleaseNotesCardGrid";
 import IrisOpsCardGrid from "../cardgrids/IrisOpsCardGrid";
+import NumberFormat from "react-number-format";
 
 class Dashboard extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -21,7 +22,8 @@ class Dashboard extends React.Component {
         this.state = {
             pageTitle: "Original Title",
             // time remaining until next data refresh PubSub
-            refreshRemainingMs: props.refreshInterval
+            refreshRemainingMs: props.refreshInterval,
+            reloadRemainingMs: props.reloadInterval
         };
 
         // So we can keep track of the once-per-second timeout
@@ -38,22 +40,30 @@ class Dashboard extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     widgetRefreshCountdownLoop() {
+        // PubSub event will trigger (likely once per second), and call this method
+
         // console.log("Time left: " + this.state.refreshRemainingMs);
 
-        // Check to see if timer expired, if so trigger data update
+        // Check to see if reload timer expired, if so trigger data update
+        if (this.state.reloadRemainingMs <= 0) {
+            window.location.reload();
+        }
+
+        // Check to see if refresh timer expired, if so trigger data update
         if (this.state.refreshRemainingMs <= 0) {
             PubSub.publish("updateWidgetsEvent", "Update your data, you widgets !");
             this.setState({ refreshRemainingMs: this.props.refreshInterval });
         }
 
-        // Subtract one second, and then wait for one second
+        // Subtract one second from the count
         this.setState({ refreshRemainingMs: this.state.refreshRemainingMs - this.props.refreshUpdateInterval });
+        this.setState({ reloadRemainingMs: this.state.reloadRemainingMs - this.props.refreshUpdateInterval });
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     componentDidMount() {
-        // Create a interval to periodically trigger PubSub event
+        // Create an interval to periodically trigger PubSub event
         this.intervalHandle = setInterval(() => {
             this.widgetRefreshCountdownLoop();
         }, this.props.refreshUpdateInterval);
@@ -154,6 +164,15 @@ class Dashboard extends React.Component {
                             </button>
                             {/* Show the time remaining until the next refresh */}
                             <div className="refreshTimeRemaining">{this.state.refreshRemainingMs / 1000}s</div>
+                            <div className="refreshTimeRemaining">
+                                <NumberFormat
+                                    value={this.state.reloadRemainingMs / 1000 / 60}
+                                    decimalScale={1}
+                                    fixedDecimalScale={true}
+                                    displayType={"text"}
+                                />
+                                m
+                            </div>
                             <div className="versionTitleNestedOuter">
                                 <div className="versionTitleNestedInner Font18x">
                                     {process.env.REACT_APP_ENV} v{process.env.REACT_APP_VERSION}
@@ -253,6 +272,7 @@ class Dashboard extends React.Component {
 Dashboard.defaultProps = {
     refreshUpdateInterval: 1000,
     refreshInterval: 8000,
+    reloadInterval: 36000, // 300k = 5m, 900k = 15m, 36k = 60m
     sn_instance: "jnjprodworker.service-now.com",
     boldchat_instance: "api.boldchat.com",
     leankit_instance: "jnj.leankit.com"
@@ -260,6 +280,7 @@ Dashboard.defaultProps = {
 
 Dashboard.propTypes = {
     refreshInterval: PropTypes.number.isRequired,
+    reloadInterval: PropTypes.number.isRequired,
     refreshUpdateInterval: PropTypes.number.isRequired,
     sn_instance: PropTypes.string.isRequired,
     boldchat_instance: PropTypes.string.isRequired,
