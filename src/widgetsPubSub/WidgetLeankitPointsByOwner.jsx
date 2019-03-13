@@ -108,7 +108,7 @@ class WidgetLeankitPointsByOwner extends React.Component {
                     color={this.props.color}
                     widgetName="WidgetLeankitDiscoveryTotalCardCount"
                 >
-                    <div className="single-num-title">Points by Owner</div>
+                    <div className="single-num-title">Sprint Points by Owner</div>
                     <table>
                         <tbody>
                             {this.state.leankitDataObject.leankitCardOwners

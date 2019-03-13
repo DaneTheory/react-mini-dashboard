@@ -197,7 +197,8 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
                                         },
                                         hAxis: {
                                             textStyle: {
-                                                color: theme.currentColorTheme.colorThemeCardFontDefault
+                                                color: theme.currentColorTheme.colorThemeCardFontDefault,
+                                                fontSize: 10
                                             }
                                         },
                                         vAxis: {
@@ -218,20 +219,20 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
                                             // Planned Pts
                                             0: {
                                                 curveType: "function",
-                                                pointSize: 10,
+                                                pointSize: 5,
                                                 color: theme.currentColorTheme.colorThemeChartBrown,
-                                                lineWidth: 5
+                                                lineWidth: 2
                                             },
                                             // Burndown (Ideal)
                                             1: {
-                                                pointSize: 5,
+                                                pointSize: 2,
                                                 color: theme.currentColorTheme.colorThemeChartGreen,
-                                                lineWidth: 5
+                                                lineWidth: 3
                                             },
                                             // Unplanned Pts
                                             2: {
                                                 curveType: "function",
-                                                pointSize: 5,
+                                                pointSize: 2,
                                                 color: theme.currentColorTheme.colorThemeChartPurple,
                                                 lineWidth: 1
                                             }

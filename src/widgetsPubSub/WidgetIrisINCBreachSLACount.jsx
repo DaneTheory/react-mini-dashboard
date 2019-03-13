@@ -15,7 +15,7 @@ var classNames = require("classnames");
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
 
 // Create a React class component, everything below this is a class method (i.e. a function attached to the class)
-class WidgetIrisINCBreachCount extends React.PureComponent {
+class WidgetIrisINCBreachSLACount extends React.PureComponent {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {
@@ -26,7 +26,7 @@ class WidgetIrisINCBreachCount extends React.PureComponent {
 
         // Set our initial React state, this is the *only* time to bypass setState()
         this.state = {
-            widgetName: "WidgetIrisINCBreachCount",
+            widgetName: "WidgetIrisINCBreachSLACount",
             wuArray: [],
             irisResolvedINCCount: null,
             irisResolvedINCBreachedCount: null
@@ -101,7 +101,7 @@ class WidgetIrisINCBreachCount extends React.PureComponent {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     renderCardHeader() {
-        return <div className="single-num-title">Iris Incidents (SLA Counts)</div>;
+        return <div className="single-num-title">Iris L2 SLA (Month)</div>;
     }
 
     renderCardBody() {
@@ -113,16 +113,11 @@ class WidgetIrisINCBreachCount extends React.PureComponent {
             let INCMetSLAColor = INCMetSLA > 95 ? "greenFont" : INCMetSLA > 90 ? "orangeFont" : "redFont";
             return (
                 <div>
-                    <br />
-                    <div className={classNames(INCMetSLAColor, "Font18x")}>
-                        SLA Met:&nbsp;
+                    <div className={classNames(INCMetSLAColor, "Font17x")}>
                         <NumberFormat value={INCMetSLA} decimalScale={2} fixedDecimalScale={true} displayType={"text"} />%
                     </div>
-                    <br />
-                    <div className="Font12x">
-                        Resolved INC&apos;s this month: {this.state.irisResolvedINCCount}
-                        <br />
-                        Breached: {this.state.irisResolvedINCBreachedCount}
+                    <div className="Font9x">
+                        Resolved: {this.state.irisResolvedINCCount} / Breached: {this.state.irisResolvedINCBreachedCount}
                     </div>
                 </div>
             );
@@ -139,7 +134,7 @@ class WidgetIrisINCBreachCount extends React.PureComponent {
                 id={this.props.id}
                 position={this.props.position}
                 color={this.props.color}
-                widgetName="WidgetIrisINCBreachCount"
+                widgetName="WidgetIrisINCBreachSLACount"
             >
                 {this.renderCardHeader()}
                 {this.renderCardBody()}
@@ -153,10 +148,10 @@ class WidgetIrisINCBreachCount extends React.PureComponent {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetIrisINCBreachCount.defaultProps = {};
+WidgetIrisINCBreachSLACount.defaultProps = {};
 
 // Force the caller to include the proper attributes
-WidgetIrisINCBreachCount.propTypes = {
+WidgetIrisINCBreachSLACount.propTypes = {
     sn_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
@@ -164,7 +159,7 @@ WidgetIrisINCBreachCount.propTypes = {
 };
 
 // If we (this file) get "imported", this is what they'll be given
-export default WidgetIrisINCBreachCount;
+export default WidgetIrisINCBreachSLACount;
 
 // =======================================================================================================
 // =======================================================================================================
