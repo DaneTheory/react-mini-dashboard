@@ -42,7 +42,7 @@ class WidgetSNAPICounts extends React.PureComponent {
                 params: {
                     timespan: "P7D",
                     aggregation: "sum",
-                    segment: "customDimensions/requester"
+                    segment: "customDimensions%2frequester"
                 }
             });
             // Distill down to simpler object
