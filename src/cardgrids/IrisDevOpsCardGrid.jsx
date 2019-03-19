@@ -41,19 +41,19 @@ class IrisDevOpsCardGrid extends React.Component {
                     boardId={this.props.boardId}
                 />
                 <WidgetIrisINCBreachList position="7 / 1 / span 6 / span 6" sn_instance={this.props.sn_instance} />
-                <WidgetIrisINCBreachSLACount position="span 2 / span 2" sn_instance={this.props.sn_instance} />
+                <WidgetIrisINCBreachSLACount position="3 / 7 / span 2 / span 2" sn_instance={this.props.sn_instance} />
                 <WidgetSNPubSubPlatformHealthSummary position="span 8 / span 2" sn_instance={this.props.sn_instance} />
-                <WidgetSNUniqueLoginsToday position="span 2 / span 2" sn_instance={this.props.sn_instance} />
-                <WidgetSNCurrentUsers position="span 2/span 2" sn_instance={this.props.sn_instance} />
+                <WidgetSNUniqueLoginsToday position="5/ 7/ span 2 / span 2" sn_instance={this.props.sn_instance} />
+                <WidgetSNCurrentUsers position="7 / 7 / span 2/span 2" sn_instance={this.props.sn_instance} />
                 <WidgetSNAPICounts position="1 / 11 / span 4 / span 2" />
                 <WidgetLeankitPointsByOwner
                     position="9 / 11 / span 4 / span 2"
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}
                 />
-                <WidgetSNClicksByOS position="7 / 7 / span 4 /span 2" sn_instance={this.props.sn_instance} />
+                <WidgetSNClicksByOS position="9 / 7 / span 4 /span 2" sn_instance={this.props.sn_instance} />
                 <WidgetLeankitDeliveryRemainingPoints
-                    position="span 2 / span 2"
+                    position="1 / 7 / span 2 / span 2"
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}
                 />

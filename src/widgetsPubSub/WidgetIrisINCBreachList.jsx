@@ -48,15 +48,12 @@ class WidgetIrisINCBreachList extends React.PureComponent {
             params: {
                 // Units for xAgoStart: years, months, days, hours, minutes
                 sysparm_query: `cmdb_ci=${IrisCI}^assignment_group=${grpIrisL2}^ORassignment_group=${grpTSRRTCS}^u_stateNOT IN800,900`,
-                // cmdb_ci=a702870c5bad6000705b113d2c4254ca^assignment_group=ad8064fd5bcd2000d5a0113d2c425417^ORassignment_group=e6b0cfa0db1bd780d67644303996197c^u_stateNOT IN800,900
                 sysparm_display_value: "true",
                 sysparm_limit: 500
             }
         });
 
-        // Update our own state with the new data
-        // this.setState({ irisINCs: response_INC.data.result });
-
+        // Loop through tickets, and get the incident metrics for each
         let incidents_all = await Promise.all(
             response_INC.data.result.map(async incident => {
                 let inc_sys_id = incident.sys_id;

@@ -49,7 +49,7 @@ class WidgetIrisINCBreachSLACount extends React.PureComponent {
         let sq4 = "u_stateIN800,900";
         let sq5 = "u_resolved_atONThis month@javascript:gs.beginningOfThisMonth()@javascript:gs.endOfThisMonth()";
 
-        // Get count of closed INC's this month
+        // Get count of closed/resolved INC's this month
         const response_closedINC = await apiProxy.get(`/sn/${this.props.sn_instance}/api/now/stats/incident`, {
             params: {
                 // Units: years, months, days, hours, minutes
@@ -68,10 +68,14 @@ class WidgetIrisINCBreachSLACount extends React.PureComponent {
         // this function gets the custom data for this widget, and updates our React component state
         // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
 
+        // Get all tickets resolved/closed this month
         let INCCount_closed = await this.getDataIrisINCClosedThisMonth();
         this.setState({ irisResolvedINCCount: INCCount_closed });
 
-        let INCCount_breached = await this.getDataIrisINCClosedThisMonth("u_breached_reason_code!=");
+        // Get incidents breached this month (excluding tickets that have blank breach codes, Recieved breached, or Late Assignment)
+        let INCCount_breached = await this.getDataIrisINCClosedThisMonth(
+            "u_breached_reason_code!=^u_breached_reason_code!=Received Breached^u_breached_reason_code!=Late Assignment"
+        );
         this.setState({ irisResolvedINCBreachedCount: INCCount_breached });
     }
 
