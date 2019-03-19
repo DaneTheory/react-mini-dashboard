@@ -41,11 +41,8 @@ class WidgetSNPubSubPlatformHealthSummary extends React.PureComponent {
         // Retrieve our data (likely from an API)
         let response = await apiProxy.get(`/sn/${this.props.sn_instance}/api/now/table/sys_cluster_state`, {
             params: {
-                // Units for xAgoStart: years, months, days, hours, minutes
-                // sysparm_query: "client_transaction=true^sys_created_on>=javascript:gs.daysAgoStart(0)",
-                // sysparm_count: "true",
-                sysparm_display_value: "true"
-                // sysparm_group_by: groupby_field
+                sysparm_display_value: "true",
+                sysparm_fields: "stats"
             }
         });
 
@@ -129,13 +126,13 @@ class WidgetSNPubSubPlatformHealthSummary extends React.PureComponent {
             return <div className="waiting-for-data">Waiting for Data...</div>;
         } else {
             return (
-                <div style={{ fontSize: "1.6vw" }}>
+                <div style={{ fontSize: "1.5vw" }}>
                     <table>
                         <thead>
                             <tr>
                                 <th>#</th>
                                 <th>Node</th>
-                                <th>Uptime</th>
+                                <th>Up time</th>
                                 <th>Users</th>
                                 <th>Load</th>
                                 <th>DB</th>
@@ -153,24 +150,26 @@ class WidgetSNPubSubPlatformHealthSummary extends React.PureComponent {
                                         node["sql_response"] > 4 ? "cellRed" : node["sql_response"] > 3 ? "cellAmber" : "cellGreen";
                                     return (
                                         <tr key={node["name"]}>
-                                            <td>{index}</td>
-                                            <td>{node["name"]}</td>
+                                            <td style={{ padding: "0.22vw" }}>{index}</td>
+                                            <td style={{ padding: "0.22vw" }}>{node["name"]}</td>
 
                                             {/* Uptime */}
-                                            <td align="right">{node["uptimeDays"].toFixed(1)}d</td>
+                                            <td style={{ padding: "0.22vw" }} align="right">
+                                                {node["uptimeDays"].toFixed(1)}d
+                                            </td>
 
                                             {/* Users Logged in */}
-                                            <td className={classNames(numUsersColor)} align="right">
+                                            <td style={{ padding: "0.22vw" }} className={classNames(numUsersColor)} align="right">
                                                 {node["logged_in"]}
                                             </td>
 
                                             {/* sysLoad */}
-                                            <td className={classNames(sysLoadColor)} align="right">
+                                            <td style={{ padding: "0.22vw" }} className={classNames(sysLoadColor)} align="right">
                                                 {node["sys_load"].toFixed(1)}
                                             </td>
 
                                             {/* DB Response */}
-                                            <td className={classNames(dbResponseColor)} align="right">
+                                            <td style={{ padding: "0.22vw" }} className={classNames(dbResponseColor)} align="right">
                                                 {node["sql_response"].toFixed(1)}s
                                             </td>
                                         </tr>
@@ -184,7 +183,7 @@ class WidgetSNPubSubPlatformHealthSummary extends React.PureComponent {
     }
 
     renderCardHeader() {
-        return <div className="single-num-title">ServiceNow Platform Health (Summary)</div>;
+        return <div className="single-num-title">Platform Health (Summary)</div>;
     }
 
     renderCardBody() {

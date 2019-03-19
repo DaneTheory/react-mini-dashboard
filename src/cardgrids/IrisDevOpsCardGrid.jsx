@@ -12,6 +12,10 @@ import WidgetSNCurrentUsers from "../widgetsPubSub/WidgetSNCurrentUsers";
 import WidgetSNAPICounts from "../widgetsPubSub/WidgetSNAPICounts";
 import WidgetLeankitPointsByOwner from "../widgetsPubSub/WidgetLeankitPointsByOwner";
 
+import WidgetSNClicksByOS from "../widgetsPubSub/WidgetSNClicksByOS";
+import WidgetLeankitDeliveryRemainingPoints from "../widgetsPubSub/WidgetLeankitDeliveryRemainingPoints";
+import WidgetBoldChatActiveGauge from "../widgetsPubSub/WidgetBoldChatActiveGauge";
+
 // Other project imports
 import CardGrid from "../components/cardGrid";
 
@@ -43,9 +47,20 @@ class IrisDevOpsCardGrid extends React.Component {
                 <WidgetSNCurrentUsers position="span 2/span 2" sn_instance={this.props.sn_instance} />
                 <WidgetSNAPICounts position="1 / 11 / span 4 / span 2" />
                 <WidgetLeankitPointsByOwner
-                    position="9 / 11 / span 5 / span 2"
+                    position="9 / 11 / span 4 / span 2"
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}
+                />
+                <WidgetSNClicksByOS position="7 / 7 / span 4 /span 2" sn_instance={this.props.sn_instance} />
+                <WidgetLeankitDeliveryRemainingPoints
+                    position="span 2 / span 2"
+                    leankit_instance={this.props.leankit_instance}
+                    boardId={this.props.boardId}
+                />
+                <WidgetBoldChatActiveGauge
+                    position="9 / 9 / span 4 / span 2"
+                    boldchat_instance={this.props.boldchat_instance}
+                    sn_instance={this.props.sn_instance}
                 />
             </CardGrid>
         );
@@ -60,7 +75,8 @@ IrisDevOpsCardGrid.propTypes = {
     sn_instance: PropTypes.string.isRequired,
     changeParentPageTitle: PropTypes.func.isRequired,
     boardId: PropTypes.string.isRequired,
-    leankit_instance: PropTypes.string.isRequired
+    leankit_instance: PropTypes.string.isRequired,
+    boldchat_instance: PropTypes.string.isRequired
 };
 
 // Set default props in case they aren't passed to us by the caller

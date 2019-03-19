@@ -110,12 +110,13 @@
             border-collapse: collapse;
             // Center the table left/right in it's containing div
             margin: 0 auto;
+            font-size: 0.6vw;
 
             tr {
                 td {
                     border: 1px solid var(--colorThemeCardTableGridLines);
                     padding: 0.2rem 0.5rem 0.2rem 0.5rem;
-                    font-size: 0.6vw;
+                    // font-size: 0.6vw;
 
                     &.redFont {
                         color: var(--colorThemeCardFontRed);

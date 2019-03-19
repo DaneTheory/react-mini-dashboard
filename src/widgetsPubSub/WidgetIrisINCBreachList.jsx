@@ -200,7 +200,7 @@ class WidgetIrisINCBreachList extends React.PureComponent {
                                             <td style={{ fontSize: "0.9vw" }}>{incident["short_description"].substr(0, 60)}...</td>
                                             <td style={{ fontSize: "0.9vw" }}>{incident["sys_created_by"]}</td>
                                             <td style={{ fontSize: "0.9vw" }}>{incident["priority"]}</td>
-                                            <td>{incident["sla_record"]["business_time_left"]}</td>
+                                            <td style={{ fontSize: "0.9vw" }}>{incident["sla_record"]["business_time_left"]}</td>
                                         </tr>
                                     );
                                 })}

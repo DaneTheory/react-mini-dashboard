@@ -137,8 +137,8 @@ class WidgetSNClicksByOS extends React.Component {
                                 })
                                 .map(value => (
                                     <tr key={value["name"]}>
-                                        <td>{value["name"]}</td>
-                                        <td>{value["pct"].toFixed(1)}%</td>
+                                        <td className="Font12x">{value["name"]}</td>
+                                        <td className="Font12x">{value["pct"].toFixed(1)}%</td>
                                         {/* <td>{value["count"]}</td> */}
                                     </tr>
                                 ))}
