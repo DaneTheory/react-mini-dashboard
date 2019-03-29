@@ -35,12 +35,21 @@ I've tried three different strategies for periodic data updates for each widget.
 
 In all cases, I started with a javascript setTimeout() timer; however, I like displaying the remaining time before the next refresh. In the case of Javascript setTimeout(), you cannot query the remaining time. So, I ended up converting to a series of 1-second timeouts which keep track of remaining time. That gives me a hook to update the remaining timer display. Only downside is that each loop iteration is actually 1 second, plus the time it takes for the update code to run, and re-trigger the 1 second timeout. I'd have to check, but I think I fixed this by calling the 1 second timeout as the _first_ element of the event loop (rather than waiting until the end)
 
-# Deploying (and Developing) Locally
+# Would you like to contribute ?
+
+## Deploying (and Developing) Locally
 
 1. Clone this repo to your local machine
 1. npm install
 1. npm start
 1. Get coding
+
+NOTE: Before you do anything too complicated (e.g. creating your own widget), I'd suggest that you coordinate with me (Chad). Something like this:
+
+1. Give me a head's up that you'd like to contribute
+1. Attempt to clone the repo locally, and get it running
+1. Make a minor code tweak, and then perform a Pull Request against the master branch
+1. I'll take care of all deployments into the release branch
 
 # Production Deployment Instructions
 
