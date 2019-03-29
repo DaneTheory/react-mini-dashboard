@@ -1,8 +1,37 @@
 # Project Description
 
-This is a dashboard (information radiator ?) that displays a number of smalll widgets, each containing a discrete tidbit of information (e.g. Number of users logged in today, Number of breached incidents today, etc). The dashboard obtains all it's information by calling different API's, and rendering that information using a combination of React, Google Charts, and native CSS Grids. Every 60 seconds (user configurable), it calls the API's again, updates the React state of each widget (compmonent), and then React dutifully re-renders.
+This is a dashboard (information radiator ?) that displays a number of small widgets, each containing a discrete tidbit of information (e.g. Number of users logged in today, Number of breached incidents today, etc). The dashboard obtains all its information by calling different APIs, and rendering that information using a combination of React, Google Charts, and native CSS Grids. Every 60 seconds (user configurable), it calls the APIs again, updates the React state of each widget (compmonent), and then React dutifully re-renders.
 
 Want to help me ? Great ! I'm glad you asked. Please fork the project, deploy locally, make some awesome changes, and then issue a pull request against the master branch.
+
+# Project History
+
+The first version of this dashboad was written in AngularJS. It was meant as an exercise to learn AngularJS. Two years later, the dashboard proved continued to prove itself useful and I was still using it on a regular basis. But enhancments felt unwieldy. As another experiment, I spent the Winter of 2018/2019 re-writing it in React. While the React version is less DRY, it feels much easier to understand (and consequently remember). Previously, when I didn't touch the code for two weeks, and then dropped back into it, it felt like I was spending 15 minutes to get my bearings within my own code. That felt silly. In React, all the working parts of a single widget are in a single file (e.g. API call to generate the data, and the HTML/Javascript to display the corresponding result). Sure, much less DRY since each React component had a lot of repeated code, but React still feels like the right solution for this project. Happy with the re-write.
+
+## Detailed History: Differences between the AngularJS and React Dashboard
+
+1. Using React rather than AngularJS (duh..)
+1. Using NodeJS/Express for the API proxy rather than Python/Flask (that's another story)
+1. Replaced CSS Masonry with CSS Grid, which was ratified in CSS3, and it
+1. With CSS Grid, it's easy to specify position of card/widget, and also allow it to float into empty grid space if desired.
+1. Added Semantic UI, but not really using it yet (but want to)
+
+## History: What I'm learning
+
+1. Even though my initial design in React is less DRY than AngularJS, feels a lot easier to understand
+1. Replaced Python API with a simple proxy using NodeJS Express. Moved all logic from backend to frontend
+    1. That means backend is a simple proxy which only adds authentication on the way through
+1. For View, AngularJS wasnt great at looping through an Object. Since React is just javascript, it can do it
+
+## History: Widget Updating Strategies
+
+I've tried three different strategies for periodic data updates for each widget.
+
+1. Widget has it's own custom-length timer (didn't like this, as it means it would be difficult to look at a dashboard screen full of widgets, and understand when each would be updating. Also required using a reactSafe setTimemout, which in turn required each widget to be wrapped in a ReactTimeout). That in turn, caused confusing when I was trying to reference each widget.
+1. Parent (Card Grid) has a custom-length timer, and uses React Ref to call Widget's Update Function (didn't like this solution as it means the Parent/CardGrid would have to manage alot of refs, onc for each widget)
+1. Parent (Card Grid) has a custom-length timer, and simply issues a global PubSub event, which all widgets will listen for. Feels like the most elegant, and it's the methond I'm using. Only downside is PubSub is constrained to a single-process application (which this is)
+
+In all cases, I started with a javascript setTimeout() timer; however, I like displaying the remaining time before the next refresh. In the case of Javascript setTimeout(), you cannot query the remaining time. So, I ended up converting to a series of 1-second timeouts which keep track of remaining time. That gives me a hook to update the remaining timer display. Only downside is that each loop iteration is actually 1 second, plus the time it takes for the update code to run, and re-trigger the 1 second timeout. I'd have to check, but I think I fixed this by calling the 1 second timeout as the _first_ element of the event loop (rather than waiting until the end)
 
 # Deploying (and Developing) Locally
 
@@ -11,7 +40,7 @@ Want to help me ? Great ! I'm glad you asked. Please fork the project, deploy lo
 1. npm start
 1. Get coding
 
-# Deployment Instructions
+# Production Deployment Instructions
 
 ## Create a host
 
@@ -135,37 +164,3 @@ WantedBy=multi-user.target
     }
 }
 ```
-
-# Project History
-
-The first version of this dashboad was written in AngularJS. It was meant as an exercise to learn AngularJS. Two years later, the dashboard proved continued to prove itself useful and I was still using it on a regular basis. But enhancments felt unwieldy. As another experiment, I spent the Winter of 2018/2019 re-writing it in React. While the React version is less DRY, it feels much easier to understand (and consequently remember). Previously, when I didn't touch the code for two weeks, and then dropped back into it, it felt like I was spending 15 minutes to get my bearings within my own code. That felt silly. In React, all the working parts of a single widget are in a single file (e.g. API call to generate the data, and the HTML/Javascript to display the corresponding result). Sure, much less DRY since each React component had a lot of repeated code, but React still feels like the right solution for this project. Happy with the re-write.
-
-## History: Differences between the AngularJS and React Dashboard
-
-1. Using React rather than AngularJS (duh..)
-1. Using NodeJS/Express for the API proxy rather than Python/Flask (that's another story)
-1. Replaced CSS Masonry with
-1. Installed Semantic UI via CDN (link is specific to version)
-1. Create a node.js API proxy with embedded credentials
-1. Create a better UI for positioning the card
-1. Moved the backend API for BoldChat from Python/Flask to Node/Express
-1. Use OAuth to call ServiceNow (in API Proxy)
-1. Deployed both react-app and express api to RHEL server (both are served with Express)
-1. Convert Leankit API from Leankit NodeJS agent to actual API calls via network ?
-
-## History: What I'm learning
-
-1. Even though my initial design in React is less DRY than AngularJS, feels a lot easier to understand
-1. Replaced Python API with a simple proxy using NodeJS Express. Moved all logic from backend to frontend
-    1. That means backend is a simple proxy which only adds authentication on the way through
-1. For View, AngularJS wasnt great at looping through an Object. Since React is just javascript, it can do it
-
-## History: Widget Updating Strategies
-
-I've tried three different strategies for period data updates for each widget.
-
-1. Widget has it's own custom-length timer (didn't like this, as it means it would be difficult to look at a screen full of widgets, and understand when each would be updating. Also required using a reactSafe setTimemout, which in turn required each widget to be wrapped in a ReactTimeout)
-1. Parent (Card Grid) has a custom-length timer, and uses React Ref to call Widget's Update Function (didn't like this solution as it means the Parent/CardGrid would have to manage alot of refs, once for each widget)
-1. Parent (Card Grid) has a custom-length timer, and simply issues a PubSub event, which all widgets will listen for. PubSub is constrained to a single-process application
-
-In all cases, I started with a javascript setTimeout() timer; however, I like displaying the remaining time before the next refresh. In the case of Javascript setTimeout(), you cannot query the remaining time. So, I ended up converting to a series of 1-second timeouts which keep track of remaining time. That gives me a hook to update the remaining timer display
