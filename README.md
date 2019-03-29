@@ -4,6 +4,8 @@ This is a dashboard (information radiator ?) that displays a number of small wid
 
 Want to help me ? Great ! I'm glad you asked. Please fork the project, deploy locally, make some awesome changes, and then issue a pull request against the master branch.
 
+![](github_images/DevOps_Dashboard_Screenshot_01.png)
+
 # Project History
 
 The first version of this dashboad was written in AngularJS. It was meant as an exercise to learn AngularJS. Two years later, the dashboard proved continued to prove itself useful and I was still using it on a regular basis. But enhancments felt unwieldy. As another experiment, I spent the Winter of 2018/2019 re-writing it in React. While the React version is less DRY, it feels much easier to understand (and consequently remember). Previously, when I didn't touch the code for two weeks, and then dropped back into it, it felt like I was spending 15 minutes to get my bearings within my own code. That felt silly. In React, all the working parts of a single widget are in a single file (e.g. API call to generate the data, and the HTML/Javascript to display the corresponding result). Sure, much less DRY since each React component had a lot of repeated code, but React still feels like the right solution for this project. Happy with the re-write.
