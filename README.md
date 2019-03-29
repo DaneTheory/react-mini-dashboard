@@ -1,3 +1,16 @@
+# Project Description
+
+This is a dashboard (information radiator ?) that displays a number of smalll widgets, each containing a discrete tidbit of information (e.g. Number of users logged in today, Number of breached incidents today, etc). The dashboard obtains all it's information by calling different API's, and rendering that information using a combination of React, Google Charts, and native CSS Grids. Every 60 seconds (user configurable), it calls the API's again, updates the React state of each widget (compmonent), and then React dutifully re-renders.
+
+Want to help me ? Great ! I'm glad you asked. Please fork the project, deploy locally, make some awesome changes, and then issue a pull request against the master branch.
+
+# Deploying (and Developing) Locally
+
+1. Clone this repo to your local machine
+1. npm install
+1. npm start
+1. Get coding
+
 # Deployment Instructions
 
 ## Create a host
@@ -125,26 +138,20 @@ WantedBy=multi-user.target
 
 # Project History
 
-The first version of this dashboad was written in AngularJS. It was meant as an exercise to learn AngularJS. Two years later, the dashboard proved so useful that I was still using it, but enhancments felt unwieldy. As another experiment, I spent the Winter of 2018 re-writing it in React. While the React version is less DRY, it feels much easier to understand. Namely, all the working parts of a single widget are in a single file (e.g. API call to generate the data, and the HTML/Javascript to display the corresponding result)
+The first version of this dashboad was written in AngularJS. It was meant as an exercise to learn AngularJS. Two years later, the dashboard proved continued to prove itself useful and I was still using it on a regular basis. But enhancments felt unwieldy. As another experiment, I spent the Winter of 2018/2019 re-writing it in React. While the React version is less DRY, it feels much easier to understand (and consequently remember). Previously, when I didn't touch the code for two weeks, and then dropped back into it, it felt like I was spending 15 minutes to get my bearings within my own code. That felt silly. In React, all the working parts of a single widget are in a single file (e.g. API call to generate the data, and the HTML/Javascript to display the corresponding result). Sure, much less DRY since each React component had a lot of repeated code, but React still feels like the right solution for this project. Happy with the re-write.
 
 ## History: Differences between the AngularJS and React Dashboard
 
+1. Using React rather than AngularJS (duh..)
+1. Using NodeJS/Express for the API proxy rather than Python/Flask (that's another story)
+1. Replaced CSS Masonry with
 1. Installed Semantic UI via CDN (link is specific to version)
 1. Create a node.js API proxy with embedded credentials
 1. Create a better UI for positioning the card
 1. Moved the backend API for BoldChat from Python/Flask to Node/Express
 1. Use OAuth to call ServiceNow (in API Proxy)
 1. Deployed both react-app and express api to RHEL server (both are served with Express)
-1. Cacheed the API requests (using express-cache-on-demand)
-1. Create a chart with dummy data
-1. Use mixin's within Sass
-1. In ChartJS, chart is honoring grid cell size, so it shrinks and expands itself, unsure about !important override
-1. Solved !important override. That indeed is one solution, the other is that the div for the canvas need to be a direct child of the grid element/div. Otherwise, the intermediary div won't stretch to be 100% of height
-1. Tested in Chrome, Safari, Firefox, and Edge. They all work. IE11 doesnt
 1. Convert Leankit API from Leankit NodeJS agent to actual API calls via network ?
-1. Use Google charts to see if they are responsive
-1. Periodically update data
-1. Get the Google Graphs to consume the color theme (then merge in addGoogleChart)
 
 ## History: What I'm learning
 
