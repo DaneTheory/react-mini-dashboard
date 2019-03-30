@@ -46,9 +46,10 @@ class WidgetSNUniqueLoginsToday extends React.PureComponent {
             }
         });
 
-        // Update our own state with the new data
-        this.setState({ prevcount: this.state.count });
-        this.setState({ count: response.data.result.stats.count });
+        // Update our own state with the new data (keep track of prevCount so CountUp can animate)
+        const currentCount = Number(response.data.result.stats.count);
+        this.setState({ prevcount: this.state.count || currentCount - 100 });
+        this.setState({ count: currentCount });
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -75,6 +76,27 @@ class WidgetSNUniqueLoginsToday extends React.PureComponent {
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    renderCardBody() {
+        if (!this.state.count) {
+            return <div className="waiting-for-data">Waiting for Data...</div>;
+        } else {
+            return (
+                <div className="single-num-value">
+                    {/* <NumberFormat value={this.state.count} thousandSeparator={true} displayType={"text"} /> */}
+                    <CountUp
+                        start={this.state.prevcount}
+                        end={this.state.count}
+                        duration={this.props.countUpAnimationDuration}
+                        useEasing={false}
+                        decimals={0}
+                        separator=","
+                    />
+                </div>
+            );
+        }
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     render() {
         // Standard React Lifecycle method, gets called by React itself
@@ -89,17 +111,7 @@ class WidgetSNUniqueLoginsToday extends React.PureComponent {
                 widgetName="WidgetSNUniqueLoginsToday"
             >
                 <div className="single-num-title">Unique Logins Today</div>
-                <div className="single-num-value">
-                    {/* <NumberFormat value={this.state.count} thousandSeparator={true} displayType={"text"} /> */}
-                    <CountUp
-                        start={this.state.prevcount}
-                        end={this.state.count}
-                        duration={this.props.countUpAnimationDuration}
-                        useEasing={true}
-                        decimals={0}
-                        separator=","
-                    />
-                </div>
+                {this.renderCardBody()}
             </DashboardDataCard>
         );
     }
@@ -111,7 +123,7 @@ class WidgetSNUniqueLoginsToday extends React.PureComponent {
 
 // Set default props in case they aren't passed to us by the caller
 WidgetSNUniqueLoginsToday.defaultProps = {
-    countUpAnimationDuration: 45
+    countUpAnimationDuration: 70
 };
 
 // Force the caller to include the proper attributes
