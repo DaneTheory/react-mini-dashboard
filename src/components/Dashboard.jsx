@@ -270,7 +270,7 @@ class Dashboard extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 }
 
-// Set default props in case they aren't passed to us by the caller
+// Set DEFAULT props (easily overridden) in case they aren't passed to us by the caller
 Dashboard.defaultProps = {
     refreshUpdateInterval: 1000,
     refreshInterval: 8000,
