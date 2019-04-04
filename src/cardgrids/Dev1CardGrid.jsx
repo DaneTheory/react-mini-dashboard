@@ -31,7 +31,7 @@ class Dev1CardGrid extends React.Component {
                 {/* <WidgetSNBarChart color="#ddd" position="span 5 / span 4" sn_instance={this.props.sn_instance} /> */}
 
                 {/* <WidgetSNScrollableTable position="span 4 / span 4" /> */}
-                <WidgetIrisCloneList position="span 8 / span 6" sn_instance={this.props.sn_instance} />
+                <WidgetIrisCloneList position="span 8 / span 3" sn_instance={this.props.sn_instance} />
                 <WidgetSNExperiment01 position="span 2 / span 3" sn_instance={this.props.sn_instance} />
                 <WidgetSNUniqueLoginsTodaySelfUpdating position="span 2 / span 4" sn_instance={this.props.sn_instance} />
                 <WidgetGoogleChartScatter position="span 4 / span 4" sn_instance={this.props.sn_instance} />

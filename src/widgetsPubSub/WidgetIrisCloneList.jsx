@@ -2,12 +2,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import PubSub from "pubsub-js";
-import NumberFormat from "react-number-format";
 
 // project imports
 import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
-import kittens from "./kittens.png";
 
 // Additional imports
 var classNames = require("classnames");
@@ -17,7 +15,7 @@ var moment = require("moment");
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
 
 // Create a React class component, everything below this is a class method (i.e. a function attached to the class)
-class WidgetIrisINCBreachList extends React.PureComponent {
+class WidgetIrisCloneList extends React.PureComponent {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {
@@ -27,7 +25,7 @@ class WidgetIrisINCBreachList extends React.PureComponent {
         super(props);
 
         // Set our initial React state, this is the *only* time to bypass setState()
-        this.state = { widgetName: "WidgetIrisINCBreachList", wuArray: [], workUnitObject: { workunits: [] }, irisINCs: [] };
+        this.state = { widgetName: "WidgetIrisCloneList", clonesByPath: {} };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function
@@ -41,54 +39,69 @@ class WidgetIrisINCBreachList extends React.PureComponent {
         // this function gets the custom data for this widget, and updates our React component state
         // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
 
-        // Retrieve our data (likely from an API)
-        let response_clones = await apiProxy.get(`/sn/${this.props.sn_instance}/api/now/table/clone_instance`, {
-            params: {
-                // Units for xAgoStart: years, months, days, hours, minutes
-                sysparm_query: "state=Completed^sys_created_on>=javascript:gs.monthsAgoStart(12)",
-                sysparm_display_value: "true",
-                sysparm_limit: 500
-            }
-        });
+        let clonesFromAll = [];
 
+        let sources = ["jnjprodworker", "jnjtestk", "jnjqa2"];
+
+        for (var source of sources) {
+            console.log(source);
+            // Retrieve our data from Prod (likely from an API)
+            let response_clones = await apiProxy.get(`/sn/${source}.service-now.com/api/now/table/clone_instance`, {
+                params: {
+                    // Units for xAgoStart: years, months, days, hours, minutes
+                    sysparm_query: "state=Completed^sys_created_on>=javascript:gs.monthsAgoStart(12)",
+                    sysparm_display_value: "true",
+                    sysparm_limit: 500
+                }
+            });
+
+            console.log("response_clones", response_clones.data.result);
+            // Loop through clone transactions, and make target_instance easier to find (by creating property for it)
+            var clonesFromSource = response_clones.data.result.map(clone => {
+                clone.path = `${source} -> ${clone.target_instance.display_value}`;
+                return clone;
+            });
+
+            // Accumulate our results from this source
+            clonesFromAll = clonesFromAll.concat(clonesFromSource);
+            console.log(clonesFromAll);
+        }
+
+        console.log(clonesFromAll);
+
+        // Function to group array of objects (rows) by a single user-defined field
         const groupBy = key => array =>
             array.reduce((objectsByKeyValue, obj) => {
                 const value = obj[key];
                 objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj);
                 return objectsByKeyValue;
             }, {});
+        // Create a function to group rows by the field "target_instance"
+        const groupByClonePath = groupBy("path");
 
-        var clones = response_clones.data.result.map(clone => {
-            clone.target_instance = clone.target_instance.display_value;
-            return clone;
-        });
+        // Loop through clone transaction, and group them by clone target (e.g. QA or Dev)
+        // Produces object, where key is clone target (e.g. QA), and value is array of clone transactions
+        var clonesByPath = groupByClonePath(clonesFromAll);
 
-        console.log(clones);
+        console.log("clonesByPath", clonesByPath);
 
-        const groupByTargetInstance = groupBy("target_instance");
-        console.log(groupByTargetInstance);
-        var clonesByTarget = groupByTargetInstance(clones);
-        console.log(clonesByTarget);
-
-        function later_date(latest_clone, proposed_clone) {
-            console.log("reducing...", latest_clone.completed, proposed_clone.completed);
+        // Given two clone transactions, return the latest (most recent) clone
+        function latestClone(latest_clone, proposed_clone) {
             const answer_clone = moment(latest_clone.completed).isAfter(proposed_clone.completed) ? latest_clone : proposed_clone;
-            console.log(answer_clone.completed);
             return answer_clone;
         }
 
-        Object.entries(clonesByTarget).map(([target_instance, clonesList]) => {
+        // Loop through key(target_instance)/value(clonesList), find latest (most recent) clone, and create property pointing to it
+        Object.entries(clonesByPath).map(([target_instance, clonesList]) => {
             console.log(clonesList);
-            const latest_clone = clonesList.reduce(later_date, { completed: "Jan 1, 1970" });
-            console.log("answer:", latest_clone);
-            console.log("==============================");
-            clonesByTarget[target_instance]["latest_clone"] = latest_clone;
+            const latest_clone = clonesList.reduce(latestClone, { completed: "Jan 1, 1970" });
+            latest_clone.daysAgo = moment().diff(latest_clone.completed, "days");
+            console.log("daysAgo", latest_clone.daysAgo);
+            clonesByPath[target_instance]["latest_clone"] = latest_clone;
         });
 
-        console.log(clonesByTarget);
-
         // Update our own state with the new data
-        this.setState({ irisINCs: [] });
+        this.setState({ clonesByPath: clonesByPath });
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -117,69 +130,43 @@ class WidgetIrisINCBreachList extends React.PureComponent {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     renderAllTables() {
-        let sla_threshold_pct = this.props.sla_threshhold_pct;
-        if (this.state.irisINCs.length === 0) {
+        if (this.state.clonesByPath === {}) {
             // Show a please message while we're waiting for data from the API call
             return <div className="waiting-for-data">Waiting for Data...</div>;
-        } else if (
-            // If there are zero incidents above specified breach pct, then show a fun picture
-            this.state.irisINCs.filter(incident => {
-                return incident.sla_record.sla_pct_float > sla_threshold_pct;
-            }).length === 0
-        ) {
-            // Show a fun picture
-            return (
-                <div>
-                    <br />
-                    <div>Way to go ! &nbsp;&nbsp; Zero Incidents nearing breach.</div>
-                    <div />
-                    <div style={{ marginBottom: "3vw" }}>Here&apos;s a picture of kittens</div>
-                    <img style={{ width: "20vw" }} src={kittens} alt="" />
-                </div>
-            );
         } else {
             // OK, looks like we have incidents above the specified breach percentage, list them out
+            console.log(this.state.clonesByPath);
             return (
                 <div>
                     <table width="90%" style={{ marginBottom: "3vw" }}>
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>INC</th>
-                                <th>Breach</th>
-                                <th>Short Description</th>
-                                <th>Created By</th>
-                                <th>Priority</th>
-                                <th>Time Remaining</th>
+                                <th>Target</th>
+                                <th>
+                                    Days
+                                    <br />
+                                    Ago
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.irisINCs.map((incident, index) => {
-                                // Construct a url to get to this incident
-                                let host = this.props.sn_instance.replace("worker", "");
-                                let sys_id = incident.sys_id;
-                                let url = `https://${host}/nav_to.do?uri=/incident.do?sys_id=${sys_id}&sysparm_stack=&sysparm_view=`;
-
-                                // Determine % of sla that we've consume, and assign a RAG indictor to it
-                                let sla_pct = incident.sla_record.sla_pct_float;
-                                let slaColorClass = sla_pct > 90 ? "cellRed" : sla_pct > 60 ? "cellAmber" : "cellGreen";
-
-                                return (
-                                    <tr key={incident["number"]} style={{ fontSize: "4vw" }}>
-                                        <td style={{ fontSize: "1.5vw" }}>{index + 1}</td>
-                                        <td style={{ fontSize: "1.0vw" }}>
-                                            <a href={url}>{incident["number"]}</a>
-                                        </td>
-                                        <td style={{ fontSize: "1.0vw" }} className={classNames(slaColorClass)}>
-                                            <NumberFormat value={sla_pct} decimalScale={0} fixedDecimalScale={true} displayType={"text"} />%
-                                        </td>
-                                        <td style={{ fontSize: "0.9vw" }}>{incident["short_description"].substr(0, 60)}...</td>
-                                        <td style={{ fontSize: "0.9vw" }}>{incident["sys_created_by"]}</td>
-                                        <td style={{ fontSize: "0.9vw" }}>{incident["priority"]}</td>
-                                        <td style={{ fontSize: "0.9vw" }}>{incident["sla_record"]["business_time_left"]}</td>
-                                    </tr>
-                                );
-                            })}
+                            {Object.entries(this.state.clonesByPath)
+                                .sort((a, b) => {
+                                    // .entries() gives us an array of key/value for each object, so [1] is the value
+                                    // We want to sort by the designated "latest_clone" variable in each object
+                                    return moment(a[1].latest_clone.completed).isBefore(b[1].latest_clone.completed) ? 1 : -1;
+                                })
+                                .filter(([key, value]) => !["jnjtesti", "jnjsandbox4"].includes(key))
+                                .map(([key, value]) => {
+                                    console.log(key);
+                                    // const latestCloneDate = value.latest_clone.completed;
+                                    return (
+                                        <tr key={key}>
+                                            <td className="Font11x">{key}</td>
+                                            <td className={classNames("Font11x", "cellGreen")}>{value.latest_clone.daysAgo} days</td>
+                                        </tr>
+                                    );
+                                })}
                         </tbody>
                     </table>
                 </div>
@@ -201,12 +188,7 @@ class WidgetIrisINCBreachList extends React.PureComponent {
         // Also called if "props" are modified (which are passed from the parent)
 
         return (
-            <DashboardDataCard
-                id={this.props.id}
-                position={this.props.position}
-                color={this.props.color}
-                widgetName="WidgetIrisINCBreachList"
-            >
+            <DashboardDataCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="WidgetIrisCloneList">
                 {this.renderCardHeader()}
                 {this.renderCardBody()}
             </DashboardDataCard>
@@ -219,12 +201,12 @@ class WidgetIrisINCBreachList extends React.PureComponent {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetIrisINCBreachList.defaultProps = {
+WidgetIrisCloneList.defaultProps = {
     sla_threshhold_pct: 50
 };
 
 // Force the caller to include the proper attributes
-WidgetIrisINCBreachList.propTypes = {
+WidgetIrisCloneList.propTypes = {
     sn_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
@@ -233,7 +215,7 @@ WidgetIrisINCBreachList.propTypes = {
 };
 
 // If we (this file) get "imported", this is what they'll be given
-export default WidgetIrisINCBreachList;
+export default WidgetIrisCloneList;
 
 // =======================================================================================================
 // =======================================================================================================
