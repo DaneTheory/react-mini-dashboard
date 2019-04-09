@@ -133,7 +133,6 @@ class WidgetSNPubSubPlatformHealthSummary extends React.PureComponent {
                                 <th>#</th>
                                 <th>Node</th>
                                 <th>Up time</th>
-                                <th>Users</th>
                                 <th>Load</th>
                                 <th>DB</th>
                             </tr>
@@ -143,33 +142,33 @@ class WidgetSNPubSubPlatformHealthSummary extends React.PureComponent {
                                 // Only show nodes where there are users logged in
                                 .filter(node => node["logged_in"] > 0)
                                 .map((node, index) => {
-                                    let numUsersColor =
-                                        node["logged_in"] > 300 ? "cellRed" : node["logged_in"] > 250 ? "cellAmber" : "cellGreen";
-                                    let sysLoadColor = node["sys_load"] > 12 ? "cellRed" : node["sys_load"] > 9 ? "cellAmber" : "cellGreen";
+                                    // let numUsersColor =
+                                    //     node["logged_in"] > 300 ? "cellRed" : node["logged_in"] > 250 ? "cellAmber" : "cellGreen";
+                                    let sysLoadColor = node["sys_load"] > 15 ? "cellRed" : node["sys_load"] > 9 ? "cellAmber" : "cellGreen";
                                     let dbResponseColor =
-                                        node["sql_response"] > 4 ? "cellRed" : node["sql_response"] > 3 ? "cellAmber" : "cellGreen";
+                                        node["sql_response"] > 6 ? "cellRed" : node["sql_response"] > 4 ? "cellAmber" : "cellGreen";
                                     return (
                                         <tr key={node["name"]}>
-                                            <td style={{ padding: "0.22vw" }}>{index}</td>
-                                            <td style={{ padding: "0.22vw" }}>{node["name"]}</td>
+                                            <td style={{ padding: "0.2vw" }}>{index}</td>
+                                            <td style={{ padding: "0.2vw" }}>{node["name"]}</td>
 
                                             {/* Uptime */}
-                                            <td style={{ padding: "0.22vw" }} align="right">
+                                            <td style={{ padding: "0.2vw" }} align="right">
                                                 {node["uptimeDays"].toFixed(1)}d
                                             </td>
 
                                             {/* Users Logged in */}
-                                            <td style={{ padding: "0.22vw" }} className={classNames(numUsersColor)} align="right">
+                                            {/* <td style={{ padding: "0.2vw" }} className={classNames(numUsersColor)} align="right">
                                                 {node["logged_in"]}
-                                            </td>
+                                            </td> */}
 
                                             {/* sysLoad */}
-                                            <td style={{ padding: "0.22vw" }} className={classNames(sysLoadColor)} align="right">
+                                            <td style={{ padding: "0.2vw" }} className={classNames(sysLoadColor)} align="right">
                                                 {node["sys_load"].toFixed(1)}
                                             </td>
 
                                             {/* DB Response */}
-                                            <td style={{ padding: "0.22vw" }} className={classNames(dbResponseColor)} align="right">
+                                            <td style={{ padding: "0.2vw" }} className={classNames(dbResponseColor)} align="right">
                                                 {node["sql_response"].toFixed(1)}s
                                             </td>
                                         </tr>
