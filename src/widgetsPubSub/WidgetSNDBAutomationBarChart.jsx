@@ -107,6 +107,7 @@ class WidgetSNDBAutomationBarChart extends React.Component {
         if (this.state.automationsByStartDay === {}) {
             return <div className="waiting-for-data">Waiting for Data...</div>;
         } else {
+            let totalDBs = 0;
             return (
                 <div style={{ fontSize: "1.5vw" }}>
                     <table>
@@ -131,22 +132,30 @@ class WidgetSNDBAutomationBarChart extends React.Component {
                                 })
 
                                 .map(function([key, value]) {
+                                    totalDBs += value.length;
                                     return (
                                         <tr key={key}>
-                                            <td>{key}</td>
-                                            <td>{value.length} DBs</td>
+                                            <td style={{ padding: "0 1.0vw", textAlign: "left" }}>{moment(key).format("MM/DD (ddd)")}</td>
+                                            <td style={{ padding: "0 1.5vw" }}>{value.length} DBs</td>
                                         </tr>
                                     );
                                 })}
                         </tbody>
                     </table>
+                    <div className="Font12x" style={{ paddingTop: "1.0vw" }}>
+                        Total (two weeks): {totalDBs} DBs
+                    </div>
                 </div>
             );
         }
     }
 
     renderCardHeader() {
-        return <div className="single-num-title">Automated DB Patches</div>;
+        return (
+            <div className="single-num-title" style={{ color: "#f441ee", fontWeight: "bold" }}>
+                New: Automated DB Patch
+            </div>
+        );
     }
 
     renderCardBody() {
@@ -166,6 +175,10 @@ class WidgetSNDBAutomationBarChart extends React.Component {
                 widgetName="WidgetSNDBAutomationBarChart"
             >
                 {this.renderCardHeader()}
+                <div className="Font10x" style={{ textAlign: "justify", testJustify: "auto", paddingTop: "0.6vw", paddingBottom: "1.2vw" }}>
+                    Open our Iris Catalog, select your App, view associated DBs, select which one to patch, pick a day, Iris creates
+                    fully-approved Change Control (what ??), triggers the patch, reboots DB, and closes the Change Control for you !
+                </div>
                 {this.renderCardBody()}
             </DashboardDataCard>
         );

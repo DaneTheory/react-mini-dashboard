@@ -9,7 +9,6 @@ import WidgetGoogleChartScatter from "../widgetsExperimental/WidgetGoogleChartSc
 import WidgetGoogleChartHorizontalBar from "../widgetsExperimental/WidgetGoogleChartHorizontalBar";
 import WidgetSNAPICounts from "../widgetsPubSub/WidgetSNAPICounts";
 // import WidgetIrisCloneList from "../widgetsPubSub/WidgetIrisCloneList";
-import WidgetSNDBAutomationBarChart from "../widgetsPubSub/WidgetSNDBAutomationBarChart";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -32,7 +31,6 @@ class Dev1CardGrid extends React.Component {
                 {/* <WidgetSNBarChart color="#ddd" position="span 5 / span 4" sn_instance={this.props.sn_instance} /> */}
 
                 {/* <WidgetSNScrollableTable position="span 4 / span 4" /> */}
-                <WidgetSNDBAutomationBarChart position="span 6 / span 2" sn_instance={this.props.sn_instance} />
                 {/* <WidgetIrisCloneList position="span 8 / span 3" sn_instance={this.props.sn_instance} /> */}
                 <WidgetSNExperiment01 position="span 2 / span 3" sn_instance={this.props.sn_instance} />
                 <WidgetSNUniqueLoginsTodaySelfUpdating position="span 2 / span 4" sn_instance={this.props.sn_instance} />
