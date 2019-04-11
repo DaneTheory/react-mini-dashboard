@@ -12,6 +12,7 @@ import LeankitDiscoveryCardGrid from "../cardgrids/LeankitDiscoveryCardGrid";
 import LeankitDeliveryCardGrid from "../cardgrids/LeankitDeliveryCardGrid";
 import IrisReleaseNotesCardGrid from "../cardgrids/IrisReleaseNotesCardGrid";
 import IrisDevOpsCardGrid from "../cardgrids/IrisDevOpsCardGrid";
+import IrisGeekCardGrid from "../cardgrids/IrisGeekCardGrid";
 import NumberFormat from "react-number-format";
 
 class Dashboard extends React.Component {
@@ -132,6 +133,7 @@ class Dashboard extends React.Component {
                             <Link to="/leankit-discovery-dashboard">Leankit Discovery Dashboard</Link>
                             <Link to="/leankit-delivery-dashboard">Leankit Delivery Dashboard</Link>
                             <Link to="/iris-devops-dashboard">Iris DevOps Dashboard</Link>
+                            <Link to="/iris-geek-dashboard">Iris Geek Dashboard</Link>
                             <br />
                             <br />
                             <br />
@@ -252,6 +254,18 @@ class Dashboard extends React.Component {
                                 exact
                                 render={() => (
                                     <IrisDevOpsCardGrid
+                                        sn_instance={this.props.sn_instance}
+                                        changeParentPageTitle={this.changePageTitle.bind(this)}
+                                        leankit_instance={this.props.leankit_instance}
+                                        boldchat_instance={this.props.boldchat_instance}
+                                    />
+                                )}
+                            />
+                            <Route
+                                path="/iris-geek-dashboard"
+                                exact
+                                render={() => (
+                                    <IrisGeekCardGrid
                                         sn_instance={this.props.sn_instance}
                                         changeParentPageTitle={this.changePageTitle.bind(this)}
                                         leankit_instance={this.props.leankit_instance}

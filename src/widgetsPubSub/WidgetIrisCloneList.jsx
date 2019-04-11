@@ -59,6 +59,8 @@ class WidgetIrisCloneList extends React.PureComponent {
             // Loop through clone transactions, and make target_instance easier to find (by creating property for it)
             var clonesFromSource = response_clones.data.result.map(clone => {
                 clone.path = `${source} -> ${clone.target_instance.display_value}`;
+                clone.source = source;
+                clone.target = clone.target_instance.display_value;
                 return clone;
             });
 
@@ -156,14 +158,24 @@ class WidgetIrisCloneList extends React.PureComponent {
                                     // We want to sort by the designated "latest_clone" variable in each object
                                     return moment(a[1].latest_clone.completed).isBefore(b[1].latest_clone.completed) ? 1 : -1;
                                 })
-                                .filter(([key, value]) => !["jnjtesti", "jnjsandbox4"].includes(key))
+                                .filter(
+                                    ([key, value]) =>
+                                        ![
+                                            "jnjprodworker -> jnjtesti",
+                                            "jnjprodworker -> jnjsandbox4",
+                                            "jnjprodworker -> jnjdevk",
+                                            "jnjprodworker -> jnjfusion"
+                                        ].includes(key)
+                                )
                                 .map(([key, value]) => {
                                     console.log(key);
                                     // const latestCloneDate = value.latest_clone.completed;
+                                    let daysAgoColor = value.latest_clone.daysAgo < 60 ? "cellGreen" : "cellAmber";
+                                    let path = key.replace("jnjprodworker", "jnjprod");
                                     return (
                                         <tr key={key}>
-                                            <td className="Font11x">{key}</td>
-                                            <td className={classNames("Font11x", "cellGreen")}>{value.latest_clone.daysAgo} days</td>
+                                            <td className="Font9x">{path}</td>
+                                            <td className={classNames("Font9x", daysAgoColor)}>{value.latest_clone.daysAgo} days</td>
                                         </tr>
                                     );
                                 })}
