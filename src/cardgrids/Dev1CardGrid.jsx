@@ -3,12 +3,10 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // Widget imports
-import WidgetSNExperiment01 from "../widgetsPrototype/WidgetSNExperiment01";
 import WidgetSNUniqueLoginsTodaySelfUpdating from "../widgetsSelfUpdating/WidgetSNUniqueLoginsTodaySelfUpdating";
 import WidgetGoogleChartScatter from "../widgetsExperimental/WidgetGoogleChartScatter";
 import WidgetGoogleChartHorizontalBar from "../widgetsExperimental/WidgetGoogleChartHorizontalBar";
-import WidgetSNAPICounts from "../widgetsPubSub/WidgetSNAPICounts";
-// import WidgetIrisCloneList from "../widgetsPubSub/WidgetIrisCloneList";
+import WidgetIrisCloneList from "../widgetsPubSub/WidgetIrisCloneList";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -31,12 +29,10 @@ class Dev1CardGrid extends React.Component {
                 {/* <WidgetSNBarChart color="#ddd" position="span 5 / span 4" sn_instance={this.props.sn_instance} /> */}
 
                 {/* <WidgetSNScrollableTable position="span 4 / span 4" /> */}
-                {/* <WidgetIrisCloneList position="span 8 / span 3" sn_instance={this.props.sn_instance} /> */}
-                <WidgetSNExperiment01 position="span 2 / span 3" sn_instance={this.props.sn_instance} />
-                <WidgetSNUniqueLoginsTodaySelfUpdating position="span 2 / span 4" sn_instance={this.props.sn_instance} />
+                <WidgetIrisCloneList position="span 8 / span 3" sn_instance={this.props.sn_instance} />
+                <WidgetSNUniqueLoginsTodaySelfUpdating position="span 2 / span 3" sn_instance={this.props.sn_instance} />
                 <WidgetGoogleChartScatter position="span 4 / span 4" sn_instance={this.props.sn_instance} />
-                <WidgetGoogleChartHorizontalBar position="span 4 / span 8" sn_instance={this.props.sn_instance} />
-                <WidgetSNAPICounts position="span 8 / span 2" sn_instance={this.props.sn_instance} />
+                <WidgetGoogleChartHorizontalBar position="span 4 / span 6" sn_instance={this.props.sn_instance} />
             </CardGrid>
         );
     }
