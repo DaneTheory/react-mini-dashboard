@@ -106,6 +106,8 @@ class Dashboard extends React.Component {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     doSomethingForDebugging() {
         console.log("Clicked on Title, this function used for inserting a quick function for debugging");
+        console.log("Going to manually update widget data now via PubSub");
+        PubSub.publish("updateWidgetsEvent", "Manually updating widget data");
         // let colorVariableName = "colorThemePageBackground";
         // document.documentElement.style.setProperty("--" + colorVariableName, "#a7a");
     }

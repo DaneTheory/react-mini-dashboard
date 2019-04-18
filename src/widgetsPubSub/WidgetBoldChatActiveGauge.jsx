@@ -6,6 +6,7 @@ import { Chart } from "react-google-charts";
 
 // project imports
 import { getBoldChatData } from "../utilities/getBoldChatData";
+import DashboardDataCard from "../components/DashboardDataCard";
 
 // The purpose of this file is to create a React Component which can be included in HTML
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
@@ -23,7 +24,7 @@ class WidgetBoldChatActiveGauge extends React.PureComponent {
         // Set our initial React state, this is the *only* time to bypass setState()
         this.state = {
             widgetName: "WidgetBoldChatActiveGauge",
-            BoldChatData: { chats: [] }
+            BoldChatData: {}
         };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
@@ -84,32 +85,47 @@ class WidgetBoldChatActiveGauge extends React.PureComponent {
             styles.backgroundColor = this.props.color;
         }
 
-        return (
-            <div className={"googleGaugeChartCard"} id={this.props.id} style={styles}>
-                <div className="single-num-title">All Active Chats</div>
-                {/* Use this div to size the chart, rather than using Chart Width/Height */}
-                {/* Chart width/height seems to create two nested divs, which each have the %size applied, so double affect */}
-                <div className="manualChartSize" style={{ width: "95%", height: "70%" }}>
-                    <Chart
-                        chartType="Gauge"
-                        width={"100%"}
-                        height={"100%"}
-                        data={[["Label", "Value"], ["Chats", this.state.BoldChatData.boldChatAgent || 0]]}
-                        options={{
-                            max: 130,
-                            redFrom: 110,
-                            redTo: 130,
-                            yellowFrom: 90,
-                            yellowTo: 110,
-                            minorTicks: 5
-                        }}
-                    />
+        if (!this.state.BoldChatData.boldChatAgent) {
+            return (
+                <DashboardDataCard
+                    id={this.props.id}
+                    position={this.props.position}
+                    color={this.props.color}
+                    widgetName="WidgetSNClicksByOS"
+                >
+                    <div className="single-num-title">All Active Chats</div>
+                    <br />
+                    <div>Gauge is Waiting for Data</div>
+                </DashboardDataCard>
+            );
+        } else {
+            return (
+                <div className={"googleGaugeChartCard"} id={this.props.id} style={styles}>
+                    <div className="single-num-title">All Active Chats</div>
+                    {/* Use this div to size the chart, rather than using Chart Width/Height */}
+                    {/* Chart width/height seems to create two nested divs, which each have the %size applied, so double affect */}
+                    <div className="manualChartSize" style={{ width: "95%", height: "70%" }}>
+                        <Chart
+                            chartType="Gauge"
+                            width={"100%"}
+                            height={"100%"}
+                            data={[["Label", "Value"], ["Chats", this.state.BoldChatData.boldChatAgent || 0]]}
+                            options={{
+                                max: 130,
+                                redFrom: 110,
+                                redTo: 130,
+                                yellowFrom: 90,
+                                yellowTo: 110,
+                                minorTicks: 5
+                            }}
+                        />
+                    </div>
+                    <div style={{ fontSize: "1.3vw" }}>
+                        Agent:{this.state.BoldChatData.boldChatAgent} ChatBot: {this.state.BoldChatData.boldChatBot}{" "}
+                    </div>
                 </div>
-                <div style={{ fontSize: "1.3vw" }}>
-                    Agent:{this.state.BoldChatData.boldChatAgent} ChatBot: {this.state.BoldChatData.boldChatBot}{" "}
-                </div>
-            </div>
-        );
+            );
+        }
     }
 }
 
