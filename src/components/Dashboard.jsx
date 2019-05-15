@@ -12,6 +12,7 @@ import LeankitDiscoveryCardGrid from "../cardgrids/LeankitDiscoveryCardGrid";
 import LeankitDeliveryCardGrid from "../cardgrids/LeankitDeliveryCardGrid";
 import IrisReleaseNotesCardGrid from "../cardgrids/IrisReleaseNotesCardGrid";
 import IrisDevOpsCardGrid from "../cardgrids/IrisDevOpsCardGrid";
+import IrisDevOps2CardGrid from "../cardgrids/IrisDevOps2CardGrid";
 import IrisGeekCardGrid from "../cardgrids/IrisGeekCardGrid";
 import NumberFormat from "react-number-format";
 
@@ -135,6 +136,7 @@ class Dashboard extends React.Component {
                             <Link to="/leankit-discovery-dashboard">Leankit Discovery Dashboard</Link>
                             <Link to="/leankit-delivery-dashboard">Leankit Delivery Dashboard</Link>
                             <Link to="/iris-devops-dashboard">Iris DevOps Dashboard</Link>
+                            <Link to="/iris-devops2-dashboard">Iris DevOps2 Dashboard</Link>
                             <Link to="/iris-geek-dashboard">Iris Geek Dashboard</Link>
                             <br />
                             <br />
@@ -184,6 +186,7 @@ class Dashboard extends React.Component {
                             </div>
                         </div>
                         <div className="centerPanel_container">
+                            {/* Define a route to a new dashboard */}
                             <Route
                                 path="/everything-dashboard"
                                 exact
@@ -196,6 +199,7 @@ class Dashboard extends React.Component {
                                     />
                                 )}
                             />
+                            {/* Define a route to a new dashboard */}
                             <Route
                                 path="/demo1-dashboard"
                                 exact
@@ -207,6 +211,7 @@ class Dashboard extends React.Component {
                                     />
                                 )}
                             />
+                            {/* Define a route to a new dashboard */}
                             <Route
                                 path="/releasenotes"
                                 exact
@@ -217,6 +222,7 @@ class Dashboard extends React.Component {
                                     />
                                 )}
                             />
+                            {/* Define a route to a new dashboard */}
                             <Route
                                 path="/dev1-dashboard"
                                 exact
@@ -229,6 +235,7 @@ class Dashboard extends React.Component {
                                     />
                                 )}
                             />
+                            {/* Define a route to a new dashboard */}
                             <Route
                                 path="/leankit-discovery-dashboard"
                                 exact
@@ -240,6 +247,7 @@ class Dashboard extends React.Component {
                                     />
                                 )}
                             />
+                            {/* Define a route to a new dashboard */}
                             <Route
                                 path="/leankit-delivery-dashboard"
                                 exact
@@ -251,6 +259,7 @@ class Dashboard extends React.Component {
                                     />
                                 )}
                             />
+                            {/* Define a route to a new dashboard */}
                             <Route
                                 path="/iris-devops-dashboard"
                                 exact
@@ -263,6 +272,20 @@ class Dashboard extends React.Component {
                                     />
                                 )}
                             />
+                            {/* Define a route to a new dashboard */}
+                            <Route
+                                path="/iris-devops2-dashboard"
+                                exact
+                                render={() => (
+                                    <IrisDevOps2CardGrid
+                                        sn_instance={this.props.sn_instance}
+                                        changeParentPageTitle={this.changePageTitle.bind(this)}
+                                        leankit_instance={this.props.leankit_instance}
+                                        boldchat_instance={this.props.boldchat_instance}
+                                    />
+                                )}
+                            />
+                            {/* Define a route to a new dashboard */}
                             <Route
                                 path="/iris-geek-dashboard"
                                 exact
@@ -275,7 +298,7 @@ class Dashboard extends React.Component {
                                     />
                                 )}
                             />
-
+                            {/* Define the DEFAULT route when no path to a dashboard is given */}
                             <Route path="/" exact render={() => <Redirect to="/demo1-dashboard" />} />
                         </div>
                     </div>

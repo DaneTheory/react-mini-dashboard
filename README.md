@@ -1,6 +1,6 @@
 # Project Description
 
-This is a dashboard (information radiator ?) that displays a number of small widgets, each containing a discrete tidbit of information (e.g. Number of users logged in today, Number of breached incidents today, etc). The dashboard obtains all its information by calling different APIs, and rendering that information using a combination of React, Google Charts, and native CSS Grids. Every 60 seconds (user configurable), it calls the APIs again, updates the React state of each widget (compmonent), and then React dutifully re-renders.
+This is an information radiator (aka. dashboard) that displays a number of small widgets, each containing a discrete tidbit of information (e.g. Number of users logged in today, Number of breached incidents today, etc). The dashboard obtains all its information by calling several APIs, and rendering that information using a combination of React, Google Charts, and native CSS Grids. Every 60 seconds (user configurable), it calls the APIs again, updates the React state of each widget (compmonent), and then React dutifully re-renders.
 
 Want to help me ? Great ! I'm glad you asked. Please fork the project, deploy locally, make some awesome changes, and then issue a pull request against the master branch.
 

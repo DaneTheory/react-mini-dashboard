@@ -148,7 +148,7 @@ class WidgetLeankitDiscoveryOwnerList extends React.Component {
                 color={this.props.color}
                 widgetName="WidgetLeankitDiscoveryOwnerList"
             >
-                <div className="single-num-title">Owner Frequency</div>
+                <div className="single-num-title">Discovery Card Owner Frequency</div>
                 {this.renderCardBody()}
             </DashboardDataCard>
         );
