@@ -76,6 +76,19 @@ class WidgetSNIrisReleaseNotes extends React.PureComponent {
 
         var wuResults = response_wu.data.result;
 
+        // # Construct URL for Work Unit (parent), example of link that we need to create
+        // https://jnjprod.service-now.com/nav_to.do?uri=rm_enhancement.do?sys_id=85abbe8adb7c7b48d1cbdb41ca9619ca&sysparm_view=sdlc
+
+        let rootURL = `https://${this.props.sn_instance}`;
+        rootURL = rootURL.replace("jnjprodworker", "jnjprod");
+        wuResults.forEach(function(wu) {
+            let restURL = `/nav_to.do?uri=rm_enhancement.do?sys_id=${wu["sys_id"]}&sysparm_view=sdlc`;
+            wu["url"] = rootURL + restURL;
+
+            wu["u_process"] = wu["u_process"].replace("ISM ", "");
+            wu["u_process"] = wu["u_process"].replace("Service Request - SID", "Catalog");
+        });
+
         // Group by u_release_number.u_release_date
         var wuResultsByDate = {};
         wuResults.forEach(function(wu) {
@@ -145,13 +158,16 @@ class WidgetSNIrisReleaseNotes extends React.PureComponent {
                         <th>Dev Points</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="Font10x">
                     {wuArray.map((wu, index) => {
                         return (
                             <tr key={wu["number"]}>
                                 <td>{index}</td>
                                 <td>
-                                    {wu["number"]}
+                                    <a href={wu["url"]} target="_blank" rel="noreferrer noopener">
+                                        {wu["number"]}
+                                    </a>
+                                    <br />
                                     <br />
                                     {wu["u_request_type"]}
                                 </td>
