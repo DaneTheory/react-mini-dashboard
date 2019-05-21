@@ -30,12 +30,7 @@ class WidgetSNSystemErrorsBarChart extends React.PureComponent {
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    // eslint-disable-next-line no-unused-vars
-    async getDataAndUpdateState(msg = "Default message", data = "Default data") {
-        // this function gets the custom data for this widget, and updates our React component state
-        // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
-
+    async getDataForHour(hoursAgo) {
         // Time is now 15:55pm
         //
         // sys_created_on>=javascript:gs.hoursAgoStart(3)^sys_created_on<javascript:gs.hoursAgoStart(2)
@@ -47,36 +42,34 @@ class WidgetSNSystemErrorsBarChart extends React.PureComponent {
         // sys_created_on>=javascript:gs.hoursAgoStart(1)
         // 14:00 to current
 
-        // Retrieve our data (likely from an API)
-        let response = await apiProxy.get(`/sn/${this.props.sn_instance}/api/now/stats/syslog`, {
+        const response = await apiProxy.get(`/sn/${this.props.sn_instance}/api/now/stats/incident`, {
             params: {
                 // Units: years, months, days, hours, minutes
-                sysparm_query: "sys_created_on>=javascript:gs.hoursAgoStart(0)^level=2",
+                sysparm_query: `sys_created_on>=javascript:gs.hoursAgoStart(${hoursAgo})^sys_created_on<javascript:gs.hoursAgoStart(${hoursAgo -
+                    1})`,
                 sysparm_count: "true"
             }
         });
-        let count0 = response.data.result.stats.count;
+        let count = response.data.result.stats.count;
+        return count;
+    }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        response = await apiProxy.get(`/sn/${this.props.sn_instance}/api/now/stats/syslog`, {
-            params: {
-                // Units: years, months, days, hours, minutes
-                sysparm_query: "sys_created_on>=javascript:gs.hoursAgoStart(1)^sys_created_on<javascript:gs.hoursAgoStart(0)^level=2",
-                sysparm_count: "true"
-            }
-        });
-        let count1 = response.data.result.stats.count;
+    // eslint-disable-next-line no-unused-vars
+    async getDataAndUpdateState(msg = "Default message", data = "Default data") {
+        // this function gets the custom data for this widget, and updates our React component state
+        // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
 
-        response = await apiProxy.get(`/sn/${this.props.sn_instance}/api/now/stats/syslog`, {
-            params: {
-                // Units: years, months, days, hours, minutes
-                sysparm_query: "sys_created_on>=javascript:gs.hoursAgoStart(2)^sys_created_on<javascript:gs.hoursAgoStart(1)^level=2",
-                sysparm_count: "true"
-            }
-        });
-        let count2 = response.data.result.stats.count;
+        let countArray = [];
+        let count;
+
+        for (let i = 0; i < 12; i++) {
+            count = await this.getDataForHour(i);
+            countArray.push({ relativeHour: i, count: count });
+        }
 
         // Update our own state with the new data
-        this.setState({ count: [count0, count1, count2] });
+        this.setState({ count: countArray });
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -107,14 +100,20 @@ class WidgetSNSystemErrorsBarChart extends React.PureComponent {
     renderCardBody() {
         return (
             <div className="item">
-                <div className="single-num-title">System Errors (Today)</div>
-                <div className="single-num-value">
-                    <NumberFormat value={this.state.count[0]} thousandSeparator={true} displayType={"text"} />
-                    <br />
-                    <NumberFormat value={this.state.count[1]} thousandSeparator={true} displayType={"text"} />
-                    <br />
-                    <NumberFormat value={this.state.count[2]} thousandSeparator={true} displayType={"text"} />
-                </div>
+                <table>
+                    <tbody>
+                        {this.state.count.map(countObj => {
+                            return (
+                                <tr key={countObj.relativeHour}>
+                                    <td>{countObj.relativeHour}</td>
+                                    <td>
+                                        <NumberFormat value={countObj.count} thousandSeparator={true} displayType={"text"} />
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
             </div>
         );
     }
