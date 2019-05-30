@@ -112,7 +112,7 @@
             margin: 0 auto;
             font-size: 0.6vw;
 
-            tr {
+            tbody {
                 td {
                     border: 1px solid var(--colorThemeCardTableGridLines);
                     padding: 0.2rem 0.5rem 0.2rem 0.5rem;
@@ -140,10 +140,10 @@
                         font-weight: 700;
                     }
                 }
-                th {
-                    font-size: 0.8vw;
-                    font-weight: 800;
-                }
+            }
+            thead {
+                font-size: 0.8vw;
+                font-weight: 700;
             }
         }
 

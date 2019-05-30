@@ -84,14 +84,16 @@ class WidgetSNIrisReleaseNotes extends React.PureComponent {
         wuResults.forEach(function(wu) {
             let restURL = `/nav_to.do?uri=rm_enhancement.do?sys_id=${wu["sys_id"]}&sysparm_view=sdlc`;
             wu["url"] = rootURL + restURL;
-
-            wu["u_process"] = wu["u_process"].replace("ISM ", "");
-            wu["u_process"] = wu["u_process"].replace("Service Request - SID", "Catalog");
         });
 
         // Group by u_release_number.u_release_date
         var wuResultsByDate = {};
         wuResults.forEach(function(wu) {
+            // Remove "ISM " from process names, seems silly since every process name has "ISM " in it
+            if (wu["u_process"]) {
+                wu["u_process"] = wu["u_process"].replace("ISM ", "");
+                wu["u_process"] = wu["u_process"].replace("Service Request - SID", "Catalog");
+            }
             var releaseDate = wu["u_release_number.u_release_date"];
             if (!wuResultsByDate[releaseDate]) {
                 // first time I'm seeing this release date
@@ -145,25 +147,25 @@ class WidgetSNIrisReleaseNotes extends React.PureComponent {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     renderTable(wuArray) {
         return (
-            <table width="90%" style={{ marginBottom: "3vw" }}>
-                <thead>
+            <table width="90%" style={{ marginBottom: "4vw" }}>
+                <thead style={{ fontSize: "0.6vw" }}>
                     <tr>
                         <th>#</th>
                         <th>Work Unit</th>
                         <th>Process Area</th>
                         <th>Title</th>
                         <th>What&apos;s Changed</th>
-                        <th>Release Title</th>
                         <th>Test Points</th>
                         <th>Dev Points</th>
+                        <th>Release Title</th>
                     </tr>
                 </thead>
                 <tbody className="Font10x">
                     {wuArray.map((wu, index) => {
                         return (
                             <tr key={wu["number"]}>
-                                <td>{index}</td>
-                                <td>
+                                <td style={{ padding: "1vw" }}>#{index + 1}</td>
+                                <td style={{ width: "10vw", padding: "1vw" }}>
                                     <a href={wu["url"]} target="_blank" rel="noreferrer noopener">
                                         {wu["number"]}
                                     </a>
@@ -171,12 +173,12 @@ class WidgetSNIrisReleaseNotes extends React.PureComponent {
                                     <br />
                                     {wu["u_request_type"]}
                                 </td>
-                                <td>{wu["u_process"]}</td>
-                                <td>{wu["u_title"]}</td>
-                                <td>{wu["u_what_s_changed"]}</td>
-                                <td>{wu["u_release_number.u_release_titile"]}</td>
-                                <td>{wu["u_test_estimation"]}</td>
-                                <td>{wu["u_dev_estimation"]}</td>
+                                <td style={{ width: "10vw", padding: "1vw" }}>{wu["u_process"]}</td>
+                                <td style={{ width: "20vw", padding: "1vw" }}>{wu["u_title"]}</td>
+                                <td style={{ padding: "1vw" }}>{wu["u_what_s_changed"]}</td>
+                                <td style={{ width: "3vw", padding: "1vw" }}>{wu["u_test_estimation"]}</td>
+                                <td style={{ width: "3vw", padding: "1vw" }}>{wu["u_dev_estimation"]}</td>
+                                <td style={{ padding: "1vw" }}>{wu["u_release_number.u_release_titile"]}</td>
                             </tr>
                         );
                     })}
@@ -195,7 +197,7 @@ class WidgetSNIrisReleaseNotes extends React.PureComponent {
                     {this.state.wuByDate.workunits.map((singleRelease, index) => {
                         return (
                             <div key={index}>
-                                <div className="Font15x" style={{ textAlign: "left", marginBottom: "1vw", marginLeft: "2vw" }}>
+                                <div className="Font16x" style={{ textAlign: "left", marginBottom: "1vw", marginLeft: "2vw" }}>
                                     Release Date: {singleRelease.releaseDate}
                                 </div>
                                 {this.renderTable(singleRelease.workUnits)}
@@ -208,7 +210,7 @@ class WidgetSNIrisReleaseNotes extends React.PureComponent {
     }
 
     renderCardHeader() {
-        return <div className="single-num-title">Iris Release Notes</div>;
+        return;
     }
 
     renderCardBody() {
