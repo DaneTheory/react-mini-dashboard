@@ -79,9 +79,7 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
         // Save these cards to our state, which triggers react to render an update to the screen
         this.setState({ leankit_cards: leankit_cards });
 
-        console.log("leankit_cards before advanced call", leankit_cards);
         let leankitDataObject = createLeankitDataObject(leankit_cards, this.props.boardId);
-        console.log("leankitDataObject:", leankitDataObject);
 
         let labels = leankitDataObject.burndownChart.labels;
         let series1 = leankitDataObject.burndownChart.data[0];
@@ -109,8 +107,6 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
         this.setState({
             chartData: chartData
         });
-
-        console.warn(leankit_cards);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

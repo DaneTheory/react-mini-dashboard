@@ -32,7 +32,6 @@ export async function getLeankitCards(leankitAPIHost, boardId, lane_class_types)
         // Set the offset equal to how many cards we got in the first call
         offset = response_cards.data.pageMeta.endRow;
         do {
-            console.log(`Need to get more Leankit data, offset now ${offset}`);
             response_cards = await apiProxy.get(
                 `/leankit-api/${leankitAPIHost}/io/card?board=${boardId}&limit=${limit}&offset=${offset}&lane_class_types=${lane_class_types}`
             );
