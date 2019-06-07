@@ -148,6 +148,7 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
             styles.backgroundColor = this.props.color;
         }
 
+        // Display "Loading Data..." if there's no chart yet
         if (!this.state.chartData) {
             return (
                 <DashboardDataCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="Loading data">
@@ -166,6 +167,8 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
                             color={this.props.color}
                             widgetName="WidgetSNBarChart"
                         >
+                            {/* Finished getting theme info */}
+
                             <div className="single-num-title">Iris Development Burndown</div>
 
                             {/* Use this div to size the chart, rather than using Chart Width/Height */}
