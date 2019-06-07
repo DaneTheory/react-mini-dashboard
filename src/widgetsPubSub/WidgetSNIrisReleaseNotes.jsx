@@ -102,9 +102,14 @@ class WidgetSNIrisReleaseNotes extends React.PureComponent {
                 // I've seen this release date before, append to it
                 wuResultsByDate[releaseDate].push(wu);
             }
+            // Sort array by work unit number so that work units are always in the same order on refreshes
+            wuResultsByDate[releaseDate].sort(function(a, b) {
+                return parseInt(a["number"].substr(9)) - parseInt(b["number"].substr(9));
+            });
         });
+        console.log("wuResultsByDate", wuResultsByDate);
 
-        // Convert dictionary to array
+        // Convert object to array of arrays
         var wuResultsByDateArray = [];
         for (var theDate in wuResultsByDate) {
             wuResultsByDateArray.push({ releaseDate: theDate, workUnits: wuResultsByDate[theDate] });
