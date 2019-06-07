@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import Demo1CardGrid from "../cardgrids/Demo1CardGrid";
 import EverythingCardGrid from "../cardgrids/EverythingCardGrid";
 import Dev1CardGrid from "../cardgrids/Dev1CardGrid";
+import Dev2CardGrid from "../cardgrids/Dev2CardGrid";
 import LeankitDiscoveryCardGrid from "../cardgrids/LeankitDiscoveryCardGrid";
 import LeankitDeliveryCardGrid from "../cardgrids/LeankitDeliveryCardGrid";
 import IrisReleaseNotesCardGrid from "../cardgrids/IrisReleaseNotesCardGrid";
@@ -146,6 +147,7 @@ class Dashboard extends React.Component {
                             </div>
                             <Link to="/everything-dashboard">Everything Dashboard</Link>
                             <Link to="/dev1-dashboard">Dev1 Dashboard</Link>
+                            <Link to="/dev2-dashboard">Dev2 Dashboard</Link>
                         </div>
                         <div className="otherDetails">
                             <div className="title">Other Details:</div>
@@ -228,6 +230,19 @@ class Dashboard extends React.Component {
                                 exact
                                 render={() => (
                                     <Dev1CardGrid
+                                        sn_instance={this.props.sn_instance}
+                                        boldchat_instance={this.props.boldchat_instance}
+                                        changeParentPageTitle={this.changePageTitle.bind(this)}
+                                        refreshInterval={8000}
+                                    />
+                                )}
+                            />
+                            {/* Define a route to a new dashboard */}
+                            <Route
+                                path="/dev2-dashboard"
+                                exact
+                                render={() => (
+                                    <Dev2CardGrid
                                         sn_instance={this.props.sn_instance}
                                         boldchat_instance={this.props.boldchat_instance}
                                         changeParentPageTitle={this.changePageTitle.bind(this)}
