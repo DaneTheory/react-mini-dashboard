@@ -11,6 +11,9 @@ import { ThemeConsumer } from "../components/ThemeContext";
 import { getLeankitCards } from "../utilities/getLeankitCards";
 import { createLeankitDataObject } from "../utilities/createLeankitDataObject";
 
+// These have to be after imports
+var moment = require("moment");
+
 // The purpose of this file is to create a React Component which can be included in HTML
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
 
@@ -73,24 +76,8 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
         // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
 
         // Retrieve our data (likely from an API)
-        // Get all the leankit cards
-        let leankit_cards = await getLeankitCards(this.props.leankit_instance, this.props.boardId, "active,backlog");
 
-        // Save these cards to our state, which triggers react to render an update to the screen
-        this.setState({ leankit_cards: leankit_cards });
-
-        let leankitDataObject = createLeankitDataObject(leankit_cards, this.props.boardId);
-
-        let labels = leankitDataObject.burndownChart.labels;
-        let series1 = leankitDataObject.burndownChart.data[0];
-        let series2 = leankitDataObject.burndownChart.data[1];
-        let series3 = leankitDataObject.burndownChart.data[2];
-
-        // Create initial chart data with one column
-        let chartData = labels.map(label => {
-            return [label];
-        });
-
+        // Helper function
         function addColumn(dataArray, columnArray) {
             dataArray = dataArray.map((dataElement, index) => {
                 dataElement.push(columnArray[index]);
@@ -99,10 +86,39 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
             return dataArray;
         }
 
-        chartData = addColumn(chartData, series1);
-        chartData = addColumn(chartData, series2);
-        chartData = addColumn(chartData, series3);
-        chartData.unshift(["Date", "Planned", "Burndown", "Unplanned"]);
+        // Get all the leankit cards
+        let leankit_cards = await getLeankitCards(this.props.leankit_instance, this.props.boardId, "active,backlog");
+        let leankitDataObject = createLeankitDataObject(leankit_cards, this.props.boardId);
+
+        let labels = leankitDataObject.burndownChart.labels;
+        let plannedPts = leankitDataObject.burndownChart.data[0];
+        let burndownIdeal = leankitDataObject.burndownChart.data[1];
+        let unplannedPts = leankitDataObject.burndownChart.data[2];
+
+        // Create initial chart data with one column (which has the series of dates which are part of this sprint)
+        let chartData = labels.map(label => {
+            return [label];
+        });
+
+        const todaysDateString = moment().format("M/D");
+        let annotationColumn = labels.map(label => {
+            if (label === todaysDateString) {
+                return "point { size: 6; fill-color: #56f442; }";
+            } else {
+                return null;
+            }
+        });
+        console.log("annotationColumn", annotationColumn);
+
+        // Planned
+        chartData = addColumn(chartData, plannedPts);
+        chartData = addColumn(chartData, annotationColumn);
+        // Burndown (Ideal)
+        chartData = addColumn(chartData, burndownIdeal);
+        // Unplanned
+        chartData = addColumn(chartData, unplannedPts);
+        // Add to beginning of array
+        chartData.unshift(["Date", "Planned", { type: "string", role: "style" }, "Burndown", "Unplanned"]);
 
         this.setState({
             chartData: chartData
@@ -157,6 +173,7 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
             );
         } else {
             // We've got data, so load the chart now
+            console.log("chartData", this.state.chartData);
             return (
                 <ThemeConsumer>
                     {/* Use a render prop to get the global value from the Context API Consumer */}
