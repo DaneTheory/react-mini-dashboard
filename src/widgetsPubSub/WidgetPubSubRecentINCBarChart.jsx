@@ -115,7 +115,7 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
         } else {
             // We've got data, first convert to appropriate format for Google Charts
             let chartData = [["CI", "count"]];
-            this.state.IncidentCountbyCI.slice(0, 60).forEach(INCCICount => {
+            this.state.IncidentCountbyCI.slice(0, this.props.num_ci).forEach(INCCICount => {
                 chartData.push([INCCICount.ci.substring(0, 15), parseInt(INCCICount.count)]);
             });
 
@@ -147,7 +147,7 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
                                         },
                                         backgroundColor: theme.currentColorTheme.colorThemeCardBackground,
                                         chartArea: {
-                                            left: "2%",
+                                            left: "3%",
                                             right: 0,
                                             top: "4%",
                                             bottom: "35%",
@@ -167,7 +167,8 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
                                             title: "Incident Count",
                                             titleTextStyle: { color: theme.currentColorTheme.colorThemeCardFontDefault },
                                             textStyle: {
-                                                color: theme.currentColorTheme.colorThemeCardFontDefault
+                                                color: theme.currentColorTheme.colorThemeCardFontDefault,
+                                                fontSize: 12
                                             },
                                             // maxValue: 125,
                                             gridlines: {
@@ -199,14 +200,15 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetPubSubJETHorizontalGoogleBarChart.defaultProps = {};
+WidgetPubSubJETHorizontalGoogleBarChart.defaultProps = { num_ci: 15 };
 
 // Force the caller to include the proper attributes
 WidgetPubSubJETHorizontalGoogleBarChart.propTypes = {
     sn_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
-    color: PropTypes.string
+    color: PropTypes.string,
+    num_ci: PropTypes.number
 };
 
 // If we (this file) get "imported", this is what they'll be given
