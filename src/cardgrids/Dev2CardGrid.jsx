@@ -3,8 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // Widget imports
-import WidgetGoogleChartHorizontalBar from "../widgetsExperimental/WidgetGoogleChartHorizontalBar";
-import WidgetLeankitDeliveryBurndown from "../widgetsPubSub/WidgetLeankitDeliveryBurndown";
+import WidgetPubSubRecentINCBarChart from "../widgetsPubSub/WidgetPubSubRecentINCBarChart";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -24,12 +23,7 @@ class Dev2CardGrid extends React.Component {
     render() {
         return (
             <CardGrid rows="20" row_height="3.5vw" columns="12" column_width="1fr">
-                <WidgetGoogleChartHorizontalBar position="span 6 / span 6" sn_instance={this.props.sn_instance} />
-                <WidgetLeankitDeliveryBurndown
-                    position="1 / 1 / span 12 / span 12"
-                    leankit_instance={this.props.leankit_instance}
-                    boardId={this.props.boardId}
-                />
+                <WidgetPubSubRecentINCBarChart position="span 4 / span 12" sn_instance={this.props.sn_instance} />
             </CardGrid>
         );
     }
