@@ -136,8 +136,8 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
                             widgetName="WidgetSNBarChart"
                         >
                             <div className="single-num-title">
-                                Open Incidents (Created in last {this.props.hours} hours) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Total:{" "}
-                                {this.state.totalINC} Incidents
+                                Open Incidents by Configuration Item (Created in last {this.props.hours} hours)
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Total: {this.state.totalINC} Incidents
                             </div>
 
                             {/* Use this div to size the chart, rather than using Chart Width/Height */}
@@ -166,7 +166,7 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
                                         hAxis: {
                                             textStyle: {
                                                 color: theme.currentColorTheme.colorThemeCardFontDefault,
-                                                fontSize: 8
+                                                fontSize: 6
                                             },
                                             slantedText: true,
                                             slantedTextAngle: 55
