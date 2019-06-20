@@ -182,7 +182,7 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
                                             gridlines: {
                                                 color: theme.currentColorTheme.colorThemeCardFontDefault,
                                                 // Set major grid lines every 10
-                                                count: 10
+                                                count: 5
                                             }
                                         },
                                         responseive: true,
