@@ -27,6 +27,7 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
         this.state = {
             widgetName: "WidgetPubSubJETHorizontalGoogleBarChart",
             IncidentCountbyCI: [],
+            totalINC: null,
             chartData: null
         };
 
@@ -46,7 +47,9 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
         const response = await apiProxy.get(`/sn/${this.props.sn_instance}/api/now/stats/incident`, {
             params: {
                 // Units: years, months, days, hours, minutes
-                sysparm_query: "sys_created_on>=javascript:gs.hoursAgoStart(3)^sys_updated_on>=javascript:gs.hoursAgoStart(3)",
+                sysparm_query: `sys_created_on>=javascript:gs.hoursAgoStart(${
+                    this.props.hours
+                })^sys_updated_on>=javascript:gs.hoursAgoStart(${this.props.hours})^u_stateNOT IN800,900`,
                 sysparm_count: "true",
                 sysparm_display_value: "true",
                 sysparm_group_by: "cmdb_ci"
@@ -54,17 +57,19 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
         });
 
         let IncidentCountbyCI = [];
+        let totalINC = 0;
         response.data.result.forEach(item => {
             let CI = item["groupby_fields"][0]["value"] || "<blank>";
-            let count = item["stats"]["count"];
+            let count = parseInt(item["stats"]["count"]);
             IncidentCountbyCI.push({ ci: CI, count: count });
+            totalINC = totalINC + count;
         });
         IncidentCountbyCI.sort((a, b) => {
             return b.count - a.count;
         });
 
         // Update our own state with the new data
-        this.setState({ IncidentCountbyCI: IncidentCountbyCI });
+        this.setState({ IncidentCountbyCI: IncidentCountbyCI, totalINC: totalINC });
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -130,7 +135,10 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
                             color={this.props.color}
                             widgetName="WidgetSNBarChart"
                         >
-                            <div className="single-num-title">Recent INC's by CI (3 Hours)</div>
+                            <div className="single-num-title">
+                                Open Incidents (Created in last {this.props.hours} hours) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Total:{" "}
+                                {this.state.totalINC} Incidents
+                            </div>
 
                             {/* Use this div to size the chart, rather than using Chart Width/Height */}
                             {/* Chart width/height seems to create two nested divs, which each have the %size applied, so double affect */}
@@ -147,7 +155,7 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
                                         },
                                         backgroundColor: theme.currentColorTheme.colorThemeCardBackground,
                                         chartArea: {
-                                            left: "3%",
+                                            left: "5%",
                                             right: 0,
                                             top: "4%",
                                             bottom: "35%",
@@ -200,7 +208,7 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetPubSubJETHorizontalGoogleBarChart.defaultProps = { num_ci: 15 };
+WidgetPubSubJETHorizontalGoogleBarChart.defaultProps = { num_ci: 15, hours: 4 };
 
 // Force the caller to include the proper attributes
 WidgetPubSubJETHorizontalGoogleBarChart.propTypes = {
@@ -208,7 +216,8 @@ WidgetPubSubJETHorizontalGoogleBarChart.propTypes = {
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
     color: PropTypes.string,
-    num_ci: PropTypes.number
+    num_ci: PropTypes.number,
+    hours: PropTypes.number
 };
 
 // If we (this file) get "imported", this is what they'll be given

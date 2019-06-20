@@ -23,7 +23,7 @@ class Dev2CardGrid extends React.Component {
     render() {
         return (
             <CardGrid rows="20" row_height="3.5vw" columns="12" column_width="1fr">
-                <WidgetPubSubRecentINCBarChart position="span 4 / span 12" sn_instance={this.props.sn_instance} num_ci={50} />
+                <WidgetPubSubRecentINCBarChart position="span 4 / span 12" sn_instance={this.props.sn_instance} num_ci={50} hours={2} />
             </CardGrid>
         );
     }

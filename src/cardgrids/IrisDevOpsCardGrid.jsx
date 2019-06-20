@@ -13,6 +13,7 @@ import WidgetLeankitPointsByOwner from "../widgetsPubSub/WidgetLeankitPointsByOw
 import WidgetSNClicksByOS from "../widgetsPubSub/WidgetSNClicksByOS";
 import WidgetBoldChatActiveGauge from "../widgetsPubSub/WidgetBoldChatActiveGauge";
 import WidgetSNDBAutomationBarChart from "../widgetsPubSub/WidgetSNDBAutomationBarChart";
+import WidgetPubSubRecentINCBarChart from "../widgetsPubSub/WidgetPubSubRecentINCBarChart";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -48,13 +49,19 @@ class IrisDevOpsCardGrid extends React.Component {
                 <WidgetSNPubSubPlatformHealthSummary position="span 8 / span 2" sn_instance={this.props.sn_instance} />
                 <WidgetSNUniqueLoginsToday position="5/ 7/ span 2 / span 2" sn_instance={this.props.sn_instance} />
                 <WidgetSNAPICounts position="1 / 11 / span 4 / span 2" />
-                <WidgetSNClicksByOS position="9 / 7 / span 4 /span 2" sn_instance={this.props.sn_instance} />
+                {/* <WidgetSNClicksByOS position="9 / 7 / span 4 /span 2" sn_instance={this.props.sn_instance} /> */}
                 <WidgetBoldChatActiveGauge
-                    position="9 / 9 / span 4 / span 2"
+                    position="5 / 11 / span 4 / span 2"
                     boldchat_instance={this.props.boldchat_instance}
                     sn_instance={this.props.sn_instance}
                 />
-                <WidgetSNDBAutomationBarChart position="span 8 / span 2" sn_instance={this.props.sn_instance} />
+                {/* <WidgetSNDBAutomationBarChart position="span 8 / span 2" sn_instance={this.props.sn_instance} /> */}
+                <WidgetPubSubRecentINCBarChart
+                    position="9 / 7 / span 4 / span 6"
+                    sn_instance={this.props.sn_instance}
+                    num_ci={20}
+                    hours={8}
+                />
             </CardGrid>
         );
     }
