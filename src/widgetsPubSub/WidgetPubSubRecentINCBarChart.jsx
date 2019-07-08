@@ -155,10 +155,10 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
                                         },
                                         backgroundColor: theme.currentColorTheme.colorThemeCardBackground,
                                         chartArea: {
-                                            left: "5%",
+                                            left: "8%",
                                             right: 0,
                                             top: "4%",
-                                            bottom: "35%",
+                                            bottom: "42%",
                                             backgroundColor: {
                                                 fill: theme.currentColorTheme.colorThemeCardBackground
                                             }
@@ -166,7 +166,7 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
                                         hAxis: {
                                             textStyle: {
                                                 color: theme.currentColorTheme.colorThemeCardFontDefault,
-                                                fontSize: 6
+                                                fontSize: 8
                                             },
                                             slantedText: true,
                                             slantedTextAngle: 55

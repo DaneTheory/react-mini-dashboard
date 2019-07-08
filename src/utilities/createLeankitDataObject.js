@@ -10,19 +10,7 @@ import { sprintf } from "sprintf-js";
 
 function isWorkingDay(date) {
     // List of known holidays
-    var holidayList = [
-        "11/22/2017",
-        "11/23/2017",
-        "11/24/2017",
-        "5/28/2018",
-        "7/4/2018",
-        "9/3/2018",
-        "11/22/2018",
-        "11/23/2018",
-        "12/24/2018",
-        "12/25/2018",
-        "1/1/2019"
-    ];
+    var holidayList = ["1/1/2019", "7/4/2019", "7/5/2019", "9/2/2019", "11/28/2019", "11/29/2019", "12/25/2019", "12/31/2019", "1/1/2020"];
 
     let currentYear = new Date().getFullYear();
     date = date + "/" + currentYear;
