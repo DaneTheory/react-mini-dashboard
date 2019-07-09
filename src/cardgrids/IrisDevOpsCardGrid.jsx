@@ -14,6 +14,7 @@ import WidgetLeankitPointsByOwner from "../widgetsPubSub/WidgetLeankitPointsByOw
 import WidgetBoldChatActiveGauge from "../widgetsPubSub/WidgetBoldChatActiveGauge";
 // import WidgetSNDBAutomationBarChart from "../widgetsPubSub/WidgetSNDBAutomationBarChart";
 import WidgetPubSubRecentINCBarChart from "../widgetsPubSub/WidgetPubSubRecentINCBarChart";
+import WidgetLeankitDiscoverySolutioningCardList from "../widgetsPubSub/WidgetLeankitDiscoverySolutioningCardList";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -39,12 +40,19 @@ class IrisDevOpsCardGrid extends React.Component {
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}
                 />
+                <WidgetLeankitDiscoverySolutioningCardList
+                    position="5 / 1 / span 4 / span 6"
+                    leankit_instance={this.props.leankit_instance}
+                    boardId={this.props.boardId}
+                    daysInLaneThreshold={10}
+                />
+
                 <WidgetLeankitPointsByOwner
                     position="1 / 7 / span 4 / span 2"
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}
                 />
-                <WidgetIrisINCBreachList position="9 / 1 / span 4 / span 6" sn_instance={this.props.sn_instance} sla_threshhold_pct={110} />
+                <WidgetIrisINCBreachList position="9 / 1 / span 4 / span 6" sn_instance={this.props.sn_instance} sla_threshhold_pct={50} />
                 <WidgetIrisINCBreachSLACount position="7 / 7 / span 2 / span 2" sn_instance={this.props.sn_instance} />
                 <WidgetSNPubSubPlatformHealthSummary position="span 8 / span 2" sn_instance={this.props.sn_instance} />
                 <WidgetSNUniqueLoginsToday position="5/ 7/ span 2 / span 2" sn_instance={this.props.sn_instance} />
