@@ -35,7 +35,7 @@ class IrisDevOpsCardGrid extends React.Component {
         return (
             <CardGrid rows="12" row_height="3.5vw" columns="12" column_width="1fr">
                 <WidgetLeankitDeliveryBurndown
-                    position="1 / 1 / span 6 / span 6"
+                    position="1 / 1 / span 4 / span 6"
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}
                 />
@@ -44,7 +44,7 @@ class IrisDevOpsCardGrid extends React.Component {
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}
                 />
-                <WidgetIrisINCBreachList position="7 / 1 / span 6 / span 6" sn_instance={this.props.sn_instance} />
+                <WidgetIrisINCBreachList position="9 / 1 / span 4 / span 6" sn_instance={this.props.sn_instance} sla_threshhold_pct={110} />
                 <WidgetIrisINCBreachSLACount position="7 / 7 / span 2 / span 2" sn_instance={this.props.sn_instance} />
                 <WidgetSNPubSubPlatformHealthSummary position="span 8 / span 2" sn_instance={this.props.sn_instance} />
                 <WidgetSNUniqueLoginsToday position="5/ 7/ span 2 / span 2" sn_instance={this.props.sn_instance} />

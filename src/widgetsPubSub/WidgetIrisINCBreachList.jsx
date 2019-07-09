@@ -137,10 +137,10 @@ class WidgetIrisINCBreachList extends React.PureComponent {
             return (
                 <div>
                     <br />
-                    <div>Way to go ! &nbsp;&nbsp; Zero Incidents nearing breach.</div>
+                    <div style={{ fontSize: "1vw" }}>Way to go ! &nbsp;&nbsp; Zero Incidents nearing breach.</div>
                     <div />
-                    <div style={{ marginBottom: "3vw" }}>Here&apos;s a picture of kittens</div>
-                    <img style={{ width: "20vw" }} src={kittens} alt="" />
+                    <div style={{ fontSize: "1vw", marginBottom: "1vw" }}>Here&apos;s a picture of kittens</div>
+                    <img style={{ width: "12vw" }} src={kittens} alt="" />
                 </div>
             );
         } else {
@@ -181,11 +181,11 @@ class WidgetIrisINCBreachList extends React.PureComponent {
 
                                     return (
                                         <tr key={incident["number"]} style={{ fontSize: "4vw" }}>
-                                            <td style={{ fontSize: "1.5vw" }}>{index + 1}</td>
-                                            <td style={{ fontSize: "1.0vw" }}>
+                                            <td style={{ fontSize: "1.2vw" }}>{index + 1}</td>
+                                            <td style={{ fontSize: "0.8vw" }}>
                                                 <a href={url}>{incident["number"]}</a>
                                             </td>
-                                            <td style={{ fontSize: "1.0vw" }} className={classNames(slaColorClass)}>
+                                            <td style={{ fontSize: "0.8vw" }} className={classNames(slaColorClass)}>
                                                 <NumberFormat
                                                     value={sla_pct}
                                                     decimalScale={0}
@@ -194,10 +194,10 @@ class WidgetIrisINCBreachList extends React.PureComponent {
                                                 />
                                                 %
                                             </td>
-                                            <td style={{ fontSize: "0.9vw" }}>{incident["short_description"].substr(0, 60)}...</td>
-                                            <td style={{ fontSize: "0.9vw" }}>{incident["sys_created_by"]}</td>
-                                            <td style={{ fontSize: "0.9vw" }}>{incident["priority"]}</td>
-                                            <td style={{ fontSize: "0.9vw" }}>{incident["sla_record"]["business_time_left"]}</td>
+                                            <td style={{ fontSize: "0.7vw" }}>{incident["short_description"].substr(0, 60)}...</td>
+                                            <td style={{ fontSize: "0.7vw" }}>{incident["sys_created_by"]}</td>
+                                            <td style={{ fontSize: "0.7vw" }}>{incident["priority"]}</td>
+                                            <td style={{ fontSize: "0.7vw" }}>{incident["sla_record"]["business_time_left"]}</td>
                                         </tr>
                                     );
                                 })}

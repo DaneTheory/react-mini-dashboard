@@ -8,6 +8,7 @@ import DashboardDataCard from "../components/DashboardDataCard";
 import { getLeankitCards } from "../utilities/getLeankitCards";
 import { getCommentsforLeankitCards } from "../utilities/getCommentsForLeankitCards";
 import { getBacklogDurationForLeankitCards } from "../utilities/getBacklogDurationForLeankitCards";
+import tractor from "./tractor.png";
 
 // other imports
 var moment = require("moment");
@@ -53,6 +54,13 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
         // Put a dummy value in for backlogDuration, we'll figure it out later
         filteredCards.forEach(card => {
             card.backlogDuration = { days: "unknown" };
+        });
+
+        // Fake alter data so we have an older card in Solutioning
+        filteredCards.forEach(card => {
+            if (card.title === "Fake Card for Testing") {
+                card.daysInLane = 15;
+            }
         });
 
         // Save these cards to our state, which triggers react to render an update to the screen
@@ -110,6 +118,9 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
                     .sort((a, b) => {
                         return b.daysInLane - a.daysInLane;
                     })
+                    .filter(card => {
+                        return card.daysInLane >= this.props.daysInLaneThreshold;
+                    })
                     .map(function(card, index) {
                         // Set some variables to be used in JSX below
                         let cardOwner =
@@ -118,14 +129,20 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
                         let commentMostRecentAuthor = "Waiting for Comment";
                         let commentMostRecent = { ageInDays: "Waiting for Comment" };
                         let inLane = { days: card.daysInLane };
-                        inLane.className = inLane.days > 14 ? "redFont" : inLane.days > 11 ? "orangeFont" : "greenFont";
+                        inLane.className = inLane.days > 14 ? "cellRed" : inLane.days > 11 ? "cellAmber" : "cellGreen";
 
                         if (card.comments && card.comments.length > 0 && card.comments[0].text) {
+                            // Card has at least one comment
                             commentMostRecentText = card.comments[0].text;
                             commentMostRecentAuthor = card.comments[0].createdBy.fullName;
                             commentMostRecent.ageInDays = moment().diff(moment(card.comments[0].createdOn), "days");
                             commentMostRecent.className =
                                 commentMostRecent.ageInDays > 5 ? "redFont" : commentMostRecent.ageInDays > 3 ? "orangeFont" : "greenFont";
+                        } else if (card.comments && card.comments.length === 0) {
+                            // API call to get card comments has returned, but card doesn't have any comments
+                            commentMostRecentText = "No Comment";
+                            commentMostRecentAuthor = "No Author";
+                            commentMostRecent = { ageInDays: "-1" };
                         }
 
                         // Strip the html tags
@@ -144,11 +161,11 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
                         return (
                             <tr key={card["id"]}>
                                 <td align="center">{index + 1}</td>
-                                <td>{cardOwner}</td>
                                 <td align="center" className={classNames(inLane.className)}>
-                                    {inLane.days} days
+                                    {cardOwner}
+                                    <br />
+                                    <div>{inLane.days} days</div>
                                 </td>
-                                <td>{backlogDuration} days</td>
                                 <td>
                                     <a href={card.url}>{card["title"]}</a>
                                 </td>
@@ -169,24 +186,48 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
         if (this.state.leankit_cards.length === 0) {
             return <div className="waiting-for-data">Waiting for data...</div>;
         } else {
-            return (
-                <div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th width="3%" />
-                                <th width="13%">Owner</th>
-                                <th width="7%">Days in Lane</th>
-                                <th width="6%">Backlog</th>
-                                <th width="35%">Description</th>
-                                <th width="7%">Comment Age</th>
-                                <th width="30%">Most Recent Comment</th>
-                            </tr>
-                        </thead>
-                        {this.renderTableBody()}
-                    </table>
-                </div>
-            );
+            // We have data(cards) now
+            if (
+                this.state.leankit_cards.filter(card => {
+                    return card.daysInLane >= this.props.daysInLaneThreshold;
+                }).length === 0
+            ) {
+                // Show a fun picture
+                return (
+                    <div style={{ display: "flex", marginTop: "2vw", justifyContent: "center" }}>
+                        <div>
+                            <div style={{ fontSize: "1vw" }}>
+                                Way to go ! <br /> Zero Solution Cards nearing breach.
+                            </div>
+                            <div style={{ fontSize: "1vw", marginTop: "1vw" }}>Here&apos;s a picture of a tractor</div>
+                        </div>
+                        <div>
+                            <img style={{ width: "12vw", margin: "0vw 2vw" }} src={tractor} alt="" />
+                        </div>
+                    </div>
+                );
+            } else {
+                return (
+                    <div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th width="3%" />
+                                    <th width="15%">
+                                        Owner
+                                        <br />
+                                        Days in Lane
+                                    </th>
+                                    <th width="40%">Description</th>
+                                    <th width="7%">Comment Age</th>
+                                    <th width="30%">Most Recent Comment</th>
+                                </tr>
+                            </thead>
+                            {this.renderTableBody()}
+                        </table>
+                    </div>
+                );
+            }
         }
     }
 
@@ -206,7 +247,7 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
                 color={this.props.color}
                 widgetName="WidgetLeankitDiscoverySolutioningCardList"
             >
-                <div className="single-num-title">Solutioning Cards (Non-Project)</div>
+                <div className="single-num-title">Solutioning Cards Nearing Breach (Non-Project)</div>
                 {this.renderCardBody()}
             </DashboardDataCard>
         );
@@ -218,7 +259,9 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetLeankitDiscoverySolutioningCardList.defaultProps = {};
+WidgetLeankitDiscoverySolutioningCardList.defaultProps = {
+    daysInLaneThreshold: 0
+};
 
 // Force the caller to include the proper attributes
 WidgetLeankitDiscoverySolutioningCardList.propTypes = {
@@ -226,7 +269,8 @@ WidgetLeankitDiscoverySolutioningCardList.propTypes = {
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
     color: PropTypes.string,
-    boardId: PropTypes.string.isRequired
+    boardId: PropTypes.string.isRequired,
+    daysInLaneThreshold: PropTypes.number
 };
 
 // If we (this file) get "imported", this is what they'll be given
