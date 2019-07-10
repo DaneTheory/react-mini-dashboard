@@ -44,7 +44,7 @@ class IrisDevOpsCardGrid extends React.Component {
                     position="5 / 1 / span 4 / span 6"
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}
-                    daysInLaneThreshold={10}
+                    showCardsWithThisManyDaysRemaining={3}
                 />
 
                 <WidgetLeankitPointsByOwner
@@ -67,7 +67,7 @@ class IrisDevOpsCardGrid extends React.Component {
                 <WidgetPubSubRecentINCBarChart
                     position="9 / 9 / span 4 / span 4"
                     sn_instance={this.props.sn_instance}
-                    num_ci={15}
+                    num_ci={20}
                     hours={8}
                 />
             </CardGrid>

@@ -27,7 +27,7 @@ class Dev2CardGrid extends React.Component {
                     position="span 4 / span 6"
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}
-                    daysInLaneThreshold={10}
+                    daysBeforeBreachThreshold={10}
                 />
             </CardGrid>
         );

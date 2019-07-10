@@ -7,7 +7,7 @@ import PubSub from "pubsub-js";
 import DashboardDataCard from "../components/DashboardDataCard";
 import { getLeankitCards } from "../utilities/getLeankitCards";
 import { getCommentsforLeankitCards } from "../utilities/getCommentsForLeankitCards";
-import { getBacklogDurationForLeankitCards } from "../utilities/getBacklogDurationForLeankitCards";
+// import { getBacklogDurationForLeankitCards } from "../utilities/getBacklogDurationForLeankitCards";
 import tractor from "./tractor.png";
 
 // other imports
@@ -59,12 +59,12 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
         // Fake alter data so we have an older card in Solutioning
         filteredCards.forEach(card => {
             if (card.title === "Fake Card for Testing") {
-                card.daysInLane = 15;
+                card.daysInLane = 6;
             }
         });
 
         // Save these cards to our state, which triggers react to render an update to the screen
-        this.setState({ leankit_cards: filteredCards });
+        // this.setState({ leankit_cards: filteredCards });
 
         // Enrich each card by adding URL field (boardId is hard-coded)
         for (var i = 0; i < filteredCards.length; i++) {
@@ -72,18 +72,53 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
             card.url = `https://${this.props.leankit_instance}/card/${card.id}`;
         }
 
+        filteredCards.forEach(function(card) {
+            // Set some variables to be used in JSX below
+            card.cardOwner = (card.assignedUsers && card.assignedUsers.length > 0 && card.assignedUsers[0].fullName) || "No Owner";
+            card.cardType = card.customIcon && card.customIcon.title === "Defect" ? "Defect" : "Enhancement";
+            if (card.cardType === "Defect") {
+                // Card is "Defect"
+                card.cssClassName = card.daysInLane > 7 ? "cellRed" : card.daysInLane >= 4 ? "cellAmber" : "cellGreen";
+                card.daysRemainingUntilBreach = 7 - card.daysInLane;
+            } else {
+                // Card is likely "Enhancement"
+                card.cssClassName = card.daysInLane > 14 ? "cellRed" : card.daysInLane >= 11 ? "cellAmber" : "cellGreen";
+                card.daysRemainingUntilBreach = 14 - card.daysInLane;
+            }
+        });
+
         // User comments are not part of original call, so add them now
         let leankit_cards_with_comments = await getCommentsforLeankitCards(filteredCards, this.props.leankit_instance);
 
-        // Save these cards to our state, which triggers react to render an update to the screen
-        this.setState({ leankit_cards: leankit_cards_with_comments });
-
         // Get the backlog duration
-        let leankit_cards_with_backlogDuration = await getBacklogDurationForLeankitCards(filteredCards, this.props.leankit_instance);
+        // let leankit_cards_with_backlogDuration = await getBacklogDurationForLeankitCards(filteredCards, this.props.leankit_instance);
         // console.log(leankit_cards_with_backlogDuration);
 
-        // Update our own state with the new data
-        this.setState({ leankit_cards: leankit_cards_with_backlogDuration });
+        leankit_cards_with_comments.forEach(function(card) {
+            // Set some variables to be used in JSX below
+            card.commentMostRecent = {
+                Text: "Waiting for Comment",
+                Author: "Waiting for Comment",
+                ageInDay: "Waiting for Comment"
+            };
+
+            // If Card has a comment on it, then compute the most-recent comment (and colorize it based on age)
+            if (card.comments && card.comments.length > 0 && card.comments[0].text) {
+                card.commentMostRecent.Text = card.comments[0].text;
+                card.commentMostRecent.Author = card.comments[0].createdBy.fullName;
+                card.commentMostRecent.ageInDays = moment().diff(moment(card.comments[0].createdOn), "days");
+                card.commentMostRecent.className =
+                    card.commentMostRecent.ageInDays > 5 ? "redFont" : card.commentMostRecent.ageInDays > 3 ? "orangeFont" : "greenFont";
+            } else if (card.comments && card.comments.length === 0) {
+                // API call to get card comments has returned, but card doesn't have any comments
+                card.commentMostRecent.Text = "No Comment";
+                card.commentMostRecent.Author = "No Author";
+                card.commentMostRecent.ageInDays = "-1";
+            }
+        });
+
+        // // Save these cards to our state, which triggers react to render an update to the screen
+        this.setState({ leankit_cards: leankit_cards_with_comments });
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -116,65 +151,43 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
             <tbody>
                 {this.state.leankit_cards
                     .sort((a, b) => {
-                        return b.daysInLane - a.daysInLane;
+                        return a.daysRemainingUntilBreach - b.daysRemainingUntilBreach;
                     })
                     .filter(card => {
-                        return card.daysInLane >= this.props.daysInLaneThreshold;
+                        return card.daysRemainingUntilBreach <= this.props.showCardsWithThisManyDaysRemaining;
                     })
                     .map(function(card, index) {
-                        // Set some variables to be used in JSX below
-                        let cardOwner =
-                            (card.assignedUsers && card.assignedUsers.length > 0 && card.assignedUsers[0].fullName) || "No Owner";
-                        let commentMostRecentText = "Waiting for Comment";
-                        let commentMostRecentAuthor = "Waiting for Comment";
-                        let commentMostRecent = { ageInDays: "Waiting for Comment" };
-                        let inLane = { days: card.daysInLane };
-                        inLane.className = inLane.days > 14 ? "cellRed" : inLane.days > 11 ? "cellAmber" : "cellGreen";
-
-                        if (card.comments && card.comments.length > 0 && card.comments[0].text) {
-                            // Card has at least one comment
-                            commentMostRecentText = card.comments[0].text;
-                            commentMostRecentAuthor = card.comments[0].createdBy.fullName;
-                            commentMostRecent.ageInDays = moment().diff(moment(card.comments[0].createdOn), "days");
-                            commentMostRecent.className =
-                                commentMostRecent.ageInDays > 5 ? "redFont" : commentMostRecent.ageInDays > 3 ? "orangeFont" : "greenFont";
-                        } else if (card.comments && card.comments.length === 0) {
-                            // API call to get card comments has returned, but card doesn't have any comments
-                            commentMostRecentText = "No Comment";
-                            commentMostRecentAuthor = "No Author";
-                            commentMostRecent = { ageInDays: "-1" };
-                        }
-
                         // Strip the html tags
                         let temporalDivElement = document.createElement("div");
                         // Set the HTML content with the providen
-                        temporalDivElement.innerHTML = commentMostRecentText;
+                        temporalDivElement.innerHTML = card.commentMostRecent.Text;
                         // Retrieve the text property of the element (cross-browser support)
                         let zeroHTML = temporalDivElement.textContent || temporalDivElement.innerText || "";
                         // Truncate the ext
-                        commentMostRecentText = zeroHTML.substring(0, 200);
+                        card.commentMostRecent.Text = zeroHTML.substring(0, 200);
 
-                        let backlogComplete = card.backlogComplete || card.createdOn;
-                        let backlogDuration = moment(backlogComplete).diff(moment(card.createdOn), "days");
+                        // let backlogComplete = card.backlogComplete || card.createdOn;
+                        // let backlogDuration = moment(backlogComplete).diff(moment(card.createdOn), "days");
 
                         // Now return a JSX statement for rendering (remember, we're inside a .map() loop)
                         return (
                             <tr key={card["id"]}>
                                 <td align="center">{index + 1}</td>
-                                <td align="center" className={classNames(inLane.className)}>
-                                    {cardOwner}
-                                    <br />
-                                    <div>{inLane.days} days</div>
+                                <td align="center" className={classNames(card.cssClassName)}>
+                                    <div>{card.cardOwner}</div>
+                                    <div>{card.cardType}</div>
+                                    <div>{card.daysInLane} days in Solutiong</div>
                                 </td>
                                 <td>
                                     <a href={card.url}>{card["title"]}</a>
                                 </td>
-                                <td align="center" className={classNames(commentMostRecent.className)}>
-                                    {commentMostRecent.ageInDays} days
+                                <td align="center" className={classNames(card.commentMostRecent.className)}>
+                                    {card.commentMostRecent.ageInDays} days
                                 </td>
                                 <td>
-                                    <b>(({commentMostRecentAuthor}))</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {commentMostRecentText}
+                                    <b>(({card.commentMostRecent.Author}))</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {card.commentMostRecent.Text}
                                 </td>
+                                <td>{card.daysRemainingUntilBreach} days</td>
                             </tr>
                         );
                     })}
@@ -189,7 +202,7 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
             // We have data(cards) now
             if (
                 this.state.leankit_cards.filter(card => {
-                    return card.daysInLane >= this.props.daysInLaneThreshold;
+                    return card.daysRemainingUntilBreach <= this.props.showCardsWithThisManyDaysRemaining;
                 }).length === 0
             ) {
                 // Show a fun picture
@@ -218,9 +231,10 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
                                         <br />
                                         Days in Lane
                                     </th>
-                                    <th width="40%">Description</th>
+                                    <th width="35%">Description</th>
                                     <th width="7%">Comment Age</th>
                                     <th width="30%">Most Recent Comment</th>
+                                    <th width="10%">Time Remaining</th>
                                 </tr>
                             </thead>
                             {this.renderTableBody()}
@@ -260,7 +274,7 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
 
 // Set default props in case they aren't passed to us by the caller
 WidgetLeankitDiscoverySolutioningCardList.defaultProps = {
-    daysInLaneThreshold: 0
+    showCardsWithThisManyDaysRemaining: 0
 };
 
 // Force the caller to include the proper attributes
@@ -270,7 +284,7 @@ WidgetLeankitDiscoverySolutioningCardList.propTypes = {
     position: PropTypes.string.isRequired,
     color: PropTypes.string,
     boardId: PropTypes.string.isRequired,
-    daysInLaneThreshold: PropTypes.number
+    showCardsWithThisManyDaysRemaining: PropTypes.number
 };
 
 // If we (this file) get "imported", this is what they'll be given
