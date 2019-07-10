@@ -59,7 +59,7 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
         // Fake alter data so we have an older card in Solutioning
         filteredCards.forEach(card => {
             if (card.title === "Fake Card for Testing") {
-                card.daysInLane = 6;
+                card.daysInLane = 1;
             }
         });
 
@@ -261,7 +261,9 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
                 color={this.props.color}
                 widgetName="WidgetLeankitDiscoverySolutioningCardList"
             >
-                <div className="single-num-title">Solutioning Cards Nearing Breach (Non-Project)</div>
+                <div className="single-num-title">
+                    Solutioning Cards Nearing Breach - Non-Project (&lt;{this.props.showCardsWithThisManyDaysRemaining} Days Remaining)
+                </div>
                 {this.renderCardBody()}
             </DashboardDataCard>
         );

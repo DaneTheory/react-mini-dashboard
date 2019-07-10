@@ -87,7 +87,8 @@ let theme = {
 };
 
 // Select/Pick a color theme to use
-theme.currentColorTheme = theme.lightColorTheme;
+// theme.currentColorTheme = theme.lightColorTheme;
+theme.currentColorTheme = theme.darkColorTheme;
 
 // Apply the chose color theme to all of our CSS color variables
 Object.entries(theme.currentColorTheme).forEach(color => {

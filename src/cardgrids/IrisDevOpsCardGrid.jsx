@@ -44,7 +44,7 @@ class IrisDevOpsCardGrid extends React.Component {
                     position="5 / 1 / span 4 / span 6"
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}
-                    showCardsWithThisManyDaysRemaining={3}
+                    showCardsWithThisManyDaysRemaining={10}
                 />
 
                 <WidgetLeankitPointsByOwner
