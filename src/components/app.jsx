@@ -38,7 +38,7 @@ let theme = {
 
         // Scrollbar
         colorThemeScrollbarTrackBackground: "#2b2d3e",
-        colorThemeScrollbarThumbBackground: "#000",
+        colorThemeScrollbarThumbBackground: "#bbb3b3",
 
         // Chart
         colorThemeChartData: "#c0cde2",

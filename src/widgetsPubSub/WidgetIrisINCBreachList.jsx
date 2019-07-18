@@ -79,7 +79,6 @@ class WidgetIrisINCBreachList extends React.PureComponent {
                     return;
                 } else {
                     let sla_record = sla_records_resolution_in_progress[0];
-                    console.log(sla_record);
 
                     // Compute a proper percentage by removing comma from string (e.g. 1,014) and converting string to float, assign back to record
                     let sla_pct_string_without_comma = sla_record.percentage.replace(/,/g, "");
@@ -183,7 +182,9 @@ class WidgetIrisINCBreachList extends React.PureComponent {
                                         <tr key={incident["number"]} style={{ fontSize: "4vw" }}>
                                             <td style={{ fontSize: "1.2vw" }}>{index + 1}</td>
                                             <td style={{ fontSize: "0.8vw" }}>
-                                                <a href={url}>{incident["number"]}</a>
+                                                <a href={url} target="_blank" rel="noreferrer noopener">
+                                                    {incident["number"]}
+                                                </a>
                                             </td>
                                             <td style={{ fontSize: "0.8vw" }} className={classNames(slaColorClass)}>
                                                 <NumberFormat

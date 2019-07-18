@@ -35,20 +35,21 @@ a {
         width: 0.5em;
     }
 
-    // the track (or background) of the elevator bar (Chrome/Safari)
-    .dataCard,
+    // background of the elevator bar (Chrome/Safari)
+    .dataCard::-webkit-scrollbar-track,
     .bodyTableContainerDiv::-webkit-scrollbar-track {
         background-color: var(--colorThemeScrollbarTrackBackground);
         border-radius: 7px;
     }
 
-    // the elevator bar (Chrome/Safari)
-    .dataCard,
+    // the elevator bar itself (Chrome/Safari)
+    .dataCard::-webkit-scrollbar-thumb,
     .bodyTableContainerDiv::-webkit-scrollbar-thumb {
         background-color: var(--colorThemeScrollbarThumbBackground);
         border-radius: 7px;
     }
 
+    // Both elevator bar and elevator bar background (Firefox)
     .dataCard,
     .bodyTableContainerDiv {
         scrollbar-color: var(--colorThemeScrollbarThumbBackground) var(--colorThemeScrollbarTrackBackground);

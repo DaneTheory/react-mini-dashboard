@@ -111,7 +111,7 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
             styles.backgroundColor = this.props.color;
         }
 
-        if (this.state.IncidentCountbyCI.length == 0) {
+        if (this.state.IncidentCountbyCI.length === 0) {
             return (
                 <DashboardDataCard id={this.props.id} position={this.props.position} color={this.props.color} widgetName="Loading data">
                     <div>Loading Data...</div>

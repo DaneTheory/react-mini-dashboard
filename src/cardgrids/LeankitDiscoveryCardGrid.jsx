@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // Widget imports
-import WidgetLeankitCardList from "../widgetsPubSub/WidgetLeankitCardList";
+import WidgetLeankitDiscoveryCardList from "../widgetsPubSub/WidgetLeankitDiscoveryCardList";
 import WidgetLeankitDiscoveryTotalCardCount from "../widgetsPubSub/WidgetLeankitDiscoveryTotalCardCount";
 import WidgetLeankitDiscoveryDefectCardCount from "../widgetsPubSub/WidgetLeankitDiscoveryDefectCardCount";
 import WidgetLeankitDiscoveryAvgCardAge from "../widgetsPubSub/WidgetLeankitDiscoveryAvgCardAge";
@@ -33,27 +33,28 @@ class LeankitDiscoveryCardGrid extends React.Component {
                         boardId={this.props.boardId}
                     />
                     <WidgetLeankitDiscoveryDefectCardCount
-                        position="1 / 3 / span 2 / span 2"
+                        position="3 / 1 / span 2 / span 2"
                         leankit_instance={this.props.leankit_instance}
                         boardId={this.props.boardId}
                     />
                     <WidgetLeankitDiscoveryAvgCardAge
-                        position="1 / 5 / span 2 / span 2"
+                        position="1 / 3 / span 2 / span 2"
                         leankit_instance={this.props.leankit_instance}
                         boardId={this.props.boardId}
                     />
                     <WidgetLeankitDiscoveryOwnerList
-                        position="1 / 7 / span 4 / span 2"
+                        position="1 / 5 / span 4 / span 2"
                         leankit_instance={this.props.leankit_instance}
                         boardId={this.props.boardId}
                     />
                     <WidgetLeankitDiscoverySolutioningCardList
-                        position="5 / 1 / span 10 / span 8"
+                        position="1 / 7 / span 6 / span 6"
                         leankit_instance={this.props.leankit_instance}
                         boardId={this.props.boardId}
+                        showCardsWithThisManyDaysRemaining={30}
                     />
-                    <WidgetLeankitCardList
-                        position="span 10 / span 8"
+                    <WidgetLeankitDiscoveryCardList
+                        position="span 10 / span 12"
                         leankit_instance={this.props.leankit_instance}
                         boardId={this.props.boardId}
                     />

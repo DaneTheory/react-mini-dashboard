@@ -44,7 +44,10 @@ class WidgetLeankitDiscoveryOwnerList extends React.Component {
 
         // Filter down to just solutioning cards
         let filteredCards = leankit_cards.filter(function(card) {
-            return card.u_lanes[1].name === "Solutioning" && card.u_lanes[2].name === "Non-Project WUs";
+            // Just solutioning cards
+            // return card.u_lanes[1].name === "Solutioning" && card.u_lanes[2].name === "Non-Project WUs";
+            // All Discovery Cards
+            return card.u_lanes[0].name.includes("Product Discovery");
         });
 
         this.setState({ leankit_cards: filteredCards });
@@ -114,7 +117,7 @@ class WidgetLeankitDiscoveryOwnerList extends React.Component {
                                 // Set some variables to be used in JSX below
                                 let owner = { text: card.name };
                                 let cardCount = { text: card.count };
-                                cardCount.className = cardCount.text > 4 ? "redFont" : cardCount.text > 1 ? "orangeFont" : "greenFont";
+                                cardCount.className = cardCount.text > 6 ? "redFont" : cardCount.text > 4 ? "orangeFont" : "greenFont";
 
                                 // Now return a JSX statement for rendering
                                 return (

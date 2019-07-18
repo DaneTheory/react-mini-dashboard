@@ -77,13 +77,23 @@ class WidgetLeankitDiscoveryDefectCardCount extends React.Component {
         } else {
             // Create list of all Demand cards, and then get a count
             let filteredCards = this.state.leankit_cards.filter(function(card) {
-                return (card.customIcon && card.customIcon.title === "Defect") || card.tags.includes("Defect");
+                // Card has a "Defect" icon
+                return (
+                    // Discovery card
+                    card.u_lanes[0].name.includes("Product Discovery") &&
+                    // And has a defect icon
+                    ((card.customIcon && card.customIcon.title === "Defect") || card.tags.includes("Defect"))
+                );
             });
             let card_count = filteredCards.length;
 
             // Return JSX containing the count
-            let fontColor = card_count > 40 ? "redFont" : card_count > 30 ? "orangeFont" : "greenFont";
-            return <div className={classNames("single-num-value", fontColor)}>{card_count}</div>;
+            let fontColor = card_count > 10 ? "redFont" : card_count > 6 ? "orangeFont" : "greenFont";
+            return (
+                <div>
+                    <div className={classNames("single-num-value", fontColor)}>{card_count}</div>
+                </div>
+            );
         }
     }
 
@@ -100,7 +110,9 @@ class WidgetLeankitDiscoveryDefectCardCount extends React.Component {
                 widgetName="WidgetLeankitDiscoveryDefectCardCount"
             >
                 <div className="single-num-title">Total Defect Cards</div>
-                <div className="item">{this.renderCardBody()}</div>
+                <div className="item" data-tip="Less than 6 is green<br>Less then 10 is yellow<br>Greater than 10 is red">
+                    {this.renderCardBody()}
+                </div>
             </DashboardDataCard>
         );
     }

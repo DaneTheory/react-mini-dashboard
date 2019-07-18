@@ -43,6 +43,13 @@ class WidgetIrisCloneList extends React.PureComponent {
 
         let sources = ["jnjprodworker", "jnjtestk", "jnjqa2"];
 
+        function enhanceCloneObject(clone) {
+            clone.path = `${source} -> ${clone.target_instance.display_value}`;
+            clone.source = source;
+            clone.target = clone.target_instance.display_value;
+            return clone;
+        }
+
         for (var source of sources) {
             console.log(source);
             // Retrieve our data from Prod (likely from an API)
@@ -57,12 +64,7 @@ class WidgetIrisCloneList extends React.PureComponent {
 
             console.log("response_clones", response_clones.data.result);
             // Loop through clone transactions, and make target_instance easier to find (by creating property for it)
-            var clonesFromSource = response_clones.data.result.map(clone => {
-                clone.path = `${source} -> ${clone.target_instance.display_value}`;
-                clone.source = source;
-                clone.target = clone.target_instance.display_value;
-                return clone;
-            });
+            var clonesFromSource = response_clones.data.result.map(enhanceCloneObject);
 
             // Accumulate our results from this source
             clonesFromAll = clonesFromAll.concat(clonesFromSource);
@@ -94,7 +96,7 @@ class WidgetIrisCloneList extends React.PureComponent {
         }
 
         // Loop through key(target_instance)/value(clonesList), find latest (most recent) clone, and create property pointing to it
-        Object.entries(clonesByPath).map(([target_instance, clonesList]) => {
+        Object.entries(clonesByPath).forEach(([target_instance, clonesList]) => {
             console.log(clonesList);
             const latest_clone = clonesList.reduce(latestClone, { completed: "Jan 1, 1970" });
             latest_clone.daysAgo = moment().diff(latest_clone.completed, "days");
@@ -159,7 +161,7 @@ class WidgetIrisCloneList extends React.PureComponent {
                                     return moment(a[1].latest_clone.completed).isBefore(b[1].latest_clone.completed) ? 1 : -1;
                                 })
                                 .filter(
-                                    ([key, value]) =>
+                                    ([key]) =>
                                         ![
                                             "jnjprodworker -> jnjtesti",
                                             "jnjprodworker -> jnjsandbox4",

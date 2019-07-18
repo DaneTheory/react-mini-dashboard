@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import ReactTooltip from "react-tooltip";
 
 // Create a widget class ---------
 class DashboardDataCard extends React.Component {
@@ -24,6 +25,7 @@ class DashboardDataCard extends React.Component {
             <div className={"dataCard"} id={this.props.widgetName} style={styles}>
                 <div className="cardBody" style={cardBody_styles}>
                     {this.props.children}
+                    <ReactTooltip place="top" type="dark" effect="float" delayShow={500} delayHide={1000} multiline={true} />
                 </div>
             </div>
         );

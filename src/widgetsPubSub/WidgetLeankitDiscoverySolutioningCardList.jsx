@@ -69,7 +69,7 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
         // Enrich each card by adding URL field (boardId is hard-coded)
         for (var i = 0; i < filteredCards.length; i++) {
             var card = filteredCards[i];
-            card.url = `https://${this.props.leankit_instance}/card/${card.id}`;
+            card.u_url = `https://${this.props.leankit_instance}/card/${card.id}`;
         }
 
         filteredCards.forEach(function(card) {
@@ -179,7 +179,9 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
                                     <div>{card.daysInLane} days in Solutiong</div>
                                 </td>
                                 <td>
-                                    <a href={card.url}>{card["title"]}</a>
+                                    <a href={card.u_url} target="_blank" rel="noreferrer noopener">
+                                        {card["title"]}
+                                    </a>
                                 </td>
                                 <td align="center" className={classNames(card.commentMostRecent.className)}>
                                     {card.commentMostRecent.ageInDays} days
