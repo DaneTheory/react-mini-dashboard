@@ -78,7 +78,7 @@ class WidgetIrisINCBreachList extends React.PureComponent {
                     console.warn(
                         `Found ${
                             sla_records_resolution_in_progress.length
-                        } SLA records, but expected 1 SLA record (Matching stage=InProgress and containing 'resolution'). Here are all the SLA records: for ${
+                        } SLA records, but expected 1 SLA record (Matching stage=InProgress and containing 'resolution'). Going to set an obviously false SLA so record is easy to spot in widget.  Here are all the SLA records: for ${
                             incident.number
                         }`,
                         sla_records
@@ -88,6 +88,7 @@ class WidgetIrisINCBreachList extends React.PureComponent {
                     return incident;
                     // return;
                 } else {
+                    // We found exactly 1 matching SLA record for this incident, woohoo !
                     let sla_record = sla_records_resolution_in_progress[0];
 
                     // Compute a proper percentage by removing comma from string (e.g. 1,014) and converting string to float, assign back to record

@@ -108,7 +108,7 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
                 return null;
             }
         });
-        console.log("annotationColumn", annotationColumn);
+        // console.log("annotationColumn", annotationColumn);
 
         // Planned
         chartData = addColumn(chartData, plannedPts);
@@ -173,7 +173,7 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
             );
         } else {
             // We've got data, so load the chart now
-            console.log("chartData", this.state.chartData);
+            // console.log("chartData", this.state.chartData);
             return (
                 <ThemeConsumer>
                     {/* Use a render prop to get the global value from the Context API Consumer */}
