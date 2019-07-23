@@ -57,6 +57,7 @@ class WidgetIrisINCBreachList extends React.PureComponent {
         let incidents_all = await Promise.all(
             response_INC.data.result.map(async incident => {
                 let inc_sys_id = incident.sys_id;
+                // Call ServiceNow again, asking for task SLA's matching our INC sys_id
                 let response_sla = await apiProxy.get(`/sn/${this.props.sn_instance}/api/now/table/task_sla`, {
                     params: {
                         // Units for xAgoStart: years, months, days, hours, minutes
@@ -74,9 +75,18 @@ class WidgetIrisINCBreachList extends React.PureComponent {
                 });
                 // Select the first (and likely only) SLA record that matches criteria
                 if (sla_records_resolution_in_progress.length !== 1) {
-                    console.warning(`Didn't see exactly 1 SLA record for ${incident.number}`, sla_records);
+                    console.warn(
+                        `Found ${
+                            sla_records_resolution_in_progress.length
+                        } SLA records, but expected 1 SLA record (Matching stage=InProgress and containing 'resolution'). Here are all the SLA records: for ${
+                            incident.number
+                        }`,
+                        sla_records
+                    );
                     // Since this Incident appears to NOT have an SLA record, don't include in results (simply return)
-                    return;
+                    incident.sla_record = { sla_pct_float: 999999.0 };
+                    return incident;
+                    // return;
                 } else {
                     let sla_record = sla_records_resolution_in_progress[0];
 
@@ -174,7 +184,7 @@ class WidgetIrisINCBreachList extends React.PureComponent {
                                     let sys_id = incident.sys_id;
                                     let url = `https://${host}/nav_to.do?uri=/incident.do?sys_id=${sys_id}&sysparm_stack=&sysparm_view=`;
 
-                                    // Determine % of sla that we've consume, and assign a RAG indictor to it
+                                    // Determine % of sla that we've consumed, and assign a RAG indictor to it
                                     let sla_pct = incident.sla_record.sla_pct_float;
                                     let slaColorClass = sla_pct > 90 ? "cellRed" : sla_pct > 60 ? "cellAmber" : "cellGreen";
 
