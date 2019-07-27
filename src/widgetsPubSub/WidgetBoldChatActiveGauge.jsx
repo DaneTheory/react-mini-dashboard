@@ -42,6 +42,8 @@ class WidgetBoldChatActiveGauge extends React.PureComponent {
         // Get our data from API
         let BoldChatData = await getBoldChatData(this.props.boldchat_instance, this.props.sn_instance);
 
+        console.log("BoldChatCata", BoldChatData);
+
         // Update our own state with the new data
         this.setState({ BoldChatData: BoldChatData });
     }
@@ -85,7 +87,8 @@ class WidgetBoldChatActiveGauge extends React.PureComponent {
             styles.backgroundColor = this.props.color;
         }
 
-        if (!this.state.BoldChatData.boldChatAgent) {
+        // Check to see if we've gotten response from API, if not, then show "Waiting for Data" message
+        if (!this.state.BoldChatData.hasOwnProperty("boldChatAgent")) {
             return (
                 <DashboardDataCard
                     id={this.props.id}
