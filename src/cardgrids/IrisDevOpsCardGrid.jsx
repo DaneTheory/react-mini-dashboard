@@ -13,8 +13,8 @@ import WidgetLeankitPointsByOwner from "../widgetsPubSub/WidgetLeankitPointsByOw
 // import WidgetSNClicksByOS from "../widgetsPubSub/WidgetSNClicksByOS";
 import WidgetBoldChatActiveGauge from "../widgetsPubSub/WidgetBoldChatActiveGauge";
 // import WidgetSNDBAutomationBarChart from "../widgetsPubSub/WidgetSNDBAutomationBarChart";
-import WidgetPubSubRecentINCBarChart from "../widgetsPubSub/WidgetPubSubRecentINCBarChart";
 import WidgetLeankitDiscoverySolutioningCardList from "../widgetsPubSub/WidgetLeankitDiscoverySolutioningCardList";
+import WidgetLeankitDiscoveryAllOldCardList from "../widgetsPubSub/WidgetLeankitDiscoveryAllOldCardList";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -64,11 +64,11 @@ class IrisDevOpsCardGrid extends React.Component {
                     sn_instance={this.props.sn_instance}
                 />
                 {/* <WidgetSNDBAutomationBarChart position="span 8 / span 2" sn_instance={this.props.sn_instance} /> */}
-                <WidgetPubSubRecentINCBarChart
-                    position="9 / 9 / span 4 / span 4"
-                    sn_instance={this.props.sn_instance}
-                    num_ci={20}
-                    hours={8}
+                <WidgetLeankitDiscoveryAllOldCardList
+                    position="span 8 / span 6"
+                    leankit_instance={this.props.leankit_instance}
+                    boardId={this.props.boardId}
+                    showCardsWithThisManyDaysRemaining={5}
                 />
             </CardGrid>
         );

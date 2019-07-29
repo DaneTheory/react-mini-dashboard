@@ -10,8 +10,8 @@ import WidgetIrisWUStaleCount from "../widgetsPubSub/WidgetIrisWUStaleCount";
 import WidgetLeankitDiscoveryTotalCardCount from "../widgetsPubSub/WidgetLeankitDiscoveryTotalCardCount";
 import WidgetLeankitDiscoveryDefectCardCount from "../widgetsPubSub/WidgetLeankitDiscoveryDefectCardCount";
 import WidgetLeankitDiscoveryAvgCardAge from "../widgetsPubSub/WidgetLeankitDiscoveryAvgCardAge";
-import WidgetLeankitDiscoverySolutioningCardList from "../widgetsPubSub/WidgetLeankitDiscoverySolutioningCardList";
 import WidgetLeankitDiscoveryOwnerList from "../widgetsPubSub/WidgetLeankitDiscoveryOwnerList";
+import WidgetPubSubRecentINCBarChart from "../widgetsPubSub/WidgetPubSubRecentINCBarChart";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -32,11 +32,6 @@ class IrisDevOps2CardGrid extends React.Component {
         // console.log("Demo1CardGrid: render()");
         return (
             <CardGrid rows="12" row_height="3.5vw" columns="12" column_width="1fr">
-                <WidgetLeankitDiscoverySolutioningCardList
-                    position="span 10 / span 6"
-                    leankit_instance={this.props.leankit_instance}
-                    boardId={this.props.boardId}
-                />
                 <WidgetIrisCloneList position="span 6 / span 2" sn_instance={this.props.sn_instance} />
                 <WidgetLeankitDeliveryRemainingPoints
                     position="span 2 / span 2"
@@ -69,6 +64,7 @@ class IrisDevOps2CardGrid extends React.Component {
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}
                 />
+                <WidgetPubSubRecentINCBarChart position="span 4 / span 4" sn_instance={this.props.sn_instance} num_ci={20} hours={8} />
             </CardGrid>
         );
     }
