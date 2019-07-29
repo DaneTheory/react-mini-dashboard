@@ -63,7 +63,7 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
 
         // Filter down to just solutioning cards
         let filteredCards = leankit_cards.filter(function(card) {
-            return card.u_daysSinceCreation > 30 && card.u_lanes[0].name.includes("Product Discovery");
+            return card.u_daysSinceCreation > 35 && card.u_lanes[0].name.includes("Product Discovery");
         });
 
         filteredCards.forEach(function(card) {
@@ -253,7 +253,7 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
                 color={this.props.color}
                 widgetName="WidgetLeankitDiscoverySolutioningCardList"
             >
-                <div className="single-num-title">All Discovery Cards (Oldest First)</div>
+                <div className="single-num-title">Discovery Cards Naughty List</div>
                 {this.renderCardBody()}
             </DashboardDataCard>
         );

@@ -12,6 +12,7 @@ import WidgetLeankitDiscoveryDefectCardCount from "../widgetsPubSub/WidgetLeanki
 import WidgetLeankitDiscoveryAvgCardAge from "../widgetsPubSub/WidgetLeankitDiscoveryAvgCardAge";
 import WidgetLeankitDiscoveryOwnerList from "../widgetsPubSub/WidgetLeankitDiscoveryOwnerList";
 import WidgetPubSubRecentINCBarChart from "../widgetsPubSub/WidgetPubSubRecentINCBarChart";
+import WidgetLeankitDiscoveryAllOldCardList from "../widgetsPubSub/WidgetLeankitDiscoveryAllOldCardList";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -32,6 +33,13 @@ class IrisDevOps2CardGrid extends React.Component {
         // console.log("Demo1CardGrid: render()");
         return (
             <CardGrid rows="12" row_height="3.5vw" columns="12" column_width="1fr">
+                <WidgetLeankitDiscoveryAllOldCardList
+                    position="span 12 / span 6"
+                    leankit_instance={this.props.leankit_instance}
+                    boardId={this.props.boardId}
+                    showCardsWithThisManyDaysRemaining={5}
+                />
+
                 <WidgetIrisCloneList position="span 6 / span 2" sn_instance={this.props.sn_instance} />
                 <WidgetLeankitDeliveryRemainingPoints
                     position="span 2 / span 2"
