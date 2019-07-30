@@ -109,8 +109,6 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
             }
         });
 
-        console.log("all cards", leankit_cards_with_comments);
-
         // // Save these cards to our state, which triggers react to render an update to the screen
         this.setState({ leankit_cards: leankit_cards_with_comments });
     }

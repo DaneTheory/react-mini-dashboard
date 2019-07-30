@@ -41,8 +41,6 @@ class WidgetIrisCloneList extends React.PureComponent {
 
         let clonesFromAll = [];
 
-        let sources = ["jnjprodworker", "jnjtestk", "jnjqa2"];
-
         function enhanceCloneObject(clone) {
             clone.path = `${source} -> ${clone.target_instance.display_value}`;
             clone.source = source;
@@ -50,8 +48,10 @@ class WidgetIrisCloneList extends React.PureComponent {
             return clone;
         }
 
+        // Make API call to these sources, to get a list of which clones
+        let sources = ["jnjprodworker", "jnjqa2"];
+
         for (var source of sources) {
-            console.log(source);
             // Retrieve our data from Prod (likely from an API)
             let response_clones = await apiProxy.get(`/sn/${source}.service-now.com/api/now/table/clone_instance`, {
                 params: {
@@ -62,16 +62,12 @@ class WidgetIrisCloneList extends React.PureComponent {
                 }
             });
 
-            console.log("response_clones", response_clones.data.result);
             // Loop through clone transactions, and make target_instance easier to find (by creating property for it)
             var clonesFromSource = response_clones.data.result.map(enhanceCloneObject);
 
             // Accumulate our results from this source
             clonesFromAll = clonesFromAll.concat(clonesFromSource);
-            console.log(clonesFromAll);
         }
-
-        console.log(clonesFromAll);
 
         // Function to group array of objects (rows) by a single user-defined field
         const groupBy = key => array =>
@@ -87,8 +83,6 @@ class WidgetIrisCloneList extends React.PureComponent {
         // Produces object, where key is clone target (e.g. QA), and value is array of clone transactions
         var clonesByPath = groupByClonePath(clonesFromAll);
 
-        console.log("clonesByPath", clonesByPath);
-
         // Given two clone transactions, return the latest (most recent) clone
         function latestClone(latest_clone, proposed_clone) {
             const answer_clone = moment(latest_clone.completed).isAfter(proposed_clone.completed) ? latest_clone : proposed_clone;
@@ -97,10 +91,8 @@ class WidgetIrisCloneList extends React.PureComponent {
 
         // Loop through key(target_instance)/value(clonesList), find latest (most recent) clone, and create property pointing to it
         Object.entries(clonesByPath).forEach(([target_instance, clonesList]) => {
-            console.log(clonesList);
-            const latest_clone = clonesList.reduce(latestClone, { completed: "Jan 1, 1970" });
+            const latest_clone = clonesList.reduce(latestClone, { completed: "1970-01-01 00:00:00" });
             latest_clone.daysAgo = moment().diff(latest_clone.completed, "days");
-            console.log("daysAgo", latest_clone.daysAgo);
             clonesByPath[target_instance]["latest_clone"] = latest_clone;
         });
 
@@ -138,8 +130,7 @@ class WidgetIrisCloneList extends React.PureComponent {
             // Show a please message while we're waiting for data from the API call
             return <div className="waiting-for-data">Waiting for Data...</div>;
         } else {
-            // OK, looks like we have incidents above the specified breach percentage, list them out
-            console.log(this.state.clonesByPath);
+            // We've got data now
             return (
                 <div>
                     <table width="90%" style={{ marginBottom: "3vw" }}>
@@ -170,7 +161,6 @@ class WidgetIrisCloneList extends React.PureComponent {
                                         ].includes(key)
                                 )
                                 .map(([key, value]) => {
-                                    console.log(key);
                                     // const latestCloneDate = value.latest_clone.completed;
                                     let daysAgoColor = value.latest_clone.daysAgo < 60 ? "cellGreen" : "cellAmber";
                                     let path = key.replace("jnjprodworker", "jnjprod");
