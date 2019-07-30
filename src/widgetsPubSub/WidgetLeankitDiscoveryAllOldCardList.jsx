@@ -8,7 +8,6 @@ import DashboardDataCard from "../components/DashboardDataCard";
 import { getLeankitCards } from "../utilities/getLeankitCards";
 import { getCommentsforLeankitCards } from "../utilities/getCommentsForLeankitCards";
 // import { getBacklogDurationForLeankitCards } from "../utilities/getBacklogDurationForLeankitCards";
-import tractor from "./tractor.png";
 
 // other imports
 var moment = require("moment");
@@ -55,28 +54,33 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
             card.u_url = `https://${this.props.leankit_instance}/card/${card.id}`;
         }
 
-        // Enrich each card by adding u_daysSinceCreation (computed from createdOn);
-        for (let i = 0; i < leankit_cards.length; i++) {
-            let card = leankit_cards[i];
-            card.u_daysSinceCreation = moment().diff(card.createdOn, "days");
-        }
-
         // Filter down to just solutioning cards
         let filteredCards = leankit_cards.filter(function(card) {
-            return card.u_daysSinceCreation > 35 && card.u_lanes[0].name.includes("Product Discovery");
+            return card.u_lanes[0].name.includes("Product Discovery");
         });
 
-        filteredCards.forEach(function(card) {
-            // Set some variables to be used in JSX below
-            card.cardOwner = (card.assignedUsers && card.assignedUsers.length > 0 && card.assignedUsers[0].fullName) || "No Owner";
-            card.cardType = card.customIcon && card.customIcon.title === "Defect" ? "Defect" : "Enhancement";
+        // Enrich each card by adding several custom variables;
+        for (let i = 0; i < filteredCards.length; i++) {
+            let card = filteredCards[i];
+            card.u_daysSinceCreation = moment().diff(card.createdOn, "days");
+            card.u_cardOwner = (card.assignedUsers && card.assignedUsers.length > 0 && card.assignedUsers[0].fullName) || "No Owner";
+            card.u_cardType = card.customIcon && card.customIcon.title === "Defect" ? "Defect" : "Enhancement";
 
-            card.cssClassName = card.u_daysSinceCreation > 60 ? "cellRed" : card.u_daysSinceCreation >= 45 ? "cellAmber" : "cellGreen";
-            card.daysRemainingUntilBreach = 14 - card.daysInLane;
+            card.u_cssClassName =
+                card.u_daysSinceCreation >= this.props.redThreshold
+                    ? "cellRed"
+                    : card.u_daysSinceCreation >= this.props.amberThreshold
+                        ? "cellAmber"
+                        : "cellGreen";
+        }
+
+        let sortedCards = filteredCards.sort((a, b) => {
+            return b.u_daysSinceCreation - a.u_daysSinceCreation;
         });
+        sortedCards.length = this.props.numCards;
 
-        // User comments are not part of original call, so add them now
-        let leankit_cards_with_comments = await getCommentsforLeankitCards(filteredCards, this.props.leankit_instance);
+        // User comments are not part of original call, so add them now (expensive call since we do this for each card)
+        let leankit_cards_with_comments = await getCommentsforLeankitCards(sortedCards, this.props.leankit_instance);
 
         // Get the backlog duration
         // let leankit_cards_with_backlogDuration = await getBacklogDurationForLeankitCards(filteredCards, this.props.leankit_instance);
@@ -143,9 +147,6 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
                     .sort((a, b) => {
                         return b.u_daysSinceCreation - a.u_daysSinceCreation;
                     })
-                    .filter(card => {
-                        return card.daysRemainingUntilBreach <= this.props.showCardsWithThisManyDaysRemaining;
-                    })
                     .map(function(card, index) {
                         // Strip the html tags
                         let temporalDivElement = document.createElement("div");
@@ -164,8 +165,8 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
                             <tr key={card["id"]}>
                                 <td align="center">{index + 1}</td>
                                 <td align="center">
-                                    <div>{card.cardOwner}</div>
-                                    <div>{card.cardType}</div>
+                                    <div>{card.u_cardOwner}</div>
+                                    <div>{card.u_cardType}</div>
                                     <div>{card.daysInLane} days in Lane</div>
                                 </td>
                                 <td>
@@ -179,7 +180,7 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
                                 <td>
                                     <b>(({card.commentMostRecent.Author}))</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {card.commentMostRecent.Text}
                                 </td>
-                                <td className={classNames(card.cssClassName)}>{card.u_daysSinceCreation} days</td>
+                                <td className={classNames(card.u_cssClassName)}>{card.u_daysSinceCreation} days</td>
                             </tr>
                         );
                     })}
@@ -192,53 +193,39 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
             return <div className="waiting-for-data">Waiting for data...</div>;
         } else {
             // We have data(cards) now
-            if (
-                this.state.leankit_cards.filter(card => {
-                    return card.daysRemainingUntilBreach <= this.props.showCardsWithThisManyDaysRemaining;
-                }).length === 0
-            ) {
-                // Show a fun picture
-                return (
-                    <div style={{ display: "flex", marginTop: "2vw", justifyContent: "center" }}>
-                        <div>
-                            <div style={{ fontSize: "1vw" }}>
-                                Way to go ! <br /> Zero Solution Cards nearing breach.
-                            </div>
-                            <div style={{ fontSize: "1vw", marginTop: "1vw" }}>Here&apos;s a picture of a tractor</div>
-                        </div>
-                        <div>
-                            <img style={{ width: "12vw", margin: "0vw 2vw" }} src={tractor} alt="" />
-                        </div>
-                    </div>
-                );
-            } else {
-                return (
-                    <div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th width="3%" />
-                                    <th width="15%">
-                                        Owner
-                                        <br />
-                                        Days in Lane
-                                    </th>
-                                    <th width="35%">Description</th>
-                                    <th width="7%">Comment Age</th>
-                                    <th width="30%">Most Recent Comment</th>
-                                    <th width="10%">Card Age</th>
-                                </tr>
-                            </thead>
-                            {this.renderTableBody()}
-                        </table>
-                    </div>
-                );
-            }
+            return (
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th width="3%" />
+                                <th width="15%">
+                                    Owner
+                                    <br />
+                                    Days in Lane
+                                </th>
+                                <th width="35%">Description</th>
+                                <th width="7%">Comment Age</th>
+                                <th width="30%">Most Recent Comment</th>
+                                <th width="10%">Card Age</th>
+                            </tr>
+                        </thead>
+                        {this.renderTableBody()}
+                    </table>
+                </div>
+            );
         }
     }
 
     renderCardBody() {
-        return <div className="item">{this.renderTable()}</div>;
+        return (
+            <div
+                className="item"
+                data-tip={`More than ${this.props.redThreshold} is Red<br>More than ${this.props.amberThreshold} is Amber`}
+            >
+                {this.renderTable()}
+            </div>
+        );
     }
 
     render() {
@@ -253,7 +240,7 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
                 color={this.props.color}
                 widgetName="WidgetLeankitDiscoverySolutioningCardList"
             >
-                <div className="single-num-title">Discovery Cards Naughty List</div>
+                <div className="single-num-title">Discovery Cards Aging List</div>
                 {this.renderCardBody()}
             </DashboardDataCard>
         );
@@ -266,7 +253,9 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
 
 // Set default props in case they aren't passed to us by the caller
 WidgetLeankitDiscoverySolutioningCardList.defaultProps = {
-    showCardsWithThisManyDaysRemaining: 0
+    showCardsWithThisManyDaysRemaining: 0,
+    redThreshold: 100,
+    amberThreshold: 65
 };
 
 // Force the caller to include the proper attributes
@@ -276,7 +265,10 @@ WidgetLeankitDiscoverySolutioningCardList.propTypes = {
     position: PropTypes.string.isRequired,
     color: PropTypes.string,
     boardId: PropTypes.string.isRequired,
-    showCardsWithThisManyDaysRemaining: PropTypes.number
+    showCardsWithThisManyDaysRemaining: PropTypes.number,
+    numCards: PropTypes.number,
+    redThreshold: PropTypes.number,
+    amberThreshold: PropTypes.number
 };
 
 // If we (this file) get "imported", this is what they'll be given

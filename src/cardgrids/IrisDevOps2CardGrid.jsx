@@ -37,7 +37,9 @@ class IrisDevOps2CardGrid extends React.Component {
                     position="span 12 / span 6"
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}
-                    showCardsWithThisManyDaysRemaining={5}
+                    numCards={15}
+                    redThreshold={100}
+                    amberThreshold={70}
                 />
 
                 <WidgetIrisCloneList position="span 6 / span 2" sn_instance={this.props.sn_instance} />
