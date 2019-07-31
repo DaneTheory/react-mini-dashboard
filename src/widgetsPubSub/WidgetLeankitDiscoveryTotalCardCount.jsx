@@ -84,7 +84,8 @@ class WidgetLeankitDiscoveryTotalCardCount extends React.Component {
             let card_count = demand_cards.length;
 
             // Return JSX containing the count
-            let fontColor = card_count > 54 ? "redFont" : card_count > 50 ? "orangeFont" : "greenFont";
+            let fontColor =
+                card_count >= this.props.redThreshold ? "redFont" : card_count >= this.props.amberThreshold ? "orangeFont" : "greenFont";
             return <div className={classNames("single-num-value", fontColor)}>{card_count}</div>;
         }
     }
@@ -102,7 +103,12 @@ class WidgetLeankitDiscoveryTotalCardCount extends React.Component {
                 widgetName="WidgetLeankitDiscoveryTotalCardCount"
             >
                 <div className="single-num-title">Total Discovery Cards</div>
-                <div className="item">{this.renderCardBody()}</div>
+                <div
+                    className="item"
+                    data-tip={`Greater than ${this.props.redThreshold} is Red<br>Greater than ${this.props.amberThreshold} is Amber`}
+                >
+                    {this.renderCardBody()}
+                </div>
             </DashboardDataCard>
         );
     }
@@ -113,7 +119,10 @@ class WidgetLeankitDiscoveryTotalCardCount extends React.Component {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetLeankitDiscoveryTotalCardCount.defaultProps = {};
+WidgetLeankitDiscoveryTotalCardCount.defaultProps = {
+    redThreshold: 60,
+    amberThreshold: 50
+};
 
 // Force the caller to include the proper attributes
 WidgetLeankitDiscoveryTotalCardCount.propTypes = {
@@ -121,7 +130,9 @@ WidgetLeankitDiscoveryTotalCardCount.propTypes = {
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
     color: PropTypes.string,
-    boardId: PropTypes.string.isRequired
+    boardId: PropTypes.string.isRequired,
+    redThreshold: PropTypes.number,
+    amberThreshold: PropTypes.number
 };
 
 // If we (this file) get "imported", this is what they'll be given

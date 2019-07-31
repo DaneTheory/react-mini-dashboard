@@ -51,8 +51,19 @@ class IrisDevOpsCardGrid extends React.Component {
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}
                 />
-                <WidgetIrisINCBreachList position="9 / 1 / span 4 / span 6" sn_instance={this.props.sn_instance} sla_threshhold_pct={50} />
-                <WidgetIrisINCBreachSLACount position="7 / 7 / span 2 / span 2" sn_instance={this.props.sn_instance} />
+                <WidgetIrisINCBreachList
+                    position="9 / 1 / span 4 / span 6"
+                    sn_instance={this.props.sn_instance}
+                    sla_threshhold_pct={50}
+                    redThreshold={90}
+                    amberThreshold={60}
+                />
+                <WidgetIrisINCBreachSLACount
+                    position="7 / 7 / span 2 / span 2"
+                    sn_instance={this.props.sn_instance}
+                    redThreshold={95}
+                    amberThreshold={97}
+                />
                 <WidgetSNPubSubPlatformHealthSummary position="span 8 / span 2" sn_instance={this.props.sn_instance} />
                 <WidgetSNUniqueLoginsToday position="5/ 7/ span 2 / span 2" sn_instance={this.props.sn_instance} />
                 <WidgetSNAPICounts position="1 / 11 / span 4 / span 2" />

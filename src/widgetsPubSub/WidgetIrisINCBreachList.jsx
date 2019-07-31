@@ -187,7 +187,12 @@ class WidgetIrisINCBreachList extends React.PureComponent {
 
                                     // Determine % of sla that we've consumed, and assign a RAG indictor to it
                                     let sla_pct = incident.sla_record.sla_pct_float;
-                                    let slaColorClass = sla_pct > 90 ? "cellRed" : sla_pct > 60 ? "cellAmber" : "cellGreen";
+                                    let slaColorClass =
+                                        sla_pct > this.props.redThreshold
+                                            ? "cellRed"
+                                            : sla_pct > this.props.amberThreshold
+                                                ? "cellAmber"
+                                                : "cellGreen";
 
                                     return (
                                         <tr key={incident["number"]} style={{ fontSize: "4vw" }}>
@@ -225,7 +230,14 @@ class WidgetIrisINCBreachList extends React.PureComponent {
     }
 
     renderCardBody() {
-        return <div className="item">{this.renderAllTables()}</div>;
+        return (
+            <div
+                className="item"
+                data-tip={`Greater than ${this.props.redThreshold} is Red<br>Greater than ${this.props.amberThreshold} is Amber`}
+            >
+                {this.renderAllTables()}
+            </div>
+        );
     }
 
     render() {
@@ -253,7 +265,9 @@ class WidgetIrisINCBreachList extends React.PureComponent {
 
 // Set default props in case they aren't passed to us by the caller
 WidgetIrisINCBreachList.defaultProps = {
-    sla_threshhold_pct: 50
+    sla_threshhold_pct: 50,
+    redThreshold: 90,
+    amberThreshold: 60
 };
 
 // Force the caller to include the proper attributes
@@ -262,7 +276,9 @@ WidgetIrisINCBreachList.propTypes = {
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
     color: PropTypes.string,
-    sla_threshhold_pct: PropTypes.number.isRequired
+    sla_threshhold_pct: PropTypes.number.isRequired,
+    redThreshold: PropTypes.number,
+    amberThreshold: PropTypes.number
 };
 
 // If we (this file) get "imported", this is what they'll be given

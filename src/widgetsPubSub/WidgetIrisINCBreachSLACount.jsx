@@ -114,7 +114,8 @@ class WidgetIrisINCBreachSLACount extends React.PureComponent {
         } else {
             let INCMetSLA = 100 - (this.state.irisResolvedINCBreachedCount / this.state.irisResolvedINCCount) * 100;
             // let INCMetSLAColor = "redFont";
-            let INCMetSLAColor = INCMetSLA > 95 ? "greenFont" : INCMetSLA > 90 ? "orangeFont" : "redFont";
+            let INCMetSLAColor =
+                INCMetSLA <= this.props.redThreshold ? "redFont" : INCMetSLA <= this.props.amberThreshold ? "orangeFont" : "greenFont";
             return (
                 <div>
                     <div className={classNames(INCMetSLAColor, "Font17x")}>
@@ -141,7 +142,13 @@ class WidgetIrisINCBreachSLACount extends React.PureComponent {
                 widgetName="WidgetIrisINCBreachSLACount"
             >
                 {this.renderCardHeader()}
-                {this.renderCardBody()}
+                {/* data-tip is a pop-up tooltip to show how we pick colors */}
+                <div
+                    className="item"
+                    data-tip={`Less than ${this.props.redThreshold} is Red<br>Less than ${this.props.amberThreshold} is Amber`}
+                >
+                    {this.renderCardBody()}
+                </div>
             </DashboardDataCard>
         );
     }
@@ -152,14 +159,19 @@ class WidgetIrisINCBreachSLACount extends React.PureComponent {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetIrisINCBreachSLACount.defaultProps = {};
+WidgetIrisINCBreachSLACount.defaultProps = {
+    redThreshold: 10,
+    amberThreshold: 6
+};
 
 // Force the caller to include the proper attributes
 WidgetIrisINCBreachSLACount.propTypes = {
     sn_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
-    color: PropTypes.string
+    color: PropTypes.string,
+    redThreshold: PropTypes.number,
+    amberThreshold: PropTypes.number
 };
 
 // If we (this file) get "imported", this is what they'll be given

@@ -64,12 +64,13 @@ class WidgetIrisWUStaleList extends React.PureComponent {
             "u_sdlc_status"
         ];
 
-        let daysOld = 365;
         let irisProductID = "967f5101b14c4580ce38de7ebbabfe4e";
         let response_wu = await apiProxy.get(`/sn/${this.props.sn_instance}/api/now/table/rm_enhancement`, {
             params: {
                 // Units for xAgoStart: years, months, days, hours, minutes
-                sysparm_query: `sys_created_on<=javascript:gs.daysAgoStart(${daysOld})^u_sdlc_phaseNOT INClosed,Canceled^u_product=${irisProductID}^ORDERBYsys_created_on`,
+                sysparm_query: `sys_created_on<=javascript:gs.daysAgoStart(${
+                    this.props.daysOld
+                })^u_sdlc_phaseNOT INClosed,Canceled^u_product=${irisProductID}^ORDERBYsys_created_on`,
                 sysparm_display_value: "true",
                 sysparm_limit: 500,
                 sysparm_fields: fields.join(",")
@@ -78,7 +79,7 @@ class WidgetIrisWUStaleList extends React.PureComponent {
 
         // Update our own state with the new data
         let workUnitObject = {};
-        workUnitObject["daysOld"] = daysOld;
+        workUnitObject["daysOld"] = this.props.daysOld;
         workUnitObject["workunits"] = response_wu.data.result;
         this.setState({ workUnitObject: workUnitObject });
         this.setState({ wuArray: response_wu.data.result });
@@ -123,8 +124,17 @@ class WidgetIrisWUStaleList extends React.PureComponent {
 
     renderCardBody() {
         let count = this.state.wuArray.length;
-        let countColorClass = count > 50 ? "redFont" : count > 30 ? "orangeFont" : "greenFont";
-        return <div className={classNames("item", "Font20x", countColorClass)}>{count}</div>;
+        let countColorClass = count > this.props.redThreshold ? "redFont" : count > this.props.amberThreshold ? "orangeFont" : "greenFont";
+        return (
+            <div
+                className={classNames("item", "Font20x", countColorClass)}
+                data-tip={`WU's that are older than ${this.props.daysOld} days<br><br>Greater than ${
+                    this.props.redThreshold
+                } is Red<br>Greater than ${this.props.amberThreshold} is Amber`}
+            >
+                {count}
+            </div>
+        );
     }
 
     render() {
@@ -151,14 +161,21 @@ class WidgetIrisWUStaleList extends React.PureComponent {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetIrisWUStaleList.defaultProps = {};
+WidgetIrisWUStaleList.defaultProps = {
+    daysOld: 365,
+    redThreshold: 40,
+    amberThreshold: 20
+};
 
 // Force the caller to include the proper attributes
 WidgetIrisWUStaleList.propTypes = {
     sn_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
-    color: PropTypes.string
+    color: PropTypes.string,
+    daysOld: PropTypes.number,
+    redThreshold: PropTypes.number,
+    amberThreshold: PropTypes.number
 };
 
 // If we (this file) get "imported", this is what they'll be given

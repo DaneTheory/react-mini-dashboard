@@ -53,21 +53,33 @@ class IrisDevOps2CardGrid extends React.Component {
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}
                 />
-                <WidgetIrisWUStaleCount position="span 2 / span 2" sn_instance={this.props.sn_instance} />
+                <WidgetIrisWUStaleCount
+                    position="span 2 / span 2"
+                    sn_instance={this.props.sn_instance}
+                    daysOld={365}
+                    redThreshold={60}
+                    amberThreshold={20}
+                />
                 <WidgetLeankitDiscoveryTotalCardCount
                     position="span 2 / span 2"
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}
+                    redThreshold={60}
+                    amberThreshold={40}
                 />
                 <WidgetLeankitDiscoveryDefectCardCount
                     position="span 2 / span 2"
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}
+                    redThreshold={16}
+                    amberThreshold={12}
                 />
                 <WidgetLeankitDiscoveryAvgCardAge
                     position="span 2 / span 2"
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}
+                    redThreshold={50}
+                    amberThreshold={25}
                 />
                 <WidgetLeankitDiscoveryOwnerList
                     position="span 4 / span 2"

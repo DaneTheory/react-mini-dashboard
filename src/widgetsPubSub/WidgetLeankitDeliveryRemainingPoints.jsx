@@ -112,7 +112,7 @@ class WidgetLeankitDeliveryRemainingPoints extends React.Component {
                     widgetName="WidgetLeankitDiscoveryTotalCardCount"
                 >
                     <div className="single-num-title">Remaining Points</div>
-                    <div className="Font20x greenFont">{remainingPlannedPoints.stat}</div>
+                    <div className="Font20x">{remainingPlannedPoints.stat}</div>
                 </DashboardDataCard>
             );
         }
