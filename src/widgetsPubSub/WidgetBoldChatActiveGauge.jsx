@@ -42,8 +42,6 @@ class WidgetBoldChatActiveGauge extends React.PureComponent {
         // Get our data from API
         let BoldChatData = await getBoldChatData(this.props.boldchat_instance, this.props.sn_instance);
 
-        console.log("BoldChatCata", BoldChatData);
-
         // Update our own state with the new data
         this.setState({ BoldChatData: BoldChatData });
     }
