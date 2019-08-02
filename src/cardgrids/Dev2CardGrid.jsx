@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // Widget imports
-import WidgetLeankitDiscoverySolutioningCardList from "../widgetsPubSub/WidgetLeankitDiscoverySolutioningCardList";
+import WidgetLeankitDiscoverySolutioningCardNearingBreachList from "../widgetsPubSub/WidgetLeankitDiscoverySolutioningCardNearingBreachList";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -23,7 +23,7 @@ class Dev2CardGrid extends React.Component {
     render() {
         return (
             <CardGrid rows="20" row_height="3.5vw" columns="12" column_width="1fr">
-                <WidgetLeankitDiscoverySolutioningCardList
+                <WidgetLeankitDiscoverySolutioningCardNearingBreachList
                     position="span 4 / span 6"
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}

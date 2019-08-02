@@ -13,7 +13,7 @@ import WidgetLeankitPointsByOwner from "../widgetsPubSub/WidgetLeankitPointsByOw
 // import WidgetSNClicksByOS from "../widgetsPubSub/WidgetSNClicksByOS";
 import WidgetBoldChatActiveGauge from "../widgetsPubSub/WidgetBoldChatActiveGauge";
 // import WidgetSNDBAutomationBarChart from "../widgetsPubSub/WidgetSNDBAutomationBarChart";
-import WidgetLeankitDiscoverySolutioningCardList from "../widgetsPubSub/WidgetLeankitDiscoverySolutioningCardList";
+import WidgetLeankitDiscoverySolutioningCardNearingBreachList from "../widgetsPubSub/WidgetLeankitDiscoverySolutioningCardNearingBreachList";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -39,7 +39,7 @@ class IrisDevOpsCardGrid extends React.Component {
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}
                 />
-                <WidgetLeankitDiscoverySolutioningCardList
+                <WidgetLeankitDiscoverySolutioningCardNearingBreachList
                     position="5 / 1 / span 4 / span 6"
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}

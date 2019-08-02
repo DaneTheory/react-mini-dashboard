@@ -5,8 +5,7 @@ import PubSub from "pubsub-js";
 import DashboardDataCard from "../components/DashboardDataCard";
 
 // project imports
-import { getLeankitCards } from "../utilities/getLeankitCards";
-import { createLeankitDataObject } from "../utilities/createLeankitDataObject";
+import { getEnhancedLeankitCardObject } from "../utilities/getEnhancedLeankitCardObject";
 
 // other imports
 var classNames = require("classnames");
@@ -48,12 +47,8 @@ class WidgetLeankitDeliveryStats extends React.Component {
 
         // Retrieve our data (likely from an API)
         // Get all the leankit cards
-        let leankit_cards = await getLeankitCards(this.props.leankit_instance, this.props.boardId, "active,backlog");
+        let leankitDataObject = await getEnhancedLeankitCardObject(this.props.leankit_instance, this.props.boardId, "active");
 
-        // Save these cards to our state, which triggers react to render an update to the screen
-        this.setState({ leankit_cards: leankit_cards });
-
-        let leankitDataObject = createLeankitDataObject(leankit_cards, this.props.boardId);
         this.setState({ leankitDataObject: leankitDataObject });
     }
 

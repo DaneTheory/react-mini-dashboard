@@ -28,7 +28,7 @@ class LeankitDiscoveryCardGrid extends React.Component {
             <div>
                 <CardGrid rows="30" columns="12">
                     <WidgetLeankitDeliveryBurndown
-                        position="span 8 / span 10"
+                        position="span 6 / span 8"
                         leankit_instance={this.props.leankit_instance}
                         boardId={this.props.boardId}
                     />
@@ -38,7 +38,7 @@ class LeankitDiscoveryCardGrid extends React.Component {
                         boardId={this.props.boardId}
                     />
                     <WidgetLeankitDeliveryStats
-                        position="3 / 11 / span 6 / span 2"
+                        position="1 / 11 / span 6 / span 2"
                         leankit_instance={this.props.leankit_instance}
                         boardId={this.props.boardId}
                     />

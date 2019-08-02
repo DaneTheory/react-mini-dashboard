@@ -1,4 +1,9 @@
+// Imports
 import { sprintf } from "sprintf-js";
+import apiProxy from "../api/apiProxy";
+
+// Have to be after the imports ?
+var moment = require("moment");
 
 // Changes that need to be made
 // Size = size
@@ -32,14 +37,97 @@ function isWorkingDay(date) {
 // ------------------- Common to both Demand and Sprint ---------
 // --------------------------------------------------------------
 // private helper function
-function addURLtoCards(listCards, boardID) {
+function addURLtoCards(listCards) {
     // Enrich each card by adding URL field (BoardID is hard-coded)
-    for (var i = 0; i < listCards.length; i++) {
-        var card = listCards[i];
-        card.url = sprintf("%s/%s/%s", "https://jnj.leankit.com/Boards/View", boardID, card["Id"]);
+    for (let i = 0; i < listCards.length; i++) {
+        let card = listCards[i];
+        // card.u_url = sprintf("%s/%s/%s", "https://jnj.leankit.com/Boards/View", boardID, card["Id"]);
+        let leankit_instance = "jnj.leankit.com";
+        card.u_url = `https://${leankit_instance}/card/${card.id}`;
     }
 }
+// --------------------------------------------------------------
+// private helper function
+function addParentLanestoCards(listCards, response_lanes) {
+    // Now we need to do some magic.  You see, each card only knows about his immediate parent lane
+    // I want each card to know about *all* their parent lanes
 
+    // Setup dummy entries for custom fields (u_lanes)
+    listCards = listCards.map(card => {
+        card.u_lanes = [{}, {}, {}];
+        return card;
+    });
+
+    // Create an object of all lanes, indexed by lane Id
+    let lanesById = {};
+    response_lanes.data.lanes.forEach(lane => {
+        lanesById[lane.id] = lane;
+    });
+
+    // Insert lane info into each card (u_lanes because its a custom field)
+    listCards.forEach(card => {
+        let parentLane = lanesById[card.lane.id];
+        let u_lanes = [];
+        while (parentLane !== undefined) {
+            // Add the name of the parent lane to the *front* of the array, so top-most lane will end up first
+            u_lanes.unshift(parentLane);
+            // Set parent lane (go up on level) for the next loop
+            parentLane = lanesById[parentLane.parentLaneId];
+        }
+        // Attach lane structure to cards
+        card.u_lanes = u_lanes;
+    });
+}
+// --------------------------------------------------------------
+// private helper function
+function addDaysInLanetoCards(listCards) {
+    // Compute daysInLane for each card
+    for (let i = 0; i < listCards.length; i++) {
+        let card = listCards[i];
+        card.u_daysInLane = moment().diff(moment(card.movedOn), "days");
+    }
+}
+// --------------------------------------------------------------
+// private helper function
+function addDaysSinceCreationtoCards(listCards) {
+    for (let i = 0; i < listCards.length; i++) {
+        let card = listCards[i];
+        card.u_daysSinceCreation = moment().diff(card.createdOn, "days");
+    }
+}
+// --------------------------------------------------------------
+// private helper function
+function addDaysSinceUpdatetoCards(listCards) {
+    for (let i = 0; i < listCards.length; i++) {
+        let card = listCards[i];
+        card.u_daysSinceUpdate = moment().diff(card.updatedOn, "days");
+    }
+}
+// --------------------------------------------------------------
+// private helper function
+function addCardOwnertoCards(listCards) {
+    for (let i = 0; i < listCards.length; i++) {
+        let card = listCards[i];
+        card.u_cardOwner = (card.assignedUsers && card.assignedUsers.length > 0 && card.assignedUsers[0].fullName) || "No Owner";
+    }
+}
+// --------------------------------------------------------------
+// private helper function
+// NOTE: This is dependent on lane info, so be sure to call addParentLanestoCards first
+function addCardTypetoCards(listCards) {
+    for (let i = 0; i < listCards.length; i++) {
+        let card = listCards[i];
+        if (card.u_lanes[0].name.includes("Product Discovery")) {
+            // Cards inside of "Product Discovery" lane default to "Enhancement"
+            card.u_cardType = card.customIcon && card.customIcon.title === "Defect" ? "Defect" : "Enhancement";
+        } else {
+            // Cards outside of "Product Discovery" lane
+            card.u_cardType = card.customIcon && card.customIcon.title === "Defect" ? "Defect" : "No Card Icon";
+        }
+    }
+}
+// --------------------------------------------------------------
+// private helper function
 // --------------------------------------------------------------
 // private helper function
 function addPointsToObject(givenObject, givenKey, points) {
@@ -49,7 +137,6 @@ function addPointsToObject(givenObject, givenKey, points) {
         givenObject[givenKey] = points;
     }
 }
-
 // --------------------------------------------------------------
 // private helper function
 function getSprintInfo(listCards, verbose = false) {
@@ -562,16 +649,31 @@ function createBurnDownChart(listCards) {
 }
 
 // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-// public method
-export function createLeankitDataObject(cards, boardID) {
+// private helper function
+function createLeankitDataObject(cards, lanes) {
     let leankitDataObject = {};
-
-    // get cards from AXIOS
-
     leankitDataObject["listCards"] = cards;
 
     // Enrich each card by adding URL field (BoardID is hard-coded)
-    addURLtoCards(leankitDataObject["listCards"], boardID);
+    addURLtoCards(leankitDataObject["listCards"]);
+
+    // Enrich each card by adding parent lanes
+    // NOTE: Normally each card only knows about it's immediate parent lane, but I want to know about ALL parent lanes
+    addParentLanestoCards(leankitDataObject["listCards"], lanes);
+
+    // Enrich each card by computing the the Days card has been in current lane
+    addDaysInLanetoCards(leankitDataObject["listCards"]);
+    // Classify card as "Defect" or "Enhancement" (dependent on previous call to addParentLanestoCards)
+    addCardTypetoCards(leankitDataObject["listCards"]);
+
+    // Enrich each card by adding custome variable for days since creation
+    addDaysSinceCreationtoCards(leankitDataObject["listCards"]);
+
+    // Enrich each card by adding custome variable for days since update
+    addDaysSinceUpdatetoCards(leankitDataObject["listCards"]);
+
+    // Enrich each card by adding custom variable for card owner
+    addCardOwnertoCards(leankitDataObject["listCards"]);
 
     // Create entire burndownChart
     leankitDataObject["burndownChart"] = createBurnDownChart(leankitDataObject["listCards"]);
@@ -634,6 +736,64 @@ export function createLeankitDataObject(cards, boardID) {
     // end of very large listCards function
 }
 
+// ========================================================================
+async function getLeankitCards(leankitAPIHost, boardId, lane_class_types) {
+    // For the API call, start at offset of 0 (beginning of cards).
+    let offset = 0;
+    // Try to get 1000 cards, though currently (2019), limit is 500 cards set by Leankit.  So, we'll get 500 cards, then increase our offset by that amount
+    let limit = 1000;
+
+    // For lane_class_types (function param), there are three values. You can pass multiple, separate by commas like 'lane_class_types=active,archive'
+    //    'active' is the cards not in the backlog, and not in the Finished lane
+    //    'backlog' is the cards in the backlog
+    //    'archive' is everything in the Finished lane (whether or not its actually been archived yet)
+
+    // Get leankit cards
+    let response_cards_promise = apiProxy.get(
+        // NOTE: if you modify this API path, there's a second looping call down below (so need to modify both)
+        `/leankit-api/${leankitAPIHost}/io/card?board=${boardId}&limit=${limit}&offset=${offset}&lane_class_types=${lane_class_types}`
+    );
+
+    // Wait for both promises to finish (using the await keyboard from the async framework)
+    let response_cards = await response_cards_promise;
+
+    // Save a copy of this first batch of cards
+    let leankitCards = response_cards.data.cards;
+
+    // If the last card we got was less then the total number of cards, must mean there are more cards to get, start looping
+    if (response_cards.data.pageMeta.endRow < response_cards.data.pageMeta.totalRecords) {
+        // Set the offset equal to how many cards we got in the first call
+        offset = response_cards.data.pageMeta.endRow;
+        do {
+            response_cards = await apiProxy.get(
+                `/leankit-api/${leankitAPIHost}/io/card?board=${boardId}&limit=${limit}&offset=${offset}&lane_class_types=${lane_class_types}`
+            );
+            // Concatenate the new cards with the cards we've already got
+            leankitCards = leankitCards.concat(response_cards.data.cards);
+            // Set the offset to be equal to the last card we got, and then check to see if we still need to get more cards
+            offset = response_cards.data.pageMeta.endRow;
+        } while (response_cards.data.pageMeta.endRow < response_cards.data.pageMeta.totalRecords);
+    }
+
+    // OK, by this point, we've got all the cards which match our query
+
+    return leankitCards;
+}
+// ========================================================================
+// Public method visible outside this file
+export async function getEnhancedLeankitCardObject(leankitAPIHost, boardId, lane_class_types) {
+    let leankit_cards = await getLeankitCards(leankitAPIHost, boardId, lane_class_types);
+
+    // Get leankit lanes
+    let response_lanes_promise = apiProxy.get(`/leankit-api/${leankitAPIHost}/io/board/${boardId}`);
+    let leankit_lanes = await response_lanes_promise;
+
+    // Construct a (somewhate elaborate) object representing the LeankitCards
+    // Has additional custom fields, has additional arrays like "all blocked cards"
+    let leankitDataObject = createLeankitDataObject(leankit_cards, leankit_lanes);
+
+    return leankitDataObject;
+}
 // ========================================================================
 // ========================================================================
 // ========================================================================

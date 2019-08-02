@@ -5,7 +5,7 @@ import PubSub from "pubsub-js";
 
 // project imports
 import DashboardDataCard from "../components/DashboardDataCard";
-import { getLeankitCards } from "../utilities/getLeankitCards";
+import { getEnhancedLeankitCardObject } from "../utilities/getEnhancedLeankitCardObject";
 import { getCommentsforLeankitCards } from "../utilities/getCommentsForLeankitCards";
 
 // Additional imports
@@ -51,30 +51,28 @@ class WidgetLeankitCardList extends React.Component {
         // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
 
         // Retrieve our data (likely from an API)
-        let leankit_cards = await getLeankitCards(this.props.leankit_instance, this.props.boardId, "active,backlog");
+        let leankitDataObject = await getEnhancedLeankitCardObject(this.props.leankit_instance, this.props.boardId, "active");
 
         // Filter down to just solutioning cards
-        let filteredCards = leankit_cards.filter(function(card) {
+        let filteredCards = leankitDataObject["listCards"].filter(function(card) {
             // All Discovery Cards
             return card.u_lanes[0].name.includes("Product Discovery");
         });
 
+        // Add custom (calculated) fields to each card
         for (let card of filteredCards) {
-            card.created = "chad";
-            card.u_ageDays = moment().diff(moment(card.createdOn), "days");
-            card.u_stalenessDays = moment().diff(card.updatedOn, "days");
-            card.u_url = `https://${this.props.leankit_instance}/card/${card.id}`;
             card.u_external_url_label = (card.externalLinks && card.externalLinks[0] && card.externalLinks[0].label) || "No Label";
             card.u_external_url_link = (card.externalLinks && card.externalLinks[0] && card.externalLinks[0].url) || "No Link";
         }
 
-        // User comments are not part of original call, so add them now
+        // Add User comments to each card (they are not part of original call)
         let leankit_cards_with_comments = await getCommentsforLeankitCards(filteredCards, this.props.leankit_instance);
 
         // Get the backlog duration
         // let leankit_cards_with_backlogDuration = await getBacklogDurationForLeankitCards(filteredCards, this.props.leankit_instance);
         // console.log(leankit_cards_with_backlogDuration);
 
+        // Put most-recent comment for each card into a special field so it's easier to find later
         leankit_cards_with_comments.forEach(function(card) {
             // Set some variables to be used in JSX below
             card.commentMostRecent = {
@@ -103,7 +101,7 @@ class WidgetLeankitCardList extends React.Component {
             }
         });
 
-        // // Save these cards to our state, which triggers react to render an update to the screen
+        // Save these cards to our state, which triggers react to render an update to the screen
         this.setState({ leankit_cards: leankit_cards_with_comments });
     }
 
@@ -158,12 +156,17 @@ class WidgetLeankitCardList extends React.Component {
                         <tbody>
                             {this.state.leankit_cards
                                 .sort((a, b) => {
-                                    return b.u_ageDays - a.u_ageDays;
+                                    return b.u_daysSinceCreation - a.u_daysSinceCreation;
                                 })
                                 .map(function(card, index) {
                                     // Set some variables to be used in JSX below
                                     let lane1 = (card.u_lanes[1] && card.u_lanes[1].name) || "No parent";
-                                    let ageInDaysClass = card.u_ageDays > 80 ? "redFont" : card.u_ageDays > 40 ? "orangeFont" : "greenFont";
+                                    let ageInDaysClass =
+                                        card.u_daysSinceCreation > 80
+                                            ? "redFont"
+                                            : card.u_daysSinceCreation > 40
+                                                ? "orangeFont"
+                                                : "greenFont";
                                     let owner =
                                         (card.assignedUsers && card.assignedUsers.length > 0 && card.assignedUsers[0].fullName) || "Nobody";
                                     // Now return a JSX statement for rendering
@@ -171,8 +174,8 @@ class WidgetLeankitCardList extends React.Component {
                                         <tr key={card["id"]}>
                                             <td>{index + 1}</td>
                                             <td>{owner}</td>
-                                            <td className={ageInDaysClass}>{card.u_ageDays}</td>
-                                            <td>{card.u_stalenessDays}</td>
+                                            <td className={ageInDaysClass}>{card.u_daysSinceCreation}</td>
+                                            <td>{card.u_daysSinceUpdate}</td>
                                             <td>{card.type.title}</td>
                                             <td>
                                                 <a href={card.u_url} target="_blank" rel="noreferrer noopener">

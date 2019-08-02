@@ -5,8 +5,7 @@ import PubSub from "pubsub-js";
 import DashboardDataCard from "../components/DashboardDataCard";
 
 // project imports
-import { getLeankitCards } from "../utilities/getLeankitCards";
-import { createLeankitDataObject } from "../utilities/createLeankitDataObject";
+import { getEnhancedLeankitCardObject } from "../utilities/getEnhancedLeankitCardObject";
 
 // The purpose of this file is to create a React Component which can be included in HTML
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
@@ -44,13 +43,9 @@ class WidgetLeankitDeliveryRemainingPoints extends React.Component {
         // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
 
         // Retrieve our data (likely from an API)
-        // Get all the leankit cards
-        let leankit_cards = await getLeankitCards(this.props.leankit_instance, this.props.boardId, "active,backlog");
+        // Get all the leankit cards (contained in enchanced object with additional custom variables)
+        let leankitDataObject = await getEnhancedLeankitCardObject(this.props.leankit_instance, this.props.boardId, "active");
 
-        // Save these cards to our state, which triggers react to render an update to the screen
-        this.setState({ leankit_cards: leankit_cards });
-
-        let leankitDataObject = createLeankitDataObject(leankit_cards, this.props.boardId);
         this.setState({ leankitDataObject: leankitDataObject });
     }
 

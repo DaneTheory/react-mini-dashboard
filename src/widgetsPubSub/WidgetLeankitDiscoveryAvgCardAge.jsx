@@ -5,7 +5,7 @@ import PubSub from "pubsub-js";
 
 // project imports
 import DashboardDataCard from "../components/DashboardDataCard";
-import { getLeankitCards } from "../utilities/getLeankitCards";
+import { getEnhancedLeankitCardObject } from "../utilities/getEnhancedLeankitCardObject";
 
 // other imports
 var moment = require("moment");
@@ -40,10 +40,10 @@ class WidgetLeankitDiscoveryAvgCardAge extends React.Component {
         // function is called manually once at componentDidMount, and then repeatedly via a PubSub event, which includes msg/data
 
         // Retrieve our data (likely from an API)
-        let leankit_cards = await getLeankitCards(this.props.leankit_instance, this.props.boardId, "active,backlog");
+        let leankitDataObject = await getEnhancedLeankitCardObject(this.props.leankit_instance, this.props.boardId, "active");
 
         // Update our own state with the new data
-        this.setState({ leankit_cards: leankit_cards });
+        this.setState({ leankit_cards: leankitDataObject["listCards"] });
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

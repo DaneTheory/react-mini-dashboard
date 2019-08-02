@@ -8,8 +8,7 @@ import DashboardGoogleChartCard from "../components/DashboardGoogleChartCard";
 import { ThemeConsumer } from "../components/ThemeContext";
 
 // project imports
-import { getLeankitCards } from "../utilities/getLeankitCards";
-import { createLeankitDataObject } from "../utilities/createLeankitDataObject";
+import { getEnhancedLeankitCardObject } from "../utilities/getEnhancedLeankitCardObject";
 
 // These have to be after imports
 var moment = require("moment");
@@ -86,9 +85,8 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
             return dataArray;
         }
 
-        // Get all the leankit cards
-        let leankit_cards = await getLeankitCards(this.props.leankit_instance, this.props.boardId, "active,backlog");
-        let leankitDataObject = createLeankitDataObject(leankit_cards, this.props.boardId);
+        // Get all the leankit cards (contained in enchanced object with additional custom variables)
+        let leankitDataObject = await getEnhancedLeankitCardObject(this.props.leankit_instance, this.props.boardId, "active");
 
         let labels = leankitDataObject.burndownChart.labels;
         let plannedPts = leankitDataObject.burndownChart.data[0];

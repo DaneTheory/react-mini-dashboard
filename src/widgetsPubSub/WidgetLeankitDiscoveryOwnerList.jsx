@@ -5,7 +5,7 @@ import PubSub from "pubsub-js";
 
 // project imports
 import DashboardDataCard from "../components/DashboardDataCard";
-import { getLeankitCards } from "../utilities/getLeankitCards";
+import { getEnhancedLeankitCardObject } from "../utilities/getEnhancedLeankitCardObject";
 
 // other imports
 var classNames = require("classnames");
@@ -40,10 +40,10 @@ class WidgetLeankitDiscoveryOwnerList extends React.Component {
 
         // Retrieve our data (likely from an API)
         // Get all the leankit cards
-        let leankit_cards = await getLeankitCards(this.props.leankit_instance, this.props.boardId, "active,backlog");
+        let leankitDataObject = await getEnhancedLeankitCardObject(this.props.leankit_instance, this.props.boardId, "active");
 
         // Filter down to just solutioning cards
-        let filteredCards = leankit_cards.filter(function(card) {
+        let filteredCards = leankitDataObject["listCards"].filter(function(card) {
             // Just solutioning cards
             // return card.u_lanes[1].name === "Solutioning" && card.u_lanes[2].name === "Non-Project WUs";
             // All Discovery Cards

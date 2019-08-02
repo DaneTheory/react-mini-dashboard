@@ -7,7 +7,7 @@ import WidgetLeankitDiscoveryCardList from "../widgetsPubSub/WidgetLeankitDiscov
 import WidgetLeankitDiscoveryTotalCardCount from "../widgetsPubSub/WidgetLeankitDiscoveryTotalCardCount";
 import WidgetLeankitDiscoveryDefectCardCount from "../widgetsPubSub/WidgetLeankitDiscoveryDefectCardCount";
 import WidgetLeankitDiscoveryAvgCardAge from "../widgetsPubSub/WidgetLeankitDiscoveryAvgCardAge";
-import WidgetLeankitDiscoverySolutioningCardList from "../widgetsPubSub/WidgetLeankitDiscoverySolutioningCardList";
+import WidgetLeankitDiscoverySolutioningCardNearingBreachList from "../widgetsPubSub/WidgetLeankitDiscoverySolutioningCardNearingBreachList";
 import WidgetLeankitDiscoveryOwnerList from "../widgetsPubSub/WidgetLeankitDiscoveryOwnerList";
 
 // Other project imports
@@ -47,11 +47,11 @@ class LeankitDiscoveryCardGrid extends React.Component {
                         leankit_instance={this.props.leankit_instance}
                         boardId={this.props.boardId}
                     />
-                    <WidgetLeankitDiscoverySolutioningCardList
+                    <WidgetLeankitDiscoverySolutioningCardNearingBreachList
                         position="1 / 7 / span 6 / span 6"
                         leankit_instance={this.props.leankit_instance}
                         boardId={this.props.boardId}
-                        showCardsWithThisManyDaysRemaining={30}
+                        showCardsWithThisManyDaysRemaining={5}
                     />
                     <WidgetLeankitDiscoveryCardList
                         position="span 10 / span 12"

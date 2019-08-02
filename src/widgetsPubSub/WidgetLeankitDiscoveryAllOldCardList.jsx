@@ -5,7 +5,7 @@ import PubSub from "pubsub-js";
 
 // project imports
 import DashboardDataCard from "../components/DashboardDataCard";
-import { getLeankitCards } from "../utilities/getLeankitCards";
+import { getEnhancedLeankitCardObject } from "../utilities/getEnhancedLeankitCardObject";
 import { getCommentsforLeankitCards } from "../utilities/getCommentsForLeankitCards";
 // import { getBacklogDurationForLeankitCards } from "../utilities/getBacklogDurationForLeankitCards";
 
@@ -43,28 +43,19 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
 
         // Retrieve our data (likely from an API)
         // Get all the leankit cards
-        let leankit_cards = await getLeankitCards(this.props.leankit_instance, this.props.boardId, "active,backlog");
+        let leankitDataObject = await getEnhancedLeankitCardObject(this.props.leankit_instance, this.props.boardId, "active");
 
         // Save these cards to our state, which triggers react to render an update to the screen
         // this.setState({ leankit_cards: filteredCards });
 
-        // Enrich each card by adding URL field (boardId is hard-coded)
-        for (let i = 0; i < leankit_cards.length; i++) {
-            let card = leankit_cards[i];
-            card.u_url = `https://${this.props.leankit_instance}/card/${card.id}`;
-        }
-
         // Filter down to just solutioning cards
-        let filteredCards = leankit_cards.filter(function(card) {
+        let filteredCards = leankitDataObject["listCards"].filter(function(card) {
             return card.u_lanes[0].name.includes("Product Discovery");
         });
 
         // Enrich each card by adding several custom variables;
         for (let i = 0; i < filteredCards.length; i++) {
             let card = filteredCards[i];
-            card.u_daysSinceCreation = moment().diff(card.createdOn, "days");
-            card.u_cardOwner = (card.assignedUsers && card.assignedUsers.length > 0 && card.assignedUsers[0].fullName) || "No Owner";
-            card.u_cardType = card.customIcon && card.customIcon.title === "Defect" ? "Defect" : "Enhancement";
 
             card.u_cssClassName =
                 card.u_daysSinceCreation >= this.props.redThreshold
@@ -77,6 +68,7 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
         let sortedCards = filteredCards.sort((a, b) => {
             return b.u_daysSinceCreation - a.u_daysSinceCreation;
         });
+        // Truncate the list
         sortedCards.length = this.props.numCards;
 
         // User comments are not part of original call, so add them now (expensive call since we do this for each card)
@@ -165,7 +157,7 @@ class WidgetLeankitDiscoverySolutioningCardList extends React.Component {
                                 <td align="center">
                                     <div>{card.u_cardOwner}</div>
                                     <div>{card.u_cardType}</div>
-                                    <div>{card.daysInLane} days in Lane</div>
+                                    <div>{card.u_daysInLane} days in Lane</div>
                                 </td>
                                 <td>
                                     <a href={card.u_url} target="_blank" rel="noreferrer noopener">
