@@ -55,11 +55,14 @@ class Dashboard extends React.Component {
         // Check to see if refresh timer expired, if so trigger data update
         if (this.state.refreshRemainingMs <= 0) {
             PubSub.publish("updateWidgetsEvent", "Update your data, you widgets !");
+            // Update our own component state with the new data, which will cause our component to re-render
             this.setState({ refreshRemainingMs: this.props.refreshInterval });
         }
 
         // Subtract one second from the count
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ refreshRemainingMs: this.state.refreshRemainingMs - this.props.refreshUpdateInterval });
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ reloadRemainingMs: this.state.reloadRemainingMs - this.props.refreshUpdateInterval });
     }
 
@@ -76,6 +79,7 @@ class Dashboard extends React.Component {
 
     // Later will pass this function to child components so they can change our Page Title
     changePageTitle(newTitle) {
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ pageTitle: newTitle });
     }
 

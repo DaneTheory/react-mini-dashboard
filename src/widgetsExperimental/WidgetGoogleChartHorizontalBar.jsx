@@ -51,7 +51,7 @@ class WidgetGoogleChartHorizontalBar extends React.Component {
             }
         });
 
-        // Update our own state with the new data
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ count: response.data.result.stats.count });
     }
 
@@ -68,6 +68,7 @@ class WidgetGoogleChartHorizontalBar extends React.Component {
         PubSub.subscribe("updateWidgetsEvent", this.getDataAndUpdateState);
 
         setTimeout(() => {
+            // Update our own component state with the new data, which will cause our component to re-render
             this.setState({ rowData: [[8, 5], [4, 5.5], [11, 14], [4, 5], [3, 3.5], [6.5, 7]] });
         }, 3000);
     };

@@ -49,6 +49,7 @@ class WidgetLeankitDeliveryStats extends React.Component {
         // Get all the leankit cards
         let leankitDataObject = await getEnhancedLeankitCardObject(this.props.leankit_instance, this.props.boardId, "active");
 
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ leankitDataObject: leankitDataObject });
     }
 

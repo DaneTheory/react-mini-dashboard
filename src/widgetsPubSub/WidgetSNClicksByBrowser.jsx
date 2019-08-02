@@ -62,8 +62,8 @@ class WidgetSNClicksByBrowser extends React.Component {
         // Create an Object of counts for browser types
         let browserInfo = this.createBrowserCounts(user_agent_strings);
 
-        // Update our own state with the new data
-        // Save into our component state
+        // Update our own component state with the new data, which will cause our component to re-render
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ browserInfo: browserInfo });
     }
 

@@ -43,7 +43,7 @@ class WidgetGoogleChartGauge extends React.Component {
             params: {}
         });
 
-        // Update our own state with the new data
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ boldchatCount: response.data.Data.length });
     }
 

@@ -59,12 +59,6 @@ class WidgetLeankitCardList extends React.Component {
             return card.u_lanes[0].name.includes("Product Discovery");
         });
 
-        // Add custom (calculated) fields to each card
-        for (let card of filteredCards) {
-            card.u_external_url_label = (card.externalLinks && card.externalLinks[0] && card.externalLinks[0].label) || "No Label";
-            card.u_external_url_link = (card.externalLinks && card.externalLinks[0] && card.externalLinks[0].url) || "No Link";
-        }
-
         // Add User comments to each card (they are not part of original call)
         let leankit_cards_with_comments = await getCommentsforLeankitCards(filteredCards, this.props.leankit_instance);
 
@@ -101,7 +95,7 @@ class WidgetLeankitCardList extends React.Component {
             }
         });
 
-        // Save these cards to our state, which triggers react to render an update to the screen
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ leankit_cards: leankit_cards_with_comments });
     }
 

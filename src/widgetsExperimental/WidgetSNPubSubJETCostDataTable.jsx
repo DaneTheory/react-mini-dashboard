@@ -42,7 +42,7 @@ class WidgetSNPubSubJETCostDataTable extends React.PureComponent {
 
         let JETconsumptionUnits = await getJETData(this.props.sn_instance, this.props.boldchat_instance);
 
-        // Update our own state with the new data
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ JETconsumptionUnits: JETconsumptionUnits });
     }
 

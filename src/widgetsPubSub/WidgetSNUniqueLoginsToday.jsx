@@ -46,9 +46,12 @@ class WidgetSNUniqueLoginsToday extends React.PureComponent {
             }
         });
 
-        // Update our own state with the new data (keep track of prevCount so CountUp can animate)
+        // Update our own component state with the new data, which will cause our component to re-render (keep track of prevCount so CountUp can animate)
         const currentCount = Number(response.data.result.stats.count);
+
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ prevcount: this.state.count || currentCount - 100 });
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ count: currentCount });
     }
 

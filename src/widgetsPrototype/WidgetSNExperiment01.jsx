@@ -46,7 +46,7 @@ class WidgetSNExperiment01 extends React.Component {
             }
         });
 
-        // Update our own state with the new data
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ count: response.data.result.stats.count });
     }
 

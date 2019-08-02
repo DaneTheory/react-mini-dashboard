@@ -41,7 +41,7 @@ class WidgetSNINCP1P2Count extends React.Component {
             params: { sysparm_query: "stateIN100,2^priorityIN1,2", sysparm_count: "true" }
         });
 
-        // Update our own state with the new data
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ count: response.data.result.stats.count });
     }
 

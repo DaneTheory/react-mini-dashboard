@@ -42,7 +42,7 @@ class WidgetLeankitDiscoveryAvgCardAge extends React.Component {
         // Retrieve our data (likely from an API)
         let leankitDataObject = await getEnhancedLeankitCardObject(this.props.leankit_instance, this.props.boardId, "active");
 
-        // Update our own state with the new data
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ leankit_cards: leankitDataObject["listCards"] });
     }
 

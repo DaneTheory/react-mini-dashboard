@@ -49,7 +49,7 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
             chartData.push([JETconsumptionUnit.name, JETconsumptionUnit.pctOfTarget]);
         });
 
-        // Update our own state with the new data
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ chartData: chartData });
     }
 

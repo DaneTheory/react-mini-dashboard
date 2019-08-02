@@ -50,8 +50,8 @@ class WidgetLeankitDiscoveryOwnerList extends React.Component {
             return card.u_lanes[0].name.includes("Product Discovery");
         });
 
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ leankit_cards: filteredCards });
-        // this.setState({ leankit_cards: leankit_cards });
 
         // Determine which owners have the most cards
         var ownerFrequency = {};
@@ -67,7 +67,7 @@ class WidgetLeankitDiscoveryOwnerList extends React.Component {
         });
         // console.log("owner array", ownerArray);
 
-        // Update our own state with the new data
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ ownerArray: ownerArray });
     }
 

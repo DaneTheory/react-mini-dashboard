@@ -50,7 +50,7 @@ class WidgetSNBoldchatTableAutoScroll extends React.PureComponent {
         // Manually remove ChatBot entries from the data
         BoldChatData.chats = BoldChatData.chats.filter(chat => !chat["InitialQuestion"].includes("Talking with Chatbot"));
 
-        // Update our own state with the new data
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ BoldChatData: BoldChatData });
     }
 

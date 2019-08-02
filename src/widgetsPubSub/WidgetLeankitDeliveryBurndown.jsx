@@ -68,7 +68,7 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
         //     ]
         // };
 
-        // Update our own state with the new data
+        // Update our own component state with the new data, which will cause our component to re-render
         // this.setState({ chartData: chartData });
 
         // this function gets the custom data for this widget, and updates our React component state
@@ -118,6 +118,7 @@ class WidgetLeankitDeliveryBurndown extends React.Component {
         // Add to beginning of array
         chartData.unshift(["Date", "Planned", { type: "string", role: "style" }, "Burndown", "Unplanned"]);
 
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({
             chartData: chartData
         });

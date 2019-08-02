@@ -59,8 +59,6 @@ class WidgetLeankitDiscoverySolutioningCardNearingBreachList extends React.Compo
         // Calcuate some custom fields for each cards
         filteredCards.forEach(function(card) {
             // Set some variables to be used in JSX below
-            card.u_cardOwner = (card.assignedUsers && card.assignedUsers.length > 0 && card.assignedUsers[0].fullName) || "No Owner";
-            card.u_cardType = card.customIcon && card.customIcon.title === "Defect" ? "Defect" : "Enhancement";
             if (card.u_cardType === "Defect") {
                 // Card is "Defect"
                 card.u_cssClassName = card.u_daysInLane > 7 ? "cellRed" : card.u_daysInLane >= 4 ? "cellAmber" : "cellGreen";

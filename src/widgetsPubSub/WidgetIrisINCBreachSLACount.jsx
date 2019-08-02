@@ -70,12 +70,15 @@ class WidgetIrisINCBreachSLACount extends React.PureComponent {
 
         // Get all tickets resolved/closed this month
         let INCCount_closed = await this.getDataIrisINCClosedThisMonth();
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ irisResolvedINCCount: INCCount_closed });
 
         // Get incidents breached this month (excluding tickets that have blank breach codes, Recieved breached, or Late Assignment)
         let INCCount_breached = await this.getDataIrisINCClosedThisMonth(
             "u_breached_reason_code!=^u_breached_reason_code!=Received Breached^u_breached_reason_code!=Late Assignment"
         );
+
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ irisResolvedINCBreachedCount: INCCount_breached });
     }
 

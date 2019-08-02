@@ -60,7 +60,7 @@ class WidgetSNClicksByOS extends React.Component {
         // Create a dictionary of counts for both browswer and OS
         let OSInfo = this.createOSCounts(user_agent_strings);
 
-        // Update our own state with the new data
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ OSInfo: OSInfo });
     }
 

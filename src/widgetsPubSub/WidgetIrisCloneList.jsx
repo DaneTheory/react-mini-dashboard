@@ -96,7 +96,7 @@ class WidgetIrisCloneList extends React.PureComponent {
             clonesByPath[target_instance]["latest_clone"] = latest_clone;
         });
 
-        // Update our own state with the new data
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ clonesByPath: clonesByPath });
     }
 

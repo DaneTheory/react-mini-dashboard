@@ -77,11 +77,13 @@ class WidgetIrisWUStaleList extends React.PureComponent {
             }
         });
 
-        // Update our own state with the new data
+        // Update our own component state with the new data, which will cause our component to re-render
         let workUnitObject = {};
         workUnitObject["daysOld"] = this.props.daysOld;
         workUnitObject["workunits"] = response_wu.data.result;
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ workUnitObject: workUnitObject });
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ wuArray: response_wu.data.result });
     }
 

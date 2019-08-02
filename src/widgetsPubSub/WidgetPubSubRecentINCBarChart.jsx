@@ -68,7 +68,7 @@ class WidgetPubSubJETHorizontalGoogleBarChart extends React.Component {
             return b.count - a.count;
         });
 
-        // Update our own state with the new data
+        // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ IncidentCountbyCI: IncidentCountbyCI, totalINC: totalINC });
     }
 

@@ -37,13 +37,20 @@ function isWorkingDay(date) {
 // ------------------- Common to both Demand and Sprint ---------
 // --------------------------------------------------------------
 // private helper function
-function addURLtoCards(listCards) {
+function addURLtoCards(listCards, leankit_instance) {
     // Enrich each card by adding URL field (BoardID is hard-coded)
     for (let i = 0; i < listCards.length; i++) {
         let card = listCards[i];
-        // card.u_url = sprintf("%s/%s/%s", "https://jnj.leankit.com/Boards/View", boardID, card["Id"]);
-        let leankit_instance = "jnj.leankit.com";
         card.u_url = `https://${leankit_instance}/card/${card.id}`;
+    }
+}
+// --------------------------------------------------------------
+// private helper function
+function addExternalLinkUrltoCards(listCards) {
+    for (let i = 0; i < listCards.length; i++) {
+        let card = listCards[i];
+        card.u_external_url_label = (card.externalLinks && card.externalLinks[0] && card.externalLinks[0].label) || "No Label";
+        card.u_external_url_link = (card.externalLinks && card.externalLinks[0] && card.externalLinks[0].url) || "No Link";
     }
 }
 // --------------------------------------------------------------
@@ -650,12 +657,15 @@ function createBurnDownChart(listCards) {
 
 // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 // private helper function
-function createLeankitDataObject(cards, lanes) {
+function createLeankitDataObject(cards, lanes, leankit_instance) {
     let leankitDataObject = {};
     leankitDataObject["listCards"] = cards;
 
     // Enrich each card by adding URL field (BoardID is hard-coded)
-    addURLtoCards(leankitDataObject["listCards"]);
+    addURLtoCards(leankitDataObject["listCards"], leankit_instance);
+
+    // Enrich each card by adding external URL (every card has a field where is can point to exteranl URL like Work Unit)
+    addExternalLinkUrltoCards(leankitDataObject["listCards"]);
 
     // Enrich each card by adding parent lanes
     // NOTE: Normally each card only knows about it's immediate parent lane, but I want to know about ALL parent lanes
@@ -782,6 +792,8 @@ async function getLeankitCards(leankitAPIHost, boardId, lane_class_types) {
 // ========================================================================
 // Public method visible outside this file
 export async function getEnhancedLeankitCardObject(leankitAPIHost, boardId, lane_class_types) {
+    console.log("leankitAPIHost", leankitAPIHost);
+
     let leankit_cards = await getLeankitCards(leankitAPIHost, boardId, lane_class_types);
 
     // Get leankit lanes
@@ -790,7 +802,7 @@ export async function getEnhancedLeankitCardObject(leankitAPIHost, boardId, lane
 
     // Construct a (somewhate elaborate) object representing the LeankitCards
     // Has additional custom fields, has additional arrays like "all blocked cards"
-    let leankitDataObject = createLeankitDataObject(leankit_cards, leankit_lanes);
+    let leankitDataObject = createLeankitDataObject(leankit_cards, leankit_lanes, leankitAPIHost);
 
     return leankitDataObject;
 }
