@@ -3,20 +3,20 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-        "axios": "^0.18.0",
-        "chart.js": "^2.7.3",
+        "axios": "^0.18.1",
+        "chart.js": "^2.8.0",
         "classnames": "^2.2.6",
-        "express": "^4.16.4",
-        "jquery": "^3.3.1",
+        "express": "^4.17.1",
+        "jquery": "^3.4.1",
         "moment": "^2.24.0",
         "path": "^0.12.7",
         "pubsub-js": "^1.7.0",
-        "react": "^16.8.3",
-        "react-chartjs-2": "^2.7.4",
-        "react-countup": "^4.1.1",
-        "react-dom": "^16.8.3",
-        "react-google-charts": "^3.0.10",
-        "react-number-format": "^4.0.6",
+        "react": "^16.8.6",
+        "react-chartjs-2": "^2.7.6",
+        "react-countup": "^4.2.1",
+        "react-dom": "^16.8.6",
+        "react-google-charts": "^3.0.14",
+        "react-number-format": "^4.0.8",
         "react-router-dom": "^4.3.1",
         "react-scripts": "2.1.5",
         "react-timeout": "^1.2.0",
@@ -41,6 +41,6 @@
         "not op_mini all"
     ],
     "devDependencies": {
-        "node-sass": "^4.11.0"
+        "node-sass": "^4.12.0"
     }
 }
