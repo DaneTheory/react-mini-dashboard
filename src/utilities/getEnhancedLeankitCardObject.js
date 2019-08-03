@@ -112,6 +112,16 @@ function addDaysSinceUpdatetoCards(listCards) {
 }
 // --------------------------------------------------------------
 // private helper function
+function addDaysBlockedtoCards(listCards) {
+    for (let i = 0; i < listCards.length; i++) {
+        let card = listCards[i];
+        if (card.blockedStatus && card.blockedStatus.isBlocked) {
+            card.u_daysBlocked = moment().diff(card.blockedStatus.date, "days");
+        }
+    }
+}
+// --------------------------------------------------------------
+// private helper function
 function addCardOwnertoCards(listCards) {
     for (let i = 0; i < listCards.length; i++) {
         let card = listCards[i];
@@ -683,11 +693,14 @@ function createLeankitDataObject(cards, lanes, leankit_instance) {
     // Classify card as "Defect" or "Enhancement" (dependent on previous call to addParentLanestoCards)
     addCardTypetoCards(leankitDataObject["listCards"]);
 
-    // Enrich each card by adding custome variable for days since creation
+    // Enrich each card by adding custom variable for days since creation
     addDaysSinceCreationtoCards(leankitDataObject["listCards"]);
 
-    // Enrich each card by adding custome variable for days since update
+    // Enrich each card by adding custom variable for days since update
     addDaysSinceUpdatetoCards(leankitDataObject["listCards"]);
+
+    // Enrich each card by adding custom variable for days blocked
+    addDaysBlockedtoCards(leankitDataObject["listCards"]);
 
     // Enrich each card by adding custom variable for card owner
     addCardOwnertoCards(leankitDataObject["listCards"]);

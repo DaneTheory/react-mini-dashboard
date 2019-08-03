@@ -46,7 +46,7 @@ class WidgetLeankitBlockedCards extends React.Component {
 
         // Filter down to just solutioning cards
         let filteredCards = leankitDataObject["listCardsIsHuddle"];
-        console.log("Blocked Cards", filteredCards);
+        console.log("Huddle Cards", filteredCards);
 
         // User comments are not part of original call, so add them now
         let leankit_cards_with_comments = await getCommentsforLeankitCards(filteredCards, this.props.leankit_instance);
@@ -151,6 +151,9 @@ class WidgetLeankitBlockedCards extends React.Component {
                                 </td>
                                 <td>
                                     <b>(({card.u_commentMostRecent.Author}))</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{" "}
+                                    <span className={classNames(card.u_commentMostRecent.className)}>
+                                        {card.u_commentMostRecent.ageInDays} days ago{" "}
+                                    </span>
                                     {card.u_commentMostRecent.Text}
                                 </td>
                             </tr>
@@ -178,12 +181,12 @@ class WidgetLeankitBlockedCards extends React.Component {
                                     <br />
                                     Days in Lane
                                 </th>
-                                <th width="7%">
+                                <th width="14%">
                                     Card
                                     <br />
                                     Age
                                 </th>
-                                <th width="25%">Description</th>
+                                <th width="18%">Description</th>
                                 <th width="7%">Comment Age</th>
                                 <th width="43%">Most Recent Comment</th>
                             </tr>

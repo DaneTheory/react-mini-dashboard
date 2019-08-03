@@ -140,17 +140,20 @@ class WidgetLeankitBlockedCards extends React.Component {
                                     <div>{card.u_cardType}</div>
                                     <div>{card.u_daysInLane} days in Lane</div>
                                 </td>
+                                <td align="center" className={classNames(card.u_commentMostRecent.className)}>
+                                    Blocked {card.u_daysBlocked} days
+                                </td>
                                 <td>{card.u_daysSinceCreation} days</td>
                                 <td>
                                     <a href={card.u_url} target="_blank" rel="noreferrer noopener">
                                         {card["title"]}
                                     </a>
                                 </td>
-                                <td align="center" className={classNames(card.u_commentMostRecent.className)}>
-                                    {card.u_commentMostRecent.ageInDays} days
-                                </td>
                                 <td>
-                                    <b>(({card.u_commentMostRecent.Author}))</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{" "}
+                                    <b>(({card.u_commentMostRecent.Author}))</b>&nbsp;&nbsp;
+                                    <span className={classNames(card.u_commentMostRecent.className)}>
+                                        {card.u_commentMostRecent.ageInDays} days ago&nbsp;&nbsp;
+                                    </span>
                                     {card.u_commentMostRecent.Text}
                                 </td>
                             </tr>
@@ -178,13 +181,13 @@ class WidgetLeankitBlockedCards extends React.Component {
                                     <br />
                                     Days in Lane
                                 </th>
-                                <th width="7%">
+                                <th width="7%">Days Blocked</th>
+                                <th width="10%">
                                     Card
                                     <br />
                                     Age
                                 </th>
-                                <th width="25%">Description</th>
-                                <th width="7%">Comment Age</th>
+                                <th width="22%">Description</th>
                                 <th width="43%">Most Recent Comment</th>
                             </tr>
                         </thead>
