@@ -86,7 +86,7 @@ class WidgetLeankitCardList extends React.Component {
                 card.commentMostRecent.Author = card.comments[0].createdBy.fullName;
                 card.commentMostRecent.ageInDays = moment().diff(moment(card.comments[0].createdOn), "days");
                 card.commentMostRecent.className =
-                    card.commentMostRecent.ageInDays > 5 ? "redFont" : card.commentMostRecent.ageInDays > 3 ? "orangeFont" : "greenFont";
+                    card.commentMostRecent.ageInDays > 5 ? "redFont" : card.commentMostRecent.ageInDays > 3 ? "amberFont" : "greenFont";
             } else if (card.comments && card.comments.length === 0) {
                 // API call to get card comments has returned, but card doesn't have any comments
                 card.commentMostRecent.Text = "No Comment";
@@ -159,7 +159,7 @@ class WidgetLeankitCardList extends React.Component {
                                         card.u_daysSinceCreation > 80
                                             ? "redFont"
                                             : card.u_daysSinceCreation > 40
-                                                ? "orangeFont"
+                                                ? "amberFont"
                                                 : "greenFont";
                                     let owner =
                                         (card.assignedUsers && card.assignedUsers.length > 0 && card.assignedUsers[0].fullName) || "Nobody";

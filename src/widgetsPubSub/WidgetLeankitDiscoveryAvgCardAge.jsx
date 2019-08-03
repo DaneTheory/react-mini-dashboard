@@ -93,7 +93,7 @@ class WidgetLeankitDiscoveryAvgCardAge extends React.Component {
 
             // Return JSX containing the count
             let fontColor =
-                avgCardAge > this.props.redThreshold ? "redFont" : avgCardAge > this.props.amberThreshold ? "orangeFont" : "greenFont";
+                avgCardAge > this.props.redThreshold ? "redFont" : avgCardAge > this.props.amberThreshold ? "amberFont" : "greenFont";
             return <div className={classNames("single-num-value", fontColor)}>{avgCardAge.toFixed(2)}</div>;
         }
     }

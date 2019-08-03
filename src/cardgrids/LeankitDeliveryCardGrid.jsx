@@ -53,6 +53,8 @@ class LeankitDiscoveryCardGrid extends React.Component {
                         position="7 / 1 / span 6 / span 6"
                         leankit_instance={this.props.leankit_instance}
                         boardId={this.props.boardId}
+                        redThreshold={30}
+                        amberThreshold={14}
                     />
                     <WidgetLeankitHuddleCards
                         position="7 / 7 / span 6 / span 6"

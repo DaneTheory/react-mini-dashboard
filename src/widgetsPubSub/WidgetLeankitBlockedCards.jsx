@@ -55,6 +55,17 @@ class WidgetLeankitBlockedCards extends React.Component {
         // let leankit_cards_with_backlogDuration = await getBacklogDurationForLeankitCards(filteredCards, this.props.leankit_instance);
         // console.log(leankit_cards_with_backlogDuration);
 
+        // Define color coding for amount of time card is blocked
+        for (let i = 0; i < leankit_cards_with_comments.length; i++) {
+            let card = leankit_cards_with_comments[i];
+            card.u_cssClassNameBlocked =
+                card.u_daysBlocked > this.props.redThreshold
+                    ? "redFont"
+                    : card.u_daysBlocked > this.props.amberThreshold
+                        ? "amberFont"
+                        : "greenFont";
+        }
+
         leankit_cards_with_comments.forEach(function(card) {
             // Set some variables to be used in JSX below
             card.u_commentMostRecent = {
@@ -72,7 +83,7 @@ class WidgetLeankitBlockedCards extends React.Component {
                     card.u_commentMostRecent.ageInDays > 5
                         ? "redFont"
                         : card.u_commentMostRecent.ageInDays > 3
-                            ? "orangeFont"
+                            ? "amberFont"
                             : "greenFont";
             } else if (card.comments && card.comments.length === 0) {
                 // API call to get card comments has returned, but card doesn't have any comments
@@ -111,12 +122,42 @@ class WidgetLeankitBlockedCards extends React.Component {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+    renderTable() {
+        if (this.state.leankit_cards === null) {
+            return <div className="waiting-for-data">Waiting for data...</div>;
+        } else if (this.state.leankit_cards.length === 0) {
+            return <div className="waiting-for-data">No Cards</div>;
+        } else {
+            // We have data(cards) now
+            return (
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th width="3%" />
+                                <th width="15%">
+                                    Owner
+                                    <br />
+                                    Days in Lane
+                                </th>
+                                <th width="17%">Days Blocked</th>
+                                <th width="22%">Description</th>
+                                <th width="43%">Most Recent Comment</th>
+                            </tr>
+                        </thead>
+                        {this.renderTableBody()}
+                    </table>
+                </div>
+            );
+        }
+    }
+
     renderTableBody() {
         return (
             <tbody>
                 {this.state.leankit_cards
                     .sort((a, b) => {
-                        return a.u_daysRemainingUntilBreach - b.u_daysRemainingUntilBreach;
+                        return b.u_daysBlocked - a.u_daysBlocked;
                     })
                     .map(function(card, index) {
                         // Strip the html tags
@@ -140,10 +181,10 @@ class WidgetLeankitBlockedCards extends React.Component {
                                     <div>{card.u_cardType}</div>
                                     <div>{card.u_daysInLane} days in Lane</div>
                                 </td>
-                                <td align="center" className={classNames(card.u_commentMostRecent.className)}>
-                                    Blocked {card.u_daysBlocked} days
+                                <td align="center">
+                                    <div className={classNames(card.u_cssClassNameBlocked)}>Blocked {card.u_daysBlocked} days</div>
+                                    Card {card.u_daysSinceCreation} days old
                                 </td>
-                                <td>{card.u_daysSinceCreation} days</td>
                                 <td>
                                     <a href={card.u_url} target="_blank" rel="noreferrer noopener">
                                         {card["title"]}
@@ -163,43 +204,15 @@ class WidgetLeankitBlockedCards extends React.Component {
         );
     }
 
-    renderTable() {
-        if (this.state.leankit_cards === null) {
-            return <div className="waiting-for-data">Waiting for data...</div>;
-        } else if (this.state.leankit_cards.length === 0) {
-            return <div className="waiting-for-data">No Cards</div>;
-        } else {
-            // We have data(cards) now
-            return (
-                <div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th width="3%" />
-                                <th width="15%">
-                                    Owner
-                                    <br />
-                                    Days in Lane
-                                </th>
-                                <th width="7%">Days Blocked</th>
-                                <th width="10%">
-                                    Card
-                                    <br />
-                                    Age
-                                </th>
-                                <th width="22%">Description</th>
-                                <th width="43%">Most Recent Comment</th>
-                            </tr>
-                        </thead>
-                        {this.renderTableBody()}
-                    </table>
-                </div>
-            );
-        }
-    }
-
     renderCardBody() {
-        return <div className="item">{this.renderTable()}</div>;
+        return (
+            <div
+                className="item"
+                data-tip={`Greater than ${this.props.redThreshold} is Red<br>Greater than ${this.props.amberThreshold} is Amber`}
+            >
+                {this.renderTable()}
+            </div>
+        );
     }
 
     render() {
@@ -227,7 +240,9 @@ class WidgetLeankitBlockedCards extends React.Component {
 
 // Set default props in case they aren't passed to us by the caller
 WidgetLeankitBlockedCards.defaultProps = {
-    showCardsWithThisManyDaysRemaining: 0
+    showCardsWithThisManyDaysRemaining: 0,
+    redThreshold: 90,
+    amberThreshold: 30
 };
 
 // Force the caller to include the proper attributes
@@ -237,7 +252,9 @@ WidgetLeankitBlockedCards.propTypes = {
     position: PropTypes.string.isRequired,
     color: PropTypes.string,
     boardId: PropTypes.string.isRequired,
-    showCardsWithThisManyDaysRemaining: PropTypes.number
+    showCardsWithThisManyDaysRemaining: PropTypes.number,
+    redThreshold: PropTypes.number,
+    amberThreshold: PropTypes.number
 };
 
 // If we (this file) get "imported", this is what they'll be given

@@ -6,6 +6,7 @@ import PubSub from "pubsub-js";
 // project imports
 import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
+import { createURLforServiceNowWorkUnit } from "../utilities/createURLforServiceNowWorkUnit";
 
 // The purpose of this file is to create a React Component which can be included in HTML
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
@@ -76,15 +77,11 @@ class WidgetSNIrisReleaseNotes extends React.PureComponent {
 
         var wuResults = response_wu.data.result;
 
-        // # Construct URL for Work Unit (parent), example of link that we need to create
-        // https://jnjprod.service-now.com/nav_to.do?uri=rm_enhancement.do?sys_id=85abbe8adb7c7b48d1cbdb41ca9619ca&sysparm_view=sdlc
-
-        let rootURL = `https://${this.props.sn_instance}`;
-        rootURL = rootURL.replace("jnjprodworker", "jnjprod");
-        wuResults.forEach(function(wu) {
-            let restURL = `/nav_to.do?uri=rm_enhancement.do?sys_id=${wu["sys_id"]}&sysparm_view=sdlc`;
-            wu["url"] = rootURL + restURL;
-        });
+        // # Construct URL for each Work Unit
+        for (let i = 0; i < wuResults.length; i++) {
+            let wu = wuResults[i];
+            wu["u_url"] = createURLforServiceNowWorkUnit(this.props.sn_instance, wu["sys_id"]);
+        }
 
         // Group by u_release_number.u_release_date
         var wuResultsByDate = {};
@@ -171,7 +168,7 @@ class WidgetSNIrisReleaseNotes extends React.PureComponent {
                             <tr key={wu["number"]}>
                                 <td style={{ padding: "1vw" }}>#{index + 1}</td>
                                 <td style={{ width: "10vw", padding: "1vw" }}>
-                                    <a href={wu["url"]} target="_blank" rel="noreferrer noopener">
+                                    <a href={wu["u_url"]} target="_blank" rel="noreferrer noopener">
                                         {wu["number"]}
                                     </a>
                                     <br />

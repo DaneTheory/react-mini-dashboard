@@ -117,7 +117,7 @@ class WidgetLeankitDiscoveryOwnerList extends React.Component {
                                 // Set some variables to be used in JSX below
                                 let owner = { text: card.name };
                                 let cardCount = { text: card.count };
-                                cardCount.className = cardCount.text > 6 ? "redFont" : cardCount.text > 4 ? "orangeFont" : "greenFont";
+                                cardCount.className = cardCount.text > 6 ? "redFont" : cardCount.text > 4 ? "amberFont" : "greenFont";
 
                                 // Now return a JSX statement for rendering
                                 return (

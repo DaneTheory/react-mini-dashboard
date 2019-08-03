@@ -72,7 +72,7 @@ class WidgetLeankitBlockedCards extends React.Component {
                     card.u_commentMostRecent.ageInDays > 5
                         ? "redFont"
                         : card.u_commentMostRecent.ageInDays > 3
-                            ? "orangeFont"
+                            ? "amberFont"
                             : "greenFont";
             } else if (card.comments && card.comments.length === 0) {
                 // API call to get card comments has returned, but card doesn't have any comments

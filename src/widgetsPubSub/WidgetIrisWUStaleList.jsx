@@ -7,6 +7,7 @@ import NumberFormat from "react-number-format";
 // project imports
 import DashboardDataCard from "../components/DashboardDataCard";
 import apiProxy from "../api/apiProxy";
+import { createURLforServiceNowWorkUnit } from "../utilities/createURLforServiceNowWorkUnit";
 
 // Additional imports
 var moment = require("moment");
@@ -77,10 +78,17 @@ class WidgetIrisWUStaleList extends React.PureComponent {
             }
         });
 
+        let workUnits = response_wu.data.result;
+        // # Construct URL for each Work Unit
+        for (let i = 0; i < workUnits.length; i++) {
+            let wu = workUnits[i];
+            wu["u_url"] = createURLforServiceNowWorkUnit(this.props.sn_instance, wu["sys_id"]);
+        }
+
         // Update our own component state with the new data, which will cause our component to re-render
         let workUnitObject = {};
         workUnitObject["daysOld"] = daysOld;
-        workUnitObject["workunits"] = response_wu.data.result;
+        workUnitObject["workunits"] = workUnits;
         // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ workUnitObject: workUnitObject });
         // Update our own component state with the new data, which will cause our component to re-render
@@ -141,7 +149,9 @@ class WidgetIrisWUStaleList extends React.PureComponent {
                             <tr key={wu["number"]}>
                                 <td>{index + 1}</td>
                                 <td>
-                                    {wu["number"]}
+                                    <a href={wu["u_url"]} target="_blank" rel="noreferrer noopener">
+                                        {wu["number"]}
+                                    </a>
                                     <br />
                                     {wu["u_request_type"]}
                                 </td>

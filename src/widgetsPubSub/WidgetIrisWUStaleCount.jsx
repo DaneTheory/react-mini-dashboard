@@ -126,7 +126,7 @@ class WidgetIrisWUStaleList extends React.PureComponent {
 
     renderCardBody() {
         let count = this.state.wuArray.length;
-        let countColorClass = count > this.props.redThreshold ? "redFont" : count > this.props.amberThreshold ? "orangeFont" : "greenFont";
+        let countColorClass = count > this.props.redThreshold ? "redFont" : count > this.props.amberThreshold ? "amberFont" : "greenFont";
         return (
             <div
                 className={classNames("item", "Font20x", countColorClass)}

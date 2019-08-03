@@ -118,7 +118,7 @@ class WidgetIrisINCBreachSLACount extends React.PureComponent {
             let INCMetSLA = 100 - (this.state.irisResolvedINCBreachedCount / this.state.irisResolvedINCCount) * 100;
             // let INCMetSLAColor = "redFont";
             let INCMetSLAColor =
-                INCMetSLA <= this.props.redThreshold ? "redFont" : INCMetSLA <= this.props.amberThreshold ? "orangeFont" : "greenFont";
+                INCMetSLA <= this.props.redThreshold ? "redFont" : INCMetSLA <= this.props.amberThreshold ? "amberFont" : "greenFont";
             return (
                 <div>
                     <div className={classNames(INCMetSLAColor, "Font17x")}>
