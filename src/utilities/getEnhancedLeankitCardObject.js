@@ -792,8 +792,6 @@ async function getLeankitCards(leankitAPIHost, boardId, lane_class_types) {
 // ========================================================================
 // Public method visible outside this file
 export async function getEnhancedLeankitCardObject(leankitAPIHost, boardId, lane_class_types) {
-    console.log("leankitAPIHost", leankitAPIHost);
-
     let leankit_cards = await getLeankitCards(leankitAPIHost, boardId, lane_class_types);
 
     // Get leankit lanes

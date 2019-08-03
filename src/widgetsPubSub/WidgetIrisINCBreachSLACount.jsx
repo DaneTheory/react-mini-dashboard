@@ -112,7 +112,7 @@ class WidgetIrisINCBreachSLACount extends React.PureComponent {
     }
 
     renderCardBody() {
-        if (!this.state.irisResolvedINCBreachedCount) {
+        if (this.state.irisResolvedINCBreachedCount === null) {
             return <div className="waiting-for-data">Waiting for Data...</div>;
         } else {
             let INCMetSLA = 100 - (this.state.irisResolvedINCBreachedCount / this.state.irisResolvedINCCount) * 100;
