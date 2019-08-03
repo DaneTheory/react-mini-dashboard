@@ -12,7 +12,8 @@ echo "==============================================================="
 echo "Build: NPM Install (as dashboard-react user)..."
 echo "==============================================================="
 sleep 3
-npm install
+# Builds node_modules from npm-shrinkwrap.json
+npm ci
 rc=$?
 if [ $rc -eq 0 ]; then
    $PRINTF "Return Code: %d\n" $rc
