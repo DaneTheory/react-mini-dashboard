@@ -10,6 +10,7 @@ import WidgetLeankitDeliveryRemainingPoints from "../widgetsPubSub/WidgetLeankit
 import WidgetIrisWUStaleList from "../widgetsPubSub/WidgetIrisWUStaleList";
 import WidgetIrisWUStaleCount from "../widgetsPubSub/WidgetIrisWUStaleCount";
 import WidgetLeankitBlockedCards from "../widgetsPubSub/WidgetLeankitBlockedCards";
+import WidgetLeankitHuddleCards from "../widgetsPubSub/WidgetLeankitHuddleCards";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -29,7 +30,7 @@ class LeankitDiscoveryCardGrid extends React.Component {
             <div>
                 <CardGrid rows="30" columns="12">
                     <WidgetLeankitDeliveryBurndown
-                        position="span 6 / span 8"
+                        position="span 6 / span 6"
                         leankit_instance={this.props.leankit_instance}
                         boardId={this.props.boardId}
                     />
@@ -44,17 +45,27 @@ class LeankitDiscoveryCardGrid extends React.Component {
                         boardId={this.props.boardId}
                     />
                     <WidgetLeankitPointsByOwner
-                        position="9 / 11 / span 6 / span 2"
+                        position="1 / 9 / span 6 / span 2"
                         leankit_instance={this.props.leankit_instance}
                         boardId={this.props.boardId}
                     />
                     <WidgetLeankitBlockedCards
-                        position="span 6 / span 6"
+                        position="7 / 1 / span 6 / span 6"
                         leankit_instance={this.props.leankit_instance}
                         boardId={this.props.boardId}
                     />
-                    <WidgetIrisWUStaleList position="span 8 / span 6" sn_instance={this.props.sn_instance} />
-                    <WidgetIrisWUStaleCount position="span 2 / span 2" sn_instance={this.props.sn_instance} />
+                    <WidgetLeankitHuddleCards
+                        position="7 / 7 / span 6 / span 6"
+                        leankit_instance={this.props.leankit_instance}
+                        boardId={this.props.boardId}
+                    />
+                    <WidgetIrisWUStaleList
+                        position="span 8 / span 6"
+                        sn_instance={this.props.sn_instance}
+                        redThreshold={1.5}
+                        amberThreshold={1.0}
+                    />
+                    <WidgetIrisWUStaleCount position="3 / 7 / span 2 / span 2" sn_instance={this.props.sn_instance} />
                 </CardGrid>
             </div>
         );

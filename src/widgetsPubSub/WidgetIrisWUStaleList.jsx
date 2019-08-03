@@ -131,7 +131,12 @@ class WidgetIrisWUStaleList extends React.PureComponent {
                         // let createdAgo = moment(wu.sys_created_on).fromNow();
                         let createdAgo = moment().diff(moment(wu.sys_created_on), "years", true);
                         let updatedAgo = moment(wu.sys_updated_on).fromNow();
-                        let createdColorClass = createdAgo > 2 ? "cellRed" : createdAgo > 1.5 ? "cellAmber" : "cellGreen";
+                        let createdColorClass =
+                            createdAgo > this.props.redThreshold
+                                ? "cellRed"
+                                : createdAgo > this.props.amberThreshold
+                                    ? "cellAmber"
+                                    : "cellGreen";
                         return (
                             <tr key={wu["number"]}>
                                 <td>{index + 1}</td>
@@ -170,7 +175,14 @@ class WidgetIrisWUStaleList extends React.PureComponent {
     }
 
     renderCardBody() {
-        return <div className="item">{this.renderAllTables()}</div>;
+        return (
+            <div
+                className="item"
+                data-tip={`Greater than ${this.props.redThreshold} is Red<br>Greater than ${this.props.amberThreshold} is Amber`}
+            >
+                {this.renderAllTables()}
+            </div>
+        );
     }
 
     render() {
@@ -197,14 +209,16 @@ class WidgetIrisWUStaleList extends React.PureComponent {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetIrisWUStaleList.defaultProps = {};
+WidgetIrisWUStaleList.defaultProps = { redThreshold: 60, amberThreshold: 50 };
 
 // Force the caller to include the proper attributes
 WidgetIrisWUStaleList.propTypes = {
     sn_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
-    color: PropTypes.string
+    color: PropTypes.string,
+    redThreshold: PropTypes.number,
+    amberThreshold: PropTypes.number
 };
 
 // If we (this file) get "imported", this is what they'll be given

@@ -45,7 +45,7 @@ class WidgetLeankitBlockedCards extends React.Component {
         let leankitDataObject = await getEnhancedLeankitCardObject(this.props.leankit_instance, this.props.boardId, "active,backlog");
 
         // Filter down to just solutioning cards
-        let filteredCards = leankitDataObject["listCardsIsBlocked"];
+        let filteredCards = leankitDataObject["listCardsIsHuddle"];
         console.log("Blocked Cards", filteredCards);
 
         // User comments are not part of original call, so add them now
@@ -211,7 +211,7 @@ class WidgetLeankitBlockedCards extends React.Component {
                 color={this.props.color}
                 widgetName="WidgetLeankitBlockedCards"
             >
-                <div className="single-num-title">Blocked Cards</div>
+                <div className="single-num-title">Huddle Cards</div>
                 {this.renderCardBody()}
             </DashboardDataCard>
         );

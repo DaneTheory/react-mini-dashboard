@@ -479,12 +479,15 @@ function getListPointsByOwner(listCards, sprintLane) {
 
 // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 // private helper function
-function getListCardsIsHuddle(listCards, sprintLanes) {
+function getListCardsIsHuddle(listCards) {
     // Cards Tagged Huddle
     var listCardsIsHuddle = [];
     for (var i = 0; i < listCards.length; i++) {
         var card = listCards[i];
-        if (sprintLanes.includes(card.u_lanes[1].name) && card["tags"].includes("Huddle")) {
+        if (
+            ["Backlog", "Product Discovery", "Epics", "Product Delivery"].includes(card.u_lanes[0].name) &&
+            card["tags"].includes("Huddle")
+        ) {
             // This is huddle card (tagged Huddle or Blocked)
             listCardsIsHuddle.push(card);
         }
@@ -494,7 +497,7 @@ function getListCardsIsHuddle(listCards, sprintLanes) {
 
 // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 // private helper function
-function getListCardsIsBlocked(listCards, sprintLanes, doneLanes) {
+function getListCardsIsBlocked(listCards, doneLanes) {
     // Cards Tagged IsBlocked
     var listCardsIsBlocked = [];
     for (var i = 0; i < listCards.length; i++) {
@@ -505,7 +508,6 @@ function getListCardsIsBlocked(listCards, sprintLanes, doneLanes) {
             cardIsBlocked(card) === true
         ) {
             // This is huddle card (tagged Huddle or Blocked)
-            console.log("card", card.u_lanes[0].name);
             listCardsIsBlocked.push(card);
         }
     }
@@ -719,7 +721,7 @@ function createLeankitDataObject(cards, lanes, leankit_instance) {
     leankitDataObject["listCardsIsHuddle"] = getListCardsIsHuddle(leankitDataObject["listCards"], sprintLanes);
 
     // Widget: Blocked Cards
-    leankitDataObject["listCardsIsBlocked"] = getListCardsIsBlocked(leankitDataObject["listCards"], sprintLanes, doneLanes);
+    leankitDataObject["listCardsIsBlocked"] = getListCardsIsBlocked(leankitDataObject["listCards"], doneLanes);
 
     // Widget: Early Win Cards
     leankitDataObject["listCardsIsEarlyWin"] = getListCardsIsEarlyWin(leankitDataObject["listCards"], sprintLanes, doneLanes);
