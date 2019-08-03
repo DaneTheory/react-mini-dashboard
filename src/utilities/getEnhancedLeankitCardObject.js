@@ -499,8 +499,13 @@ function getListCardsIsBlocked(listCards, sprintLanes, doneLanes) {
     var listCardsIsBlocked = [];
     for (var i = 0; i < listCards.length; i++) {
         var card = listCards[i];
-        if (sprintLanes.includes(card.u_lanes[1].name) && !cardIsDone(card, doneLanes) && cardIsBlocked(card) === true) {
+        if (
+            ["Backlog", "Product Discovery", "Epics", "Product Delivery"].includes(card.u_lanes[0].name) &&
+            !cardIsDone(card, doneLanes) &&
+            cardIsBlocked(card) === true
+        ) {
             // This is huddle card (tagged Huddle or Blocked)
+            console.log("card", card.u_lanes[0].name);
             listCardsIsBlocked.push(card);
         }
     }

@@ -9,6 +9,7 @@ import WidgetLeankitPointsByOwner from "../widgetsPubSub/WidgetLeankitPointsByOw
 import WidgetLeankitDeliveryRemainingPoints from "../widgetsPubSub/WidgetLeankitDeliveryRemainingPoints";
 import WidgetIrisWUStaleList from "../widgetsPubSub/WidgetIrisWUStaleList";
 import WidgetIrisWUStaleCount from "../widgetsPubSub/WidgetIrisWUStaleCount";
+import WidgetLeankitBlockedCards from "../widgetsPubSub/WidgetLeankitBlockedCards";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -44,6 +45,11 @@ class LeankitDiscoveryCardGrid extends React.Component {
                     />
                     <WidgetLeankitPointsByOwner
                         position="9 / 11 / span 6 / span 2"
+                        leankit_instance={this.props.leankit_instance}
+                        boardId={this.props.boardId}
+                    />
+                    <WidgetLeankitBlockedCards
+                        position="span 6 / span 6"
                         leankit_instance={this.props.leankit_instance}
                         boardId={this.props.boardId}
                     />
