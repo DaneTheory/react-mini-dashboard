@@ -66,7 +66,7 @@ class WidgetIrisWUStaleList extends React.PureComponent {
             "u_sdlc_status"
         ];
 
-        let daysOld = 365;
+        let daysOld = this.props.yearsOldThreshhold * 365;
         let irisProductID = "967f5101b14c4580ce38de7ebbabfe4e";
         let response_wu = await apiProxy.get(`/sn/${this.props.sn_instance}/api/now/table/rm_enhancement`, {
             params: {
@@ -181,7 +181,7 @@ class WidgetIrisWUStaleList extends React.PureComponent {
     }
 
     renderCardHeader() {
-        return <div className="single-num-title">Iris Work Units (Created &gt; 2 years ago)</div>;
+        return <div className="single-num-title">Iris Work Units (Created &gt; {this.props.yearsOldThreshhold} years ago)</div>;
     }
 
     renderCardBody() {
@@ -219,7 +219,7 @@ class WidgetIrisWUStaleList extends React.PureComponent {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetIrisWUStaleList.defaultProps = { redThreshold: 60, amberThreshold: 50 };
+WidgetIrisWUStaleList.defaultProps = { redThreshold: 60, amberThreshold: 50, yearsOldThreshhold: 0.9 };
 
 // Force the caller to include the proper attributes
 WidgetIrisWUStaleList.propTypes = {
@@ -227,6 +227,7 @@ WidgetIrisWUStaleList.propTypes = {
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
     color: PropTypes.string,
+    yearsOldThreshhold: PropTypes.number,
     redThreshold: PropTypes.number,
     amberThreshold: PropTypes.number
 };

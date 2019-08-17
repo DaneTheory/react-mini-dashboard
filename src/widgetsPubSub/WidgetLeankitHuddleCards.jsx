@@ -51,11 +51,10 @@ class WidgetLeankitBlockedCards extends React.Component {
         // User comments are not part of original call, so add them now
         let leankit_cards_with_comments = await getCommentsforLeankitCards(filteredCards, this.props.leankit_instance);
 
-        // Get the backlog duration
-        // let leankit_cards_with_backlogDuration = await getBacklogDurationForLeankitCards(filteredCards, this.props.leankit_instance);
-        // console.log(leankit_cards_with_backlogDuration);
+        // Loop through cards (adding custom variables, which begin with u_)
+        for (let index = 0; index < leankit_cards_with_comments.length; index++) {
+            let card = leankit_cards_with_comments[index];
 
-        leankit_cards_with_comments.forEach(function(card) {
             // Set some variables to be used in JSX below
             card.u_commentMostRecent = {
                 Text: "Waiting for Comment",
@@ -69,20 +68,16 @@ class WidgetLeankitBlockedCards extends React.Component {
                 card.u_commentMostRecent.Author = card.comments[0].createdBy.fullName;
                 card.u_commentMostRecent.ageInDays = moment().diff(moment(card.comments[0].createdOn), "days");
                 card.u_commentMostRecent.className =
-                    card.u_commentMostRecent.ageInDays > 5
-                        ? "redFont"
-                        : card.u_commentMostRecent.ageInDays > 3
-                            ? "amberFont"
-                            : "greenFont";
+                    card.u_commentMostRecent.ageInDays > 5 ? "redFont" : card.u_commentMostRecent.ageInDays > 3 ? "amberFont" : "greenFont";
             } else if (card.comments && card.comments.length === 0) {
                 // API call to get card comments has returned, but card doesn't have any comments
                 card.u_commentMostRecent.Text = "No Comment";
                 card.u_commentMostRecent.Author = "No Author";
                 card.u_commentMostRecent.ageInDays = "-1";
             }
-        });
+        }
 
-        // // Save these cards to our state, which triggers react to render an update to the screen
+        // Save these cards to our state, which triggers react to render an update to the screen
         this.setState({ leankit_cards: leankit_cards_with_comments });
     }
 
@@ -214,7 +209,9 @@ class WidgetLeankitBlockedCards extends React.Component {
                 color={this.props.color}
                 widgetName="WidgetLeankitBlockedCards"
             >
-                <div className="single-num-title">Huddle Cards</div>
+                <div className="single-num-title">
+                    Huddle Cards <span style={{ opacity: "0.2" }}>(both Discovery and Delivery)</span>
+                </div>
                 {this.renderCardBody()}
             </DashboardDataCard>
         );
