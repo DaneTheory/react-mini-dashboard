@@ -7,8 +7,8 @@ import WidgetLeankitDeliveryBurndown from "../widgetsPubSub/WidgetLeankitDeliver
 import WidgetLeankitDeliveryStats from "../widgetsPubSub/WidgetLeankitDeliveryStats";
 import WidgetLeankitPointsByOwner from "../widgetsPubSub/WidgetLeankitPointsByOwner";
 import WidgetLeankitDeliveryRemainingPoints from "../widgetsPubSub/WidgetLeankitDeliveryRemainingPoints";
-import WidgetIrisWUStaleList from "../widgetsPubSub/WidgetIrisWUStaleList";
-import WidgetIrisWUStaleCount from "../widgetsPubSub/WidgetIrisWUStaleCount";
+import WidgetIrisWorkUnitListStale from "../widgetsPubSub/WidgetIrisWorkUnitListStale";
+import WidgetIrisWorkUnitStaleCount from "../widgetsPubSub/WidgetIrisWorkUnitStaleCount";
 import WidgetLeankitBlockedCards from "../widgetsPubSub/WidgetLeankitBlockedCards";
 import WidgetLeankitHuddleCards from "../widgetsPubSub/WidgetLeankitHuddleCards";
 
@@ -61,13 +61,13 @@ class LeankitDiscoveryCardGrid extends React.Component {
                         leankit_instance={this.props.leankit_instance}
                         boardId={this.props.boardId}
                     />
-                    <WidgetIrisWUStaleList
+                    <WidgetIrisWorkUnitListStale
                         position="span 8 / span 6"
                         sn_instance={this.props.sn_instance}
                         redThreshold={1.5}
                         amberThreshold={1.0}
                     />
-                    <WidgetIrisWUStaleCount position="3 / 7 / span 2 / span 2" sn_instance={this.props.sn_instance} />
+                    <WidgetIrisWorkUnitStaleCount position="3 / 7 / span 2 / span 2" sn_instance={this.props.sn_instance} />
                 </CardGrid>
             </div>
         );

@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import WidgetIrisCloneList from "../widgetsPubSub/WidgetIrisCloneList";
 import WidgetLeankitDeliveryStats from "../widgetsPubSub/WidgetLeankitDeliveryStats";
 import WidgetLeankitDeliveryRemainingPoints from "../widgetsPubSub/WidgetLeankitDeliveryRemainingPoints";
-import WidgetIrisWUStaleCount from "../widgetsPubSub/WidgetIrisWUStaleCount";
+import WidgetIrisWorkUnitStaleCount from "../widgetsPubSub/WidgetIrisWorkUnitStaleCount";
 import WidgetLeankitDiscoveryTotalCardCount from "../widgetsPubSub/WidgetLeankitDiscoveryTotalCardCount";
 import WidgetLeankitDiscoveryDefectCardCount from "../widgetsPubSub/WidgetLeankitDiscoveryDefectCardCount";
 import WidgetLeankitDiscoveryAvgCardAge from "../widgetsPubSub/WidgetLeankitDiscoveryAvgCardAge";
@@ -53,7 +53,7 @@ class IrisDevOps2CardGrid extends React.Component {
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}
                 />
-                <WidgetIrisWUStaleCount
+                <WidgetIrisWorkUnitStaleCount
                     position="span 2 / span 2"
                     sn_instance={this.props.sn_instance}
                     daysOld={365}

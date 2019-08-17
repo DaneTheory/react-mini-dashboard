@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 // Widget imports
 import WidgetLeankitDiscoveryCardList from "../widgetsPubSub/WidgetLeankitDiscoveryCardList";
-import WidgetIrisWUStaleList from "../widgetsPubSub/WidgetIrisWUStaleList";
+import WidgetIrisWorkUnitListStale from "../widgetsPubSub/WidgetIrisWorkUnitListStale";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -30,7 +30,7 @@ class IrisGeekCardGrid extends React.Component {
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}
                 />
-                <WidgetIrisWUStaleList position="span 8 / span 6" sn_instance={this.props.sn_instance} />
+                <WidgetIrisWorkUnitListStale position="span 8 / span 6" sn_instance={this.props.sn_instance} />
             </CardGrid>
         );
     }

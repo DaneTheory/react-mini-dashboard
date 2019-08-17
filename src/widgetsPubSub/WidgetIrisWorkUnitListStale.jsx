@@ -16,7 +16,7 @@ var moment = require("moment");
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
 
 // Create a React class component, everything below this is a class method (i.e. a function attached to the class)
-class WidgetIrisWUStaleList extends React.PureComponent {
+class WidgetIrisWorkUnitListStale extends React.PureComponent {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {
@@ -26,7 +26,7 @@ class WidgetIrisWUStaleList extends React.PureComponent {
         super(props);
 
         // Set our initial React state, this is the *only* time to bypass setState()
-        this.state = { widgetName: "WidgetIrisWUStaleList", wuArray: [], workUnitObject: { workunits: [] } };
+        this.state = { widgetName: "WidgetIrisWorkUnitListStale", wuArray: [], workUnitObject: { workunits: [] } };
 
         // This is out event handler, it's called from outside world via an event subscription, and when called, it
         // won't know about "this", so we need to bind our current "this" to "this" within the function
@@ -205,7 +205,7 @@ class WidgetIrisWUStaleList extends React.PureComponent {
                 id={this.props.id}
                 position={this.props.position}
                 color={this.props.color}
-                widgetName="WidgetIrisWUStaleList"
+                widgetName="WidgetIrisWorkUnitListStale"
             >
                 {this.renderCardHeader()}
                 {this.renderCardBody()}
@@ -219,10 +219,10 @@ class WidgetIrisWUStaleList extends React.PureComponent {
 // -------------------------------------------------------------------------------------------------------
 
 // Set default props in case they aren't passed to us by the caller
-WidgetIrisWUStaleList.defaultProps = { redThreshold: 60, amberThreshold: 50, yearsOldThreshhold: 0.9 };
+WidgetIrisWorkUnitListStale.defaultProps = { redThreshold: 60, amberThreshold: 50, yearsOldThreshhold: 0.9 };
 
 // Force the caller to include the proper attributes
-WidgetIrisWUStaleList.propTypes = {
+WidgetIrisWorkUnitListStale.propTypes = {
     sn_instance: PropTypes.string.isRequired,
     id: PropTypes.string,
     position: PropTypes.string.isRequired,
@@ -233,7 +233,7 @@ WidgetIrisWUStaleList.propTypes = {
 };
 
 // If we (this file) get "imported", this is what they'll be given
-export default WidgetIrisWUStaleList;
+export default WidgetIrisWorkUnitListStale;
 
 // =======================================================================================================
 // =======================================================================================================
