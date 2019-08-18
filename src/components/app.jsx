@@ -11,9 +11,28 @@ import { ThemeProvider } from "../components/ThemeContext";
 // Diagnostic tool that describes why React component updated (rendered), put helpful logging to concole
 if (process.env.NODE_ENV !== "production") {
     const { whyDidYouUpdate } = require("why-did-you-update");
+
+    // Show a specific widget
     // whyDidYouUpdate(React, { include: [/WidgetLeankitDiscoverySolutioningCardNearingBreachList/] });
+
+    // Removed stuff that was running too much
     whyDidYouUpdate(React, {
-        exclude: [/^Route/, /^Link/, /^NumberFormat/, /^Chart/, /^Script/, /^ReactTooltip/, /^GoogleChart/, /^ContextProvider/]
+        exclude: [
+            /^Route/,
+            /^Link/,
+            /^ContextProvider/,
+            /^Chart/,
+            /^Script/,
+            /^GoogleChart/,
+
+            // Wish they would convert ReactToolTip to PureComponent
+            /^ReactTooltip/,
+
+            // here is a comment
+            /^NumberFormat/,
+
+            /^DashboardDataCard/
+        ]
     });
 }
 

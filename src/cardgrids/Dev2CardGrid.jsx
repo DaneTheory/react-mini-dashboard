@@ -24,7 +24,7 @@ class Dev2CardGrid extends React.PureComponent {
         return (
             <CardGrid rows="20" row_height="3.5vw" columns="12" column_width="1fr">
                 <WidgetLeankitDiscoverySolutioningCardNearingBreachList
-                    position="span 4 / span 6"
+                    position="span 10 / span 6"
                     leankit_instance={this.props.leankit_instance}
                     boardId={this.props.boardId}
                     daysBeforeBreachThreshold={10}

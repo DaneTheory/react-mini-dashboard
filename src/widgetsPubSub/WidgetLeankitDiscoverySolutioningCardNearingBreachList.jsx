@@ -57,18 +57,29 @@ class WidgetLeankitDiscoverySolutioningCardNearingBreachList extends React.PureC
         });
 
         // Calcuate some custom fields for each cards
-        filteredCards.forEach(function(card) {
+        for (let index = 0; index < filteredCards.length; index++) {
+            let card = filteredCards[index];
             // Set some variables to be used in JSX below
             if (card.u_cardType === "Defect") {
                 // Card is "Defect"
-                card.u_cssClassName = card.u_daysInLane > 7 ? "cellRed" : card.u_daysInLane >= 4 ? "cellAmber" : "cellGreen";
-                card.u_daysRemainingUntilBreach = 7 - card.u_daysInLane;
+                card.u_cssClassName =
+                    card.u_daysInLane > this.props.redDefectThreshold
+                        ? "cellRed"
+                        : card.u_daysInLane >= this.props.amberDefectThreshold
+                            ? "cellAmber"
+                            : "cellGreen";
+                card.u_daysRemainingUntilBreach = this.props.defectSLADays - card.u_daysInLane;
             } else {
                 // Card is likely "Enhancement"
-                card.u_cssClassName = card.u_daysInLane > 14 ? "cellRed" : card.u_daysInLane >= 11 ? "cellAmber" : "cellGreen";
-                card.u_daysRemainingUntilBreach = 14 - card.u_daysInLane;
+                card.u_cssClassName =
+                    card.u_daysInLane > this.props.redEnhancementThreshold
+                        ? "cellRed"
+                        : card.u_daysInLane >= this.props.amberEnhancementThreshold
+                            ? "cellAmber"
+                            : "cellGreen";
+                card.u_daysRemainingUntilBreach = this.props.enhancementSLADays - card.u_daysInLane;
             }
-        });
+        }
 
         // User comments are not part of original call, so add them now
         let leankit_cards_with_comments = await getCommentsforLeankitCards(filteredCards, this.props.leankit_instance);
@@ -232,7 +243,18 @@ class WidgetLeankitDiscoverySolutioningCardNearingBreachList extends React.PureC
     }
 
     renderCardBody() {
-        return <div className="item">{this.renderTable()}</div>;
+        return (
+            <div
+                className="item"
+                data-tip={`Defects<br>Greater than ${this.props.redDefectThreshold} is Red<br>Greater than ${
+                    this.props.amberDefectThreshold
+                } is Amber<br><br>Enhancements<br>Greater than ${this.props.redEnhancementThreshold} is Red<br>Greater than ${
+                    this.props.amberEnhancementThreshold
+                } is Amber`}
+            >
+                {this.renderTable()}
+            </div>
+        );
     }
 
     render() {
@@ -262,7 +284,13 @@ class WidgetLeankitDiscoverySolutioningCardNearingBreachList extends React.PureC
 
 // Set default props in case they aren't passed to us by the caller
 WidgetLeankitDiscoverySolutioningCardNearingBreachList.defaultProps = {
-    showCardsWithThisManyDaysRemaining: 0
+    showCardsWithThisManyDaysRemaining: 14,
+    defectSLADays: 7,
+    redDefectThreshold: 7,
+    amberDefectThreshold: 4,
+    enhancementSLADays: 14,
+    redEnhancementThreshold: 14,
+    amberEnhancementThreshold: 11
 };
 
 // Force the caller to include the proper attributes
@@ -272,7 +300,13 @@ WidgetLeankitDiscoverySolutioningCardNearingBreachList.propTypes = {
     position: PropTypes.string.isRequired,
     color: PropTypes.string,
     boardId: PropTypes.string.isRequired,
-    showCardsWithThisManyDaysRemaining: PropTypes.number
+    showCardsWithThisManyDaysRemaining: PropTypes.number,
+    defectSLADays: PropTypes.number,
+    redDefectThreshold: PropTypes.number,
+    amberDefectThreshold: PropTypes.number,
+    enhancementSLADays: PropTypes.number,
+    redEnhancementThreshold: PropTypes.number,
+    amberEnhancementThreshold: PropTypes.number
 };
 
 // If we (this file) get "imported", this is what they'll be given

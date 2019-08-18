@@ -10,6 +10,11 @@ class DashboardDataCard extends React.PureComponent {
         this.state = { widgetName: "firstwidget" };
     }
 
+    hideToolTipIn5Seconds() {
+        console.log("Hiding tooltip in 5 seconds...");
+        setTimeout(ReactTooltip.hide, 5000);
+    }
+
     render() {
         let styles = {};
         let cardBody_styles = {};
@@ -32,9 +37,7 @@ class DashboardDataCard extends React.PureComponent {
                         delayShow={500}
                         delayHide={1000}
                         multiline={true}
-                        afterShow={() => {
-                            setTimeout(ReactTooltip.hide, 5000);
-                        }}
+                        afterShow={this.hideToolTipIn5Seconds}
                     />
                 </div>
             </div>
