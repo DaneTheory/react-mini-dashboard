@@ -19,7 +19,7 @@ import WidgetSNAPICounts from "../widgetsPubSub/WidgetSNAPICounts";
 // Other project imports
 import CardGrid from "../components/cardGrid";
 
-class Dev1CardGrid extends React.Component {
+class Dev1CardGrid extends React.PureComponent {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {

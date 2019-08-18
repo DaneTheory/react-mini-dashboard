@@ -18,7 +18,7 @@ import WidgetLeankitDiscoverySolutioningCardNearingBreachList from "../widgetsPu
 // Other project imports
 import CardGrid from "../components/cardGrid";
 
-class IrisDevOpsCardGrid extends React.Component {
+class IrisDevOpsCardGrid extends React.PureComponent {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {

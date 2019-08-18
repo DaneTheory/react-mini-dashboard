@@ -9,7 +9,7 @@ import WidgetIrisWorkUnitListStale from "../widgetsPubSub/WidgetIrisWorkUnitList
 // Other project imports
 import CardGrid from "../components/cardGrid";
 
-class IrisGeekCardGrid extends React.Component {
+class IrisGeekCardGrid extends React.PureComponent {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {

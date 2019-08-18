@@ -8,6 +8,15 @@ import { ThemeProvider } from "../components/ThemeContext";
 
 // console.log("process.env", process.env);
 
+// Diagnostic tool that describes why React component updated (rendered), put helpful logging to concole
+if (process.env.NODE_ENV !== "production") {
+    const { whyDidYouUpdate } = require("why-did-you-update");
+    // whyDidYouUpdate(React, { include: [/WidgetLeankitDiscoverySolutioningCardNearingBreachList/] });
+    whyDidYouUpdate(React, {
+        exclude: [/^Route/, /^Link/, /^NumberFormat/, /^Chart/, /^Script/, /^ReactTooltip/, /^GoogleChart/, /^ContextProvider/]
+    });
+}
+
 let theme = {
     darkColorTheme: {
         // Page

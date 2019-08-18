@@ -15,7 +15,7 @@ import WidgetLeankitHuddleCards from "../widgetsPubSub/WidgetLeankitHuddleCards"
 // Other project imports
 import CardGrid from "../components/cardGrid";
 
-class LeankitDiscoveryCardGrid extends React.Component {
+class LeankitDiscoveryCardGrid extends React.PureComponent {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import ReactTooltip from "react-tooltip";
 
 // Create a widget class ---------
-class DashboardDataCard extends React.Component {
+class DashboardDataCard extends React.PureComponent {
     constructor(props) {
         super(props);
 

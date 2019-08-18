@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // Create a widget class ---------
-class DashboardTableCard extends React.Component {
+class DashboardTableCard extends React.PureComponent {
     constructor(props) {
         super(props);
 

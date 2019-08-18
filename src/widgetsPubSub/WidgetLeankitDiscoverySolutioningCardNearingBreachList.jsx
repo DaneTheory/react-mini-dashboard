@@ -18,7 +18,7 @@ var classNames = require("classnames");
 // This is a self-contained class which knows how to get it's own data, and display it in HTML
 
 // Create a React class component, everything below this is a class method (i.e. a function attached to the class)
-class WidgetLeankitDiscoverySolutioningCardNearingBreachList extends React.Component {
+class WidgetLeankitDiscoverySolutioningCardNearingBreachList extends React.PureComponent {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {
@@ -91,11 +91,7 @@ class WidgetLeankitDiscoverySolutioningCardNearingBreachList extends React.Compo
                 card.u_commentMostRecent.Author = card.comments[0].createdBy.fullName;
                 card.u_commentMostRecent.ageInDays = moment().diff(moment(card.comments[0].createdOn), "days");
                 card.u_commentMostRecent.className =
-                    card.u_commentMostRecent.ageInDays > 5
-                        ? "redFont"
-                        : card.u_commentMostRecent.ageInDays > 3
-                            ? "amberFont"
-                            : "greenFont";
+                    card.u_commentMostRecent.ageInDays > 5 ? "redFont" : card.u_commentMostRecent.ageInDays > 3 ? "amberFont" : "greenFont";
             } else if (card.comments && card.comments.length === 0) {
                 // API call to get card comments has returned, but card doesn't have any comments
                 card.u_commentMostRecent.Text = "No Comment";

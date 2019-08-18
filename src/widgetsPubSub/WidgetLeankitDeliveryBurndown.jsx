@@ -20,7 +20,7 @@ var moment = require("moment");
 // ------------------------------------------------------------------------------------------------
 
 // Create a React class component, everything below this is a class method (i.e. a function attached to the class)
-class WidgetLeankitDeliveryBurndown extends React.Component {
+class WidgetLeankitDeliveryBurndown extends React.PureComponent {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {

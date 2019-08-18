@@ -22,7 +22,8 @@
         "react-timeout": "^1.2.0",
         "react-tooltip": "^3.10.0",
         "sprintf-js": "^1.1.2",
-        "strftime": "^0.10.0"
+        "strftime": "^0.10.0",
+        "why-did-you-update": "^1.0.6"
     },
     "scripts": {
         "start": "react-scripts start",

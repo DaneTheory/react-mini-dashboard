@@ -14,7 +14,7 @@ import { getEnhancedLeankitCardObject } from "../utilities/getEnhancedLeankitCar
 // ------------------------------------------------------------------------------------------------
 
 // Create a React class component, everything below this is a class method (i.e. a function attached to the class)
-class WidgetLeankitPointsByOwner extends React.Component {
+class WidgetLeankitPointsByOwner extends React.PureComponent {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     constructor(props) {

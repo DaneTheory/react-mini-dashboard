@@ -38,6 +38,9 @@ class Dashboard extends React.Component {
         // won't know about "this", so we need to bind our current "this" to "this" within the function
         this.openNav = this.openNav.bind(this);
         this.closeNav = this.closeNav.bind(this);
+
+        // Make sure child components have access to component attributes like this.props and this.state
+        this.changePageTitle = this.changePageTitle.bind(this);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -200,7 +203,7 @@ class Dashboard extends React.Component {
                                     <EverythingCardGrid
                                         sn_instance={this.props.sn_instance}
                                         boldchat_instance={this.props.boldchat_instance}
-                                        changeParentPageTitle={this.changePageTitle.bind(this)}
+                                        changeParentPageTitle={this.changePageTitle}
                                         leankit_instance={this.props.leankit_instance}
                                     />
                                 )}
@@ -213,7 +216,7 @@ class Dashboard extends React.Component {
                                     <Demo1CardGrid
                                         sn_instance={this.props.sn_instance}
                                         boldchat_instance={this.props.boldchat_instance}
-                                        changeParentPageTitle={this.changePageTitle.bind(this)}
+                                        changeParentPageTitle={this.changePageTitle}
                                     />
                                 )}
                             />
@@ -224,7 +227,7 @@ class Dashboard extends React.Component {
                                 render={() => (
                                     <IrisReleaseNotesCardGrid
                                         sn_instance={this.props.sn_instance}
-                                        changeParentPageTitle={this.changePageTitle.bind(this)}
+                                        changeParentPageTitle={this.changePageTitle}
                                     />
                                 )}
                             />
@@ -236,7 +239,7 @@ class Dashboard extends React.Component {
                                     <Dev1CardGrid
                                         sn_instance={this.props.sn_instance}
                                         boldchat_instance={this.props.boldchat_instance}
-                                        changeParentPageTitle={this.changePageTitle.bind(this)}
+                                        changeParentPageTitle={this.changePageTitle}
                                         refreshInterval={8000}
                                     />
                                 )}
@@ -250,7 +253,7 @@ class Dashboard extends React.Component {
                                         sn_instance={this.props.sn_instance}
                                         boldchat_instance={this.props.boldchat_instance}
                                         leankit_instance={this.props.leankit_instance}
-                                        changeParentPageTitle={this.changePageTitle.bind(this)}
+                                        changeParentPageTitle={this.changePageTitle}
                                     />
                                 )}
                             />
@@ -262,7 +265,7 @@ class Dashboard extends React.Component {
                                     <LeankitDiscoveryCardGrid
                                         sn_instance={this.props.sn_instance}
                                         leankit_instance={this.props.leankit_instance}
-                                        changeParentPageTitle={this.changePageTitle.bind(this)}
+                                        changeParentPageTitle={this.changePageTitle}
                                     />
                                 )}
                             />
@@ -274,7 +277,7 @@ class Dashboard extends React.Component {
                                     <LeankitDeliveryCardGrid
                                         sn_instance={this.props.sn_instance}
                                         leankit_instance={this.props.leankit_instance}
-                                        changeParentPageTitle={this.changePageTitle.bind(this)}
+                                        changeParentPageTitle={this.changePageTitle}
                                     />
                                 )}
                             />
@@ -285,7 +288,7 @@ class Dashboard extends React.Component {
                                 render={() => (
                                     <IrisDevOpsCardGrid
                                         sn_instance={this.props.sn_instance}
-                                        changeParentPageTitle={this.changePageTitle.bind(this)}
+                                        changeParentPageTitle={this.changePageTitle}
                                         leankit_instance={this.props.leankit_instance}
                                         boldchat_instance={this.props.boldchat_instance}
                                     />
@@ -298,7 +301,7 @@ class Dashboard extends React.Component {
                                 render={() => (
                                     <IrisDevOps2CardGrid
                                         sn_instance={this.props.sn_instance}
-                                        changeParentPageTitle={this.changePageTitle.bind(this)}
+                                        changeParentPageTitle={this.changePageTitle}
                                         leankit_instance={this.props.leankit_instance}
                                         boldchat_instance={this.props.boldchat_instance}
                                     />
@@ -311,7 +314,7 @@ class Dashboard extends React.Component {
                                 render={() => (
                                     <IrisGeekCardGrid
                                         sn_instance={this.props.sn_instance}
-                                        changeParentPageTitle={this.changePageTitle.bind(this)}
+                                        changeParentPageTitle={this.changePageTitle}
                                         leankit_instance={this.props.leankit_instance}
                                         boldchat_instance={this.props.boldchat_instance}
                                     />
