@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 
 // Widget imports
 import WidgetLeankitDiscoverySolutioningCardNearingBreachList from "../widgetsPubSub/WidgetLeankitDiscoverySolutioningCardNearingBreachList";
+import WidgetNewINCList from "../widgetsPubSub/WidgetNewINCList";
 
 // Other project imports
 import CardGrid from "../components/cardGrid";
@@ -23,12 +24,7 @@ class Dev2CardGrid extends React.PureComponent {
     render() {
         return (
             <CardGrid rows="20" row_height="3.5vw" columns="12" column_width="1fr">
-                <WidgetLeankitDiscoverySolutioningCardNearingBreachList
-                    position="span 10 / span 6"
-                    leankit_instance={this.props.leankit_instance}
-                    boardId={this.props.boardId}
-                    daysBeforeBreachThreshold={10}
-                />
+                <WidgetNewINCList position="span 11 / span 8" sn_instance={this.props.sn_instance} />
             </CardGrid>
         );
     }
