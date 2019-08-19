@@ -1,5 +1,6 @@
 // 3rd party imports
 import React from "react";
+import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 import PropTypes from "prop-types";
 import PubSub from "pubsub-js";
 
@@ -196,7 +197,16 @@ class WidgetIrisNewINCList extends React.PureComponent {
                                 <th width="15%">Created</th>
                             </tr>
                         </thead>
-                        <tbody>{rowComponents}</tbody>
+                        <CSSTransitionGroup
+                            transitionName="fade"
+                            transitionEnterTimeout={500}
+                            transitionLeaveTimeout={300}
+                            transitionAppearTimeout={500}
+                            component="tbody"
+                            transitionAppear={true}
+                        >
+                            {rowComponents}
+                        </CSSTransitionGroup>
                     </table>
                 </div>
             );

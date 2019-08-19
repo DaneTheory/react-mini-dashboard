@@ -21,6 +21,7 @@
         "react-scripts": "^3.0.1",
         "react-timeout": "^1.2.0",
         "react-tooltip": "^3.10.0",
+        "react-transition-group": "^1.2.1",
         "sprintf-js": "^1.1.2",
         "strftime": "^0.10.0",
         "why-did-you-update": "^1.0.6"
