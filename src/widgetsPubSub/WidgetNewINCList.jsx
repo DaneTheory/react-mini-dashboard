@@ -36,19 +36,27 @@ class WidgetIrisNewINCList extends React.PureComponent {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    trickleInNewIncidents(newIncidents) {
-        let delayInMS = 2000;
-        let totalDelay = delayInMS;
-        for (let index = 0; index < newIncidents.length; index++) {
-            const newINC = newIncidents[index];
+    trickleInNewIncidents(newIncidents, durationInSecs) {
+        let intervalInMS = Math.min(25000, (durationInSecs * 1000) / newIncidents.length);
+        let accumulatedDelay = 0;
+        console.log(`Trickling in ${newIncidents.length} incidents, every ${intervalInMS} ms over ${durationInSecs} seconds`);
+
+        // Of the new incidents, we want to add the oldest one first, then next oldest, and so on...
+        let sortedNewIncidents = newIncidents.sort((a, b) => {
+            // Sort the incidents by SLA from high to low
+            return moment().diff(b.sys_created_on, "seconds") - moment().diff(a.sys_created_on, "seconds");
+        });
+        console.log("Sorted New Incidents:", sortedNewIncidents);
+        for (let index = 0; index < sortedNewIncidents.length; index++) {
+            const newINC = sortedNewIncidents[index];
             setTimeout(
                 function() {
                     console.log(`New Incident: ${moment().format("hh:mm:ss A")}:`, newINC.number);
                     this.setState({ irisINCs: [...this.state.irisINCs, newINC] });
                 }.bind(this),
-                totalDelay
+                accumulatedDelay
             );
-            totalDelay = totalDelay + delayInMS;
+            accumulatedDelay = accumulatedDelay + intervalInMS;
         }
     }
 
@@ -89,7 +97,7 @@ class WidgetIrisNewINCList extends React.PureComponent {
         console.log(`New Incidents Found: ${uniqueIncidents.length}`);
 
         // This will return immediately so program execution can continue, but will trickle in new Incidents to the component state
-        this.trickleInNewIncidents(uniqueIncidents);
+        this.trickleInNewIncidents(uniqueIncidents, 50);
 
         // Update our own component state with the new data, which will cause our component to re-render
         // this.setState({ irisINCs: incidents });
@@ -108,7 +116,7 @@ class WidgetIrisNewINCList extends React.PureComponent {
                 // Units for xAgoStart: years, months, days, hours, minutes
                 sysparm_query: "sys_created_on>=javascript:gs.minutesAgoStart(30)^ORDERBYDESCsys_created_on",
                 sysparm_display_value: "true",
-                sysparm_limit: 10
+                sysparm_limit: this.props.initialRecordLoadCount
             }
         });
 
@@ -152,24 +160,55 @@ class WidgetIrisNewINCList extends React.PureComponent {
                     let host = this.props.sn_instance.replace("worker", "");
                     let sys_id = incident.sys_id;
                     let url = `https://${host}/nav_to.do?uri=/incident.do?sys_id=${sys_id}&sysparm_stack=&sysparm_view=`;
-                    let priorityCSS = incident.priority === "Priority 4" ? "greenFont" : "amberFont";
+                    let priorityCSS =
+                        incident.priority === "Priority 4" ? "greenFont" : incident.priority === "Priority 3" ? "amberFont" : "redFont";
+                    let shortIncNumber = incident.number.slice(-4);
+                    let shortDescrTrucated =
+                        incident.short_description.length > this.props.shortDescriptionMaxLength
+                            ? `${incident["short_description"].substr(0, this.props.shortDescriptionMaxLength)}...`
+                            : incident["short_description"];
+
+                    function upperCaseEachWord(str) {
+                        return str.replace(/\w\S*/g, function(txt) {
+                            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+                        });
+                    }
+
+                    let caller_displayName = incident.caller_id.display_value || "Empty Caller";
+                    caller_displayName = upperCaseEachWord(caller_displayName.replace(/\([0-9]+\)/, ""));
 
                     return (
                         <tr key={incident["number"]} style={{ fontSize: "4vw" }}>
                             <td style={{ fontSize: "0.8vw" }}>
-                                <a href={url} target="_blank" rel="noreferrer noopener">
-                                    {incident["number"]}
-                                </a>
-                            </td>
-                            <td style={{ fontSize: "0.7vw" }}>{incident["short_description"].substr(0, 60)}...</td>
-                            <td style={{ fontSize: "0.7vw" }}>{incident["sys_created_by"]}</td>
-                            <td className={priorityCSS} style={{ fontSize: "0.7vw" }}>
-                                {incident["priority"]}
+                                <div>
+                                    #{shortIncNumber}
+                                    <div style={{ fontSize: "70%" }}>
+                                        <a href={url} target="_blank" rel="noreferrer noopener">
+                                            {incident["number"]}
+                                        </a>
+                                    </div>
+                                </div>
                             </td>
                             <td style={{ fontSize: "0.7vw" }}>
-                                {moment(incident.sys_created_on).format("hh:mm:ss A")}
-                                <br />
-                                <span style={{ opacity: "0.35" }}>{moment().diff(incident.sys_created_on, "seconds")} secs ago</span>
+                                <div>{shortDescrTrucated}</div>
+                            </td>
+                            <td style={{ fontSize: "0.7vw" }}>
+                                <div>{caller_displayName}</div>
+                            </td>
+                            <td className={priorityCSS} style={{ fontSize: "0.7vw" }}>
+                                <div>{incident["priority"].replace("riority ", "")}</div>
+                            </td>
+                            <td style={{ fontSize: "0.7vw" }}>
+                                <div>
+                                    {moment(incident.sys_created_on).format("hh:mm A")}
+                                    <br />
+                                    <span style={{ opacity: "0.50", fontSize: "80%" }}>
+                                        {moment()
+                                            .diff(incident.sys_created_on, "minutes", true)
+                                            .toFixed(0)}{" "}
+                                        mins ago
+                                    </span>
+                                </div>
                             </td>
                         </tr>
                     );
@@ -190,18 +229,20 @@ class WidgetIrisNewINCList extends React.PureComponent {
                     <table style={{ marginBottom: "3vw" }}>
                         <thead>
                             <tr>
-                                <th width="15%">INC</th>
-                                <th width="40%">Short Description</th>
-                                <th width="15%">Created By</th>
-                                <th width="15%">Priority</th>
+                                <th width="13%">INC Number</th>
+                                <th width="43%">Short Description</th>
+                                <th width="22">Caller</th>
+                                <th width="7%">Priority</th>
                                 <th width="15%">Created</th>
                             </tr>
                         </thead>
                         <CSSTransitionGroup
                             transitionName="fade"
-                            transitionEnterTimeout={500}
+                            // New item inserted to existing table rows
+                            transitionEnterTimeout={2000}
                             transitionLeaveTimeout={300}
-                            transitionAppearTimeout={500}
+                            // Initial table rows load
+                            transitionAppearTimeout={2000}
                             component="tbody"
                             transitionAppear={true}
                         >
@@ -249,6 +290,8 @@ class WidgetIrisNewINCList extends React.PureComponent {
 // Set default props in case they aren't passed to us by the caller
 WidgetIrisNewINCList.defaultProps = {
     sla_threshhold_pct: 50,
+    shortDescriptionMaxLength: 100,
+    initialRecordLoadCount: 50,
     redThreshold: 90,
     amberThreshold: 60
 };
@@ -260,6 +303,8 @@ WidgetIrisNewINCList.propTypes = {
     position: PropTypes.string.isRequired,
     color: PropTypes.string,
     sla_threshhold_pct: PropTypes.number.isRequired,
+    shortDescriptionMaxLength: PropTypes.number.isRequired,
+    initialRecordLoadCount: PropTypes.number.isRequired,
     redThreshold: PropTypes.number,
     amberThreshold: PropTypes.number
 };

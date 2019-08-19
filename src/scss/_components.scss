@@ -332,13 +332,16 @@ $previous: 0.2;
     font-family: "Lato", "Courier New";
 }
 
-.fade-enter {
+.fade-enter div {
     opacity: 0.01;
+    max-height: 0;
 }
 
-.fade-enter.fade-enter-active {
+.fade-enter.fade-enter-active div {
+    max-height: 50px;
     opacity: 1;
-    transition: opacity 500ms ease-in;
+    // can be ease-in, linear, ease-out, ease-in-out
+    transition: all 1000ms linear;
 }
 
 .fade-leave {
@@ -356,5 +359,5 @@ $previous: 0.2;
 
 .fade-appear.fade-appear-active {
     opacity: 1;
-    transition: opacity 0.5s ease-in;
+    transition: opacity 1000ms linear;
 }

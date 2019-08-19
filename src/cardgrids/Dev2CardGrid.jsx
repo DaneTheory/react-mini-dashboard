@@ -24,7 +24,7 @@ class Dev2CardGrid extends React.PureComponent {
     render() {
         return (
             <CardGrid rows="20" row_height="3.5vw" columns="12" column_width="1fr">
-                <WidgetNewINCList position="span 11 / span 8" sn_instance={this.props.sn_instance} />
+                <WidgetNewINCList position="span 11 / span 6" sn_instance={this.props.sn_instance} />
             </CardGrid>
         );
     }

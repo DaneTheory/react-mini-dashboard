@@ -31,7 +31,8 @@ if (process.env.NODE_ENV !== "production") {
             // here is a comment
             /^NumberFormat/,
 
-            /^DashboardDataCard/
+            /^DashboardDataCard/,
+            /^CSSTransitionGroupChild/
         ]
     });
 }
