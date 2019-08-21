@@ -56,6 +56,11 @@ class WidgetLeankitDiscoverySolutioningCardNearingBreachList extends React.PureC
             card.backlogDuration = { days: "unknown" };
         });
 
+        // Filter out cards with tag "ignoreSLA"
+        filteredCards = filteredCards.filter(card => {
+            return !card.tags.includes("ignoreSLA");
+        });
+
         // Calcuate some custom fields for each cards
         for (let index = 0; index < filteredCards.length; index++) {
             let card = filteredCards[index];
