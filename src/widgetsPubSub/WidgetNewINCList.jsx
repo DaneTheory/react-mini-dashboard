@@ -38,7 +38,8 @@ class WidgetIrisNewINCList extends React.PureComponent {
 
     trickleInNewIncidents(newIncidents, durationInSecs) {
         let intervalInMS = Math.min(25000, (durationInSecs * 1000) / newIncidents.length);
-        let accumulatedDelay = 0;
+        // Initial delay, and also how we keep track of incremental accumulated delay
+        let accumulatedDelay = 4000;
         console.log(`Trickling in ${newIncidents.length} incidents, every ${intervalInMS} ms over ${durationInSecs} seconds`);
 
         // Of the new incidents, we want to add the oldest one first, then next oldest, and so on...
@@ -177,6 +178,7 @@ class WidgetIrisNewINCList extends React.PureComponent {
                     let caller_displayName = incident.caller_id.display_value || "Empty Caller";
                     caller_displayName = upperCaseEachWord(caller_displayName.replace(/\([0-9]+\)/, ""));
 
+                    // Wrapping each TD in a DIV so that I can vary row height when a new row gets added, tricky animation !
                     return (
                         <tr key={incident["number"]} style={{ fontSize: "4vw" }}>
                             <td style={{ fontSize: "0.8vw" }}>
@@ -196,7 +198,9 @@ class WidgetIrisNewINCList extends React.PureComponent {
                                 <div>{caller_displayName}</div>
                             </td>
                             <td className={priorityCSS} style={{ fontSize: "0.7vw" }}>
-                                <div>{incident["priority"].replace("riority ", "")}</div>
+                                <div>
+                                    <span style={{ fontSize: "150%" }}>{incident["priority"].replace("riority ", "")}</span>
+                                </div>
                             </td>
                             <td style={{ fontSize: "0.7vw" }}>
                                 <div>
@@ -236,13 +240,26 @@ class WidgetIrisNewINCList extends React.PureComponent {
                                 <th width="15%">Created</th>
                             </tr>
                         </thead>
+                        {/* At the initial mount, all children of the CSSTransitionGroup will appear but not enter. 
+                        However, all children later added to an existing CSSTransitionGroup will enter but not appear */}
+                        {/* 
+                            React-Transition-Group v1
+                            I think I'm using v1 of the ReactTransitionGroup
+                            npm install react-transition-group@1.x --save
+                            https://github.com/reactjs/react-transition-group/tree/v1-stable
+
+                            npm install react-transition-group
+                            Transition Guide: https://github.com/reactjs/react-transition-group/blob/HEAD/Migration.md
+                            Full Docs: http://reactcommunity.org/react-transition-group/
+                        */}
                         <CSSTransitionGroup
                             transitionName="fade"
                             // New item inserted to existing table rows
-                            transitionEnterTimeout={2000}
-                            transitionLeaveTimeout={300}
+                            transitionEnterTimeout={500}
+                            // transitionLeaveTimeout={300}
+                            transitionLeave={false}
                             // Initial table rows load
-                            transitionAppearTimeout={2000}
+                            transitionAppearTimeout={300}
                             component="tbody"
                             transitionAppear={true}
                         >

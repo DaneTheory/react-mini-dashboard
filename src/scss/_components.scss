@@ -332,32 +332,36 @@ $previous: 0.2;
     font-family: "Lato", "Courier New";
 }
 
+// -----------------------------------------------------------
+// This section is for CSSReactTransitionGroup
+// For enter (child added to parent), BEGINNING of transition
 .fade-enter div {
     opacity: 0.01;
     max-height: 0;
 }
-
+// For enter (child added to parent), END of transition
 .fade-enter.fade-enter-active div {
     max-height: 50px;
     opacity: 1;
     // can be ease-in, linear, ease-out, ease-in-out
-    transition: all 1000ms linear;
+    transition: all 500ms ease-in-out;
 }
-
+// For leave (child removed from parent), BEGINNING of transition
 .fade-leave {
     opacity: 1;
 }
-
+// For leave (child removed from parent), END of transition
 .fade-leave.fade-leave-active {
     opacity: 0.01;
     transition: opacity 300ms ease-in;
 }
-
+// For appear (child that exist at initial mount), BEGINNING of transition
 .fade-appear {
     opacity: 0.01;
 }
-
+// For appear (child that exist at initial mount), END of transition
 .fade-appear.fade-appear-active {
     opacity: 1;
-    transition: opacity 1000ms linear;
+    transition: opacity 300ms ease-in-out;
 }
+// -----------------------------------------------------------
