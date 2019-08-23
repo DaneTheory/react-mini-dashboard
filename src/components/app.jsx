@@ -51,8 +51,9 @@ let theme = {
         colorThemeCardBackground: "#2b2d3e",
         colorThemeCardFontDefault: "#eeeeee",
         colorThemeCardFontBlue: "#0bc2f0",
-        colorThemeCardFontGreen: "#66ff66",
         colorThemeCardFontRed: "#ff6666",
+        colorThemeCardFontAmber: "#e46e00",
+        colorThemeCardFontGreen: "#66ff66",
         colorThemeCardTableGridLines: "#b9b9b998",
         colorThemeCardTableCellBackgroundRed: "#af0000",
         colorThemeCardTableCellBackgroundAmber: "#e46e00",
@@ -67,8 +68,8 @@ let theme = {
         colorThemeWidgetLinks: "#4183c4",
 
         // Scrollbar
-        colorThemeScrollbarTrackBackground: "#2b2d3e",
-        colorThemeScrollbarThumbBackground: "#bbb3b3",
+        colorThemeScrollbarTrackBackground: "#5c5f7a",
+        colorThemeScrollbarThumbBackground: "#988b8b",
 
         // Chart
         colorThemeChartData: "#c0cde2",
@@ -100,13 +101,14 @@ let theme = {
         // Left Nav
         colorThemeLeftNavButtons: "#bbb3b3",
         colorThemeLeftNavLinks: "#bbb3b3",
+        colorThemeLeftNavLinksHover: "#4183c4",
 
         // Widget Links
         colorThemeWidgetLinks: "#4183c4",
 
         // Srollbar
-        colorThemeScrollbarTrackBackground: "#242524",
-        colorThemeScrollbarThumbBackground: "#696464",
+        colorThemeScrollbarTrackBackground: "#ebebeb",
+        colorThemeScrollbarThumbBackground: "#9c9c9c",
 
         // Chart
         colorThemeChartData: "#192453",
@@ -117,7 +119,7 @@ let theme = {
     currentColorTheme: null
 };
 
-// Select/Pick a color theme to use
+// Select/Pick/Toggle a color theme to use
 theme.currentColorTheme = theme.lightColorTheme;
 // theme.currentColorTheme = theme.darkColorTheme;
 
