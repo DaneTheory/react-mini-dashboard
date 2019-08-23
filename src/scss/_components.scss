@@ -88,7 +88,7 @@ a {
             color: var(--colorThemeCardFontRed);
         }
         .amberFont {
-            color: orange;
+            color: var(--colorThemeCardFontAmber);
         }
         .greenFont {
             color: var(--colorThemeCardFontGreen);
@@ -119,7 +119,7 @@ a {
                         font-weight: 700;
                     }
                     &.amberFont {
-                        color: orange;
+                        color: var(--colorThemeCardFontAmber);
                         font-weight: 700;
                     }
                     &.greenFont {
