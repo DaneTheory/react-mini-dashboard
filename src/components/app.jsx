@@ -78,22 +78,23 @@ let theme = {
 
     lightColorTheme: {
         // Page
-        colorThemePageBackground: "#ffffff",
+        colorThemePageBackground: "#d7d8db",
         colorThemePageTitle: "#000000",
 
         // Default
         colorThemeFontDefault: "#000000",
 
         // Card
-        colorThemeCardBackground: "#e7ecf7",
+        colorThemeCardBackground: "#c3c4c6",
         colorThemeCardFontDefault: "#000000",
-        colorThemeCardFontBlue: "#00add8",
-        colorThemeCardFontGreen: "#36a336",
+        colorThemeCardFontBlue: "#0159b7",
         colorThemeCardFontRed: "#ff6666",
-        colorThemeCardTableGridLines: "#b9b9b998",
-        colorThemeCardTableCellBackgroundRed: "#d40000",
-        colorThemeCardTableCellBackgroundAmber: "#ff7b00",
-        colorThemeCardTableCellBackgroundGreen: "#00c200",
+        colorThemeCardFontAmber: "#cd7d32",
+        colorThemeCardFontGreen: "#36a336",
+        colorThemeCardTableGridLines: "#969696",
+        colorThemeCardTableCellBackgroundRed: "#a93737",
+        colorThemeCardTableCellBackgroundAmber: "#cd7d32",
+        colorThemeCardTableCellBackgroundGreen: "#2fb12f",
 
         // Left Nav
         colorThemeLeftNavButtons: "#bbb3b3",
@@ -116,8 +117,8 @@ let theme = {
 };
 
 // Select/Pick a color theme to use
-// theme.currentColorTheme = theme.lightColorTheme;
-theme.currentColorTheme = theme.darkColorTheme;
+theme.currentColorTheme = theme.lightColorTheme;
+// theme.currentColorTheme = theme.darkColorTheme;
 
 // Apply the chose color theme to all of our CSS color variables
 Object.entries(theme.currentColorTheme).forEach(color => {
