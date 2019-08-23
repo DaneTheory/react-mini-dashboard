@@ -31,28 +31,34 @@ class WidgetIrisNewINCList extends React.PureComponent {
         // won't know about "this", so we need to bind our current "this" to "this" within the function
         this.getDataAndUpdateState = this.getDataAndUpdateState.bind(this);
 
-        this.trickleInNewIncidents = this.trickleInNewIncidents.bind(this);
+        this.trickleInNewRecords = this.trickleInNewRecords.bind(this);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    trickleInNewIncidents(newIncidents, durationInSecs) {
-        let intervalInMS = Math.min(25000, (durationInSecs * 1000) / newIncidents.length);
+    trickleInNewRecords(newRecords, durationInSecs) {
+        // Spread inserts over the desired durationInSecs, with a minimum of 25s
+        let intervalInMS = Math.min(25000, (durationInSecs * 1000) / newRecords.length);
+
         // Initial delay, and also how we keep track of incremental accumulated delay
         let accumulatedDelay = 4000;
-        console.log(`Trickling in ${newIncidents.length} incidents, every ${intervalInMS} ms over ${durationInSecs} seconds`);
+
+        console.log(`Trickling in ${newRecords.length} incidents, every ${intervalInMS} ms over ${durationInSecs} seconds`);
 
         // Of the new incidents, we want to add the oldest one first, then next oldest, and so on...
-        let sortedNewIncidents = newIncidents.sort((a, b) => {
+        let sortedNewRecords = newRecords.sort((a, b) => {
             // Sort the incidents by SLA from high to low
             return moment().diff(b.sys_created_on, "seconds") - moment().diff(a.sys_created_on, "seconds");
         });
-        console.log("Sorted New Incidents:", sortedNewIncidents);
-        for (let index = 0; index < sortedNewIncidents.length; index++) {
-            const newINC = sortedNewIncidents[index];
+
+        // Loop through new records, and create time-delayed events to sequence them into the React state
+        // Loop creates all the time-delayed events at once, then code immediately continues.
+        // After each "intervalInMS", an event runs, and inserts a record
+        for (let index = 0; index < sortedNewRecords.length; index++) {
+            const newINC = sortedNewRecords[index];
             setTimeout(
                 function() {
-                    console.log(`New Incident: ${moment().format("hh:mm:ss A")}:`, newINC.number);
+                    console.log(`Inserting New Incident: ${moment().format("hh:mm:ss A")}:`, newINC.number);
                     this.setState({ irisINCs: [...this.state.irisINCs, newINC] });
                 }.bind(this),
                 accumulatedDelay
@@ -60,6 +66,8 @@ class WidgetIrisNewINCList extends React.PureComponent {
             accumulatedDelay = accumulatedDelay + intervalInMS;
         }
     }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     // eslint-disable-next-line no-unused-vars
     async getDataAndUpdateState(msg = "Default message", data = "Default data") {
@@ -98,7 +106,7 @@ class WidgetIrisNewINCList extends React.PureComponent {
         console.log(`New Incidents Found: ${uniqueIncidents.length}`);
 
         // This will return immediately so program execution can continue, but will trickle in new Incidents to the component state
-        this.trickleInNewIncidents(uniqueIncidents, 50);
+        this.trickleInNewRecords(uniqueIncidents, 50);
 
         // Update our own component state with the new data, which will cause our component to re-render
         // this.setState({ irisINCs: incidents });
@@ -244,13 +252,14 @@ class WidgetIrisNewINCList extends React.PureComponent {
                         However, all children later added to an existing CSSTransitionGroup will enter but not appear */}
                         {/* 
                             React-Transition-Group v1
-                            I think I'm using v1 of the ReactTransitionGroup
-                            npm install react-transition-group@1.x --save
-                            https://github.com/reactjs/react-transition-group/tree/v1-stable
+                            I think I'm currently using v1 of the ReactTransitionGroup (but would like to use the current v2)
+                            Install v1 of React-Transition-Group: npm install react-transition-group@1.x --save
+                            Docs for v1: https://github.com/reactjs/react-transition-group/tree/v1-stable
 
-                            npm install react-transition-group
-                            Transition Guide: https://github.com/reactjs/react-transition-group/blob/HEAD/Migration.md
-                            Full Docs: http://reactcommunity.org/react-transition-group/
+                            React-Transition-Group v2
+                            Install v2 of React-Transition-Group: npm install react-transition-group
+                            Transition Guide for v1 to v2: https://github.com/reactjs/react-transition-group/blob/HEAD/Migration.md
+                            Full Docs for v2: http://reactcommunity.org/react-transition-group/
                         */}
                         <CSSTransitionGroup
                             transitionName="fade"
