@@ -192,6 +192,7 @@ class WidgetIrisNewINCList extends React.PureComponent {
                     <CSSTransition key={incident["number"]} classNames="fade" timeout={{ enter: 500, exit: 300 }}>
                         <tr style={{ fontSize: "4vw" }}>
                             <td style={{ fontSize: "0.8vw" }}>
+                                {/* Wrap content of each td in div so I can vary height when new row enters */}
                                 <div>
                                     #{shortIncNumber}
                                     <div style={{ fontSize: "70%" }}>
@@ -250,36 +251,14 @@ class WidgetIrisNewINCList extends React.PureComponent {
                                 <th width="15%">Created</th>
                             </tr>
                         </thead>
-                        {/* At the initial mount, all children of the CSSTransitionGroup will appear but not enter. 
-                        However, all children later added to an existing CSSTransitionGroup will enter but not appear */}
+                        {/* At the initial mount, all children of the TransitionGroup will appear but not enter. 
+                        However, all children later added to an existing TransitionGroup will enter but not appear */}
                         {/* 
-                            React-Transition-Group v1
-                            I think I'm currently using v1 of the ReactTransitionGroup (but would like to use the current v2)
-                            Install v1 of React-Transition-Group: npm install react-transition-group@1.x --save
-                            Docs for v1: https://github.com/reactjs/react-transition-group/tree/v1-stable
-
-                            React-Transition-Group v2
-                            Install v2 of React-Transition-Group: npm install react-transition-group
-                            Transition Guide for v1 to v2: https://github.com/reactjs/react-transition-group/blob/HEAD/Migration.md
+                            React-Transition-Group v4
+                            Install v4 of React-Transition-Group: npm install react-transition-group
                             Full Docs for v2: http://reactcommunity.org/react-transition-group/
                         */}
-
                         <TransitionGroup component="tbody">{rowComponents}</TransitionGroup>
-
-                        {/* <CSSTransitionGroup
-                            transitionName="fade"
-                            // New item inserted to existing table rows
-                            transitionEnterTimeout={500}
-                            // transitionLeaveTimeout={300}
-                            transitionLeave={false}
-                            // Initial table rows load
-                            transitionAppearTimeout={300}
-                            component="tbody"
-                            transitionAppear={true}
-                        >
-                            {rowComponents}
-                        </CSSTransitionGroup>
- */}
                     </table>
                 </div>
             );
