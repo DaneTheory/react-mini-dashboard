@@ -32,7 +32,8 @@ if (process.env.NODE_ENV !== "production") {
             /^NumberFormat/,
 
             /^DashboardDataCard/,
-            /^CSSTransitionGroupChild/
+            /^Transition$/,
+            /^CSSTransition$/
         ]
     });
 }
