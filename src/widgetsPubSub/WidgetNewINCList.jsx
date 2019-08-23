@@ -1,6 +1,8 @@
 // 3rd party imports
 import React from "react";
-import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+
+// import TransitionGroup from "react-transition-group/TransitionGroup";
 import PropTypes from "prop-types";
 import PubSub from "pubsub-js";
 
@@ -158,37 +160,37 @@ class WidgetIrisNewINCList extends React.PureComponent {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     generateRows() {
         // This should only generate <tr> components, using a javascript .map() function if convenient
-        {
-            return this.state.irisINCs
-                .sort((a, b) => {
-                    // Sort the incidents by SLA from high to low
-                    return moment().diff(a.sys_created_on, "seconds") - moment().diff(b.sys_created_on, "seconds");
-                })
-                .map(incident => {
-                    // Construct a url to get to this incident
-                    let host = this.props.sn_instance.replace("worker", "");
-                    let sys_id = incident.sys_id;
-                    let url = `https://${host}/nav_to.do?uri=/incident.do?sys_id=${sys_id}&sysparm_stack=&sysparm_view=`;
-                    let priorityCSS =
-                        incident.priority === "Priority 4" ? "greenFont" : incident.priority === "Priority 3" ? "amberFont" : "redFont";
-                    let shortIncNumber = incident.number.slice(-4);
-                    let shortDescrTrucated =
-                        incident.short_description.length > this.props.shortDescriptionMaxLength
-                            ? `${incident["short_description"].substr(0, this.props.shortDescriptionMaxLength)}...`
-                            : incident["short_description"];
+        return this.state.irisINCs
+            .sort((a, b) => {
+                // Sort the incidents by SLA from high to low
+                return moment().diff(a.sys_created_on, "seconds") - moment().diff(b.sys_created_on, "seconds");
+            })
+            .map(incident => {
+                // Construct a url to get to this incident
+                let host = this.props.sn_instance.replace("worker", "");
+                let sys_id = incident.sys_id;
+                let url = `https://${host}/nav_to.do?uri=/incident.do?sys_id=${sys_id}&sysparm_stack=&sysparm_view=`;
+                let priorityCSS =
+                    incident.priority === "Priority 4" ? "greenFont" : incident.priority === "Priority 3" ? "amberFont" : "redFont";
+                let shortIncNumber = incident.number.slice(-4);
+                let shortDescrTrucated =
+                    incident.short_description.length > this.props.shortDescriptionMaxLength
+                        ? `${incident["short_description"].substr(0, this.props.shortDescriptionMaxLength)}...`
+                        : incident["short_description"];
 
-                    function upperCaseEachWord(str) {
-                        return str.replace(/\w\S*/g, function(txt) {
-                            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-                        });
-                    }
+                function upperCaseEachWord(str) {
+                    return str.replace(/\w\S*/g, function(txt) {
+                        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+                    });
+                }
 
-                    let caller_displayName = incident.caller_id.display_value || "Empty Caller";
-                    caller_displayName = upperCaseEachWord(caller_displayName.replace(/\([0-9]+\)/, ""));
+                let caller_displayName = incident.caller_id.display_value || "Empty Caller";
+                caller_displayName = upperCaseEachWord(caller_displayName.replace(/\([0-9]+\)/, ""));
 
-                    // Wrapping each TD in a DIV so that I can vary row height when a new row gets added, tricky animation !
-                    return (
-                        <tr key={incident["number"]} style={{ fontSize: "4vw" }}>
+                // Wrapping each TD in a DIV so that I can vary row height when a new row gets added, tricky animation !
+                return (
+                    <CSSTransition key={incident["number"]} classNames="fade" timeout={{ enter: 500, exit: 300 }}>
+                        <tr style={{ fontSize: "4vw" }}>
                             <td style={{ fontSize: "0.8vw" }}>
                                 <div>
                                     #{shortIncNumber}
@@ -223,9 +225,9 @@ class WidgetIrisNewINCList extends React.PureComponent {
                                 </div>
                             </td>
                         </tr>
-                    );
-                });
-        }
+                    </CSSTransition>
+                );
+            });
     }
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -261,7 +263,10 @@ class WidgetIrisNewINCList extends React.PureComponent {
                             Transition Guide for v1 to v2: https://github.com/reactjs/react-transition-group/blob/HEAD/Migration.md
                             Full Docs for v2: http://reactcommunity.org/react-transition-group/
                         */}
-                        <CSSTransitionGroup
+
+                        <TransitionGroup component="tbody">{rowComponents}</TransitionGroup>
+
+                        {/* <CSSTransitionGroup
                             transitionName="fade"
                             // New item inserted to existing table rows
                             transitionEnterTimeout={500}
@@ -274,6 +279,7 @@ class WidgetIrisNewINCList extends React.PureComponent {
                         >
                             {rowComponents}
                         </CSSTransitionGroup>
+ */}
                     </table>
                 </div>
             );

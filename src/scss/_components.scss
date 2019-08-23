@@ -347,11 +347,11 @@ $previous: 0.2;
     transition: all 500ms ease-in-out;
 }
 // For leave (child removed from parent), BEGINNING of transition
-.fade-leave {
+.fade-exit {
     opacity: 1;
 }
 // For leave (child removed from parent), END of transition
-.fade-leave.fade-leave-active {
+.fade-exit.fade-exit-active {
     opacity: 0.01;
     transition: opacity 300ms ease-in;
 }
