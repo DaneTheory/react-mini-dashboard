@@ -97,8 +97,10 @@ class WidgetIrisNewINCList extends React.PureComponent {
             params: {
                 // Units for xAgoStart: years, months, days, hours, minutes
                 sysparm_query: "sys_created_on>=javascript:gs.minutesAgoStart(5)^ORDERBYDESCsys_created_on",
+                sysparm_fields:
+                    "sys_id,sys_created_on,number,priority,short_description,caller_id.first_name,caller_id.last_name,caller_id.vip,caller_id.location.u_country",
                 sysparm_display_value: "true",
-                sysparm_limit: 10
+                sysparm_limit: 100
             }
         });
 
@@ -109,9 +111,6 @@ class WidgetIrisNewINCList extends React.PureComponent {
 
         // This will return immediately so program execution can continue, but will trickle in new Incidents to the component state
         this.trickleInNewRecords(uniqueIncidents, 50);
-
-        // Update our own component state with the new data, which will cause our component to re-render
-        // this.setState({ irisINCs: incidents });
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -126,10 +125,14 @@ class WidgetIrisNewINCList extends React.PureComponent {
             params: {
                 // Units for xAgoStart: years, months, days, hours, minutes
                 sysparm_query: "sys_created_on>=javascript:gs.minutesAgoStart(30)^ORDERBYDESCsys_created_on",
+                sysparm_fields:
+                    "sys_id,sys_created_on,number,priority,short_description,caller_id.first_name,caller_id.last_name,caller_id.vip,caller_id.location.u_country",
                 sysparm_display_value: "true",
                 sysparm_limit: this.props.initialRecordLoadCount
             }
         });
+
+        console.log(response_INC.data.result);
 
         // Update our own component state with the new data, which will cause our component to re-render
         this.setState({ irisINCs: response_INC.data.result });
@@ -184,8 +187,12 @@ class WidgetIrisNewINCList extends React.PureComponent {
                     });
                 }
 
-                let caller_displayName = incident.caller_id.display_value || "Empty Caller";
+                let caller_displayName = incident["caller_id.first_name"].concat(" ", incident["caller_id.last_name"]) || "Empty Caller";
+                let caller_country =
+                    (incident["caller_id.location.u_country"] && incident["caller_id.location.u_country"]["display_value"]) ||
+                    "Empty Country Field";
                 caller_displayName = upperCaseEachWord(caller_displayName.replace(/\([0-9]+\)/, ""));
+                caller_country = upperCaseEachWord(caller_country);
 
                 // Wrapping each TD in a DIV so that I can vary row height when a new row gets added, tricky animation !
                 return (
@@ -207,6 +214,9 @@ class WidgetIrisNewINCList extends React.PureComponent {
                             </td>
                             <td style={{ fontSize: "0.7vw" }}>
                                 <div>{caller_displayName}</div>
+                            </td>
+                            <td style={{ fontSize: "0.7vw" }}>
+                                <div>{caller_country}</div>
                             </td>
                             <td className={priorityCSS} style={{ fontSize: "0.7vw" }}>
                                 <div>
@@ -245,10 +255,11 @@ class WidgetIrisNewINCList extends React.PureComponent {
                         <thead>
                             <tr>
                                 <th width="13%">INC Number</th>
-                                <th width="43%">Short Description</th>
-                                <th width="22">Caller</th>
+                                <th width="41%">Short Description</th>
+                                <th width="14%">Caller</th>
+                                <th width="14%">Country</th>
                                 <th width="7%">Priority</th>
-                                <th width="15%">Created</th>
+                                <th width="11%">Created</th>
                             </tr>
                         </thead>
                         {/* At the initial mount, all children of the TransitionGroup will appear but not enter. 
